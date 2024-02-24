@@ -5,19 +5,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
+import {Measurement} from '../../support/models/measurements';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
+const MeasurementScreen: React.FC<Props> = ({navigation}) => {
   const {t} = useTranslation();
-  const [hurt, setHurt] = useState('');
-  const [hunger, setHunger] = useState('');
-  const [hydration, setHydration] = useState('');
-  const [hygiene, setHygiene] = useState('');
-  const [happiness, setHappiness] = useState('');
-  const [mobility, setMoboility] = useState('');
+  const [hurt, setHurt] = useState<number | undefined>(undefined);
+  const [hunger, setHunger] = useState<number | undefined>(undefined);
+  const [hydration, setHydration] = useState<number | undefined>(undefined);
+  const [hygiene, setHygiene] = useState<number | undefined>(undefined);
+  const [happiness, setHappiness] = useState<number | undefined>(undefined);
+  const [mobility, setMoboility] = useState<number | undefined>(undefined);
+  const [moreGoodDays, setMoreGoodDays] = useState<number | undefined>(
+    undefined,
+  );
 
   const [petName, setPetName] = useState('');
 
@@ -32,24 +36,60 @@ const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
     fetchDogName();
   }, []);
 
-  const handleSubmit = async () => {
-    const metrics = {hunger, hydration, hygiene, happiness, mobility};
-    const date = new Date().toISOString().split('T')[0]; // Simple date format YYYY-MM-DD
-    console.log(metrics, date);
+  const metrics = {
+    hurt,
+    hunger,
+    hydration,
+    hygiene,
+    happiness,
+    mobility,
+    moreGoodDays,
+  };
 
-    // try {
-    //   await AsyncStorage.setItem(`metrics_${date}`, JSON.stringify(metrics));
-    //   navigation.goBack();
-    // } catch (e) {
-    //   // Error saving data
-    //   console.log(e);
-    // }
+  const isMetricsFilled = Object.values(metrics).every(
+    value => value !== undefined,
+  );
+
+  const handleSubmit = async () => {
+    if (isMetricsFilled) {
+      const date = new Date().toISOString().split('T')[0];
+      const score = Object.values(metrics).reduce(
+        (acc, value) => acc! + (value as number),
+        0,
+      );
+
+      const measurements: Measurement = {
+        date,
+        score: score || 0,
+        hurt: hurt || 0,
+        hunger: hunger || 0,
+        hydration: hydration || 0,
+        hygiene: hygiene || 0,
+        happiness: happiness || 0,
+        mobility: mobility || 0,
+        moreGoodDays: moreGoodDays || 0,
+      };
+
+      try {
+        await AsyncStorage.setItem(
+          `metrics_${date}`,
+          JSON.stringify(measurements),
+        );
+        navigation.goBack();
+      } catch (e) {
+        // Error saving data
+        console.log(e);
+      }
+    } else {
+      // Handle case when metrics are not filled
+      console.log('Please fill in all metrics');
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Record Today's Quality of Life</Text>
-      <Text style={styles.titleInfo}> Unacceptable, 10 = Excellent</Text>
+      <Text style={styles.title}>{t('measurements.title')}</Text>
+      <Text style={styles.titleInfo}>{t('measurements.info')}</Text>
       <Text style={styles.label}>
         {t('measurements.hurt')}: {hurt}
       </Text>
@@ -59,8 +99,8 @@ const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
         minimumValue={1}
         maximumValue={10}
         step={1}
-        value={parseInt(hurt, 10)}
-        onValueChange={value => setHurt(value.toString())}
+        value={hurt}
+        onValueChange={value => setHurt(value)}
       />
       <Text style={styles.label}>
         {t('measurements.hunger')}: {hunger}
@@ -71,8 +111,8 @@ const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
         minimumValue={1}
         maximumValue={10}
         step={1}
-        value={parseInt(hunger, 10)}
-        onValueChange={value => setHunger(value.toString())}
+        value={hunger}
+        onValueChange={value => setHunger(value)}
       />
       <Text style={styles.label}>
         {t('measurements.hydration')}: {hydration}
@@ -85,8 +125,8 @@ const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
         minimumValue={1}
         maximumValue={10}
         step={1}
-        value={parseInt(hydration, 10)}
-        onValueChange={value => setHydration(value.toString())}
+        value={hydration}
+        onValueChange={value => setHydration(value)}
       />
       <Text style={styles.label}>
         {t('measurements.hygiene')}: {hygiene}
@@ -99,8 +139,8 @@ const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
         minimumValue={1}
         maximumValue={10}
         step={1}
-        value={parseInt(hygiene, 10)}
-        onValueChange={value => setHygiene(value.toString())}
+        value={hygiene}
+        onValueChange={value => setHygiene(value)}
       />
       <Text style={styles.label}>
         {t('measurements.happiness')}: {happiness}
@@ -113,8 +153,8 @@ const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
         minimumValue={1}
         maximumValue={10}
         step={1}
-        value={parseInt(happiness, 10)}
-        onValueChange={value => setHappiness(value.toString())}
+        value={happiness}
+        onValueChange={value => setHappiness(value)}
       />
       <Text style={styles.label}>
         {t('measurements.mobility')}: {mobility}
@@ -127,10 +167,28 @@ const MeasurementScreen: React.FC<Props>  = ({navigation}) => {
         minimumValue={1}
         maximumValue={10}
         step={1}
-        value={parseInt(mobility, 10)}
-        onValueChange={value => setMoboility(value.toString())}
+        value={mobility}
+        onValueChange={value => setMoboility(value)}
       />
-      <Button title="Submit" onPress={handleSubmit} />
+      <Text style={styles.label}>
+        {t('measurements.moreGoodDays')}: {moreGoodDays}
+      </Text>
+      <Text style={styles.info}>
+        {t('measurements.moreGoodDaysInfo', {petName})}
+      </Text>
+      <Slider
+        style={styles.slider}
+        minimumValue={1}
+        maximumValue={10}
+        step={1}
+        value={moreGoodDays}
+        onValueChange={value => setMoreGoodDays(value)}
+      />
+      <Button
+        disabled={!isMetricsFilled}
+        title={t('buttons.submit')}
+        onPress={handleSubmit}
+      />
     </ScrollView>
   );
 };

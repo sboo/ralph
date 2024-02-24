@@ -1,10 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View, Text, Button, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {Measurement} from '../../support/models/measurements';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -13,6 +21,7 @@ interface Props {
 const HomeScreen: React.FC<Props> = ({navigation}) => {
   const {t} = useTranslation();
   const [petName, setPetName] = useState('');
+  const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
   useEffect(() => {
     const fetchDogName = async () => {
@@ -23,6 +32,25 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     };
 
     fetchDogName();
+  }, []);
+
+  useEffect(() => {
+    const fetchMeasurements = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const measurementKeys = keys.filter(key => key.startsWith('metrics_'));
+        const stores = await AsyncStorage.multiGet(measurementKeys);
+        const fetchedMeasurements = stores.map((result, i, store) => {
+          return JSON.parse(store[i][1] as string) as Measurement;
+        });
+        setMeasurements(fetchedMeasurements);
+      } catch (e) {
+        // Error fetching data
+        console.error(e);
+      }
+    };
+
+    fetchMeasurements();
   }, []);
 
   const getGreeting = () => {
@@ -47,7 +75,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.greeting}>{`${getGreeting()}, ${petName}`}</Text>
       <Button
         title="Start Today's HHHHMM Measurement"
@@ -85,16 +113,28 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
           borderRadius: 16,
         }}
       />
-    </View>
+      <Text style={styles.title}>HHHHMM Measurements</Text>
+      {measurements.map((measurement, index) => (
+        <View key={index} style={styles.measurementItem}>
+          <Text>Date: {measurement.date}</Text>
+          <Text>Hurt: {measurement.hurt}</Text>
+          <Text>Hunger: {measurement.hunger}</Text>
+          <Text>Hydration: {measurement.hydration}</Text>
+          <Text>Hygiene: {measurement.hygiene}</Text>
+          <Text>Happiness: {measurement.happiness}</Text>
+          <Text>Health: {measurement.health}</Text>
+          <Text>Mobility: {measurement.mobility}</Text>
+          <Text>More good days: {measurement.moreGoodDays}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
+    padding: 20,
   },
   greeting: {
     fontSize: 22,
@@ -103,6 +143,18 @@ const styles = StyleSheet.create({
   chartTitle: {
     fontSize: 18,
     marginVertical: 10,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  measurementItem: {
+    marginBottom: 15,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
   },
 });
 

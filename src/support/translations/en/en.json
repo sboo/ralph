@@ -3,6 +3,8 @@
   "greeting_afternoon": "Good Afternoon",
   "greeting_evening": "Good Evening",
   "measurements": {
+    "title": "Record Today's Quality of Life",
+    "info": "0 = Unacceptable, 10 = Excellent",
     "hurt": "Hurt",
     "hurtInfo": "Is {{petName}} in pain, including distress from difficulty in breathing? Can {{petName}}’s pain be successfully managed? Is oxygen necessary?",
     "hunger": "Hunger",
@@ -14,7 +16,12 @@
     "happiness": "Happiness",
     "happinessInfo": "Does {{petName}} express joy and interest? Is he responsive to things around him (family, toys, etc)? Is {{petName}} depressed, lonely, anxious, bored, or afraid? Can {{petName}}’s bed be near the kitchen and moved near family activities to minimize isolation?",
     "mobility": "Mobility",
-    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} need human or mechanical help (eg, a cart)? Does she feel like going for a walk? Is she having seizures or stumbling?" 
+    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} need human or mechanical help (eg, a cart)? Does {{petName}} feel like going for a walk? Is {{petName}} having seizures or stumbling?",
+    "moreGoodDays": "More Good Days Than Bad",
+    "moreGoodDaysInfo": "Is {{petName}} having more good days than bad? Is a life worth living being preserved?",
+  },
+  "buttons": {
+    "submit": "Submit"
   }
 }
 
