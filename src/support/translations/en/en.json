@@ -1,0 +1,20 @@
+{
+  "greeting_morning": "Good Morning",
+  "greeting_afternoon": "Good Afternoon",
+  "greeting_evening": "Good Evening",
+  "measurements": {
+    "hurt": "Hurt",
+    "hurtInfo": "Is {{petName}} in pain, including distress from difficulty in breathing? Can {{petName}}’s pain be successfully managed? Is oxygen necessary?",
+    "hunger": "Hunger",
+    "hungerInfo": "Is {{petName}} eating enough? Does hand-feeding help? Does {{petName}} require a feeding tube?",
+    "hydration": "Hydration",
+    "hydrationInfo": "Is {{petName}} dehydrated? Are subcutaneous fluids once or twice daily enough to resolve the problem? Are they well tolerated?",
+    "hygiene": "Hygiene",
+    "hygieneInfo": "{{petName}} should be kept brushed and clean, particularly after elimination. Does {{petName}} have pressure sores?",
+    "happiness": "Happiness",
+    "happinessInfo": "Does {{petName}} express joy and interest? Is he responsive to things around him (family, toys, etc)? Is {{petName}} depressed, lonely, anxious, bored, or afraid? Can {{petName}}’s bed be near the kitchen and moved near family activities to minimize isolation?",
+    "mobility": "Mobility",
+    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} need human or mechanical help (eg, a cart)? Does she feel like going for a walk? Is she having seizures or stumbling?" 
+  }
+}
+
