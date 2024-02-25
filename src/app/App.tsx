@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useCallback} from 'react';
+import {connectToDatabase, createTables} from '../support/storage/database';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../support/storageKeys';
 import '../support/translations/i18n';
 import WelcomeScreen from './screens/WelcomeScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -25,6 +24,25 @@ export type WelcomeScreenNavigationProp = NativeStackNavigationProp<
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
+  const initDatabase = useCallback(async () => {
+    try {
+      const db = await connectToDatabase();
+      await createTables(db);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    initDatabase()
+      .then(() => {
+        console.log('Database initialized');
+      })
+      .catch(error => {
+        console.error('Error initializing database: ', error);
+      });
+  }, [initDatabase]);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">

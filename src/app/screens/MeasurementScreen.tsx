@@ -3,9 +3,13 @@ import {useTranslation} from 'react-i18next';
 import {Text, Button, StyleSheet, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
+import {
+  connectToDatabase,
+  insertMeasurement,
+} from '../../support/storage/database';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import Slider from '@react-native-community/slider';
 import {Measurement} from '../../support/models/measurements';
+import RatingButtons from '../../support/components/RatingButtons';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -58,7 +62,7 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
         0,
       );
 
-      const measurements: Measurement = {
+      const measurement: Measurement = {
         date,
         score: score || 0,
         hurt: hurt || 0,
@@ -71,10 +75,8 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
       };
 
       try {
-        await AsyncStorage.setItem(
-          `metrics_${date}`,
-          JSON.stringify(measurements),
-        );
+        const db = await connectToDatabase();
+        await insertMeasurement(db, measurement);
         navigation.goBack();
       } catch (e) {
         // Error saving data
@@ -89,100 +91,58 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{t('measurements.title')}</Text>
-      <Text style={styles.titleInfo}>{t('measurements.info')}</Text>
-      <Text style={styles.label}>
-        {t('measurements.hurt')}: {hurt}
-      </Text>
+      <Text style={styles.label}>{t('measurements.hurt')}</Text>
       <Text style={styles.info}>{t('measurements.hurtInfo', {petName})}</Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={10}
-        step={1}
-        value={hurt}
-        onValueChange={value => setHurt(value)}
+      <RatingButtons
+        onRatingChange={value => setHurt(value)}
+        initialRating={hurt}
       />
-      <Text style={styles.label}>
-        {t('measurements.hunger')}: {hunger}
-      </Text>
+
+      <Text style={styles.label}>{t('measurements.hunger')}</Text>
       <Text style={styles.info}>{t('measurements.hungerInfo', {petName})}</Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={10}
-        step={1}
-        value={hunger}
-        onValueChange={value => setHunger(value)}
+      <RatingButtons
+        onRatingChange={value => setHunger(value)}
+        initialRating={hunger}
       />
-      <Text style={styles.label}>
-        {t('measurements.hydration')}: {hydration}
-      </Text>
+      <Text style={styles.label}>{t('measurements.hydration')}</Text>
       <Text style={styles.info}>
         {t('measurements.hydrationInfo', {petName})}
       </Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={10}
-        step={1}
-        value={hydration}
-        onValueChange={value => setHydration(value)}
+      <RatingButtons
+        onRatingChange={value => setHydration(value)}
+        initialRating={hydration}
       />
-      <Text style={styles.label}>
-        {t('measurements.hygiene')}: {hygiene}
-      </Text>
+      <Text style={styles.label}>{t('measurements.hygiene')}</Text>
       <Text style={styles.info}>
         {t('measurements.hygieneInfo', {petName})}
       </Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={10}
-        step={1}
-        value={hygiene}
-        onValueChange={value => setHygiene(value)}
+      <RatingButtons
+        onRatingChange={value => setHygiene(value)}
+        initialRating={hygiene}
       />
-      <Text style={styles.label}>
-        {t('measurements.happiness')}: {happiness}
-      </Text>
+      <Text style={styles.label}>{t('measurements.happiness')}</Text>
       <Text style={styles.info}>
         {t('measurements.happinessInfo', {petName})}
       </Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={10}
-        step={1}
-        value={happiness}
-        onValueChange={value => setHappiness(value)}
+      <RatingButtons
+        onRatingChange={value => setHappiness(value)}
+        initialRating={happiness}
       />
-      <Text style={styles.label}>
-        {t('measurements.mobility')}: {mobility}
-      </Text>
+      <Text style={styles.label}>{t('measurements.mobility')}</Text>
       <Text style={styles.info}>
         {t('measurements.mobilityInfo', {petName})}
       </Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={10}
-        step={1}
-        value={mobility}
-        onValueChange={value => setMoboility(value)}
+      <RatingButtons
+        onRatingChange={value => setMoboility(value)}
+        initialRating={mobility}
       />
-      <Text style={styles.label}>
-        {t('measurements.moreGoodDays')}: {moreGoodDays}
-      </Text>
+      <Text style={styles.label}>{t('measurements.moreGoodDays')}</Text>
       <Text style={styles.info}>
         {t('measurements.moreGoodDaysInfo', {petName})}
       </Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={10}
-        step={1}
-        value={moreGoodDays}
-        onValueChange={value => setMoreGoodDays(value)}
+      <RatingButtons
+        onRatingChange={value => setMoreGoodDays(value)}
+        initialRating={moreGoodDays}
       />
       <Button
         disabled={!isMetricsFilled}
@@ -214,12 +174,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 0,
-  },
-  titleInfo: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    fontStyle: 'italic',
     marginBottom: 20,
   },
   input: {

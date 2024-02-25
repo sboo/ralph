@@ -13,6 +13,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {Measurement} from '../../support/models/measurements';
+import {
+  connectToDatabase,
+  fetchMeasurements,
+} from '../../support/storage/database';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -28,21 +32,20 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
       if (name !== null) {
         setPetName(name);
+      } else {
+        navigation.navigate('Welcome');
       }
     };
 
     fetchDogName();
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
-    const fetchMeasurements = async () => {
+    console.log('Fetching measurements');
+    const loadMeasurements = async () => {
       try {
-        const keys = await AsyncStorage.getAllKeys();
-        const measurementKeys = keys.filter(key => key.startsWith('metrics_'));
-        const stores = await AsyncStorage.multiGet(measurementKeys);
-        const fetchedMeasurements = stores.map((result, i, store) => {
-          return JSON.parse(store[i][1] as string) as Measurement;
-        });
+        const db = await connectToDatabase();
+        const fetchedMeasurements = await fetchMeasurements(db);
         setMeasurements(fetchedMeasurements);
       } catch (e) {
         // Error fetching data
@@ -50,7 +53,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       }
     };
 
-    fetchMeasurements();
+    loadMeasurements();
   }, []);
 
   const getGreeting = () => {
@@ -117,14 +120,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       {measurements.map((measurement, index) => (
         <View key={index} style={styles.measurementItem}>
           <Text>Date: {measurement.date}</Text>
-          <Text>Hurt: {measurement.hurt}</Text>
-          <Text>Hunger: {measurement.hunger}</Text>
-          <Text>Hydration: {measurement.hydration}</Text>
-          <Text>Hygiene: {measurement.hygiene}</Text>
-          <Text>Happiness: {measurement.happiness}</Text>
-          <Text>Health: {measurement.health}</Text>
-          <Text>Mobility: {measurement.mobility}</Text>
-          <Text>More good days: {measurement.moreGoodDays}</Text>
+          <Text>Score: {measurement.score}</Text>
         </View>
       ))}
     </ScrollView>

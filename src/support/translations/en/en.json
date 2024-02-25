@@ -4,21 +4,20 @@
   "greeting_evening": "Good Evening",
   "measurements": {
     "title": "Record Today's Quality of Life",
-    "info": "0 = Unacceptable, 10 = Excellent",
     "hurt": "Hurt",
-    "hurtInfo": "Is {{petName}} in pain, including distress from difficulty in breathing? Can {{petName}}’s pain be successfully managed? Is oxygen necessary?",
+    "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
     "hunger": "Hunger",
-    "hungerInfo": "Is {{petName}} eating enough? Does hand-feeding help? Does {{petName}} require a feeding tube?",
+    "hungerInfo": "Is {{petName}} eating enough? Does hand-feeding help? ",
     "hydration": "Hydration",
-    "hydrationInfo": "Is {{petName}} dehydrated? Are subcutaneous fluids once or twice daily enough to resolve the problem? Are they well tolerated?",
+    "hydrationInfo": "Is {{petName}} drinking enough?",
     "hygiene": "Hygiene",
-    "hygieneInfo": "{{petName}} should be kept brushed and clean, particularly after elimination. Does {{petName}} have pressure sores?",
+    "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
     "happiness": "Happiness",
-    "happinessInfo": "Does {{petName}} express joy and interest? Is he responsive to things around him (family, toys, etc)? Is {{petName}} depressed, lonely, anxious, bored, or afraid? Can {{petName}}’s bed be near the kitchen and moved near family activities to minimize isolation?",
+    "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
     "mobility": "Mobility",
-    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} need human or mechanical help (eg, a cart)? Does {{petName}} feel like going for a walk? Is {{petName}} having seizures or stumbling?",
+    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?",
     "moreGoodDays": "More Good Days Than Bad",
-    "moreGoodDaysInfo": "Is {{petName}} having more good days than bad? Is a life worth living being preserved?",
+    "moreGoodDaysInfo": "Is {{petName}} having more good days than bad?"
   },
   "buttons": {
     "submit": "Submit"
