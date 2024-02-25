@@ -15,7 +15,7 @@ import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {Measurement} from '../../support/models/measurements';
 import {
   connectToDatabase,
-  fetchMeasurements,
+  fetchLastWeeksMeasurements,
 } from '../../support/storage/database';
 import {event} from '../event';
 
@@ -56,7 +56,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     const loadMeasurements = async () => {
       try {
         const db = await connectToDatabase();
-        const fetchedMeasurements = await fetchMeasurements(db);
+        const fetchedMeasurements = await fetchLastWeeksMeasurements(db);
         setMeasurements(fetchedMeasurements);
       } catch (e) {
         // Error fetching data
@@ -89,12 +89,25 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     return t('greeting_evening');
   };
 
+  const getLabels = () => {
+    const start = new Date(new Date().setDate(new Date().getDate() - 6));
+    return Array.from({length: 7}, (_, i) => {
+      const date = new Date(start);
+      date.setDate(start.getDate() + i);
+      return date.toLocaleDateString('en-US', {weekday: 'short'});
+    });
+  };
+
+  const getScores = () => {
+    return measurements.map(measurement => measurement.score);
+  };
+
   // Placeholder data for the chart
   const data = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], // Example week days
+    labels: getLabels(), // Example week days
     datasets: [
       {
-        data: [20, 45, 28, 80, 99, 43, 50], // Example data
+        data: getScores(), // Example data
       },
     ],
   };
@@ -111,7 +124,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       <Text style={styles.chartTitle}>Past HHHHMM Measurements</Text>
       <LineChart
         data={data}
-        width={Dimensions.get('window').width - 20} // from react-native
+        width={Dimensions.get('window').width - 40}
         height={220}
         yAxisLabel=""
         yAxisSuffix=" units"

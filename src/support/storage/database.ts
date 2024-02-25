@@ -132,6 +132,29 @@ export const fetchMeasurements = async (
   }
 };
 
+export const fetchLastWeeksMeasurements = async (
+  db: SQLiteDatabase,
+): Promise<Measurement[]> => {
+  try {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 6);
+    const formattedDate = currentDate.toISOString().split('T')[0];
+
+    const results = await db.executeSql(
+      'SELECT * FROM Measurements WHERE date >= ?',
+      [formattedDate],
+    );
+    let measurements: Measurement[] = [];
+    for (let i = 0; i < results[0].rows.length; i++) {
+      measurements.push(results[0].rows.item(i));
+    }
+    return measurements;
+  } catch (error) {
+    console.error('Error fetching measurements: ', error);
+    throw error;
+  }
+};
+
 export const fetchMeasurementByDate = async (
   db: SQLiteDatabase,
   date: string,
