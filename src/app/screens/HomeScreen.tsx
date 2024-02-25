@@ -99,40 +99,74 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   };
 
   const getScores = () => {
-    return measurements.map(measurement => measurement.score);
+    const scores = measurements.map(measurement => measurement.score);
+    const paddedScores = Array(7 - scores.length)
+      .fill(null)
+      .concat(scores);
+    return paddedScores;
   };
 
-  // Placeholder data for the chart
+  const getAverageScore = () => {
+    const scores = measurements.map(measurement => measurement.score);
+    return scores.reduce((acc, score) => acc + score, 0) / scores.length;
+  };
+
   const data = {
-    labels: getLabels(), // Example week days
+    labels: getLabels(),
     datasets: [
       {
-        data: getScores(), // Example data
+        data: getScores(),
+      },
+      {
+        data: [30, 30, 30, 30, 30, 30, 30],
+        withDots: false,
       },
     ],
+  };
+
+  const getBackgroundColor = () => {
+    const averageScore = getAverageScore();
+    if (averageScore < 30) {
+      return '#d10808';
+    }
+    if (averageScore < 60) {
+      return '#FFA500';
+    }
+    return '#1a8a34';
+  };
+
+  const getBackgroundGradientTo = () => {
+    const averageScore = getAverageScore();
+    if (averageScore < 30) {
+      return '#FF6347';
+    }
+    if (averageScore < 60) {
+      return '#edc600';
+    }
+    return '#07ad2e';
   };
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.greeting}>{`${getGreeting()}, ${petName}`}</Text>
       <Button
-        title="Start Today's HHHHMM Measurement"
+        title="Start Today's Measurement"
         onPress={() => navigation.navigate('Measurement')}
       />
 
       {/* Chart to display HHHHMM measurements */}
-      <Text style={styles.chartTitle}>Past HHHHMM Measurements</Text>
+      <Text style={styles.chartTitle}>Past Measurements</Text>
       <LineChart
         data={data}
         width={Dimensions.get('window').width - 40}
         height={220}
         yAxisLabel=""
-        yAxisSuffix=" units"
-        yAxisInterval={1} // optional, defaults to 1
+        yAxisSuffix=""
+        fromZero={true}
         chartConfig={{
-          backgroundColor: '#e26a00',
-          backgroundGradientFrom: '#fb8c00',
-          backgroundGradientTo: '#ffa726',
+          backgroundColor: getBackgroundColor(),
+          backgroundGradientFrom: getBackgroundColor(),
+          backgroundGradientTo: getBackgroundGradientTo(),
           decimalPlaces: 0, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -142,16 +176,13 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
           propsForDots: {
             r: '6',
             strokeWidth: '2',
-            stroke: '#ffa726',
+            stroke: getBackgroundColor(),
           },
         }}
         bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
+        style={styles.chart}
       />
-      <Text style={styles.title}>HHHHMM Measurements</Text>
+      <Text style={styles.title}>Measurements</Text>
       {measurements.reverse().map((measurement, index) => (
         <View key={index} style={styles.measurementItem}>
           <Text>Date: {measurement.date}</Text>
@@ -174,6 +205,10 @@ const styles = StyleSheet.create({
   chartTitle: {
     fontSize: 18,
     marginVertical: 10,
+  },
+  chart: {
+    marginVertical: 8,
+    borderRadius: 16,
   },
   title: {
     fontSize: 22,

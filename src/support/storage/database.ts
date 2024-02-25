@@ -32,8 +32,7 @@ export const createTables = async (db: SQLiteDatabase) => {
     hydration INTEGER, 
     hygiene INTEGER, 
     happiness INTEGER, 
-    mobility INTEGER, 
-    moreGoodDays INTEGER
+    mobility INTEGER
   )
   `;
   const uniqueMeasurementsQuery = `
@@ -81,32 +80,13 @@ export const insertMeasurement = async (
   db: SQLiteDatabase,
   measurement: Measurement,
 ): Promise<void> => {
-  const {
-    date,
-    score,
-    hurt,
-    hunger,
-    hydration,
-    hygiene,
-    happiness,
-    mobility,
-    moreGoodDays,
-  } = measurement;
+  const {date, score, hurt, hunger, hydration, hygiene, happiness, mobility} =
+    measurement;
   try {
     await db.transaction(tx => {
       tx.executeSql(
-        'INSERT OR REPLACE INTO Measurements (date, score, hurt, hunger, hydration, hygiene, happiness, mobility, moreGoodDays) VALUES (?, ? ,?, ?, ?, ?, ?, ?, ?)',
-        [
-          date,
-          score,
-          hurt,
-          hunger,
-          hydration,
-          hygiene,
-          happiness,
-          mobility,
-          moreGoodDays,
-        ],
+        'INSERT OR REPLACE INTO Measurements (date, score, hurt, hunger, hydration, hygiene, happiness, mobility) VALUES (?, ? ,?, ?, ?, ?, ?, ?)',
+        [date, score, hurt, hunger, hydration, hygiene, happiness, mobility],
       );
     });
     console.log('Measurement inserted successfully');

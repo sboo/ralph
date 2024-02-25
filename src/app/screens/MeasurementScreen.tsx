@@ -25,9 +25,6 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
   const [hygiene, setHygiene] = useState<number | undefined>(undefined);
   const [happiness, setHappiness] = useState<number | undefined>(undefined);
   const [mobility, setMoboility] = useState<number | undefined>(undefined);
-  const [moreGoodDays, setMoreGoodDays] = useState<number | undefined>(
-    undefined,
-  );
 
   const [petName, setPetName] = useState('');
   const [date] = useState(new Date().toISOString().split('T')[0]);
@@ -54,7 +51,6 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
           setHygiene(measurement.hygiene);
           setHappiness(measurement.happiness);
           setMoboility(measurement.mobility);
-          setMoreGoodDays(measurement.moreGoodDays);
         }
       } catch (e) {
         // Error fetching data
@@ -72,7 +68,6 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
     hygiene,
     happiness,
     mobility,
-    moreGoodDays,
   };
 
   const isMetricsFilled = Object.values(metrics).every(
@@ -95,7 +90,6 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
         hygiene: hygiene || 0,
         happiness: happiness || 0,
         mobility: mobility || 0,
-        moreGoodDays: moreGoodDays || 0,
       };
 
       try {
@@ -160,14 +154,6 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
       <RatingButtons
         onRatingChange={value => setMoboility(value)}
         initialRating={mobility}
-      />
-      <Text style={styles.label}>{t('measurements.moreGoodDays')}</Text>
-      <Text style={styles.info}>
-        {t('measurements.moreGoodDaysInfo', {petName})}
-      </Text>
-      <RatingButtons
-        onRatingChange={value => setMoreGoodDays(value)}
-        initialRating={moreGoodDays}
       />
       <Button
         disabled={!isMetricsFilled}

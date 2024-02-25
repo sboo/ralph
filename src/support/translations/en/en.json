@@ -15,9 +15,7 @@
     "happiness": "Happiness",
     "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
     "mobility": "Mobility",
-    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?",
-    "moreGoodDays": "More Good Days Than Bad",
-    "moreGoodDaysInfo": "Is {{petName}} having more good days than bad?"
+    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?"
   },
   "buttons": {
     "submit": "Submit"

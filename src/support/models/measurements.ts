@@ -7,5 +7,4 @@ export interface Measurement {
   hygiene: number;
   happiness: number;
   mobility: number;
-  moreGoodDays: number;
 }
