@@ -17,6 +17,7 @@ import {
   connectToDatabase,
   fetchMeasurements,
 } from '../../support/storage/database';
+import {event} from '../event';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -54,6 +55,17 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     };
 
     loadMeasurements();
+
+    const onMeasurementAdded = () => {
+      console.log('Measurement added event received. Reloading measurements.');
+      loadMeasurements();
+    };
+
+    event.on('measurementAdded', onMeasurementAdded);
+
+    return () => {
+      event.off('measurementAdded', onMeasurementAdded);
+    };
   }, []);
 
   const getGreeting = () => {
@@ -117,7 +129,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         }}
       />
       <Text style={styles.title}>HHHHMM Measurements</Text>
-      {measurements.map((measurement, index) => (
+      {measurements.reverse().map((measurement, index) => (
         <View key={index} style={styles.measurementItem}>
           <Text>Date: {measurement.date}</Text>
           <Text>Score: {measurement.score}</Text>

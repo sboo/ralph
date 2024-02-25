@@ -33,11 +33,16 @@ export const createTables = async (db: SQLiteDatabase) => {
     hygiene INTEGER, 
     happiness INTEGER, 
     mobility INTEGER, 
-    moreGoodDays TEXT
+    moreGoodDays INTEGER
   )
+  `;
+  const uniqueMeasurementsQuery = `
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_date
+  ON Measurements (date);
   `;
   try {
     await db.executeSql(measurementsQuery);
+    await db.executeSql(uniqueMeasurementsQuery);
   } catch (error) {
     console.error(error);
     throw Error('Failed to create tables');
@@ -90,7 +95,7 @@ export const insertMeasurement = async (
   try {
     await db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO Measurements (date, score, hurt, hunger, hydration, hygiene, happiness, mobility, moreGoodDays) VALUES (?, ? ,?, ?, ?, ?, ?, ?, ?)',
+        'INSERT OR REPLACE INTO Measurements (date, score, hurt, hunger, hydration, hygiene, happiness, mobility, moreGoodDays) VALUES (?, ? ,?, ?, ?, ?, ?, ?, ?)',
         [
           date,
           score,
@@ -122,6 +127,22 @@ export const fetchMeasurements = async (
       measurements.push(results[0].rows.item(i));
     }
     return measurements;
+  } catch (error) {
+    console.error('Error fetching measurements: ', error);
+    throw error;
+  }
+};
+
+export const fetchMeasurementByDate = async (
+  db: SQLiteDatabase,
+  date: string,
+): Promise<Measurement> => {
+  try {
+    const results = await db.executeSql(
+      'SELECT * FROM Measurements WHERE date = ?',
+      [date],
+    );
+    return results[0].rows.item(0);
   } catch (error) {
     console.error('Error fetching measurements: ', error);
     throw error;

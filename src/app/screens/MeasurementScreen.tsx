@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
+import {event} from '../event';
 import {Text, Button, StyleSheet, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {
   connectToDatabase,
+  fetchMeasurementByDate,
   insertMeasurement,
 } from '../../support/storage/database';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
@@ -28,6 +30,7 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
   );
 
   const [petName, setPetName] = useState('');
+  const [date] = useState(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
     const fetchDogName = async () => {
@@ -38,7 +41,29 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
     };
 
     fetchDogName();
-  }, []);
+
+    const fetchTodaysMeasurement = async () => {
+      const db = await connectToDatabase();
+      try {
+        const measurement = await fetchMeasurementByDate(db, date);
+        if (measurement) {
+          console.log('Measurement found: ', measurement);
+          setHurt(measurement.hurt);
+          setHunger(measurement.hunger);
+          setHydration(measurement.hydration);
+          setHygiene(measurement.hygiene);
+          setHappiness(measurement.happiness);
+          setMoboility(measurement.mobility);
+          setMoreGoodDays(measurement.moreGoodDays);
+        }
+      } catch (e) {
+        // Error fetching data
+        console.error(e);
+      }
+    };
+
+    fetchTodaysMeasurement();
+  }, [date]);
 
   const metrics = {
     hurt,
@@ -56,7 +81,6 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
 
   const handleSubmit = async () => {
     if (isMetricsFilled) {
-      const date = new Date().toISOString().split('T')[0];
       const score = Object.values(metrics).reduce(
         (acc, value) => acc! + (value as number),
         0,
@@ -77,6 +101,7 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
       try {
         const db = await connectToDatabase();
         await insertMeasurement(db, measurement);
+        event.emit('measurementAdded');
         navigation.goBack();
       } catch (e) {
         // Error saving data

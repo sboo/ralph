@@ -9,15 +9,15 @@ interface Props {
 const RatingButtons: React.FC<Props> = ({initialRating, onRatingChange}) => {
   const [selectedRating, setSelectedRating] = useState(initialRating);
 
-  // Call the onRatingChange callback whenever the selectedRating changes
   useEffect(() => {
-    if (onRatingChange) {
-      onRatingChange(selectedRating as number);
-    }
-  }, [selectedRating, onRatingChange]);
+    setSelectedRating(initialRating);
+  }, [initialRating]);
 
   const handlePress = (rating: number) => {
     setSelectedRating(rating);
+    if (onRatingChange) {
+      onRatingChange(rating);
+    }
   };
 
   // Function to dynamically change the button style based on selection
