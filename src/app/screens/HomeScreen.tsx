@@ -149,12 +149,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.greeting}>{`${getGreeting()}, ${petName}`}</Text>
-      <Button
-        title="Start Today's Measurement"
-        onPress={() => navigation.navigate('Measurement')}
-      />
-
-      {/* Chart to display HHHHMM measurements */}
+      
       <Text style={styles.chartTitle}>Past Measurements</Text>
       <LineChart
         data={data}
@@ -182,13 +177,15 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         bezier
         style={styles.chart}
       />
-      <Text style={styles.title}>Measurements</Text>
-      {measurements.reverse().map((measurement, index) => (
-        <View key={index} style={styles.measurementItem}>
-          <Text>Date: {measurement.date}</Text>
-          <Text>Score: {measurement.score}</Text>
-        </View>
-      ))}
+      <Button
+        title="Start Today's Measurement"
+        onPress={() => navigation.navigate('Measurement')}
+      />
+      <Button
+        title="All Measurements"
+        color={'#1a8a34'}
+        onPress={() => navigation.navigate('AllMeasurements')}
+      />
     </ScrollView>
   );
 };
@@ -214,13 +211,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  measurementItem: {
-    marginBottom: 15,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
   },
 });
 
