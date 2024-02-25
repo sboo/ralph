@@ -1,4 +1,5 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, ActivityIndicator, StyleSheet} from 'react-native'; // Import ActivityIndicator for loading indication
 import {connectToDatabase, createTables} from '../support/storage/database';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -24,24 +25,30 @@ export type WelcomeScreenNavigationProp = NativeStackNavigationProp<
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
+  const [dbInitialized, setDbInitialized] = useState(false); // State to track DB initialization
+
   const initDatabase = useCallback(async () => {
     try {
       const db = await connectToDatabase();
       await createTables(db);
+      setDbInitialized(true);
     } catch (error) {
       console.error(error);
     }
   }, []);
 
   useEffect(() => {
-    initDatabase()
-      .then(() => {
-        console.log('Database initialized');
-      })
-      .catch(error => {
-        console.error('Error initializing database: ', error);
-      });
+    initDatabase();
   }, [initDatabase]);
+
+  if (!dbInitialized) {
+    // Show a loading screen or indicator while the database is initializing
+    return (
+      <View style={styles.loadingIndicator}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <NavigationContainer>
@@ -53,5 +60,9 @@ const App: React.FC = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  loadingIndicator: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+});
 
 export default App;
