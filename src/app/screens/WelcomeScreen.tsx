@@ -3,6 +3,7 @@ import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {event} from '../event';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -14,6 +15,7 @@ const WelcomeScreen: React.FC<Props> = ({navigation}) => {
   const storeDogInfo = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.PET_NAME, petName);
+      event.emit('petNameSet', petName);
       // Navigate to the next screen after successful storage
       navigation.navigate('Home');
     } catch (error) {

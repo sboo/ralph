@@ -39,6 +39,16 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     };
 
     fetchDogName();
+
+    const onPetNameSet = () => {
+      fetchDogName();
+    };
+
+    event.on('petNameSet', onPetNameSet);
+
+    return () => {
+      event.off('petNameSet', onPetNameSet);
+    };
   }, [navigation]);
 
   useEffect(() => {

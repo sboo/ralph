@@ -121,7 +121,6 @@ export const fetchMeasurements = async (
 ): Promise<Measurement[]> => {
   try {
     const results = await db.executeSql('SELECT * FROM Measurements');
-    console.log(results);
     let measurements: Measurement[] = [];
     for (let i = 0; i < results[0].rows.length; i++) {
       measurements.push(results[0].rows.item(i));
