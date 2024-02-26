@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, ActivityIndicator, StyleSheet} from 'react-native'; // Import ActivityIndicator for loading indication
+import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import {connectToDatabase, createTables} from '../support/storage/database';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -60,7 +60,8 @@ const App: React.FC = () => {
         <Stack.Screen name="Measurement" component={MeasurementScreen} />
         <Stack.Screen
           name="AllMeasurements"
-          component={MeasurementsListScreen} />
+          component={MeasurementsListScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

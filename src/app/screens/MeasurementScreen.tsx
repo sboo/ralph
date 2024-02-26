@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {event} from '../event';
-import {Text, Button, StyleSheet, ScrollView} from 'react-native';
+import {Text, StyleSheet, ScrollView} from 'react-native';
+import {Button} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {
@@ -113,53 +114,54 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
       <Text style={styles.label}>{t('measurements.hurt')}</Text>
       <Text style={styles.info}>{t('measurements.hurtInfo', {petName})}</Text>
       <RatingButtons
-        onRatingChange={value => setHurt(value)}
-        initialRating={hurt}
+        onRatingChange={value => setHurt(parseInt(value, 10))}
+        initialRating={hurt?.toString() || ''}
       />
 
       <Text style={styles.label}>{t('measurements.hunger')}</Text>
       <Text style={styles.info}>{t('measurements.hungerInfo', {petName})}</Text>
       <RatingButtons
-        onRatingChange={value => setHunger(value)}
-        initialRating={hunger}
+        onRatingChange={value => setHunger(parseInt(value, 10))}
+        initialRating={hunger?.toString() || ''}
       />
       <Text style={styles.label}>{t('measurements.hydration')}</Text>
       <Text style={styles.info}>
         {t('measurements.hydrationInfo', {petName})}
       </Text>
       <RatingButtons
-        onRatingChange={value => setHydration(value)}
-        initialRating={hydration}
+        onRatingChange={value => setHydration(parseInt(value, 10))}
+        initialRating={hydration?.toString() || ''}
       />
       <Text style={styles.label}>{t('measurements.hygiene')}</Text>
       <Text style={styles.info}>
         {t('measurements.hygieneInfo', {petName})}
       </Text>
       <RatingButtons
-        onRatingChange={value => setHygiene(value)}
-        initialRating={hygiene}
+        onRatingChange={value => setHygiene(parseInt(value, 10))}
+        initialRating={hygiene?.toString() || ''}
       />
       <Text style={styles.label}>{t('measurements.happiness')}</Text>
       <Text style={styles.info}>
         {t('measurements.happinessInfo', {petName})}
       </Text>
       <RatingButtons
-        onRatingChange={value => setHappiness(value)}
-        initialRating={happiness}
+        onRatingChange={value => setHappiness(parseInt(value, 10))}
+        initialRating={happiness?.toString() || ''}
       />
       <Text style={styles.label}>{t('measurements.mobility')}</Text>
       <Text style={styles.info}>
         {t('measurements.mobilityInfo', {petName})}
       </Text>
       <RatingButtons
-        onRatingChange={value => setMoboility(value)}
-        initialRating={mobility}
+        onRatingChange={value => setMoboility(parseInt(value, 10))}
+        initialRating={mobility?.toString() || ''}
       />
       <Button
         disabled={!isMetricsFilled}
-        title={t('buttons.submit')}
         onPress={handleSubmit}
-      />
+        mode={'contained'}>
+        {t('buttons.submit')}
+      </Button>
     </ScrollView>
   );
 };

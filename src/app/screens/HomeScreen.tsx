@@ -1,18 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import {Text, StyleSheet, Dimensions, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {Measurement} from '../../support/models/measurements';
+import {FAB} from 'react-native-paper';
+
 import {
   connectToDatabase,
   fetchLastWeeksMeasurements,
@@ -27,6 +22,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   const {t} = useTranslation();
   const [petName, setPetName] = useState('');
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
+  const [isFabOpen, setIsFabOpen] = useState(false);
 
   useEffect(() => {
     const fetchDogName = async () => {
@@ -147,9 +143,8 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.greeting}>{`${getGreeting()}, ${petName}`}</Text>
-      
       <Text style={styles.chartTitle}>Past Measurements</Text>
       <LineChart
         data={data}
@@ -177,16 +172,32 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         bezier
         style={styles.chart}
       />
-      <Button
-        title="Start Today's Measurement"
-        onPress={() => navigation.navigate('Measurement')}
+      <FAB.Group
+        visible={true}
+        open={isFabOpen}
+        icon={isFabOpen ? 'close' : 'emoticon-outline'}
+        actions={[
+          {
+            icon: 'pencil-plus',
+            label: "Today's Measurement",
+            onPress: () => navigation.navigate('Measurement'),
+          },
+          {
+            icon: 'format-list-bulleted',
+            label: 'All Measurements',
+            onPress: () => navigation.navigate('AllMeasurements'),
+          },
+        ]}
+        onStateChange={({open}) => setIsFabOpen(open)}
+        onPress={() => {
+          if (isFabOpen) {
+            // FAB menu is open
+          } else {
+            // FAB menu is closed
+          }
+        }}
       />
-      <Button
-        title="All Measurements"
-        color={'#1a8a34'}
-        onPress={() => navigation.navigate('AllMeasurements')}
-      />
-    </ScrollView>
+    </View>
   );
 };
 
