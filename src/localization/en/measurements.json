@@ -1,8 +1,4 @@
 {
-  "greeting_morning": "Good Morning",
-  "greeting_afternoon": "Good Afternoon",
-  "greeting_evening": "Good Evening",
-  "measurements": {
     "title": "Record Today's Quality of Life",
     "hurt": "Hurt",
     "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
@@ -16,9 +12,4 @@
     "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
     "mobility": "Mobility",
     "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?"
-  },
-  "buttons": {
-    "submit": "Submit"
-  }
 }
-

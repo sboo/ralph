@@ -1,0 +1,15 @@
+{
+    "title": "Registrar la Calidad de Vida de Hoy",
+    "hurt": "Dolor",
+    "hurtInfo": "¿Está {{petName}} libre de dolor? ¿O se puede manejar exitosamente el dolor de {{petName}}?",
+    "hunger": "Hambre",
+    "hungerInfo": "¿Está {{petName}} comiendo lo suficiente? ¿Ayuda alimentarlo a mano?",
+    "hydration": "Hidratación",
+    "hydrationInfo": "¿Está {{petName}} bebiendo suficiente agua?",
+    "hygiene": "Higiene",
+    "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí mismo?",
+    "happiness": "Felicidad",
+    "happinessInfo": "¿Expresa {{petName}} alegría e interés? ¿Está {{petName}} receptivo a las cosas que lo rodean (familia, juguetes, etc.)?",
+    "mobility": "Movilidad",
+    "mobilityInfo": "¿Puede {{petName}} levantarse sin asistencia? ¿Siente {{petName}} ganas de salir a caminar?"
+}

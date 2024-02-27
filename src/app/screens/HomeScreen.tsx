@@ -5,14 +5,10 @@ import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import {Measurement} from '../../support/models/measurements';
 import {FAB} from 'react-native-paper';
-
-import {
-  connectToDatabase,
-  fetchLastWeeksMeasurements,
-} from '../../support/storage/database';
 import {event} from '../event';
+import {useQuery} from '@realm/react';
+import {Measurement} from '../../models/Measurement';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -21,8 +17,11 @@ interface Props {
 const HomeScreen: React.FC<Props> = ({navigation}) => {
   const {t} = useTranslation();
   const [petName, setPetName] = useState('');
-  const [measurements, setMeasurements] = useState<Measurement[]>([]);
   const [isFabOpen, setIsFabOpen] = useState(false);
+
+  const measurements = useQuery(Measurement, collection =>
+    collection.sorted('createdAt'),
+  );
 
   useEffect(() => {
     const fetchDogName = async () => {
@@ -46,33 +45,6 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       event.off('petNameSet', onPetNameSet);
     };
   }, [navigation]);
-
-  useEffect(() => {
-    console.log('Fetching measurements');
-    const loadMeasurements = async () => {
-      try {
-        const db = await connectToDatabase();
-        const fetchedMeasurements = await fetchLastWeeksMeasurements(db);
-        setMeasurements(fetchedMeasurements);
-      } catch (e) {
-        // Error fetching data
-        console.error(e);
-      }
-    };
-
-    loadMeasurements();
-
-    const onMeasurementAdded = () => {
-      console.log('Measurement added event received. Reloading measurements.');
-      loadMeasurements();
-    };
-
-    event.on('measurementAdded', onMeasurementAdded);
-
-    return () => {
-      event.off('measurementAdded', onMeasurementAdded);
-    };
-  }, []);
 
   const getGreeting = () => {
     const hour = new Date().getHours();

@@ -3,18 +3,12 @@ import {useTranslation} from 'react-i18next';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
-  Dimensions,
   ScrollView,
 } from 'react-native';
-import {LineChart} from 'react-native-chart-kit';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import {Measurement} from '../../support/models/measurements';
-import {
-  connectToDatabase,
-  fetchMeasurements,
-} from '../../support/storage/database';
+import {useQuery} from '@realm/react';
+import {Measurement} from '../../models/Measurement';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -22,30 +16,16 @@ interface Props {
 
 const MeasurementsListScreen: React.FC<Props> = ({navigation}) => {
   const {t} = useTranslation();
-  const [measurements, setMeasurements] = useState<Measurement[]>([]);
-
-  useEffect(() => {
-    console.log('Fetching measurements');
-    const loadMeasurements = async () => {
-      try {
-        const db = await connectToDatabase();
-        const fetchedMeasurements = await fetchMeasurements(db);
-        setMeasurements(fetchedMeasurements);
-      } catch (e) {
-        // Error fetching data
-        console.error(e);
-      }
-    };
-
-    loadMeasurements();
-  }, []);
+  const measurements = useQuery(Measurement, collection =>
+    collection.sorted('createdAt', true),
+  );
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Measurements</Text>
-      {measurements.reverse().map((measurement, index) => (
+      {measurements.map((measurement, index) => (
         <View key={index} style={styles.measurementItem}>
-          <Text>Date: {measurement.date}</Text>
+          <Text>Date: {measurement.createdAt.toDateString()}</Text>
           <Text>Score: {measurement.score}</Text>
         </View>
       ))}
