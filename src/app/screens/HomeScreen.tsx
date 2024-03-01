@@ -10,6 +10,7 @@ import {event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {useTheme} from 'react-native-paper';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -20,12 +21,36 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [dateRange, setDateRange] = useState<Date[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string>();
 
   const theme = useTheme();
 
   const measurements = useQuery(Measurement, collection =>
     collection.sorted('createdAt'),
   );
+
+  const openImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorMessage) {
+        console.log('Image picker error: ', response.errorMessage);
+      } else {
+        let imageUri = response.assets?.[0]?.uri;
+        console.log('Image URI: ', imageUri);
+        if (imageUri !== undefined) {
+          setSelectedImage(imageUri);
+        }
+      }
+    });
+  };
 
   useEffect(() => {
     const fetchDogName = async () => {
@@ -132,7 +157,16 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
           <Text style={styles.greeting}>{getGreeting()}</Text>
           <Text style={styles.petName}>{petName}</Text>
         </View>
-        <Avatar.Image size={65} source={require('../../assets/pets.png')} />
+        <Avatar.Image
+          size={65}
+          style={{backgroundColor: theme.colors.tertiaryContainer}}
+          source={
+            selectedImage
+              ? {uri: selectedImage}
+              : require('../../assets/camera.png')
+          }
+          onTouchStart={openImagePicker}
+        />
       </View>
       <View style={styles.container}>
         <View
