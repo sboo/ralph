@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {Text, FAB, Avatar} from 'react-native-paper';
-import {event} from '../event';
+import {EVENT_NAMES, event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {useTheme} from 'react-native-paper';
@@ -72,20 +72,6 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       }
     };
 
-    fetchDogName();
-
-    const onPetNameSet = () => {
-      fetchDogName();
-    };
-
-    event.on('petNameSet', onPetNameSet);
-
-    return () => {
-      event.off('petNameSet', onPetNameSet);
-    };
-  }, [navigation]);
-
-  useEffect(() => {
     const fetchAvatar = async () => {
       const uri = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
       if (uri !== null) {
@@ -93,8 +79,20 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       }
     };
 
+    fetchDogName();
     fetchAvatar();
-  }, []);
+
+    const onProfileSet = () => {
+      fetchDogName();
+      fetchAvatar();
+    };
+
+    event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
+
+    return () => {
+      event.off(EVENT_NAMES.PROFILE_SET, onProfileSet);
+    };
+  }, [navigation]);
 
   useEffect(() => {
     const getDateRange = () => {
