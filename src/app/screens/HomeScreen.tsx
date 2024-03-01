@@ -21,7 +21,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [dateRange, setDateRange] = useState<Date[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string>();
+  const [avatar, setAvatar] = useState<string>();
 
   const theme = useTheme();
 
@@ -46,10 +46,20 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         let imageUri = response.assets?.[0]?.uri;
         console.log('Image URI: ', imageUri);
         if (imageUri !== undefined) {
-          setSelectedImage(imageUri);
+          storeAvatar(imageUri).then(() => {
+            setAvatar(imageUri);
+          });
         }
       }
     });
+  };
+
+  const storeAvatar = async (uri: string) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.AVATAR, uri);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -74,6 +84,17 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       event.off('petNameSet', onPetNameSet);
     };
   }, [navigation]);
+
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      const uri = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
+      if (uri !== null) {
+        setAvatar(uri);
+      }
+    };
+
+    fetchAvatar();
+  }, []);
 
   useEffect(() => {
     const getDateRange = () => {
@@ -160,11 +181,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         <Avatar.Image
           size={65}
           style={{backgroundColor: theme.colors.tertiaryContainer}}
-          source={
-            selectedImage
-              ? {uri: selectedImage}
-              : require('../../assets/camera.png')
-          }
+          source={avatar ? {uri: avatar} : require('../../assets/camera.png')}
           onTouchStart={openImagePicker}
         />
       </View>
