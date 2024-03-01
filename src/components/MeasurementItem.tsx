@@ -1,81 +1,69 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Text, StyleSheet, ScrollView} from 'react-native';
-import {Button} from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../../support/storageKeys';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import RatingButtons from '../../components/RatingButtons';
-import {useRealm} from '@realm/react';
-import {Measurement} from '../../models/Measurement';
+import {StyleSheet, ScrollView} from 'react-native';
+import {Text, Button} from 'react-native-paper';
+import RatingButtons from './RatingButtons';
+import {Measurement} from '../models/Measurement';
 
 interface Props {
-  navigation: NavigationProp<ParamListBase>;
+  petName: string;
+  date: Date;
+  measurement?: Measurement | null;
+  handleSubmit: (
+    hurt: number,
+    hunger: number,
+    hydration: number,
+    hygiene: number,
+    happiness: number,
+    mobility: number,
+  ) => void;
 }
 
-const MeasurementScreen: React.FC<Props> = ({navigation}) => {
+const MeasurementItem: React.FC<Props> = ({
+  petName,
+  date,
+  handleSubmit,
+  measurement,
+}) => {
   const {t} = useTranslation();
-  const [hurt, setHurt] = useState<number | undefined>(undefined);
-  const [hunger, setHunger] = useState<number | undefined>(undefined);
-  const [hydration, setHydration] = useState<number | undefined>(undefined);
-  const [hygiene, setHygiene] = useState<number | undefined>(undefined);
-  const [happiness, setHappiness] = useState<number | undefined>(undefined);
-  const [mobility, setMoboility] = useState<number | undefined>(undefined);
-
-  const [petName, setPetName] = useState('');
-  const [date] = useState(new Date().toISOString().split('T')[0]);
-
-  const realm = useRealm();
-
-  useEffect(() => {
-    const fetchDogName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      }
-    };
-
-    fetchDogName();
-  }, [date]);
-
-  const metrics = {
-    hurt,
-    hunger,
-    hydration,
-    hygiene,
-    happiness,
-    mobility,
-  };
-
-  const isMetricsFilled = Object.values(metrics).every(
-    value => value !== undefined,
+  const [hurt, setHurt] = useState<number | undefined>(measurement?.hurt);
+  const [hunger, setHunger] = useState<number | undefined>(measurement?.hunger);
+  const [hydration, setHydration] = useState<number | undefined>(
+    measurement?.hydration,
+  );
+  const [hygiene, setHygiene] = useState<number | undefined>(
+    measurement?.hygiene,
+  );
+  const [happiness, setHappiness] = useState<number | undefined>(
+    measurement?.happiness,
+  );
+  const [mobility, setMoboility] = useState<number | undefined>(
+    measurement?.mobility,
   );
 
-  const handleSubmit = () => {
-    if (isMetricsFilled) {
-      const score =
-        hurt! + hunger! + hydration! + hygiene! + happiness! + mobility!;
-      realm.write(() => {
-        return realm.create(Measurement, {
-          score,
-          hurt,
-          hunger,
-          hydration,
-          hygiene,
-          happiness,
-          mobility,
-        });
-      });
-      navigation.navigate('Home');
-    } else {
-      // Handle case when metrics are not filled
-      console.log('Please fill in all metrics');
+  const areMetricsFilled = !(
+    hurt === undefined ||
+    hunger === undefined ||
+    hydration === undefined ||
+    hygiene === undefined ||
+    happiness === undefined ||
+    mobility === undefined
+  );
+
+  const onSubmit = () => {
+    if (!areMetricsFilled) {
+      return;
     }
+
+    handleSubmit(hurt, hunger, hydration, hygiene, happiness, mobility);
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{t('measurements:title')}</Text>
+      <Text style={styles.label}>
+        {t('date')}: {date.toLocaleDateString()}
+      </Text>
       <Text style={styles.label}>{t('measurements:hurt')}</Text>
       <Text style={styles.info}>{t('measurements:hurtInfo', {petName})}</Text>
       <RatingButtons
@@ -122,8 +110,8 @@ const MeasurementScreen: React.FC<Props> = ({navigation}) => {
         initialRating={mobility?.toString() || ''}
       />
       <Button
-        disabled={!isMetricsFilled}
-        onPress={handleSubmit}
+        disabled={!areMetricsFilled}
+        onPress={onSubmit}
         mode={'contained'}>
         {t('buttons:submit')}
       </Button>
@@ -163,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MeasurementScreen;
+export default MeasurementItem;

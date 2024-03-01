@@ -7,13 +7,15 @@ import {
 } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import HomeScreen from './screens/HomeScreen';
-import MeasurementScreen from './screens/MeasurementScreen';
+import AddMeasurement from './screens/AddMeasurement';
+import EditMeasurement from './screens/EditMeasurement';
 import MeasurementsListScreen from './screens/MeasurementsListScreen';
 
 type RootStackParamList = {
   Welcome: undefined;
   Home: undefined;
-  Measurement: undefined;
+  AddMeasurement: undefined;
+  EditMeasurement: undefined;
   AllMeasurements: undefined;
 };
 
@@ -30,7 +32,8 @@ const App: React.FC = () => {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Measurement" component={MeasurementScreen} />
+        <Stack.Screen name="AddMeasurement" component={AddMeasurement} />
+        <Stack.Screen name="EditMeasurement" component={EditMeasurement} />
         <Stack.Screen
           name="AllMeasurements"
           component={MeasurementsListScreen}
