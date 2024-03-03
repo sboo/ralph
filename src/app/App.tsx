@@ -1,5 +1,4 @@
 import React from 'react';
-import {PreferencesContext} from './PreferencesContext';
 import {
   PaperProvider,
   MD3LightTheme,
@@ -26,8 +25,6 @@ import {useColorScheme} from 'react-native';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
-  const [isThemeDark, setIsThemeDark] = React.useState(false);
-
   const {LightTheme, DarkTheme} = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
@@ -49,22 +46,22 @@ const App: React.FC = () => {
   const colorScheme = useColorScheme();
 
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
-  
+
   return (
-      <PaperProvider theme={theme}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
-            <Stack.Screen name="AddMeasurement" component={AddMeasurement} />
-            <Stack.Screen name="EditMeasurement" component={EditMeasurement} />
-            <Stack.Screen
-              name="AllMeasurements"
-              component={AllMeasurementsScreen}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
+    <PaperProvider theme={theme}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="AddMeasurement" component={AddMeasurement} />
+          <Stack.Screen name="EditMeasurement" component={EditMeasurement} />
+          <Stack.Screen
+            name="AllMeasurements"
+            component={AllMeasurementsScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
