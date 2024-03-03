@@ -4,19 +4,15 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {Text, FAB, Avatar} from 'react-native-paper';
 import {EVENT_NAMES, event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {useTheme} from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {HomeScreenNavigationProps} from '../navigation/types';
 
-interface Props {
-  navigation: NavigationProp<ParamListBase>;
-}
-
-const HomeScreen: React.FC<Props> = ({navigation}) => {
+const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
   const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);

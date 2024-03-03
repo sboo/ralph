@@ -4,7 +4,7 @@
 
 import React from 'react';
 import {AppRegistry} from 'react-native';
-import {PaperProvider, MD3LightTheme as DefaultTheme,} from 'react-native-paper';
+import {PaperProvider, MD3LightTheme as DefaultTheme} from 'react-native-paper';
 import App from './src/app/App';
 import {name as appName} from './app.json';
 import {RealmProvider} from '@realm/react';

@@ -1,20 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
+import {AllMeasurementsScreenNavigationProps} from '../navigation/types';
 
-interface Props {
-  navigation: NavigationProp<ParamListBase>;
-}
-
-const MeasurementsListScreen: React.FC<Props> = ({navigation}) => {
+const AllMeasurementsScreen: React.FC<
+  AllMeasurementsScreenNavigationProps
+> = () => {
   const {t} = useTranslation();
   const measurements = useQuery(Measurement, collection =>
     collection.sorted('createdAt', true),
@@ -52,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MeasurementsListScreen;
+export default AllMeasurementsScreen;

@@ -1,28 +1,13 @@
 import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-} from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import HomeScreen from './screens/HomeScreen';
 import AddMeasurement from './screens/AddMeasurement';
 import EditMeasurement from './screens/EditMeasurement';
-import MeasurementsListScreen from './screens/MeasurementsListScreen';
-
-type RootStackParamList = {
-  Welcome: undefined;
-  Home: undefined;
-  AddMeasurement: undefined;
-  EditMeasurement: undefined;
-  AllMeasurements: undefined;
-};
-
-export type WelcomeScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Welcome'
->;
+import AllMeasurementsScreen from './screens/AllMeasurementsScreen';
+import {RootStackParamList} from './navigation/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,7 +21,7 @@ const App: React.FC = () => {
         <Stack.Screen name="EditMeasurement" component={EditMeasurement} />
         <Stack.Screen
           name="AllMeasurements"
-          component={MeasurementsListScreen}
+          component={AllMeasurementsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

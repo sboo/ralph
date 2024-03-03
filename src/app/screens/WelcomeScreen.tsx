@@ -2,14 +2,12 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {EVENT_NAMES, event} from '../event';
+import {WelcomeScreenNavigationProps} from '../navigation/types';
 
-interface Props {
-  navigation: NavigationProp<ParamListBase>;
-}
-
-const WelcomeScreen: React.FC<Props> = ({navigation}) => {
+const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
+  navigation,
+}) => {
   const [petName, setPetName] = useState<string>('');
 
   const storeDogInfo = async () => {

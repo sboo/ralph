@@ -1,18 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {NavigationProp, ParamListBase, Route} from '@react-navigation/native';
 import MeasurementItem from '../../components/MeasurementItem';
 import {useRealm, useObject} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {BSON} from 'realm';
+import {EditMeasurementScreenNavigationProps} from '../navigation/types';
 
-interface Props {
-  route: Route<string, {measurementId: string}>;
-  navigation: NavigationProp<ParamListBase>;
-}
-
-const EditMeasurement: React.FC<Props> = ({route, navigation}) => {
+const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
+  route,
+  navigation,
+}) => {
   const _id = BSON.ObjectId.createFromHexString(route.params.measurementId);
   const measurement = useObject(Measurement, _id);
   const [petName, setPetName] = useState('');
