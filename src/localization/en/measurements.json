@@ -1,4 +1,7 @@
 {
+    "todaysMeasurement": "Today's Measurement",
+    "allMeasurements": "All Measurements",
+    "pastMeasurements": "Past Measurements",
     "title": "Record Today's Quality of Life",
     "hurt": "Hurt",
     "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",

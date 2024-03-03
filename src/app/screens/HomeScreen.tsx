@@ -4,59 +4,25 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {Text, FAB, Avatar} from 'react-native-paper';
+import {Text, FAB} from 'react-native-paper';
 import {EVENT_NAMES, event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {useTheme} from 'react-native-paper';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {HomeScreenNavigationProps} from '../navigation/types';
+import HomeHeader from '../../components/HomeHeader';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
   const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [dateRange, setDateRange] = useState<Date[]>([]);
-  const [avatar, setAvatar] = useState<string>();
 
   const theme = useTheme();
 
   const measurements = useQuery(Measurement, collection =>
     collection.sorted('createdAt'),
   );
-
-  const openImagePicker = () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.log('Image picker error: ', response.errorMessage);
-      } else {
-        let imageUri = response.assets?.[0]?.uri;
-        console.log('Image URI: ', imageUri);
-        if (imageUri !== undefined) {
-          storeAvatar(imageUri).then(() => {
-            setAvatar(imageUri);
-          });
-        }
-      }
-    });
-  };
-
-  const storeAvatar = async (uri: string) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEYS.AVATAR, uri);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     const fetchDogName = async () => {
@@ -68,19 +34,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       }
     };
 
-    const fetchAvatar = async () => {
-      const uri = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
-      if (uri !== null) {
-        setAvatar(uri);
-      }
-    };
-
     fetchDogName();
-    fetchAvatar();
 
     const onProfileSet = () => {
       fetchDogName();
-      fetchAvatar();
     };
 
     event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
@@ -103,17 +60,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
 
     getDateRange();
   }, []);
-
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) {
-      return t('greeting_morning');
-    }
-    if (hour < 18) {
-      return t('greeting_afternoon');
-    }
-    return t('greeting_evening');
-  };
 
   const getLabels = () => {
     return dateRange.map(date =>
@@ -162,24 +108,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   };
 
   return (
-    <>
-      <View
-        style={{
-          backgroundColor: theme.colors.primaryContainer,
-          ...styles.header,
-        }}>
-        <View style={styles.greetingsContainer}>
-          <Text style={styles.greeting}>{getGreeting()}</Text>
-          <Text style={styles.petName}>{petName}</Text>
-        </View>
-        <Avatar.Image
-          size={65}
-          style={{backgroundColor: theme.colors.tertiaryContainer}}
-          source={avatar ? {uri: avatar} : require('../../assets/camera.png')}
-          onTouchStart={openImagePicker}
-        />
-      </View>
-      <View style={styles.container}>
+    <View
+      style={{backgroundColor: theme.colors.background, ...styles.container}}>
+      <HomeHeader petName={petName} />
+      <View style={styles.bodyContainer}>
         <View
           style={{
             backgroundColor: theme.colors.secondaryContainer,
@@ -190,7 +122,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               color: theme.colors.onSecondaryContainer,
               ...styles.chartTitle,
             }}>
-            Past Measurements
+            {t('measurements:pastMeasurements')}
           </Text>
           <LineChart
             data={data}
@@ -229,46 +161,29 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
           actions={[
             {
               icon: 'pencil-plus',
-              label: "Today's Measurement",
+              label: t('measurements:todaysMeasurement'),
               onPress: () => addOrEditMeasurement(),
             },
             {
               icon: 'format-list-bulleted',
-              label: 'All Measurements',
+              label: t('measurements:allMeasurements'),
               onPress: () => navigation.navigate('AllMeasurements'),
             },
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}
         />
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  bodyContainer: {
+    flex: 1,
     padding: 20,
-  },
-  greetingsContainer: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    height: 220,
-    marginBottom: 20,
-    padding: 20,
-  },
-  greeting: {
-    fontSize: 14,
-  },
-  petName: {
-    fontSize: 22,
-    fontWeight: 'bold',
   },
   chartTitle: {
     fontSize: 18,
