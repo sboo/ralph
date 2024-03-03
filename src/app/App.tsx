@@ -23,6 +23,7 @@ import merge from 'deepmerge';
 import {useColorScheme} from 'react-native';
 import CustomNavigationBar from '../components/CustomNavigationBar';
 import {useTranslation} from 'react-i18next';
+import NotificationPlayground from './screens/NotificationPlayground';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -83,6 +84,11 @@ const App: React.FC = () => {
             name="AllMeasurements"
             component={AllMeasurementsScreen}
             options={{title: t('measurements:allMeasurements')}}
+          />
+          <Stack.Screen
+            name="NotificationPlayground"
+            component={NotificationPlayground}
+            options={{title: 'Notification Playground'}}
           />
         </Stack.Navigator>
       </NavigationContainer>

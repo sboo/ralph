@@ -4,7 +4,7 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {Text, FAB, Icon} from 'react-native-paper';
+import {Text, FAB, Icon, Button} from 'react-native-paper';
 import {EVENT_NAMES, event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
@@ -12,6 +12,8 @@ import {useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '../navigation/types';
 import HomeHeader from '../../components/HomeHeader';
 import CustomDot from '../../components/CustomChartDot';
+import Notifications from '../../Notifications';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -139,7 +141,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               style={{
                 justifyContent: 'space-around',
                 height: 195,
-                left:25,
+                left: 25,
                 position: 'absolute',
               }}>
               <Icon
@@ -210,6 +212,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               icon: 'format-list-bulleted',
               label: t('measurements:allMeasurements'),
               onPress: () => navigation.navigate('AllMeasurements'),
+            },
+            {
+              icon: 'format-list-bulleted',
+              label: 'NotificationPlayground',
+              onPress: () => navigation.navigate('NotificationPlayground'),
             },
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}
