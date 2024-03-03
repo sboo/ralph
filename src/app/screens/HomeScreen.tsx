@@ -4,16 +4,14 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {Text, FAB} from 'react-native-paper';
+import {Text, FAB, Icon} from 'react-native-paper';
 import {EVENT_NAMES, event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '../navigation/types';
 import HomeHeader from '../../components/HomeHeader';
-import CustomChartDot from '../../components/CustomChartDot';
-import PulsatingCircle from '../../components/PulsatingCircle';
-import { Circle } from 'react-native-svg';
+import CustomDot from '../../components/CustomChartDot';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -80,30 +78,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     return scoresWithDates;
   };
 
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const CustomDot = ({value, index, x, y}: any) => {
-    if (value === null) {
-      return (
-        <PulsatingCircle
-          key={index}
-          color={theme.colors.error}
-          size={10}
-          x={x}
-          y={y}
-        />
-      );
-    }
-    return (
-      <Circle
-        key={index}
-        cx={x}
-        cy={y}
-        r={4}
-        fill={theme.colors.onSecondaryContainer}
-      />
-    );
-  };
-
   const data = {
     labels: getLabels(),
     datasets: [
@@ -112,6 +86,15 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       },
       {
         data: [30, 30, 30, 30, 30, 30, 30],
+        withDots: false,
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+      },
+      {
+        data: [0],
+        withDots: false,
+      },
+      {
+        data: [60],
         withDots: false,
       },
     ],
@@ -151,43 +134,72 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             }}>
             {t('measurements:pastMeasurements')}
           </Text>
-          <LineChart
-            data={data}
-            width={Dimensions.get('window').width - 40}
-            height={200}
-            yAxisLabel=""
-            yAxisSuffix=""
-            fromZero={true}
-            withInnerLines={false}
-            withOuterLines={false}
-            chartConfig={{
-              backgroundGradientFrom: '#fff',
-              backgroundGradientTo: '#fff',
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 0,
-              decimalPlaces: 0, // optional, defaults to 2dp
-              color: () => theme.colors.onSecondaryContainer,
-              labelColor: () => theme.colors.onSecondaryContainer,
-              propsForDots: {
-                r: '6',
-                strokeWidth: '2',
-                stroke: '#fff',
-              },
-            }}
-            renderDotContent={({x, y, index, indexData}): any => (
-              <CustomDot value={indexData} index={index} x={x} y={y} />
-            )}
-            bezier
-            style={styles.chart}
-            onDataPointClick={({index}) => {
-              addOrEditMeasurement(dateRange[index]);
-            }}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                justifyContent: 'space-around',
+                height: 195,
+                left:25,
+                position: 'absolute',
+              }}>
+              <Icon
+                size={20}
+                source={'emoticon-excited-outline'}
+                color="#008000"
+              />
+              <Icon
+                size={20}
+                source={'emoticon-happy-outline'}
+                color="#FFA500"
+              />
+              <Icon size={20} source={'emoticon-sad-outline'} color="#FF0000" />
+            </View>
+            <LineChart
+              data={data}
+              width={Dimensions.get('window').width - 40}
+              height={200}
+              yAxisLabel=""
+              yAxisSuffix=""
+              fromZero={true}
+              withInnerLines={false}
+              withOuterLines={false}
+              withHorizontalLabels={false}
+              chartConfig={{
+                backgroundGradientFrom: '#fff',
+                backgroundGradientTo: '#fff',
+                backgroundGradientFromOpacity: 0,
+                backgroundGradientToOpacity: 0,
+                decimalPlaces: 0, // optional, defaults to 2dp
+                color: () => theme.colors.onSecondaryContainer,
+                labelColor: () => theme.colors.onSecondaryContainer,
+                propsForDots: {
+                  r: '6',
+                  strokeWidth: '2',
+                  stroke: '#fff',
+                },
+              }}
+              renderDotContent={({x, y, index, indexData}): any => (
+                <CustomDot
+                  key={index}
+                  value={indexData}
+                  index={index}
+                  x={x}
+                  y={y}
+                  scores={data.datasets[0].data as number[]}
+                />
+              )}
+              bezier
+              style={styles.chart}
+              onDataPointClick={({index}) => {
+                addOrEditMeasurement(dateRange[index]);
+              }}
+            />
+          </View>
         </View>
         <FAB.Group
           visible={true}
           open={isFabOpen}
-          icon={isFabOpen ? 'close' : 'emoticon-outline'}
+          icon={isFabOpen ? 'close' : 'plus'}
           actions={[
             {
               icon: 'pencil-plus',

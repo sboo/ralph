@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated} from 'react-native';
+import {Animated, StyleSheet} from 'react-native';
 
 interface PulsatingCircleProps {
   color?: string;
@@ -43,9 +43,16 @@ const PulsatingCircle = ({
         borderRadius: size / 2,
         backgroundColor: color,
         transform: [{scale: pulseAnim}],
+        ...styles.container,
       }}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+  },
+});
 
 export default PulsatingCircle;
