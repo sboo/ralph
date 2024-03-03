@@ -64,7 +64,11 @@ const App: React.FC = () => {
             component={HomeScreen}
             options={{headerShown: false}}
           />
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="AddMeasurement"
             component={AddMeasurement}
