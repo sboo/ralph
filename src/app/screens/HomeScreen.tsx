@@ -11,6 +11,9 @@ import {Measurement} from '../../models/Measurement';
 import {useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '../navigation/types';
 import HomeHeader from '../../components/HomeHeader';
+import CustomChartDot from '../../components/CustomChartDot';
+import PulsatingCircle from '../../components/PulsatingCircle';
+import { Circle } from 'react-native-svg';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -21,7 +24,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const theme = useTheme();
 
   const measurements = useQuery(Measurement, collection =>
-    collection.sorted('createdAt'),
+    collection.filtered('createdAt >= $0', dateRange[0]).sorted('createdAt'),
   );
 
   useEffect(() => {
@@ -75,6 +78,30 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       return measurement ? measurement.score : null;
     });
     return scoresWithDates;
+  };
+
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const CustomDot = ({value, index, x, y}: any) => {
+    if (value === null) {
+      return (
+        <PulsatingCircle
+          key={index}
+          color={theme.colors.error}
+          size={10}
+          x={x}
+          y={y}
+        />
+      );
+    }
+    return (
+      <Circle
+        key={index}
+        cx={x}
+        cy={y}
+        r={4}
+        fill={theme.colors.onSecondaryContainer}
+      />
+    );
   };
 
   const data = {
@@ -147,6 +174,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
                 stroke: '#fff',
               },
             }}
+            renderDotContent={({x, y, index, indexData}): any => (
+              <CustomDot value={indexData} index={index} x={x} y={y} />
+            )}
             bezier
             style={styles.chart}
             onDataPointClick={({index}) => {

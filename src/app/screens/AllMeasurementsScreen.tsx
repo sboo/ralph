@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {AllMeasurementsScreenNavigationProps} from '../navigation/types';
+import {List} from 'react-native-paper';
 
 const AllMeasurementsScreen: React.FC<
   AllMeasurementsScreenNavigationProps
@@ -13,14 +14,42 @@ const AllMeasurementsScreen: React.FC<
     collection.sorted('createdAt', true),
   );
 
+  const getIcon = (score: number) => {
+    if (score < 33) {
+      return 'emoticon-sad-outline';
+    } else if (score < 50) {
+      return 'emoticon-neutral-outline';
+    } else {
+      return 'emoticon-happy-outline';
+    }
+  };
+  const getIconColor = (score: number) => {
+    if (score < 33) {
+      return '#FF0000';
+    } else if (score < 50) {
+      return '#FFA500';
+    } else {
+      return '#008000';
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Measurements</Text>
       {measurements.map((measurement, index) => (
-        <View key={index} style={styles.measurementItem}>
-          <Text>Date: {measurement.createdAt.toDateString()}</Text>
-          <Text>Score: {measurement.score}</Text>
-        </View>
+        <List.Item
+          key={index}
+          title={measurement.createdAt.toLocaleDateString()}
+          description={`${t('measurements:score')}: ${measurement.score}`}
+          // eslint-disable-next-line react/no-unstable-nested-components
+          left={() => (
+            <List.Icon
+              color={getIconColor(measurement.score)}
+              icon={getIcon(measurement.score)}
+            />
+          )}
+          // eslint-disable-next-line react/no-unstable-nested-components
+          right={() => <List.Icon color="#afafaf" icon="pencil" />}
+        />
       ))}
     </ScrollView>
   );

@@ -14,5 +14,6 @@
     "happiness": "Happiness",
     "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
     "mobility": "Mobility",
-    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?"
+    "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?",
+    "score": "Score"
 }

@@ -54,7 +54,8 @@ const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
       date={measurement!.createdAt}
       petName={petName}
       measurement={measurement}
-      handleSubmit={handleSubmit}
+      onCancel={() => navigation.goBack()}
+      onSubmit={handleSubmit}
     />
   );
 };

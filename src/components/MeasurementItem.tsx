@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, View} from 'react-native';
 import {Text, Button} from 'react-native-paper';
 import RatingButtons from './RatingButtons';
 import {Measurement} from '../models/Measurement';
@@ -9,7 +9,8 @@ interface Props {
   petName: string;
   date: Date;
   measurement?: Measurement | null;
-  handleSubmit: (
+  onCancel: () => void;
+  onSubmit: (
     hurt: number,
     hunger: number,
     hydration: number,
@@ -22,7 +23,8 @@ interface Props {
 const MeasurementItem: React.FC<Props> = ({
   petName,
   date,
-  handleSubmit,
+  onSubmit,
+  onCancel,
   measurement,
 }) => {
   const {t} = useTranslation();
@@ -50,12 +52,12 @@ const MeasurementItem: React.FC<Props> = ({
     mobility === undefined
   );
 
-  const onSubmit = () => {
+  const _onSubmit = () => {
     if (!areMetricsFilled) {
       return;
     }
 
-    handleSubmit(hurt, hunger, hydration, hygiene, happiness, mobility);
+    onSubmit(hurt, hunger, hydration, hygiene, happiness, mobility);
   };
 
   return (
@@ -109,12 +111,20 @@ const MeasurementItem: React.FC<Props> = ({
         onRatingChange={value => setMoboility(parseInt(value, 10))}
         initialRating={mobility?.toString() || ''}
       />
-      <Button
-        disabled={!areMetricsFilled}
-        onPress={onSubmit}
-        mode={'contained'}>
-        {t('buttons:submit')}
-      </Button>
+      <View style={styles.buttons}>
+        <Button
+          onPress={onCancel}
+          mode={'contained-tonal'}
+          icon={'chevron-left'}>
+          {t('buttons:back')}
+        </Button>
+        <Button
+          disabled={!areMetricsFilled}
+          onPress={_onSubmit}
+          mode={'contained'}>
+          {t('buttons:submit')}
+        </Button>
+      </View>
     </ScrollView>
   );
 };
@@ -148,6 +158,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 

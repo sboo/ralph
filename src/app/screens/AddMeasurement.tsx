@@ -6,11 +6,6 @@ import {useRealm} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
 import {AddMeasurementScreenNavigationProps} from '../navigation/types';
 
-// interface Props {
-//   route: Route<string, {timestamp: number}>;
-//   navigation: NavigationProp<ParamListBase>;
-// }
-
 const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
   route,
   navigation,
@@ -58,7 +53,8 @@ const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
     <MeasurementItem
       date={date}
       petName={petName}
-      handleSubmit={handleSubmit}
+      onCancel={() => navigation.goBack()}
+      onSubmit={handleSubmit}
     />
   );
 };

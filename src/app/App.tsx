@@ -21,10 +21,13 @@ import defaultColors from '../themes/lightTheme.json';
 import darkColors from '../themes/darkTheme.json';
 import merge from 'deepmerge';
 import {useColorScheme} from 'react-native';
+import CustomNavigationBar from '../components/CustomNavigationBar';
+import {useTranslation} from 'react-i18next';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
+  const {t} = useTranslation();
   const {LightTheme, DarkTheme} = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
@@ -50,14 +53,32 @@ const App: React.FC = () => {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            // eslint-disable-next-line react/no-unstable-nested-components
+            header: props => <CustomNavigationBar {...props} />,
+          }}>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="AddMeasurement" component={AddMeasurement} />
-          <Stack.Screen name="EditMeasurement" component={EditMeasurement} />
+          <Stack.Screen
+            name="AddMeasurement"
+            component={AddMeasurement}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="EditMeasurement"
+            component={EditMeasurement}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="AllMeasurements"
             component={AllMeasurementsScreen}
+            options={{title: t('measurements:allMeasurements')}}
           />
         </Stack.Navigator>
       </NavigationContainer>
