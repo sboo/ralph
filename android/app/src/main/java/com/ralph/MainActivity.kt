@@ -1,4 +1,4 @@
-package com.ralph
+package eu.sboo.ralph
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
