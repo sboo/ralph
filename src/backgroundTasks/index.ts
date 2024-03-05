@@ -47,7 +47,7 @@ export const stopBackgroundTasks = () => {
   BackgroundFetch.stop();
 };
 
-const handleBackgroundTask = async (taskId: string) => {
+export const handleBackgroundTask = async (taskId: string) => {
   console.log('[BackgroundFetch] taskId', taskId);
   switch (taskId) {
     default:
@@ -73,6 +73,9 @@ const displayReminderNotification = async () => {
     body: "Dont forget today's measurement! 🌟",
     android: {
       channelId,
+      pressAction: {
+        id: 'default',
+      },
       color: '#6495ed',
       timestamp: Date.now() - 800, // 8 minutes ago
       showTimestamp: true,
@@ -83,7 +86,7 @@ const displayReminderNotification = async () => {
 export const scheduleReminderTask = async () => {
   return BackgroundFetch.scheduleTask({
     taskId: TASK_IDS.REMINDER_TASK,
-    delay: 5000,
+    delay: 100000,
     periodic: true,
   });
 };
