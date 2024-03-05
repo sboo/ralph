@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   PaperProvider,
   MD3LightTheme,
@@ -24,6 +24,7 @@ import {useColorScheme} from 'react-native';
 import CustomNavigationBar from '../components/CustomNavigationBar';
 import {useTranslation} from 'react-i18next';
 import NotificationPlayground from './screens/NotificationPlayground';
+import notifee from '@notifee/react-native';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -50,6 +51,13 @@ const App: React.FC = () => {
   const colorScheme = useColorScheme();
 
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  useEffect(() => {
+    const askPermission = async () => {
+      await notifee.requestPermission();
+    };
+    askPermission();
+  }, []);
 
   return (
     <PaperProvider theme={theme}>

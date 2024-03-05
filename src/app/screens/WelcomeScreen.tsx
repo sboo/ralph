@@ -1,12 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text, TextInput, Button, useTheme, Avatar} from 'react-native-paper';
+import {
+  Text,
+  TextInput,
+  Button,
+  useTheme,
+  Avatar,
+  Switch,
+} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import {EVENT_NAMES, event} from '../event';
 import {WelcomeScreenNavigationProps} from '../navigation/types';
 import {useTranslation} from 'react-i18next';
 import {launchImageLibrary} from 'react-native-image-picker';
+import notifee, {AuthorizationStatus} from '@notifee/react-native';
 
 const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   navigation,
@@ -15,6 +23,41 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   const theme = useTheme();
   const [petName, setPetName] = useState<string>('');
   const [avatar, setAvatar] = useState<string>();
+  const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchDogName = async () => {
+      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
+      if (name !== null) {
+        setPetName(name);
+      }
+    };
+    const fetchAvatar = async () => {
+      const uri = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
+      if (uri !== null) {
+        console.log(typeof uri, uri);
+        setAvatar(uri);
+      }
+    };
+
+    fetchDogName();
+    fetchAvatar();
+  }, []);
+
+  useEffect(() => {
+    const checkPermissions = async () => {
+      const settings = await notifee.getNotificationSettings();
+      if (settings.authorizationStatus !== AuthorizationStatus.AUTHORIZED) {
+        setRemindersEnabled(false);
+        return;
+      }
+      const enabled = await AsyncStorage.getItem(
+        STORAGE_KEYS.NOTIFICATIONS_ENABLED,
+      );
+      setRemindersEnabled(enabled === 'true');
+    };
+    checkPermissions();
+  }, []);
 
   const openImagePicker = () => {
     const options = {
@@ -49,7 +92,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
     }
   };
 
-  const storeDogInfo = async () => {
+  const storePetInfo = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.PET_NAME, petName);
       event.emit(EVENT_NAMES.PROFILE_SET, petName);
@@ -58,6 +101,41 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
     } catch (error) {
       // Error saving data
       console.log(error);
+    }
+  };
+
+  const scheduleBackgroundTask = async () => {
+    return Promise<Boolean>;
+  };
+
+  const cancelBackgroundTask = async () => {
+    return Promise<Boolean>;
+  };
+
+  const toggleReminders = async () => {
+    let enabled = !remindersEnabled;
+
+    if (enabled) {
+      const settings = await notifee.requestPermission();
+      if (settings.authorizationStatus !== AuthorizationStatus.AUTHORIZED) {
+        enabled = false;
+      }
+
+      if (enabled) {
+        await scheduleBackgroundTask();
+      } else {
+        await cancelBackgroundTask();
+      }
+
+      try {
+        await AsyncStorage.setItem(
+          STORAGE_KEYS.NOTIFICATIONS_ENABLED,
+          enabled.toString(),
+        );
+        setRemindersEnabled(enabled);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -81,7 +159,8 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
           value={petName}
           onChangeText={(text: string) => setPetName(text)}
         />
-        <Button onPress={storeDogInfo} mode={'contained'}>
+        <Switch value={remindersEnabled} onValueChange={toggleReminders} />
+        <Button onPress={storePetInfo} mode={'contained'}>
           {t('buttons:continue')}
         </Button>
       </View>

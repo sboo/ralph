@@ -10,6 +10,7 @@ const NotificationPlayground: React.FC = () => {
     });
     // Required for iOS
     // See https://notifee.app/react-native/docs/ios/permissions
+    await notifee.requestPermission();
 
     await notifee.displayNotification({
       id: '1234',
@@ -24,7 +25,9 @@ const NotificationPlayground: React.FC = () => {
     });
   }
   // Clearing notification
-  const onClearNotification = () => {};
+  const onClearNotification = () => {
+    notifee.cancelNotification('1234');
+  };
 
   return (
     <View style={styles.body}>

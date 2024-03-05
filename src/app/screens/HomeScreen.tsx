@@ -4,7 +4,7 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {Text, FAB, Icon, Button} from 'react-native-paper';
+import {Text, FAB, Icon} from 'react-native-paper';
 import {EVENT_NAMES, event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';
@@ -12,8 +12,6 @@ import {useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '../navigation/types';
 import HomeHeader from '../../components/HomeHeader';
 import CustomDot from '../../components/CustomChartDot';
-import Notifications from '../../Notifications';
-import notifee, { AndroidImportance } from '@notifee/react-native';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -23,8 +21,14 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
 
   const theme = useTheme();
 
-  const measurements = useQuery(Measurement, collection =>
-    collection.filtered('createdAt >= $0', dateRange[0]).sorted('createdAt'),
+  const measurements = useQuery(
+    Measurement,
+    collection => {
+      return collection
+        .filtered('createdAt >= $0', dateRange[0])
+        .sorted('createdAt');
+    },
+    [dateRange],
   );
 
   useEffect(() => {
@@ -52,7 +56,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
 
   useEffect(() => {
     const getDateRange = () => {
-      const start = new Date(new Date().setDate(new Date().getDate() - 6));
+      const start = new Date();
+      start.setDate(start.getDate() - 6);
+      start.setHours(0, 0, 0, 0);
       const _dateRange = Array.from({length: 7}, (_, i) => {
         const date = new Date(start);
         date.setDate(start.getDate() + i);
@@ -122,7 +128,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   return (
     <View
       style={{backgroundColor: theme.colors.background, ...styles.container}}>
-      <HomeHeader petName={petName} />
+      <HomeHeader
+        petName={petName}
+        onSettingsButtonPress={() => navigation.navigate('Welcome')}
+      />
       <View style={styles.bodyContainer}>
         <View
           style={{

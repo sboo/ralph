@@ -10,6 +10,12 @@ import {RealmProvider} from '@realm/react';
 import {schemas} from './src/models';
 import './src/localization/i18n';
 
+import {todaysMeasurementDone} from './src/support/dailyMeasurementStatus';
+
+todaysMeasurementDone().then(result => {
+  console.log('dailyMeasurementStatus', result);
+});
+
 export default function Main() {
   return (
     <RealmProvider schema={schemas}>
