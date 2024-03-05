@@ -15,6 +15,14 @@ import {WelcomeScreenNavigationProps} from '../navigation/types';
 import {useTranslation} from 'react-i18next';
 import {launchImageLibrary} from 'react-native-image-picker';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
+import BackgroundFetch from 'react-native-background-fetch';
+import {
+  initBackgroundFetch,
+  startBackgroundTasks,
+  stopBackgroundTasks,
+  scheduleReminderTask,
+  TASK_IDS,
+} from '../../backgroundTasks';
 
 const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   navigation,
@@ -104,14 +112,6 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
     }
   };
 
-  const scheduleBackgroundTask = async () => {
-    return Promise<Boolean>;
-  };
-
-  const cancelBackgroundTask = async () => {
-    return Promise<Boolean>;
-  };
-
   const toggleReminders = async () => {
     let enabled = !remindersEnabled;
 
@@ -120,22 +120,25 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
       if (settings.authorizationStatus !== AuthorizationStatus.AUTHORIZED) {
         enabled = false;
       }
+    }
 
-      if (enabled) {
-        await scheduleBackgroundTask();
-      } else {
-        await cancelBackgroundTask();
-      }
+    if (enabled) {
+      initBackgroundFetch();
+      const x = await scheduleReminderTask();
+      console.log('Scheduled reminder task', x);
+      startBackgroundTasks();
+    } else {
+      stopBackgroundTasks();
+    }
 
-      try {
-        await AsyncStorage.setItem(
-          STORAGE_KEYS.NOTIFICATIONS_ENABLED,
-          enabled.toString(),
-        );
-        setRemindersEnabled(enabled);
-      } catch (error) {
-        console.error(error);
-      }
+    try {
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.NOTIFICATIONS_ENABLED,
+        enabled.toString(),
+      );
+      setRemindersEnabled(enabled);
+    } catch (error) {
+      console.error(error);
     }
   };
 

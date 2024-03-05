@@ -9,3 +9,6 @@
 
 # Add any project specific keep options here:
 -keep class io.realm.react.**
+
+# [react-native-background-fetch]
+-keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
