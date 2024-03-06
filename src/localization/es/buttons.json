@@ -1,3 +1,7 @@
 {
-    "submit": "Submit"
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "back": "Back",
+    "continue": "Continue",
+    "save": "Save"
 }

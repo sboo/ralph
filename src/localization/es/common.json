@@ -1,6 +1,8 @@
 {
-  "greeting_morning": "Buenos Días",
-  "greeting_afternoon": "Buenas Tardes",
-  "greeting_evening": "Buenas Noches"
+  "greeting_morning": "Good Morning",
+  "greeting_afternoon": "Good Afternoon",
+  "greeting_evening": "Good Evening",
+  "date": "Date",
+  "welcome": "Welcome",
+  "settings": "Settings"
 }
-

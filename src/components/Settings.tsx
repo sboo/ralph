@@ -37,7 +37,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchDogName = async () => {
+    const fetchPetName = async () => {
       const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
       if (name !== null) {
         setPetName(name);
@@ -50,7 +50,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
       }
     };
 
-    fetchDogName();
+    fetchPetName();
     fetchAvatar();
   }, []);
 
@@ -152,13 +152,13 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
       }}>
       <View style={styles.profileInput}>
         <TextInput
-          label={t('welcome:petNameInputLabel')}
+          label={t('settings:petNameInputLabel')}
           style={{backgroundColor: theme.colors.surface, ...styles.textInput}}
           value={petName}
           onChangeText={(text: string) => setPetName(text)}
         />
         <View style={styles.inputRow}>
-          <Text variant="labelLarge">{t('welcome:avatarInputLabel')}</Text>
+          <Text variant="labelLarge">{t('settings:avatarInputLabel')}</Text>
           <Avatar.Image
             size={65}
             style={{backgroundColor: theme.colors.surface}}
@@ -168,7 +168,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
         </View>
         <View style={styles.inputRow}>
           <Text variant="labelLarge">
-            {t('welcome:enableNotificationsLabel')}
+            {t('settings:enableNotificationsLabel')}
           </Text>
           <Switch value={remindersEnabled} onValueChange={toggleReminders} />
         </View>
