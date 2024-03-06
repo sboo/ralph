@@ -1,4 +1,4 @@
-package com.ralph
+package eu.sboo.ralph
 
 import android.app.Application
 import com.facebook.react.PackageList
