@@ -13,6 +13,7 @@ import {HomeScreenNavigationProps} from '../navigation/types';
 import HomeHeader from '../../components/HomeHeader';
 import CustomDot from '../../components/CustomChartDot';
 import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
+import LinearGradient from 'react-native-linear-gradient';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -130,8 +131,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   };
 
   return (
-    <View
-      style={{backgroundColor: theme.colors.background, ...styles.container}}>
+    <LinearGradient
+      colors={[theme.colors.primaryContainer, theme.colors.background]}
+      style={styles.container}>
       <HomeHeader petName={petName} />
       <View style={styles.bodyContainer}>
         <View style={styles.chartContainer}>
@@ -155,13 +157,13 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             withOuterLines={false}
             withHorizontalLabels={false}
             chartConfig={{
-              backgroundGradientFrom: '#FFFFFF',
-              backgroundGradientTo: theme.colors.secondaryContainer,
-              backgroundGradientFromOpacity: 0.2,
+              backgroundGradientFrom: theme.colors.primaryContainer,
+              backgroundGradientTo: theme.colors.primaryContainer,
+              backgroundGradientFromOpacity: 0,
               backgroundGradientToOpacity: 1,
               decimalPlaces: 0, // optional, defaults to 2dp
-              color: () => theme.colors.onSecondaryContainer,
-              labelColor: () => theme.colors.onSecondaryContainer,
+              color: () => theme.colors.onPrimaryContainer,
+              labelColor: () => theme.colors.onPrimaryContainer,
               propsForDots: {
                 r: '6',
                 strokeWidth: '2',
@@ -209,7 +211,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
           onStateChange={({open}) => setIsFabOpen(open)}
         />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

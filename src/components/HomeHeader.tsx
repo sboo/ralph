@@ -85,12 +85,16 @@ const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
   return (
     <View
       style={{
-        backgroundColor: theme.colors.primaryContainer,
+        backgroundColor: theme.colors.primary,
         ...styles.container,
       }}>
       <View style={styles.greetingsContainer}>
-        <Text style={styles.greeting}>{getGreeting()}</Text>
-        <Text style={styles.petName}>{petName}</Text>
+        <Text style={{color: theme.colors.onPrimary, ...styles.greeting}}>
+          {getGreeting()}
+        </Text>
+        <Text style={{color: theme.colors.onPrimary, ...styles.petName}}>
+          {petName}
+        </Text>
       </View>
       <Avatar.Image
         size={65}

@@ -1,6 +1,7 @@
 import {Appbar} from 'react-native-paper';
 import {getHeaderTitle} from '@react-navigation/elements';
 import React from 'react';
+import {useTheme} from 'react-native-paper';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 
 const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
@@ -9,6 +10,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   options,
   back,
 }) => {
+  const theme = useTheme();
   const title = getHeaderTitle(options, route.name);
 
   return (
@@ -18,6 +20,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
       {!back ? (
         <Appbar.Action
           icon="cog-outline"
+          color={theme.colors.onPrimary}
           onPress={() => navigation.navigate('Settings')}
         />
       ) : null}

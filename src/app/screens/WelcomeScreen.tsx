@@ -4,6 +4,7 @@ import {Text, useTheme} from 'react-native-paper';
 import {WelcomeScreenNavigationProps} from '../navigation/types';
 import {useTranslation} from 'react-i18next';
 import Settings from '../../components/Settings';
+import LinearGradient from 'react-native-linear-gradient';
 
 const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   navigation,
@@ -19,14 +20,12 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   };
 
   return (
-    <View
-      style={{
-        backgroundColor: theme.colors.primaryContainer,
-        ...styles.container,
-      }}>
+    <LinearGradient
+      colors={[theme.colors.primaryContainer, theme.colors.background]}
+      style={styles.container}>
       <Text variant="headlineLarge">{t('welcome')}</Text>
       <Settings onSettingsSaved={onSettingsSaved} />
-    </View>
+    </LinearGradient>
   );
 };
 

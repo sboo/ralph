@@ -7,6 +7,7 @@ import {useTheme} from 'react-native-paper';
 import {Measurement} from '../../models/Measurement';
 import {AddMeasurementScreenNavigationProps} from '../navigation/types';
 import {View} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
   route,
@@ -53,14 +54,15 @@ const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
   }, []);
 
   return (
-    <View style={{backgroundColor: theme.colors.secondaryContainer}}>
+    <LinearGradient
+      colors={[theme.colors.primaryContainer, theme.colors.background]}>
       <MeasurementItem
         date={date}
         petName={petName}
         onCancel={() => navigation.goBack()}
         onSubmit={handleSubmit}
       />
-    </View>
+    </LinearGradient>
   );
 };
 

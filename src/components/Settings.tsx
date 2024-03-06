@@ -145,10 +145,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
 
   return (
     <View
-      style={{
-        backgroundColor: theme.colors.primaryContainer,
-        ...styles.container,
-      }}>
+      style={styles.container}>
       <View style={styles.profileInput}>
         <TextInput
           label={t('settings:petNameInputLabel')}
