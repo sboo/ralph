@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   PaperProvider,
   MD3LightTheme,
@@ -13,6 +13,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import HomeScreen from './screens/HomeScreen';
+import SettingsScreen from './screens/SettingsScreen';
 import AddMeasurement from './screens/AddMeasurement';
 import EditMeasurement from './screens/EditMeasurement';
 import AllMeasurementsScreen from './screens/AllMeasurementsScreen';
@@ -72,6 +73,14 @@ const App: React.FC = () => {
             name="Welcome"
             component={WelcomeScreen}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+              title: t('settings'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
           />
           <Stack.Screen
             name="AddMeasurement"

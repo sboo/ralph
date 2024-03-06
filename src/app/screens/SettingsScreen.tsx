@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
-import {WelcomeScreenNavigationProps} from '../navigation/types';
+import {useTheme} from 'react-native-paper';
+import {SettingsScreenNavigationProps} from '../navigation/types';
 import {useTranslation} from 'react-i18next';
 import Settings from '../../components/Settings';
 
-const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
+const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
   navigation,
 }) => {
   const {t} = useTranslation();
@@ -17,8 +17,10 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <Text variant="headlineLarge">{t('welcome')}</Text>
-      <Settings onSettingsSaved={() => navigation.navigate('Home')} />
+      <Settings
+        onSettingsSaved={() => navigation.navigate('Home')}
+        buttonLabel={t('buttons:save')}
+      />
     </View>
   );
 };
@@ -32,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default SettingsScreen;

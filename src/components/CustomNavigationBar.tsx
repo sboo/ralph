@@ -15,10 +15,12 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     <Appbar.Header style={options.headerStyle}>
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title={title} />
-      <Appbar.Action
-        icon="cog-outline"
-        onPress={() => navigation.navigate('Welcome')}
-      />
+      {!back ? (
+        <Appbar.Action
+          icon="cog-outline"
+          onPress={() => navigation.navigate('Settings')}
+        />
+      ) : null}
     </Appbar.Header>
   );
 };

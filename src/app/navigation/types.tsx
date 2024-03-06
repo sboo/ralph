@@ -2,6 +2,7 @@ import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Welcome: undefined;
+  Settings: undefined;
   Home: undefined;
   AddMeasurement: {timestamp: number};
   EditMeasurement: {measurementId: string};
@@ -12,6 +13,11 @@ export type RootStackParamList = {
 export type WelcomeScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'Welcome'
+>;
+
+export type SettingsScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Settings'
 >;
 
 export type HomeScreenNavigationProps = NativeStackScreenProps<
