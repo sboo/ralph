@@ -12,6 +12,7 @@ import {useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '../navigation/types';
 import HomeHeader from '../../components/HomeHeader';
 import CustomDot from '../../components/CustomChartDot';
+import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -128,84 +129,62 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   return (
     <View
       style={{backgroundColor: theme.colors.background, ...styles.container}}>
-      <HomeHeader
-        petName={petName}
-        onSettingsButtonPress={() => navigation.navigate('Welcome')}
-      />
+      <HomeHeader petName={petName} />
       <View style={styles.bodyContainer}>
         <View
           style={{
             backgroundColor: theme.colors.secondaryContainer,
             ...styles.chartContainer,
           }}>
-          <Text
-            style={{
-              color: theme.colors.onSecondaryContainer,
-              ...styles.chartTitle,
-            }}>
-            {t('measurements:pastMeasurements')}
-          </Text>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-                justifyContent: 'space-around',
-                height: 195,
-                left: 25,
-                position: 'absolute',
-              }}>
-              <Icon
-                size={20}
-                source={'emoticon-excited-outline'}
-                color="#008000"
-              />
-              <Icon
-                size={20}
-                source={'emoticon-happy-outline'}
-                color="#FFA500"
-              />
-              <Icon size={20} source={'emoticon-sad-outline'} color="#FF0000" />
-            </View>
-            <LineChart
-              data={data}
-              width={Dimensions.get('window').width - 40}
-              height={200}
-              yAxisLabel=""
-              yAxisSuffix=""
-              fromZero={true}
-              withInnerLines={false}
-              withOuterLines={false}
-              withHorizontalLabels={false}
-              chartConfig={{
-                backgroundGradientFrom: '#fff',
-                backgroundGradientTo: '#fff',
-                backgroundGradientFromOpacity: 0,
-                backgroundGradientToOpacity: 0,
-                decimalPlaces: 0, // optional, defaults to 2dp
-                color: () => theme.colors.onSecondaryContainer,
-                labelColor: () => theme.colors.onSecondaryContainer,
-                propsForDots: {
-                  r: '6',
-                  strokeWidth: '2',
-                  stroke: '#fff',
-                },
-              }}
-              renderDotContent={({x, y, index, indexData}): any => (
-                <CustomDot
-                  key={index}
-                  value={indexData}
-                  index={index}
-                  x={x}
-                  y={y}
-                  scores={data.datasets[0].data as number[]}
-                />
-              )}
-              bezier
-              style={styles.chart}
-              onDataPointClick={({index}) => {
-                addOrEditMeasurement(dateRange[index]);
-              }}
+          <View style={styles.chartLabels}>
+            <Icon
+              size={20}
+              source={'emoticon-excited-outline'}
+              color="#008000"
             />
+            <Icon size={20} source={'emoticon-happy-outline'} color="#FFA500" />
+            <Icon size={20} source={'emoticon-sad-outline'} color="#FF0000" />
           </View>
+          <LineChart
+            data={data as LineChartData}
+            width={Dimensions.get('window').width - 40}
+            height={200}
+            yAxisLabel=""
+            yAxisSuffix=""
+            fromZero={true}
+            withInnerLines={false}
+            withOuterLines={false}
+            withHorizontalLabels={false}
+            chartConfig={{
+              backgroundGradientFrom: '#fff',
+              backgroundGradientTo: '#fff',
+              backgroundGradientFromOpacity: 0,
+              backgroundGradientToOpacity: 0,
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: () => theme.colors.onSecondaryContainer,
+              labelColor: () => theme.colors.onSecondaryContainer,
+              propsForDots: {
+                r: '6',
+                strokeWidth: '2',
+                stroke: '#fff',
+              },
+            }}
+            renderDotContent={({x, y, index, indexData}): any => (
+              <CustomDot
+                key={index}
+                value={indexData}
+                index={index}
+                x={x}
+                y={y}
+                scores={data.datasets[0].data as number[]}
+              />
+            )}
+            bezier
+            style={styles.chart}
+            onDataPointClick={({index}) => {
+              addOrEditMeasurement(dateRange[index]);
+            }}
+          />
         </View>
         <FAB.Group
           visible={true}
@@ -249,13 +228,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   chartContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     borderRadius: 16,
   },
   chart: {
     marginVertical: 8,
     borderRadius: 16,
+  },
+  chartLabels: {
+    justifyContent: 'space-around',
+    height: 195,
+    left: 25,
+    position: 'absolute',
   },
   title: {
     fontSize: 22,

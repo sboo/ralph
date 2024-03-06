@@ -3,20 +3,16 @@ import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
-import {Text, Avatar, IconButton} from 'react-native-paper';
+import {Text, Avatar} from 'react-native-paper';
 import {useTheme} from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {EVENT_NAMES, event} from '../app/event';
 
 interface HomeHeaderPros {
   petName: string;
-  onSettingsButtonPress: () => void;
 }
 
-const HomeHeader: React.FC<HomeHeaderPros> = ({
-  petName,
-  onSettingsButtonPress,
-}) => {
+const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
   const {t} = useTranslation();
   const theme = useTheme();
   const [avatar, setAvatar] = useState<string>();
@@ -92,7 +88,6 @@ const HomeHeader: React.FC<HomeHeaderPros> = ({
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <IconButton icon={'cog-outline'} onPress={onSettingsButtonPress} />
       <View style={styles.greetingsContainer}>
         <Text style={styles.greeting}>{getGreeting()}</Text>
         <Text style={styles.petName}>{petName}</Text>
@@ -112,7 +107,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    height: 220,
+    height: 150,
     marginBottom: 20,
     padding: 20,
   },

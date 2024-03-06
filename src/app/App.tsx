@@ -63,7 +63,10 @@ const App: React.FC = () => {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
-            options={{headerShown: false}}
+            options={{
+              title: '',
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
           />
           <Stack.Screen
             name="Welcome"
