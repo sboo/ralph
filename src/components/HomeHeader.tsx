@@ -94,7 +94,7 @@ const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
       </View>
       <Avatar.Image
         size={65}
-        style={{backgroundColor: theme.colors.tertiaryContainer}}
+        style={styles.avatar}
         source={avatar ? {uri: avatar} : require('../assets/camera.png')}
         onTouchStart={openImagePicker}
       />
@@ -110,6 +110,8 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 20,
     padding: 20,
+    borderBottomStartRadius: 20,
+    borderBottomEndRadius: 20,
   },
   greetingsContainer: {
     flexDirection: 'column',
@@ -123,6 +125,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
   },
+  avatar: {
+    backgroundColor: 'white',
+  }
 });
 
 export default HomeHeader;

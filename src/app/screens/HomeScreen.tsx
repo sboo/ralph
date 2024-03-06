@@ -131,11 +131,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       style={{backgroundColor: theme.colors.background, ...styles.container}}>
       <HomeHeader petName={petName} />
       <View style={styles.bodyContainer}>
-        <View
-          style={{
-            backgroundColor: theme.colors.secondaryContainer,
-            ...styles.chartContainer,
-          }}>
+        <View style={styles.chartContainer}>
           <View style={styles.chartLabels}>
             <Icon
               size={20}
@@ -156,10 +152,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             withOuterLines={false}
             withHorizontalLabels={false}
             chartConfig={{
-              backgroundGradientFrom: '#fff',
-              backgroundGradientTo: '#fff',
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 0,
+              backgroundGradientFrom: '#FFFFFF',
+              backgroundGradientTo: theme.colors.secondaryContainer,
+              backgroundGradientFromOpacity: 0.2,
+              backgroundGradientToOpacity: 1,
               decimalPlaces: 0, // optional, defaults to 2dp
               color: () => theme.colors.onSecondaryContainer,
               labelColor: () => theme.colors.onSecondaryContainer,
@@ -240,6 +236,7 @@ const styles = StyleSheet.create({
     height: 195,
     left: 25,
     position: 'absolute',
+    zIndex: 99,
   },
   title: {
     fontSize: 22,
