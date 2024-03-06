@@ -4,7 +4,7 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
-import {Text, FAB, Icon} from 'react-native-paper';
+import {FAB, Icon} from 'react-native-paper';
 import {EVENT_NAMES, event} from '../event';
 import {useQuery} from '@realm/react';
 import {Measurement} from '../../models/Measurement';

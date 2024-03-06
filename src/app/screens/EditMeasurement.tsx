@@ -3,9 +3,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
 import MeasurementItem from '../../components/MeasurementItem';
 import {useRealm, useObject} from '@realm/react';
+import {useTheme} from 'react-native-paper';
 import {Measurement} from '../../models/Measurement';
 import {BSON} from 'realm';
 import {EditMeasurementScreenNavigationProps} from '../navigation/types';
+import {View} from 'react-native';
 
 const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
   route,
@@ -16,6 +18,7 @@ const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
   const [petName, setPetName] = useState('');
 
   const realm = useRealm();
+  const theme = useTheme();
 
   const handleSubmit = (
     hurt: number,
@@ -50,13 +53,15 @@ const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
   }, []);
 
   return (
-    <MeasurementItem
-      date={measurement!.createdAt}
-      petName={petName}
-      measurement={measurement}
-      onCancel={() => navigation.goBack()}
-      onSubmit={handleSubmit}
-    />
+    <View style={{backgroundColor: theme.colors.background}}>
+      <MeasurementItem
+        date={measurement!.createdAt}
+        petName={petName}
+        measurement={measurement}
+        onCancel={() => navigation.goBack()}
+        onSubmit={handleSubmit}
+      />
+    </View>
   );
 };
 

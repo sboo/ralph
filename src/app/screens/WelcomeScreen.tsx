@@ -11,6 +11,13 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   const {t} = useTranslation();
   const theme = useTheme();
 
+  const onSettingsSaved = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
+  };
+
   return (
     <View
       style={{
@@ -18,7 +25,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         ...styles.container,
       }}>
       <Text variant="headlineLarge">{t('welcome')}</Text>
-      <Settings onSettingsSaved={() => navigation.navigate('Home')} />
+      <Settings onSettingsSaved={onSettingsSaved} />
     </View>
   );
 };
