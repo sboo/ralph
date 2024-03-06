@@ -1,6 +1,8 @@
 import BackgroundFetch from 'react-native-background-fetch';
 import notifee from '@notifee/react-native';
 import {todaysMeasurementDone} from '../support/dailyMeasurementStatus';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {STORAGE_KEYS} from '../support/storageKeys';
 
 /// Configure BackgroundFetch.
 ///
@@ -52,14 +54,34 @@ export const handleBackgroundTask = async (taskId: string) => {
   switch (taskId) {
     default:
     case TASK_IDS.REMINDER_TASK:
-      console.log('Reminder task');
       const done = await todaysMeasurementDone();
-      console.log('done', done);
-      if (!done) {
+
+      const now = new Date();
+      const hours = now.getHours();
+
+      if (!done && !todaysReminderShown() && hours >= 20) {
         await displayReminderNotification();
+        await AsyncStorage.setItem(
+          STORAGE_KEYS.LAST_REMINDER_DATE,
+          new Date().getTime().toString(),
+        );
       }
       break;
   }
+};
+
+const todaysReminderShown = async () => {
+  const lastReminderTimestamp = await AsyncStorage.getItem(
+    STORAGE_KEYS.LAST_REMINDER_DATE,
+  );
+  if (lastReminderTimestamp === null) {
+    return false;
+  }
+  const lastReminderDate = new Date(lastReminderTimestamp);
+  return (
+    lastReminderDate.toISOString().split('T')[0] ===
+    new Date().toISOString().split('T')[0]
+  );
 };
 
 const displayReminderNotification = async () => {

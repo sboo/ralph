@@ -13,15 +13,13 @@ import {STORAGE_KEYS} from '../../support/storageKeys';
 import {EVENT_NAMES, event} from '../event';
 import {WelcomeScreenNavigationProps} from '../navigation/types';
 import {useTranslation} from 'react-i18next';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, type MediaType} from 'react-native-image-picker';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
-import BackgroundFetch from 'react-native-background-fetch';
 import {
   initBackgroundFetch,
   startBackgroundTasks,
   stopBackgroundTasks,
   scheduleReminderTask,
-  TASK_IDS,
 } from '../../backgroundTasks';
 
 const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
@@ -69,7 +67,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
 
   const openImagePicker = () => {
     const options = {
-      mediaType: 'photo',
+      mediaType: 'photo' as MediaType,
       includeBase64: false,
       maxHeight: 2000,
       maxWidth: 2000,
@@ -150,19 +148,27 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
       }}>
       <Text variant="headlineLarge">Welcome</Text>
       <View style={styles.profileInput}>
-        <Avatar.Image
-          size={65}
-          style={{backgroundColor: theme.colors.surface}}
-          source={avatar ? {uri: avatar} : require('../../assets/camera.png')}
-          onTouchStart={openImagePicker}
-        />
         <TextInput
           label={t('welcome:petNameInputLabel')}
           style={{backgroundColor: theme.colors.surface, ...styles.textInput}}
           value={petName}
           onChangeText={(text: string) => setPetName(text)}
         />
-        <Switch value={remindersEnabled} onValueChange={toggleReminders} />
+        <View style={styles.inputRow}>
+          <Text variant="labelLarge">{t('welcome:avatarInputLabel')}</Text>
+          <Avatar.Image
+            size={65}
+            style={{backgroundColor: theme.colors.surface}}
+            source={avatar ? {uri: avatar} : require('../../assets/camera.png')}
+            onTouchStart={openImagePicker}
+          />
+        </View>
+        <View style={styles.inputRow}>
+          <Text variant="labelLarge">
+            {t('welcome:enableNotificationsLabel')}
+          </Text>
+          <Switch value={remindersEnabled} onValueChange={toggleReminders} />
+        </View>
         <Button onPress={storePetInfo} mode={'contained'}>
           {t('buttons:continue')}
         </Button>
@@ -176,12 +182,20 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'flex-start',
+    alignItems: 'stretch',
   },
   profileInput: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 20,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
   textInput: {
     alignSelf: 'stretch',

@@ -1,3 +1,5 @@
 {
-    "petNameInputLabel": "Enter your pet's name"
+    "avatarInputLabel": "Upload a photo of your pet",
+    "petNameInputLabel": "Enter your pet's name",
+    "enableNotificationsLabel": "Enable reminder notifications"
 }
