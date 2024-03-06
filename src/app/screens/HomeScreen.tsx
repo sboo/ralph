@@ -38,7 +38,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       if (name !== null) {
         setPetName(name);
       } else {
-        navigation.navigate('Welcome');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Welcome'}],
+        });
       }
     };
 
