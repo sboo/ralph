@@ -55,11 +55,12 @@ export const handleBackgroundTask = async (taskId: string) => {
     default:
     case TASK_IDS.REMINDER_TASK:
       const done = await todaysMeasurementDone();
+      const alreadyReminded = await todaysReminderShown();
 
       const now = new Date();
       const hours = now.getHours();
 
-      if (!done && !todaysReminderShown() && hours >= 20) {
+      if (!done && !alreadyReminded && hours >= 20) {
         await displayReminderNotification();
         await AsyncStorage.setItem(
           STORAGE_KEYS.LAST_REMINDER_DATE,
@@ -77,11 +78,17 @@ const todaysReminderShown = async () => {
   if (lastReminderTimestamp === null) {
     return false;
   }
-  const lastReminderDate = new Date(lastReminderTimestamp);
-  return (
-    lastReminderDate.toISOString().split('T')[0] ===
-    new Date().toISOString().split('T')[0]
-  );
+
+  try {
+    const lastReminderDate = new Date(Number(lastReminderTimestamp));
+    return (
+      lastReminderDate.toISOString().split('T')[0] ===
+      new Date().toISOString().split('T')[0]
+    );
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 const displayReminderNotification = async () => {
@@ -110,6 +117,7 @@ export const scheduleReminderTask = async () => {
     taskId: TASK_IDS.REMINDER_TASK,
     delay: 100000,
     periodic: true,
+    forceAlarmManager: true,
   });
 };
 

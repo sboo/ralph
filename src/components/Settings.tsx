@@ -16,7 +16,6 @@ import {launchImageLibrary, type MediaType} from 'react-native-image-picker';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {
   initBackgroundFetch,
-  startBackgroundTasks,
   stopBackgroundTasks,
   scheduleReminderTask,
 } from '../backgroundTasks';
@@ -128,7 +127,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
       initBackgroundFetch();
       const x = await scheduleReminderTask();
       console.log('Scheduled reminder task', x);
-      startBackgroundTasks();
+      // startBackgroundTasks();
     } else {
       stopBackgroundTasks();
     }
