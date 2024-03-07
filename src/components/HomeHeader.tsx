@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     height: 150,
-    marginBottom: 20,
     padding: 20,
     borderBottomStartRadius: 20,
     borderBottomEndRadius: 20,

@@ -6,8 +6,8 @@ import {useRealm} from '@realm/react';
 import {useTheme} from 'react-native-paper';
 import {Measurement} from '../../models/Measurement';
 import {AddMeasurementScreenNavigationProps} from '../navigation/types';
-import {View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
 
 const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
   route,
@@ -28,8 +28,9 @@ const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
     mobility: number,
   ) => {
     realm.write(() => {
+      const dateString = moment(date).format('YYYY-MM-DD');
       realm.create(Measurement, {
-        date: date.toISOString().split('T')[0],
+        date: dateString,
         score: hurt + hunger + hydration + hygiene + happiness + mobility,
         hurt,
         hunger,
@@ -37,6 +38,7 @@ const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
         hygiene,
         happiness,
         mobility,
+        createdAt: date,
       });
     });
     navigation.goBack();

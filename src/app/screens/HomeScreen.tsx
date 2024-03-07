@@ -14,6 +14,7 @@ import HomeHeader from '../../components/HomeHeader';
 import CustomDot from '../../components/CustomChartDot';
 import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -84,7 +85,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const getScores = () => {
     const scoresWithDates = dateRange.map(date => {
       const measurement = measurements.find(
-        m => m.date === date.toISOString().split('T')[0],
+        m => m.date === moment(date).format('YYYY-MM-DD'),
       );
       return measurement ? measurement.score : null;
     });
@@ -117,7 +118,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     if (!date) {
       date = new Date();
     }
-    const today = date.toISOString().split('T')[0];
+    const today = moment(date).format('YYYY-MM-DD');
     const measurement = measurements.find(m => m.date === today);
     if (measurement === undefined) {
       navigation.navigate('AddMeasurement', {
@@ -241,7 +242,6 @@ const styles = StyleSheet.create({
     height: 195,
     left: 25,
     position: 'absolute',
-    zIndex: 99,
   },
   title: {
     fontSize: 22,

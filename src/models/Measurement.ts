@@ -12,6 +12,7 @@ export class Measurement extends Realm.Object {
   happiness!: number;
   mobility!: number;
   createdAt: Date = new Date();
+  updatedAt: Date = new Date();
 
   static primaryKey = '_id';
 }

@@ -3,6 +3,7 @@ import notifee from '@notifee/react-native';
 import {todaysMeasurementDone} from '../support/dailyMeasurementStatus';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
+import moment from 'moment';
 
 /// Configure BackgroundFetch.
 ///
@@ -82,8 +83,8 @@ const todaysReminderShown = async () => {
   try {
     const lastReminderDate = new Date(Number(lastReminderTimestamp));
     return (
-      lastReminderDate.toISOString().split('T')[0] ===
-      new Date().toISOString().split('T')[0]
+      moment(lastReminderDate).format('YYYY-MM-DD') ===
+      moment().format('YYYY-MM-DD')
     );
   } catch (error) {
     console.error(error);

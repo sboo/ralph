@@ -1,8 +1,9 @@
 import Realm from 'realm';
 import {Measurement} from '../models/Measurement';
+import moment from 'moment';
 
 export const todaysMeasurementDone = async (): Promise<boolean> => {
-  const today = new Date().toISOString().split('T')[0];
+  const today = moment().format('YYYY-MM-DD');
   const realm = await Realm.open({
     schema: [Measurement],
   });
