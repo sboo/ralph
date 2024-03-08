@@ -16,7 +16,6 @@ interface Props {
 }
 
 const QuotesAndInformation: React.FC<Props> = ({averageScore}) => {
-  console.log('averageScore', averageScore);
   const {t} = useTranslation();
   const theme = useTheme();
   const [information, setInformation] = useState<Quote>({});
@@ -103,8 +102,9 @@ const QuotesAndInformation: React.FC<Props> = ({averageScore}) => {
       <Card.Actions>
         {averageScore >= 30 ? (
           <IconButton
+            size={20}
             icon="refresh"
-            iconColor={'#a9a9a9'}
+            iconColor={'#cfcfcf'}
             mode={'contained-tonal'}
             style={styles.IconButton}
             onPress={() => setInformation(getRandomQuote())}
