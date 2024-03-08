@@ -4,6 +4,7 @@ import {todaysMeasurementDone} from '../support/dailyMeasurementStatus';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
 import moment from 'moment';
+import i18next from 'i18next';
 
 /// Configure BackgroundFetch.
 ///
@@ -93,14 +94,21 @@ const todaysReminderShown = async () => {
 };
 
 const displayReminderNotification = async () => {
+  const fetchPetName = async () => {
+    const petName = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
+    return petName;
+  };
+
   const channelId = await notifee.createChannel({
-    id: 'default',
-    name: 'Default Channel',
+    id: 'reminders',
+    name: i18next.t('measurements:reminders'),
   });
   await notifee.displayNotification({
-    id: '1234',
-    title: `<p style="color: white;"><b>John  sent a message</span></p></b></p>`,
-    body: "Dont forget today's measurement! 🌟",
+    id: 'eu.sboo.ralph.reminder',
+    title: i18next.t('measurements:notificatationTitle'),
+    body: i18next.t('measurements:notificationBody', {
+      petName: await fetchPetName(),
+    }),
     android: {
       channelId,
       pressAction: {

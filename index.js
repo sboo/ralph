@@ -11,8 +11,7 @@ import {schemas} from './src/models';
 import './src/localization/i18n';
 import BackgroundFetch from 'react-native-background-fetch';
 import {handleBackgroundTask} from './src/backgroundTasks';
-import notifee, { EventType } from '@notifee/react-native';
-
+import notifee, {EventType} from '@notifee/react-native';
 
 export default function Main() {
   return (

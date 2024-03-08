@@ -15,5 +15,8 @@
     "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
     "mobility": "Mobility",
     "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?",
-    "score": "Score"
+    "score": "Score",
+    "reminders": "Reminders",
+    "notificatationTitle": "Quality of Life Reminder",
+    "notificationBody": "Don't forget to record {{petName}}'s quality of life today."
 }
