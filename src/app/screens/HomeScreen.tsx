@@ -36,7 +36,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   );
 
   useEffect(() => {
-    const fetchDogName = async () => {
+    const fetchPetName = async () => {
       const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
       if (name !== null) {
         setPetName(name);
@@ -48,10 +48,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       }
     };
 
-    fetchDogName();
+    fetchPetName();
 
     const onProfileSet = () => {
-      fetchDogName();
+      fetchPetName();
     };
 
     event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);

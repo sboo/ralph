@@ -45,14 +45,14 @@ const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
   };
 
   useEffect(() => {
-    const fetchDogName = async () => {
+    const fetchPetName = async () => {
       const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
       if (name !== null) {
         setPetName(name);
       }
     };
 
-    fetchDogName();
+    fetchPetName();
   }, []);
 
   return (

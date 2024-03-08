@@ -7,6 +7,7 @@ import {
   useTheme,
   Avatar,
   Switch,
+  IconButton,
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
@@ -31,6 +32,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
 }) => {
   const {t} = useTranslation();
   const theme = useTheme();
+  const [petType, setPetType] = useState<string>('');
   const [petName, setPetName] = useState<string>('');
   const [avatar, setAvatar] = useState<string>();
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
@@ -49,8 +51,14 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
       }
     };
 
+    const fetchPetType = async () => {
+      const type = await AsyncStorage.getItem(STORAGE_KEYS.PET_TYPE);
+      setPetType(type ?? '');
+    };
+
     fetchPetName();
     fetchAvatar();
+    fetchPetType();
   }, []);
 
   useEffect(() => {
@@ -104,6 +112,8 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
   const storePetInfo = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.PET_NAME, petName);
+      await AsyncStorage.setItem(STORAGE_KEYS.PET_TYPE, petType);
+
       event.emit(EVENT_NAMES.PROFILE_SET, petName);
       // Navigate to the next screen after successful storage
       onSettingsSaved();
@@ -144,9 +154,34 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
   };
 
   return (
-    <View
-      style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.profileInput}>
+        <View style={styles.inputRow}>
+          <Text variant="labelLarge">{t('settings:petTypeInputLabel')}</Text>
+          <View style={styles.inputRowPet}>
+            <IconButton
+              selected={petType === 'dog'}
+              mode="contained"
+              icon="dog"
+              size={40}
+              onPress={() => setPetType('dog')}
+            />
+            <IconButton
+              selected={petType === 'cat'}
+              mode="contained"
+              icon="cat"
+              size={40}
+              onPress={() => setPetType('cat')}
+            />
+            <IconButton
+              selected={petType === 'other'}
+              mode="contained"
+              icon="google-downasaur"
+              size={40}
+              onPress={() => setPetType('other')}
+            />
+          </View>
+        </View>
         <TextInput
           label={t('settings:petNameInputLabel')}
           style={{backgroundColor: theme.colors.surface, ...styles.textInput}}
@@ -196,6 +231,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
+  },
+  inputRowPet: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    justifyContent: 'flex-end',
   },
   textInput: {
     alignSelf: 'stretch',
