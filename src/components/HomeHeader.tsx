@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   avatar: {
-    backgroundColor: 'white',
-  }
+    backgroundColor: '#ffffff',
+  },
 });
 
 export default HomeHeader;

@@ -192,7 +192,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
           <Text variant="labelLarge">{t('settings:avatarInputLabel')}</Text>
           <Avatar.Image
             size={65}
-            style={{backgroundColor: theme.colors.surface}}
+            style={styles.avatar}
             source={avatar ? {uri: avatar} : require('../assets/camera.png')}
             onTouchStart={openImagePicker}
           />
@@ -244,6 +244,9 @@ const styles = StyleSheet.create({
   buttons: {
     marginTop: 20,
     alignItems: 'center',
+  },
+  avatar: {
+    backgroundColor: '#ffffff',
   },
 });
 

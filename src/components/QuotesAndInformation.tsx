@@ -75,7 +75,9 @@ const QuotesAndInformation: React.FC<Props> = ({averageScore}) => {
   }, [getRandomQuote, averageScore, t, theme]);
 
   const backgroundColor =
-    averageScore < 30 ? theme.colors.errorContainer : '#ffffffbb';
+    averageScore < 30
+      ? theme.colors.errorContainer
+      : theme.colors.primaryContainer;
 
   return (
     <Card
@@ -91,7 +93,7 @@ const QuotesAndInformation: React.FC<Props> = ({averageScore}) => {
           <Icon
             {...props}
             source={information.icon}
-            color={information.color ?? theme.colors.primary}
+            color={information.color ?? theme.colors.onPrimaryContainer}
           />
         )}
       />
