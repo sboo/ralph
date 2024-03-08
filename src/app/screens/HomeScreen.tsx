@@ -216,6 +216,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               label: t('measurements:allMeasurements'),
               onPress: () => navigation.navigate('AllMeasurements'),
             },
+            {
+              icon: 'format-list-bulleted',
+              label: 'iap',
+              onPress: () => navigation.navigate('IapScreen'),
+            },
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}
         />

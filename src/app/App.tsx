@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   PaperProvider,
   MD3LightTheme,
@@ -16,6 +16,7 @@ import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddMeasurement from './screens/AddMeasurement';
 import EditMeasurement from './screens/EditMeasurement';
+import IapScreen from './screens/IapScreen';
 import AllMeasurementsScreen from './screens/AllMeasurementsScreen';
 import {RootStackParamList} from './navigation/types';
 import defaultColors from '../themes/lightTheme.json';
@@ -24,11 +25,76 @@ import merge from 'deepmerge';
 import {useColorScheme} from 'react-native';
 import CustomNavigationBar from '../components/CustomNavigationBar';
 import {useTranslation} from 'react-i18next';
+import {withIAPContext, useIAP} from 'react-native-iap';
+import {STORAGE_KEYS} from '../support/storageKeys';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EVENT_NAMES, event } from './event';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
   const {t} = useTranslation();
+  const {
+    connected,
+    products,
+    promotedProductsIOS,
+    subscriptions,
+    purchaseHistory,
+    availablePurchases,
+    currentPurchase,
+    currentPurchaseError,
+    initConnectionError,
+    finishTransaction,
+    getProducts,
+    getSubscriptions,
+    getAvailablePurchases,
+    getPurchaseHistory,
+  } = useIAP();
+
+  useEffect(() => {
+    console.warn('currentPurchaseError', currentPurchaseError);
+  }, [currentPurchaseError]);
+
+  useEffect(() => {
+    const setCoffeePurchased = async () => {
+      await AsyncStorage.setItem(STORAGE_KEYS.COFFEE_PURCHASED, 'true');
+      event.emit(EVENT_NAMES.COFFEE_PURCHASED, true);
+    };
+
+    const receipt = currentPurchase?.transactionReceipt;
+    if (receipt) {
+      setCoffeePurchased().then(() => {
+        finishTransaction({purchase: currentPurchase, isConsumable: false});
+      });
+    }
+  }, [currentPurchase, finishTransaction]);
+
+  useEffect(() => {
+    const fetchCoffeePurchased = async () => {
+      const coffeePurchased = await AsyncStorage.getItem(
+        STORAGE_KEYS.COFFEE_PURCHASED,
+      );
+      if (coffeePurchased === null) {
+        await getPurchaseHistory();
+      }
+    };
+    fetchCoffeePurchased();
+  }, [getPurchaseHistory]);
+
+  useEffect(() => {
+    const setCoffeePurchased = async (purchased: boolean) => {
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.COFFEE_PURCHASED,
+        purchased ? 'true' : 'false',
+      );
+    };
+    const purchased =
+      purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
+      -1;
+
+    setCoffeePurchased(purchased);
+  }, [purchaseHistory]);
+
   const {LightTheme, DarkTheme} = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
@@ -96,10 +162,11 @@ const App: React.FC = () => {
             component={AllMeasurementsScreen}
             options={{title: t('measurements:allMeasurements')}}
           />
+          <Stack.Screen name="IapScreen" component={IapScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
   );
 };
 
-export default App;
+export default withIAPContext(App);
