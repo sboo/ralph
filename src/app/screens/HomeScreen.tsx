@@ -97,6 +97,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     const nonNullScores = getScores().filter(
       score => score !== null,
     ) as number[];
+    if (!nonNullScores.length) {
+      return 60;
+    }
     const sum = nonNullScores.reduce((acc, score) => acc + score, 0);
     return sum / nonNullScores.length;
   };
