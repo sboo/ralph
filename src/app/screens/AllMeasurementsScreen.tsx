@@ -15,7 +15,7 @@ const AllMeasurementsScreen: React.FC<
   );
 
   const getIcon = (score: number) => {
-    if (score < 33) {
+    if (score < 30) {
       return 'emoticon-sad-outline';
     } else if (score < 50) {
       return 'emoticon-neutral-outline';
@@ -24,7 +24,7 @@ const AllMeasurementsScreen: React.FC<
     }
   };
   const getIconColor = (score: number) => {
-    if (score < 33) {
+    if (score < 30) {
       return '#FF0000';
     } else if (score < 50) {
       return '#FFA500';

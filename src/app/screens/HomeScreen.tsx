@@ -15,6 +15,7 @@ import CustomDot from '../../components/CustomChartDot';
 import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import QuotesAndInformation from '../../components/QuotesAndInformation';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -90,6 +91,14 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       return measurement ? measurement.score : null;
     });
     return scoresWithDates;
+  };
+
+  const getAverageScore = () => {
+    const nonNullScores = getScores().filter(
+      score => score !== null,
+    ) as number[];
+    const sum = nonNullScores.reduce((acc, score) => acc + score, 0);
+    return sum / nonNullScores.length;
   };
 
   const data = {
@@ -188,6 +197,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             }}
           />
         </View>
+        <QuotesAndInformation averageScore={getAverageScore()} />
         <FAB.Group
           visible={true}
           open={isFabOpen}
@@ -202,11 +212,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               icon: 'format-list-bulleted',
               label: t('measurements:allMeasurements'),
               onPress: () => navigation.navigate('AllMeasurements'),
-            },
-            {
-              icon: 'format-list-bulleted',
-              label: 'NotificationPlayground',
-              onPress: () => navigation.navigate('NotificationPlayground'),
             },
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}

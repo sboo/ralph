@@ -4,5 +4,7 @@
   "greeting_evening": "Good Evening",
   "date": "Date",
   "welcome": "Welcome",
-  "settings": "Settings"
+  "settings": "Settings",
+  "talk_to_vet_title": "Talk to your Vet",
+  "talk_to_vet_text": "It seems your furry companion is experiencing more challenging days than joyful ones lately. It might be comforting to seek guidance from a veterinarian."
 }
