@@ -1,5 +1,6 @@
 {
-    "avatarInputLabel": "Upload a photo of your pet",
-    "petNameInputLabel": "Enter your pet's name",
-    "enableNotificationsLabel": "Enable reminder notifications"
+    "avatarInputLabel": "Sube una foto de tu mascota",
+    "petNameInputLabel": "Ingresa el nombre de tu mascota",
+    "enableNotificationsLabel": "Habilitar notificaciones de recordatorio",
+    "petTypeInputLabel": "Tu mascota es un(a)"
 }

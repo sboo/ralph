@@ -1,7 +1,9 @@
 {
-    "submit": "Submit",
-    "cancel": "Cancel",
-    "back": "Back",
-    "continue": "Continue",
-    "save": "Save"
-}
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "continue": "Continuar",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "yes": "¡Sí!"
+    }

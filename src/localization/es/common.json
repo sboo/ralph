@@ -1,8 +1,14 @@
 {
-  "greeting_morning": "Good Morning",
-  "greeting_afternoon": "Good Afternoon",
-  "greeting_evening": "Good Evening",
-  "date": "Date",
-  "welcome": "Welcome",
-  "settings": "Settings"
+  "greeting_morning": "Buenos días",
+  "greeting_afternoon": "Buenas tardes",
+  "greeting_evening": "Buenas noches",
+  "date": "Fecha",
+  "welcome": "Bienvenido",
+  "settings": "Configuración",
+  "talk_to_vet_title": "Habla con tu veterinario",
+  "talk_to_vet_text": "Parece que tu compañero peludo ha estado experimentando más días difíciles que alegres últimamente. Podría ser reconfortante buscar orientación de un veterinario.",
+  "thank_you": "¡Gracias!",
+  "thank_you_text": "¡Gracias por apoyar nuestra aplicación!",
+  "support_me": "Apóyame",
+  "support_me_text": "Por favor, apoya mis esfuerzos comprándome un café."
 }
