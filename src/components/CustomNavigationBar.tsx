@@ -78,7 +78,9 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     });
 
     const onCoffeePurchased = () => {
-      setCoffeePurchased('true');
+      getCoffeeButtonPuchasedStatus().then(purchased => {
+        setCoffeePurchased(purchased);
+      });
     };
 
     fechProducts();

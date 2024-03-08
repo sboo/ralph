@@ -28,26 +28,17 @@ import {useTranslation} from 'react-i18next';
 import {withIAPContext, useIAP} from 'react-native-iap';
 import {STORAGE_KEYS} from '../support/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { EVENT_NAMES, event } from './event';
+import {EVENT_NAMES, event} from './event';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
   const {t} = useTranslation();
   const {
-    connected,
-    products,
-    promotedProductsIOS,
-    subscriptions,
     purchaseHistory,
-    availablePurchases,
     currentPurchase,
     currentPurchaseError,
-    initConnectionError,
     finishTransaction,
-    getProducts,
-    getSubscriptions,
-    getAvailablePurchases,
     getPurchaseHistory,
   } = useIAP();
 
@@ -58,7 +49,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const setCoffeePurchased = async () => {
       await AsyncStorage.setItem(STORAGE_KEYS.COFFEE_PURCHASED, 'true');
-      event.emit(EVENT_NAMES.COFFEE_PURCHASED, true);
+      event.emit(EVENT_NAMES.COFFEE_PURCHASED, 'true');
     };
 
     const receipt = currentPurchase?.transactionReceipt;
@@ -87,6 +78,7 @@ const App: React.FC = () => {
         STORAGE_KEYS.COFFEE_PURCHASED,
         purchased ? 'true' : 'false',
       );
+      event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);
     };
     const purchased =
       purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
