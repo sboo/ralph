@@ -22,6 +22,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [dateRange, setDateRange] = useState<Date[]>([]);
+  const [averageScore, setAverageScore] = useState(60);
 
   const theme = useTheme();
 
@@ -34,6 +35,18 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     },
     [dateRange],
   );
+
+  useEffect(() => {
+    if (!measurements.length || measurements.length < 5) {
+      setAverageScore(60);
+    } else {
+      const sum = measurements.reduce(
+        (acc, measurement) => acc + measurement.score,
+        0,
+      );
+      setAverageScore(sum / measurements.length);
+    }
+  }, [measurements]);
 
   useEffect(() => {
     const fetchPetName = async () => {
@@ -91,17 +104,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       return measurement ? measurement.score : null;
     });
     return scoresWithDates;
-  };
-
-  const getAverageScore = () => {
-    const nonNullScores = getScores().filter(
-      score => score !== null,
-    ) as number[];
-    if (!nonNullScores.length) {
-      return 60;
-    }
-    const sum = nonNullScores.reduce((acc, score) => acc + score, 0);
-    return sum / nonNullScores.length;
   };
 
   const data = {
@@ -200,7 +202,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             }}
           />
         </View>
-        <QuotesAndInformation averageScore={getAverageScore()} />
+        <QuotesAndInformation averageScore={averageScore} />
         <FAB.Group
           visible={true}
           open={isFabOpen}
