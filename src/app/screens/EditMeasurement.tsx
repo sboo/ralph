@@ -30,6 +30,8 @@ const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
   ) => {
     realm.write(() => {
       if (measurement) {
+        measurement.score =
+          hurt + hunger + hydration + hygiene + happiness + mobility;
         measurement.hurt = hurt;
         measurement.hunger = hunger;
         measurement.hydration = hydration;
