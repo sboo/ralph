@@ -56,7 +56,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   );
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buyCoffeeVisible, setBuyCoffeeVisible] = React.useState(false);
-  const {currentPurchase, currentPurchaseError, getProducts} = useIAP();
+  const {getProducts} = useIAP();
 
   const onCoffeeButtonPress = async () => {
     if (coffeePurchased === 'true') {
@@ -96,14 +96,6 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     setBuyCoffeeVisible(false);
     await requestPurchase({skus: ['eu.sboo.ralph.coffee']});
   };
-
-  useEffect(() => {
-    console.log('currentPurchaseError', currentPurchaseError);
-  }, [currentPurchaseError]);
-
-  useEffect(() => {
-    console.log('currentPurchase', currentPurchase);
-  }, [currentPurchase]);
 
   return (
     <Appbar.Header style={options.headerStyle}>
@@ -146,11 +138,11 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
           onDismiss={() => setBuyCoffeeVisible(false)}>
           <Dialog.Icon icon="coffee" />
           <Dialog.Title style={styles.dialogTitle}>
-            {t('thank_you_text')}
+            {t('support_me')}
           </Dialog.Title>
           <Dialog.Content>
             <Text style={styles.dialogText} variant="bodyMedium">
-              {t('thank_you_text')}
+              {t('support_me_text')}
             </Text>
           </Dialog.Content>
           <Dialog.Actions>

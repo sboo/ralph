@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   PaperProvider,
   MD3LightTheme,
@@ -42,8 +42,40 @@ const App: React.FC = () => {
     getPurchaseHistory,
   } = useIAP();
 
+  const isFreshInstall = useCallback(async () => {
+    const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
+    return freshInstall !== 'false';
+  }, []);
+
+  const restorePurchases = useCallback(async () => {
+    await getPurchaseHistory();
+    const purchased =
+      purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
+      -1;
+    await AsyncStorage.setItem(
+      STORAGE_KEYS.COFFEE_PURCHASED,
+      purchased ? 'true' : 'false',
+    );
+    await AsyncStorage.setItem(STORAGE_KEYS.FRESH_INSTALL, 'false');
+    event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);
+  }, [getPurchaseHistory, purchaseHistory]);
+
   useEffect(() => {
-    console.warn('currentPurchaseError', currentPurchaseError);
+    const initApp = async () => {
+      console.log('initApp');
+      const isFresh = await isFreshInstall();
+      console.log('isFresh', isFresh);
+      if (isFresh) {
+        restorePurchases();
+      }
+    };
+    initApp();
+  }, [isFreshInstall, restorePurchases]);
+
+  useEffect(() => {
+    if (currentPurchaseError) {
+      console.warn('currentPurchaseError', currentPurchaseError);
+    }
   }, [currentPurchaseError]);
 
   useEffect(() => {
@@ -59,33 +91,6 @@ const App: React.FC = () => {
       });
     }
   }, [currentPurchase, finishTransaction]);
-
-  useEffect(() => {
-    const fetchCoffeePurchased = async () => {
-      const coffeePurchased = await AsyncStorage.getItem(
-        STORAGE_KEYS.COFFEE_PURCHASED,
-      );
-      if (coffeePurchased === null) {
-        await getPurchaseHistory();
-      }
-    };
-    fetchCoffeePurchased();
-  }, [getPurchaseHistory]);
-
-  useEffect(() => {
-    const setCoffeePurchased = async (purchased: boolean) => {
-      await AsyncStorage.setItem(
-        STORAGE_KEYS.COFFEE_PURCHASED,
-        purchased ? 'true' : 'false',
-      );
-      event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);
-    };
-    const purchased =
-      purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
-      -1;
-
-    setCoffeePurchased(purchased);
-  }, [purchaseHistory]);
 
   const {LightTheme, DarkTheme} = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
