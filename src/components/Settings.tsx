@@ -163,6 +163,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
               selected={petType === 'dog'}
               mode="contained"
               icon="dog"
+              accessibilityLabel={t('buttons:dog')}
               size={40}
               onPress={() => setPetType('dog')}
             />
@@ -170,6 +171,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
               selected={petType === 'cat'}
               mode="contained"
               icon="cat"
+              accessibilityLabel={t('buttons:cat')}
               size={40}
               onPress={() => setPetType('cat')}
             />
@@ -177,6 +179,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
               selected={petType === 'other'}
               mode="contained"
               icon="google-downasaur"
+              accessibilityLabel={t('buttons:other')}
               size={40}
               onPress={() => setPetType('other')}
             />

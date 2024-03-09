@@ -5,5 +5,8 @@
     "continue": "Continue",
     "save": "Save",
     "close": "Close",
-    "yes": "Yes!"
+    "yes": "Yes!",
+    "dog": "Dog",
+    "cat": "Cat",
+    "other": "Other"
 }
