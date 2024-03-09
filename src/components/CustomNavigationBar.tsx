@@ -7,7 +7,7 @@ import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {requestPurchase, useIAP} from 'react-native-iap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {EVENT_NAMES, event} from '../app/event';
 
 interface CoffeeButtonProps {
@@ -94,7 +94,11 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
 
   const handlePurchase = async () => {
     setBuyCoffeeVisible(false);
-    await requestPurchase({skus: ['eu.sboo.ralph.coffee']});
+    if (Platform.OS === 'ios') {
+      await requestPurchase({sku: 'eu.sboo.ralph.coffee'});
+    } else if (Platform.OS === 'android') {
+      await requestPurchase({skus: ['eu.sboo.ralph.coffee']});
+    }
   };
 
   return (
