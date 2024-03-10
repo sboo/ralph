@@ -165,7 +165,10 @@ const App: React.FC = () => {
           <Stack.Screen
             name="AddMeasurement"
             component={AddMeasurement}
-            options={{headerShown: false}}
+            options={{
+              title: t('measurements:title', {petName}),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
           />
           <Stack.Screen
             name="EditMeasurement"
