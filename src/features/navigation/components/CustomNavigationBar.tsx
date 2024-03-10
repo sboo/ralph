@@ -1,14 +1,20 @@
-import {Appbar, Button, Dialog, Portal, Text} from 'react-native-paper';
+import {
+  Appbar,
+  Button,
+  Dialog,
+  Portal,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import {getHeaderTitle} from '@react-navigation/elements';
 import React, {useEffect} from 'react';
-import {useTheme} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {requestPurchase, useIAP} from 'react-native-iap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../support/storageKeys';
-import {StyleSheet, Platform} from 'react-native';
-import {EVENT_NAMES, event} from '../features/event';
+import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
+import {Platform, StyleSheet} from 'react-native';
+import {event, EVENT_NAMES} from '@/features/events';
 
 interface CoffeeButtonProps {
   coffeePurchased: string | null;

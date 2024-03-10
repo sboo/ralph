@@ -1,13 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../support/storageKeys';
-import {Text, Avatar} from 'react-native-paper';
-import {useTheme} from 'react-native-paper';
-import {launchImageLibrary, MediaType} from 'react-native-image-picker';
-import {EVENT_NAMES, event} from '@/features/event';
-import AvatarPicker from '@/support/components/AvatarPicker.tsx';
+import {Text, useTheme} from 'react-native-paper';
+import AvatarPicker from '@/features/avatar/components/AvatarPicker.tsx';
 
 interface HomeHeaderPros {
   petName: string;

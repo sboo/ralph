@@ -1,7 +1,7 @@
 import React from 'react';
 import {Circle} from 'react-native-svg';
 import {useTheme} from 'react-native-paper';
-import PulsatingCircle from './PulsatingCircle';
+import PulsatingCircle from '@/support/components/PulsatingCircle.tsx';
 
 interface CustomDotProps {
   value: number;

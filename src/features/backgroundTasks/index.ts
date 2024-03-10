@@ -1,8 +1,8 @@
 import BackgroundFetch from 'react-native-background-fetch';
 import notifee from '@notifee/react-native';
-import {todaysMeasurementDone} from '../support/dailyMeasurementStatus';
+import {todaysMeasurementDone} from '@/features/measurements/helpers/dailyMeasurementStatus.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../support/storageKeys';
+import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import moment from 'moment';
 import i18next from 'i18next';
 

@@ -1,26 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
+  Button,
+  IconButton,
+  Switch,
   Text,
   TextInput,
-  Button,
   useTheme,
-  Avatar,
-  Switch,
-  IconButton,
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../support/storageKeys';
-import {EVENT_NAMES, event} from '../features/event';
+import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
+import {event, EVENT_NAMES} from '@/features/events';
 import {useTranslation} from 'react-i18next';
-import {launchImageLibrary, type MediaType} from 'react-native-image-picker';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {
   initBackgroundFetch,
-  stopBackgroundTasks,
   scheduleReminderTask,
-} from '../backgroundTasks';
-import AvatarPicker from "@/support/components/AvatarPicker.tsx";
+  stopBackgroundTasks,
+} from '@/features/backgroundTasks';
+import AvatarPicker from '@/features/avatar/components/AvatarPicker.tsx';
 
 interface WelcomeScreenNavigationProps {
   onSettingsSaved: () => void;

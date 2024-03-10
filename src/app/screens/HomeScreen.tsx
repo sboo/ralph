@@ -1,27 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
-  StyleSheet,
   Dimensions,
-  View,
-  ScrollView,
   SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
 } from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '@/support/storageKeys.ts';
-import {FAB, Icon} from 'react-native-paper';
-import {EVENT_NAMES, event} from '../../features/event';
+import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
+import {FAB, Icon, useTheme} from 'react-native-paper';
+import {event, EVENT_NAMES} from '@/features/events';
 import {useQuery} from '@realm/react';
-import {Measurement} from '@/models/Measurement';
-import {useTheme} from 'react-native-paper';
-import {HomeScreenNavigationProps} from '../navigation/types';
-import HomeHeader from '@/components/HomeHeader';
-import CustomDot from '../../components/CustomChartDot';
+import {Measurement} from '@/app/models/Measurement';
+import {HomeScreenNavigationProps} from '@/features/navigation/types.tsx';
+import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
+import CustomDot from '@/support/components/CustomChartDot.tsx';
 import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
-import QuotesAndInformation from '../../components/QuotesAndInformation';
+import QuotesAndInformation from '@/support/components/QuotesAndInformation.tsx';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();

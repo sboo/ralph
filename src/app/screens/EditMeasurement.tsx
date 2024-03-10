@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../../support/storageKeys';
-import MeasurementItem from '../../components/MeasurementItem';
-import {useRealm, useObject} from '@realm/react';
+import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
+import MeasurementItem from '@/features/measurements/components/MeasurementItem.tsx';
+import {useObject, useRealm} from '@realm/react';
 import {useTheme} from 'react-native-paper';
-import {Measurement} from '../../models/Measurement';
+import {Measurement} from '@/app/models/Measurement';
 import {BSON} from 'realm';
-import {EditMeasurementScreenNavigationProps} from '../navigation/types';
+import {EditMeasurementScreenNavigationProps} from '@/features/navigation/types.tsx';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 

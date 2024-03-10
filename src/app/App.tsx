@@ -1,15 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Platform, StatusBar} from 'react-native';
+import {Platform, StatusBar, useColorScheme} from 'react-native';
 import {
-  PaperProvider,
-  MD3LightTheme,
-  MD3DarkTheme,
   adaptNavigationTheme,
+  MD3DarkTheme,
+  MD3LightTheme,
+  PaperProvider,
 } from 'react-native-paper';
 import {
-  NavigationContainer,
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
+  NavigationContainer,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -19,17 +19,16 @@ import AddMeasurement from './screens/AddMeasurement';
 import EditMeasurement from './screens/EditMeasurement';
 import IapScreen from './screens/IapScreen';
 import AllMeasurementsScreen from './screens/AllMeasurementsScreen';
-import {RootStackParamList} from './navigation/types';
-import defaultColors from '../themes/lightTheme.json';
-import darkColors from '../themes/darkTheme.json';
+import {RootStackParamList} from '@/features/navigation/types.tsx';
+import defaultColors from '@/app/themes/lightTheme.json';
+import darkColors from '@/app/themes/darkTheme.json';
 import merge from 'deepmerge';
-import {useColorScheme} from 'react-native';
-import CustomNavigationBar from '../components/CustomNavigationBar';
+import CustomNavigationBar from '@/features/navigation/components/CustomNavigationBar.tsx';
 import {useTranslation} from 'react-i18next';
-import {withIAPContext, useIAP} from 'react-native-iap';
-import {STORAGE_KEYS} from '../support/storageKeys';
+import {useIAP, withIAPContext} from 'react-native-iap';
+import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {EVENT_NAMES, event} from '../features/event';
+import {event, EVENT_NAMES} from '@/features/events';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('dark-content');
@@ -55,16 +54,20 @@ const App: React.FC = () => {
   }, []);
 
   const restorePurchases = useCallback(async () => {
-    await getPurchaseHistory();
-    const purchased =
-      purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
-      -1;
-    await AsyncStorage.setItem(
-      STORAGE_KEYS.COFFEE_PURCHASED,
-      purchased ? 'true' : 'false',
-    );
-    await AsyncStorage.setItem(STORAGE_KEYS.FRESH_INSTALL, 'false');
-    event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);
+    let purchased = false;
+    try {
+      await getPurchaseHistory();
+      purchased =
+        purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
+        -1;
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.COFFEE_PURCHASED,
+        purchased ? 'true' : 'false',
+      );
+    } finally {
+      await AsyncStorage.setItem(STORAGE_KEYS.FRESH_INSTALL, 'false');
+      event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);
+    }
   }, [getPurchaseHistory, purchaseHistory]);
 
   useEffect(() => {

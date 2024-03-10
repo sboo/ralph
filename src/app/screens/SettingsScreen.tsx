@@ -1,9 +1,9 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
-import {SettingsScreenNavigationProps} from '../navigation/types';
+import {SettingsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import {useTranslation} from 'react-i18next';
-import Settings from '../../components/Settings';
+import Settings from '@/features/settings/components/Settings.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 
 const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, FlatList, StyleSheet, Text} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {Realm} from '@realm/react';
-import {Measurement} from '../models/Measurement';
+import {Measurement} from '@/app/models/Measurement.ts';
 
 type Props = {
   measurements: Realm.Results<Measurement & Realm.Object>;

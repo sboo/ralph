@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, ScrollView, View} from 'react-native';
-import {Text, Button} from 'react-native-paper';
-import RatingButtons from './RatingButtons';
-import {Measurement} from '../models/Measurement';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {Button, Text} from 'react-native-paper';
+import RatingButtons from '@/support/components/RatingButtons.tsx';
+import {Measurement} from '@/app/models/Measurement.ts';
 
 interface Props {
   petName: string;

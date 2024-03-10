@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {launchImageLibrary, MediaType} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '@/support/storageKeys.ts';
-import {event, EVENT_NAMES} from '@/features/event';
+import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
+import {event, EVENT_NAMES} from '@/features/events';
 import {Avatar} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
 

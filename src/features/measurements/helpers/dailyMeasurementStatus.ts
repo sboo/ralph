@@ -1,5 +1,5 @@
 import Realm from 'realm';
-import {Measurement} from '../models/Measurement';
+import {Measurement} from '@/app/models/Measurement.ts';
 import moment from 'moment';
 
 export const todaysMeasurementDone = async (): Promise<boolean> => {

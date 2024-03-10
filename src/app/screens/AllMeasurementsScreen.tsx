@@ -1,14 +1,15 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {useQuery} from '@realm/react';
-import {useTheme} from 'react-native-paper';
-import {Measurement} from '../../models/Measurement';
-import {AllMeasurementsScreenNavigationProps} from '../navigation/types';
-import {List} from 'react-native-paper';
+import {List, useTheme} from 'react-native-paper';
+import {Measurement} from '@/app/models/Measurement';
+import {AllMeasurementsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 
-const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({navigation}) => {
+const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({
+  navigation,
+}) => {
   const {t} = useTranslation();
   const theme = useTheme();
   const measurements = useQuery(Measurement, collection =>
