@@ -116,6 +116,16 @@ const App: React.FC = () => {
     };
 
     fetchPetName();
+
+    const onProfileSet = () => {
+      fetchPetName();
+    };
+
+    event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
+
+    return () => {
+      event.off(EVENT_NAMES.PROFILE_SET, onProfileSet);
+    };
   }, []);
 
   // Change status bar color based on route
