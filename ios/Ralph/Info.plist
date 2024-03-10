@@ -5,6 +5,7 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.transistorsoft.fetch</string>
+		<string>eu.sboo.ralph.remindertask</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
