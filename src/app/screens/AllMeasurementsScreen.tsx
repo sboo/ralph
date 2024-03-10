@@ -1,15 +1,16 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {useQuery} from '@realm/react';
+import {useTheme} from 'react-native-paper';
 import {Measurement} from '../../models/Measurement';
 import {AllMeasurementsScreenNavigationProps} from '../navigation/types';
 import {List} from 'react-native-paper';
+import LinearGradient from 'react-native-linear-gradient';
 
-const AllMeasurementsScreen: React.FC<
-  AllMeasurementsScreenNavigationProps
-> = () => {
+const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
+  const theme = useTheme();
   const measurements = useQuery(Measurement, collection =>
     collection.sorted('createdAt', true),
   );
@@ -34,31 +35,59 @@ const AllMeasurementsScreen: React.FC<
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {measurements.map((measurement, index) => (
-        <List.Item
-          key={index}
-          title={measurement.createdAt.toLocaleDateString()}
-          description={`${t('measurements:score')}: ${measurement.score}`}
-          // eslint-disable-next-line react/no-unstable-nested-components
-          left={() => (
-            <List.Icon
-              color={getIconColor(measurement.score)}
-              icon={getIcon(measurement.score)}
+    <SafeAreaView
+      style={{
+        backgroundColor: theme.colors.primaryContainer,
+        ...styles.container,
+      }}>
+      <LinearGradient
+        colors={[
+          theme.colors.primaryContainer,
+          theme.colors.background,
+          theme.colors.primaryContainer,
+        ]}
+        locations={[0, 0.75, 1]}
+        style={styles.gradient}>
+        <ScrollView style={styles.scrollview}>
+          {measurements.map((measurement, index) => (
+            <List.Item
+              key={index}
+              title={measurement.createdAt.toLocaleDateString()}
+              description={`${t('measurements:score')}: ${measurement.score}`}
+              // eslint-disable-next-line react/no-unstable-nested-components
+              left={() => (
+                <List.Icon
+                  color={getIconColor(measurement.score)}
+                  icon={getIcon(measurement.score)}
+                />
+              )}
+              // eslint-disable-next-line react/no-unstable-nested-components
+              right={() => <List.Icon color="#afafaf" icon="pencil" />}
+              onPress={() => {
+                navigation.navigate('EditMeasurement', {
+                  measurementId: measurement._id.toHexString(),
+                });
+              }}
             />
-          )}
-          // eslint-disable-next-line react/no-unstable-nested-components
-          right={() => <List.Icon color="#afafaf" icon="pencil" />}
-        />
-      ))}
-    </ScrollView>
+          ))}
+        </ScrollView>
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  gradient: {
+    flex: 1,
     padding: 20,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+  scrollview: {
+    flex: 1,
   },
   title: {
     fontSize: 22,

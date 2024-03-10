@@ -1,6 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, Dimensions, View} from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../../support/storageKeys';
@@ -146,63 +152,78 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   };
 
   return (
-    <LinearGradient
-      colors={[theme.colors.primaryContainer, theme.colors.background]}
-      style={styles.container}>
-      <HomeHeader petName={petName} />
-      <View style={styles.bodyContainer}>
-        <View style={styles.chartContainer}>
-          <View style={styles.chartLabels}>
-            <Icon
-              size={20}
-              source={'emoticon-excited-outline'}
-              color="#008000"
-            />
-            <Icon size={20} source={'emoticon-happy-outline'} color="#FFA500" />
-            <Icon size={20} source={'emoticon-sad-outline'} color="#FF0000" />
-          </View>
-          <LineChart
-            data={data as LineChartData}
-            width={Dimensions.get('window').width - 40}
-            height={200}
-            yAxisLabel=""
-            yAxisSuffix=""
-            fromZero={true}
-            withInnerLines={false}
-            withOuterLines={false}
-            withHorizontalLabels={false}
-            chartConfig={{
-              backgroundGradientFrom: theme.colors.primaryContainer,
-              backgroundGradientTo: theme.colors.primaryContainer,
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 1,
-              decimalPlaces: 0, // optional, defaults to 2dp
-              color: () => theme.colors.onPrimaryContainer,
-              labelColor: () => theme.colors.onPrimaryContainer,
-              propsForDots: {
-                r: '6',
-                strokeWidth: '2',
-                stroke: '#fff',
-              },
-            }}
-            renderDotContent={({x, y, index, indexData}): any => (
-              <CustomDot
-                key={index}
-                value={indexData}
-                index={index}
-                x={x}
-                y={y}
-                scores={data.datasets[0].data as number[]}
+    <SafeAreaView
+      style={{
+        backgroundColor: theme.colors.primaryContainer,
+        ...styles.container,
+      }}>
+      <LinearGradient
+        colors={[
+          theme.colors.primaryContainer,
+          theme.colors.background,
+          theme.colors.primaryContainer,
+        ]}
+        locations={[0, 0.75, 1]}
+        style={styles.gradient}>
+        <HomeHeader petName={petName} />
+        <ScrollView style={styles.bodyContainer}>
+          <View style={styles.chartContainer}>
+            <View style={styles.chartLabels}>
+              <Icon
+                size={20}
+                source={'emoticon-excited-outline'}
+                color="#008000"
               />
-            )}
-            bezier
-            style={styles.chart}
-            onDataPointClick={({index}) => {
-              addOrEditMeasurement(dateRange[index]);
-            }}
-          />
-        </View>
-        <QuotesAndInformation averageScore={averageScore} />
+              <Icon
+                size={20}
+                source={'emoticon-happy-outline'}
+                color="#FFA500"
+              />
+              <Icon size={20} source={'emoticon-sad-outline'} color="#FF0000" />
+            </View>
+            <LineChart
+              data={data as LineChartData}
+              width={Dimensions.get('window').width - 40}
+              height={200}
+              yAxisLabel=""
+              yAxisSuffix=""
+              fromZero={true}
+              withInnerLines={false}
+              withOuterLines={false}
+              withHorizontalLabels={false}
+              chartConfig={{
+                backgroundGradientFrom: theme.colors.primaryContainer,
+                backgroundGradientTo: theme.colors.primaryContainer,
+                backgroundGradientFromOpacity: 0,
+                backgroundGradientToOpacity: 1,
+                decimalPlaces: 0, // optional, defaults to 2dp
+                color: () => theme.colors.onPrimaryContainer,
+                labelColor: () => theme.colors.onPrimaryContainer,
+                propsForDots: {
+                  r: '6',
+                  strokeWidth: '2',
+                  stroke: '#fff',
+                },
+              }}
+              renderDotContent={({x, y, index, indexData}): any => (
+                <CustomDot
+                  key={index}
+                  value={indexData}
+                  index={index}
+                  x={x}
+                  y={y}
+                  scores={data.datasets[0].data as number[]}
+                />
+              )}
+              bezier
+              style={styles.chart}
+              onDataPointClick={({index}) => {
+                addOrEditMeasurement(dateRange[index]);
+              }}
+            />
+          </View>
+          <QuotesAndInformation averageScore={averageScore} />
+        </ScrollView>
         <FAB.Group
           visible={true}
           open={isFabOpen}
@@ -221,13 +242,16 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}
         />
-      </View>
-    </LinearGradient>
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  gradient: {
     flex: 1,
   },
   bodyContainer: {

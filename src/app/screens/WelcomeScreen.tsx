@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {WelcomeScreenNavigationProps} from '../navigation/types';
 import {useTranslation} from 'react-i18next';
@@ -20,17 +20,31 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   };
 
   return (
-    <LinearGradient
-      colors={[theme.colors.primaryContainer, theme.colors.background]}
-      style={styles.container}>
-      <Text variant="headlineLarge">{t('welcome')}</Text>
-      <Settings onSettingsSaved={onSettingsSaved} />
-    </LinearGradient>
+    <SafeAreaView
+      style={{
+        backgroundColor: theme.colors.primaryContainer,
+        ...styles.container,
+      }}>
+      <LinearGradient
+        colors={[
+          theme.colors.primaryContainer,
+          theme.colors.background,
+          theme.colors.primaryContainer,
+        ]}
+        locations={[0, 0.75, 1]}
+        style={styles.gradient}>
+        <Text variant="headlineLarge">{t('welcome')}</Text>
+        <Settings onSettingsSaved={onSettingsSaved} />
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  gradient: {
     flex: 1,
     padding: 20,
     justifyContent: 'flex-start',
