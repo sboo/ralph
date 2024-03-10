@@ -29,9 +29,10 @@ import {useIAP, withIAPContext} from 'react-native-iap';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {event, EVENT_NAMES} from '@/features/events';
+import type {NavigationState} from '@react-navigation/routers';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-StatusBar.setBarStyle('dark-content');
+StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('rgba(0,0,0,0)');
   StatusBar.setTranslucent(true);
@@ -70,6 +71,7 @@ const App: React.FC = () => {
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
+  // Check if fresh install and restore purchases
   useEffect(() => {
     const initApp = async () => {
       console.log('initApp');
@@ -82,12 +84,14 @@ const App: React.FC = () => {
     initApp();
   }, [isFreshInstall, restorePurchases]);
 
+  // Log purchase error
   useEffect(() => {
     if (currentPurchaseError) {
       console.warn('currentPurchaseError', currentPurchaseError);
     }
   }, [currentPurchaseError]);
 
+  // Handle purchase
   useEffect(() => {
     const setCoffeePurchased = async () => {
       await AsyncStorage.setItem(STORAGE_KEYS.COFFEE_PURCHASED, 'true');
@@ -102,6 +106,7 @@ const App: React.FC = () => {
     }
   }, [currentPurchase, finishTransaction]);
 
+  // Fetch pet name from storage
   useEffect(() => {
     const fetchPetName = async () => {
       const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
@@ -112,6 +117,25 @@ const App: React.FC = () => {
 
     fetchPetName();
   }, []);
+
+  // Change status bar color based on route
+  const onNavigationStateChange = useCallback(
+    (state: NavigationState | undefined) => {
+      if (!state) {
+        return;
+      }
+      const activeRoute = state.routes[state.index];
+      switch (activeRoute.name) {
+        case 'Home':
+          StatusBar.setBarStyle('light-content');
+          break;
+        default:
+          StatusBar.setBarStyle('dark-content');
+          break;
+      }
+    },
+    [],
+  );
 
   const {LightTheme, DarkTheme} = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
@@ -137,7 +161,7 @@ const App: React.FC = () => {
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer>
+      <NavigationContainer onStateChange={onNavigationStateChange}>
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
