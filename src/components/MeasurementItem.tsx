@@ -62,8 +62,7 @@ const MeasurementItem: React.FC<Props> = ({
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>{t('measurements:title')}</Text>
-      <Text style={styles.label}>
+      <Text variant={'titleSmall'} style={styles.date}>
         {t('date')}: {date.toLocaleDateString()}
       </Text>
       <Text style={styles.label}>{t('measurements:hurt')}</Text>
@@ -130,8 +129,9 @@ const MeasurementItem: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
+  container: {},
+  date: {
+    marginBottom: 20,
   },
   label: {
     fontSize: 16,

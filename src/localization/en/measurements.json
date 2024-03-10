@@ -2,7 +2,7 @@
     "todaysMeasurement": "Today's Measurement",
     "allMeasurements": "All Measurements",
     "pastMeasurements": "Past Measurements",
-    "title": "Record Today's Quality of Life",
+    "title": "How was {{petName}}'s day?",
     "hurt": "Hurt",
     "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
     "hunger": "Hunger",

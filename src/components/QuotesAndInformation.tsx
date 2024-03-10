@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   quote: {
     marginTop: 45,
     borderRadius: 15,
+    marginBottom: 100,
   },
   IconButton: {
     backgroundColor: 'transparent',

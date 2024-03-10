@@ -1,4 +1,5 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Platform, StatusBar} from 'react-native';
 import {
   PaperProvider,
   MD3LightTheme,
@@ -31,9 +32,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {EVENT_NAMES, event} from './event';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+StatusBar.setBarStyle('dark-content');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+  StatusBar.setTranslucent(true);
+}
 
 const App: React.FC = () => {
   const {t} = useTranslation();
+  const [petName, setPetName] = useState('');
   const {
     purchaseHistory,
     currentPurchase,
@@ -91,6 +98,17 @@ const App: React.FC = () => {
       });
     }
   }, [currentPurchase, finishTransaction]);
+
+  useEffect(() => {
+    const fetchPetName = async () => {
+      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
+      if (name !== null) {
+        setPetName(name);
+      }
+    };
+
+    fetchPetName();
+  }, []);
 
   const {LightTheme, DarkTheme} = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
@@ -152,12 +170,18 @@ const App: React.FC = () => {
           <Stack.Screen
             name="EditMeasurement"
             component={EditMeasurement}
-            options={{headerShown: false}}
+            options={{
+              title: t('measurements:title', {petName}),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
           />
           <Stack.Screen
             name="AllMeasurements"
             component={AllMeasurementsScreen}
-            options={{title: t('measurements:allMeasurements')}}
+            options={{
+              title: t('measurements:allMeasurements'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
           />
           <Stack.Screen name="IapScreen" component={IapScreen} />
         </Stack.Navigator>

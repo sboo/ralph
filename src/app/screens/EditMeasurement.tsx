@@ -7,7 +7,8 @@ import {useTheme} from 'react-native-paper';
 import {Measurement} from '../../models/Measurement';
 import {BSON} from 'realm';
 import {EditMeasurementScreenNavigationProps} from '../navigation/types';
-import {View} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
   route,
@@ -55,16 +56,41 @@ const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
   }, []);
 
   return (
-    <View style={{backgroundColor: theme.colors.background}}>
-      <MeasurementItem
-        date={measurement!.createdAt}
-        petName={petName}
-        measurement={measurement}
-        onCancel={() => navigation.goBack()}
-        onSubmit={handleSubmit}
-      />
-    </View>
+    <SafeAreaView
+      style={{
+        backgroundColor: theme.colors.primaryContainer,
+        ...styles.container,
+      }}>
+      <LinearGradient
+        colors={[
+          theme.colors.primaryContainer,
+          theme.colors.background,
+          theme.colors.primaryContainer,
+        ]}
+        locations={[0, 0.75, 1]}
+        style={styles.gradient}>
+        <MeasurementItem
+          date={measurement!.createdAt}
+          petName={petName}
+          measurement={measurement}
+          onCancel={() => navigation.goBack()}
+          onSubmit={handleSubmit}
+        />
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+});
 
 export default EditMeasurement;

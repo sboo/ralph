@@ -8,6 +8,7 @@ import {Measurement} from '../../models/Measurement';
 import {AddMeasurementScreenNavigationProps} from '../navigation/types';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import {SafeAreaView, StyleSheet} from 'react-native';
 
 const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
   route,
@@ -56,16 +57,40 @@ const AddMeasurement: React.FC<AddMeasurementScreenNavigationProps> = ({
   }, []);
 
   return (
-    <LinearGradient
-      colors={[theme.colors.primaryContainer, theme.colors.background]}>
-      <MeasurementItem
-        date={date}
-        petName={petName}
-        onCancel={() => navigation.goBack()}
-        onSubmit={handleSubmit}
-      />
-    </LinearGradient>
+    <SafeAreaView
+      style={{
+        backgroundColor: theme.colors.primaryContainer,
+        ...styles.container,
+      }}>
+      <LinearGradient
+        colors={[
+          theme.colors.primaryContainer,
+          theme.colors.background,
+          theme.colors.primaryContainer,
+        ]}
+        locations={[0, 0.75, 1]}
+        style={styles.gradient}>
+        <MeasurementItem
+          date={date}
+          petName={petName}
+          onCancel={() => navigation.goBack()}
+          onSubmit={handleSubmit}
+        />
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+});
 
 export default AddMeasurement;
