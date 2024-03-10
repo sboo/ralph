@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../../support/storageKeys';
+import {STORAGE_KEYS} from '@/support/storageKeys.ts';
 import {FAB, Icon} from 'react-native-paper';
-import {EVENT_NAMES, event} from '../event';
+import {EVENT_NAMES, event} from '../../features/event';
 import {useQuery} from '@realm/react';
-import {Measurement} from '../../models/Measurement';
+import {Measurement} from '@/models/Measurement';
 import {useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '../navigation/types';
-import HomeHeader from '../../components/HomeHeader';
+import HomeHeader from '@/components/HomeHeader';
 import CustomDot from '../../components/CustomChartDot';
 import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';

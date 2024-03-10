@@ -11,7 +11,7 @@ import {
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
-import {EVENT_NAMES, event} from '../app/event';
+import {EVENT_NAMES, event} from '../features/event';
 import {useTranslation} from 'react-i18next';
 import {launchImageLibrary, type MediaType} from 'react-native-image-picker';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
@@ -20,6 +20,7 @@ import {
   stopBackgroundTasks,
   scheduleReminderTask,
 } from '../backgroundTasks';
+import AvatarPicker from "@/support/components/AvatarPicker.tsx";
 
 interface WelcomeScreenNavigationProps {
   onSettingsSaved: () => void;
@@ -34,7 +35,6 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
   const theme = useTheme();
   const [petType, setPetType] = useState<string>('');
   const [petName, setPetName] = useState<string>('');
-  const [avatar, setAvatar] = useState<string>();
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,20 +44,12 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
         setPetName(name);
       }
     };
-    const fetchAvatar = async () => {
-      const uri = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
-      if (uri !== null) {
-        setAvatar(uri);
-      }
-    };
-
     const fetchPetType = async () => {
       const type = await AsyncStorage.getItem(STORAGE_KEYS.PET_TYPE);
       setPetType(type ?? '');
     };
 
     fetchPetName();
-    fetchAvatar();
     fetchPetType();
   }, []);
 
@@ -75,39 +67,6 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
     };
     checkPermissions();
   }, []);
-
-  const openImagePicker = () => {
-    const options = {
-      mediaType: 'photo' as MediaType,
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.log('Image picker error: ', response.errorMessage);
-      } else {
-        let imageUri = response.assets?.[0]?.uri;
-        console.log('Image URI: ', imageUri);
-        if (imageUri !== undefined) {
-          storeAvatar(imageUri).then(() => {
-            setAvatar(imageUri);
-          });
-        }
-      }
-    });
-  };
-
-  const storeAvatar = async (uri: string) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEYS.AVATAR, uri);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const storePetInfo = async () => {
     try {
@@ -193,12 +152,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
         />
         <View style={styles.inputRow}>
           <Text variant="labelLarge">{t('settings:avatarInputLabel')}</Text>
-          <Avatar.Image
-            size={65}
-            style={styles.avatar}
-            source={avatar ? {uri: avatar} : require('../assets/camera.png')}
-            onTouchStart={openImagePicker}
-          />
+          <AvatarPicker />
         </View>
         <View style={styles.inputRow}>
           <Text variant="labelLarge">

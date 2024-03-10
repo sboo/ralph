@@ -8,7 +8,7 @@ import {requestPurchase, useIAP} from 'react-native-iap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
 import {StyleSheet, Platform} from 'react-native';
-import {EVENT_NAMES, event} from '../app/event';
+import {EVENT_NAMES, event} from '../features/event';
 
 interface CoffeeButtonProps {
   coffeePurchased: string | null;

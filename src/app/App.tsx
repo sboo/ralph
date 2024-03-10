@@ -29,7 +29,7 @@ import {useTranslation} from 'react-i18next';
 import {withIAPContext, useIAP} from 'react-native-iap';
 import {STORAGE_KEYS} from '../support/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {EVENT_NAMES, event} from './event';
+import {EVENT_NAMES, event} from '../features/event';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('dark-content');

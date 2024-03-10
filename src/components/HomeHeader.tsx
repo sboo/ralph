@@ -5,8 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../support/storageKeys';
 import {Text, Avatar} from 'react-native-paper';
 import {useTheme} from 'react-native-paper';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {EVENT_NAMES, event} from '../app/event';
+import {launchImageLibrary, MediaType} from 'react-native-image-picker';
+import {EVENT_NAMES, event} from '@/features/event';
+import AvatarPicker from '@/support/components/AvatarPicker.tsx';
 
 interface HomeHeaderPros {
   petName: string;
@@ -15,61 +16,6 @@ interface HomeHeaderPros {
 const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const [avatar, setAvatar] = useState<string>();
-
-  const openImagePicker = () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.log('Image picker error: ', response.errorMessage);
-      } else {
-        let imageUri = response.assets?.[0]?.uri;
-        console.log('Image URI: ', imageUri);
-        if (imageUri !== undefined) {
-          storeAvatar(imageUri).then(() => {
-            setAvatar(imageUri);
-          });
-        }
-      }
-    });
-  };
-
-  const storeAvatar = async (uri: string) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEYS.AVATAR, uri);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchAvatar = async () => {
-      const uri = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
-      if (uri !== null) {
-        console.log(typeof uri, uri);
-        setAvatar(uri);
-      }
-    };
-    fetchAvatar();
-
-    const onProfileSet = () => {
-      fetchAvatar();
-    };
-
-    event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
-
-    return () => {
-      event.off(EVENT_NAMES.PROFILE_SET, onProfileSet);
-    };
-  }, []);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -96,12 +42,7 @@ const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
           {petName}
         </Text>
       </View>
-      <Avatar.Image
-        size={65}
-        style={styles.avatar}
-        source={avatar ? {uri: avatar} : require('../assets/camera.png')}
-        onTouchStart={openImagePicker}
-      />
+      <AvatarPicker />
     </View>
   );
 };
