@@ -2,7 +2,7 @@
     "todaysMeasurement": "Medición de Hoy",
     "allMeasurements": "Todas las Mediciones",
     "pastMeasurements": "Mediciones Pasadas",
-    "title": "Registrar la Calidad de Vida de Hoy",
+    "title": "¿Cómo fue el día de {{petName}}?",
     "hurt": "Dolor",
     "hurtInfo": "¿Está {{petName}} libre de dolor? ¿O se puede manejar exitosamente el dolor de {{petName}}?",
     "hunger": "Hambre",

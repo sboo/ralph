@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SegmentedButtons} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 
 interface Props {
   initialRating: string;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const RatingButtons: React.FC<Props> = ({initialRating, onRatingChange}) => {
+  const {t} = useTranslation();
   const [selectedRating, setSelectedRating] = useState<string>(initialRating);
 
   useEffect(() => {
@@ -29,17 +31,17 @@ const RatingButtons: React.FC<Props> = ({initialRating, onRatingChange}) => {
         buttons={[
           {
             value: '0',
-            label: 'Bad',
+            label: t('buttons:bad'),
             icon: 'emoticon-sad-outline',
           },
           {
             value: '5',
-            label: 'Good',
+            label: t('buttons:good'),
             icon: 'emoticon-happy-outline',
           },
           {
             value: '10',
-            label: 'Excellent',
+            label: t('buttons:excellent'),
             icon: 'emoticon-excited-outline',
           },
         ]}

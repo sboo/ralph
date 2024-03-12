@@ -8,5 +8,8 @@
     "yes": "Yes!",
     "dog": "Dog",
     "cat": "Cat",
-    "other": "Other"
+    "other": "Other",
+    "bad": "Bad",
+    "good": "Good",
+    "excellent": "Excellent"
 }
