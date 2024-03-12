@@ -17,7 +17,7 @@ export const initBackgroundFetch = async () => {
       enableHeadless: true,
       startOnBoot: true,
       // Android options
-      forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
+      forceAlarmManager: true, // <-- Set true to bypass JobScheduler.
       requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // Default
       requiresCharging: false, // Default
       requiresDeviceIdle: false, // Default
