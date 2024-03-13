@@ -17,7 +17,7 @@ export const initBackgroundFetch = async () => {
       enableHeadless: true,
       startOnBoot: true,
       // Android options
-      forceAlarmManager: true, // <-- Set true to bypass JobScheduler.
+      forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
       requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // Default
       requiresCharging: false, // Default
       requiresDeviceIdle: false, // Default
@@ -126,7 +126,7 @@ export const scheduleReminderTask = async () => {
     taskId: TASK_IDS.REMINDER_TASK,
     delay: 100000,
     periodic: true,
-    forceAlarmManager: true,
+    forceAlarmManager: false,
   });
 };
 

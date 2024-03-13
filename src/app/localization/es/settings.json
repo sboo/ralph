@@ -2,5 +2,6 @@
     "avatarInputLabel": "Sube una foto de tu mascota",
     "petNameInputLabel": "Ingresa el nombre de tu mascota",
     "enableNotificationsLabel": "Habilitar notificaciones de recordatorio",
-    "petTypeInputLabel": "Tu mascota es un(a)"
+    "petTypeInputLabel": "Tu mascota es un(a)",
+    "selectLanguageLabel": "Seleccionar idioma"
 }

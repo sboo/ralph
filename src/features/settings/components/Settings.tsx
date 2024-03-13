@@ -19,6 +19,9 @@ import {
   stopBackgroundTasks,
 } from '@/features/backgroundTasks';
 import AvatarPicker from '@/features/avatar/components/AvatarPicker.tsx';
+import {AVAILABLE_LANGUAGES} from '@/app/localization/i18n';
+import CountryFlag from 'react-native-country-flag';
+import i18next from 'i18next';
 
 interface WelcomeScreenNavigationProps {
   onSettingsSaved: () => void;
@@ -35,6 +38,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
   const [petName, setPetName] = useState<string>('');
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
 
+  // Load pet name and type from storage
   useEffect(() => {
     const fetchPetName = async () => {
       const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
@@ -51,6 +55,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
     fetchPetType();
   }, []);
 
+  // Load reminders enabled from storage
   useEffect(() => {
     const checkPermissions = async () => {
       const settings = await notifee.getNotificationSettings();
@@ -66,6 +71,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
     checkPermissions();
   }, []);
 
+  // Store pet name and type in storage
   const storePetInfo = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.PET_NAME, petName);
@@ -80,6 +86,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
     }
   };
 
+  // Toggle reminders
   const toggleReminders = async () => {
     let enabled = !remindersEnabled;
 
@@ -114,14 +121,16 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
     <View style={styles.container}>
       <View style={styles.profileInput}>
         <View style={styles.inputRow}>
-          <Text variant="labelLarge">{t('settings:petTypeInputLabel')}</Text>
+          <Text style={styles.inputLabel} variant="labelLarge">
+            {t('settings:petTypeInputLabel')}
+          </Text>
           <View style={styles.inputRowPet}>
             <IconButton
               selected={petType === 'dog'}
               mode="contained"
               icon="dog"
               accessibilityLabel={t('buttons:dog')}
-              size={40}
+              size={32}
               onPress={() => setPetType('dog')}
             />
             <IconButton
@@ -129,7 +138,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
               mode="contained"
               icon="cat"
               accessibilityLabel={t('buttons:cat')}
-              size={40}
+              size={32}
               onPress={() => setPetType('cat')}
             />
             <IconButton
@@ -137,7 +146,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
               mode="contained"
               icon="google-downasaur"
               accessibilityLabel={t('buttons:other')}
-              size={40}
+              size={32}
               onPress={() => setPetType('other')}
             />
           </View>
@@ -157,6 +166,24 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
             {t('settings:enableNotificationsLabel')}
           </Text>
           <Switch value={remindersEnabled} onValueChange={toggleReminders} />
+        </View>
+        <View style={styles.inputRow}>
+          <Text variant="labelLarge">{t('settings:selectLanguageLabel')}</Text>
+          <View style={styles.inputFlags}>
+            {AVAILABLE_LANGUAGES.map(lang => (
+              <IconButton
+                key={lang.langCode}
+                // eslint-disable-next-line react/no-unstable-nested-components
+                icon={() => <CountryFlag isoCode={lang.isoCode} size={36} />}
+                onPress={() => {
+                  i18next.changeLanguage(lang.langCode);
+                }}
+                accessibilityLabel={'lang'}
+                size={20}
+                mode={'contained'}
+              />
+            ))}
+          </View>
         </View>
       </View>
       <View style={styles.buttons}>
@@ -186,12 +213,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
+    height: 50,
   },
   inputRowPet: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
+  },
+  inputFlags: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    justifyContent: 'flex-end',
+  },
+  inputLabel: {
+    flexShrink: 1,
   },
   textInput: {
     alignSelf: 'stretch',

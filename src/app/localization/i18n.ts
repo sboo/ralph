@@ -1,8 +1,19 @@
 import i18next from 'i18next';
-import {initReactI18next} from 'react-i18next';
-import RNLanguageDetector from '@os-team/i18next-react-native-language-detector';
+import {ReactNativeLanguageDetector} from 'react-native-localization-settings';
 import en from './en';
 import es from './es';
+import {initReactI18next} from 'react-i18next';
+
+export const AVAILABLE_LANGUAGES = [
+  {
+    langCode: 'en',
+    isoCode: 'gb',
+  },
+  {
+    langCode: 'es',
+    isoCode: 'es',
+  },
+];
 
 const resources = {
   en,
@@ -11,7 +22,7 @@ const resources = {
 
 const defaultNS = 'common';
 
-i18next.use(initReactI18next).use(RNLanguageDetector).init({
+i18next.use(ReactNativeLanguageDetector).use(initReactI18next).init({
   compatibilityJSON: 'v3',
   debug: true,
   fallbackLng: 'en',
