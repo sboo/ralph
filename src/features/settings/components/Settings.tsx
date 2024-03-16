@@ -272,6 +272,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
             <DatePicker
               modal
               mode={'time'}
+              minuteInterval={15}
               open={timePickerOpen}
               date={reminderTime}
               onConfirm={date => {
