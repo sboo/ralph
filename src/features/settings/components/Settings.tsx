@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
   IconButton,
@@ -12,26 +12,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import {event, EVENT_NAMES} from '@/features/events';
 import {useTranslation} from 'react-i18next';
-import notifee, {AuthorizationStatus} from '@notifee/react-native';
-import {
-  initBackgroundFetch,
-  scheduleReminderTask,
-  stopBackgroundTasks,
-} from '@/features/backgroundTasks';
+import notifee, {
+  AuthorizationStatus,
+  RepeatFrequency,
+  TimestampTrigger,
+  TriggerType,
+} from '@notifee/react-native';
 import AvatarPicker from '@/features/avatar/components/AvatarPicker.tsx';
 import {AVAILABLE_LANGUAGES} from '@/app/localization/i18n';
 import CountryFlag from 'react-native-country-flag';
 import i18next from 'i18next';
+import moment from 'moment';
 
-interface WelcomeScreenNavigationProps {
+interface SettingsProps {
   onSettingsSaved: () => void;
   buttonLabel?: string;
 }
 
-const Settings: React.FC<WelcomeScreenNavigationProps> = ({
-  onSettingsSaved,
-  buttonLabel,
-}) => {
+const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
   const {t} = useTranslation();
   const theme = useTheme();
   const [petType, setPetType] = useState<string>('');
@@ -86,24 +84,105 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
     }
   };
 
+  const checkPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const settings = await notifee.requestPermission();
+      return Boolean(
+        settings.authorizationStatus === AuthorizationStatus.AUTHORIZED ||
+          settings.authorizationStatus === AuthorizationStatus.PROVISIONAL,
+      );
+    }
+    const settings =
+      Platform.OS === 'android' && Platform.Version >= 33
+        ? await notifee.requestPermission()
+        : await notifee.getNotificationSettings();
+    const channel = await notifee.getChannel('MyChannelID');
+    return (
+      settings.authorizationStatus === AuthorizationStatus.AUTHORIZED &&
+      !channel?.blocked
+    );
+  };
+
+  const enableReminders = async () => {
+    const hasPermissions = await checkPermissions();
+    if (hasPermissions) {
+      try {
+        await createTriggerNotification();
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+    }
+    Alert.alert(
+      'Enable Notifications',
+      'To receive notifications opt in from your Settings.',
+      [
+        {text: t('buttons:cancel')},
+        {text: t('buttons:settings'), onPress: openPermissionSettings},
+      ],
+    );
+    return false;
+  };
+
+  const openPermissionSettings = async () => {
+    if (Platform.OS === 'ios') {
+      await Linking.openSettings();
+    } else {
+      await notifee.openNotificationSettings();
+    }
+  };
+  const createTriggerNotification = async () => {
+    const channelId = await notifee.createChannel({
+      id: 'reminders',
+      name: i18next.t('measurements:reminders'),
+    });
+
+    const date = new Date(Date.now());
+    date.setHours(20);
+    date.setMinutes(0);
+
+    const timestamp = date.getTime();
+    const validTimestamp =
+      moment(timestamp).seconds(0).valueOf() > moment().valueOf()
+        ? moment(timestamp).seconds(0).valueOf()
+        : moment(timestamp).add(1, 'days').seconds(0).valueOf();
+
+    // Create a time-based trigger
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: validTimestamp,
+      repeatFrequency: RepeatFrequency.DAILY,
+    };
+
+    await notifee.createTriggerNotification(
+      {
+        id: 'eu.sboo.ralph.reminder',
+        title: t('measurements:notificatationTitle'),
+        body: t('measurements:notificationBody', {
+          petName: petName,
+        }),
+        android: {
+          channelId: channelId,
+          smallIcon: 'ic_small_icon',
+          pressAction: {
+            id: 'default',
+          },
+        },
+      },
+      trigger,
+    );
+  };
+
   // Toggle reminders
   const toggleReminders = async () => {
     let enabled = !remindersEnabled;
-
     if (enabled) {
-      const settings = await notifee.requestPermission();
-      if (settings.authorizationStatus !== AuthorizationStatus.AUTHORIZED) {
-        enabled = false;
-      }
-    }
-
-    if (enabled) {
-      initBackgroundFetch();
-      const x = await scheduleReminderTask();
-      console.log('Scheduled reminder task', x);
-      // startBackgroundTasks();
+      enabled = await enableReminders();
+      console.log('Notifications enabled', enabled);
     } else {
-      stopBackgroundTasks();
+      await notifee.cancelAllNotifications();
+      console.log('Notifications cancelled');
     }
 
     try {
