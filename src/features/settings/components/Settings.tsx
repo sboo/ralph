@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
   IconButton,
@@ -12,31 +12,36 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import {event, EVENT_NAMES} from '@/features/events';
 import {useTranslation} from 'react-i18next';
-import notifee, {AuthorizationStatus} from '@notifee/react-native';
-import {
-  initBackgroundFetch,
-  scheduleReminderTask,
-  stopBackgroundTasks,
-} from '@/features/backgroundTasks';
+import notifee, {
+  AuthorizationStatus,
+  RepeatFrequency,
+  TimestampTrigger,
+  TriggerType,
+} from '@notifee/react-native';
 import AvatarPicker from '@/features/avatar/components/AvatarPicker.tsx';
 import {AVAILABLE_LANGUAGES} from '@/app/localization/i18n';
 import CountryFlag from 'react-native-country-flag';
 import i18next from 'i18next';
+import moment from 'moment';
+import DatePicker from 'react-native-date-picker';
+import {
+  dateObjectToTimeString,
+  timeToDateObject,
+} from '@/support/helpers/DateTimeHelpers';
 
-interface WelcomeScreenNavigationProps {
+interface SettingsProps {
   onSettingsSaved: () => void;
   buttonLabel?: string;
 }
 
-const Settings: React.FC<WelcomeScreenNavigationProps> = ({
-  onSettingsSaved,
-  buttonLabel,
-}) => {
+const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
   const {t} = useTranslation();
   const theme = useTheme();
   const [petType, setPetType] = useState<string>('');
   const [petName, setPetName] = useState<string>('');
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
+  const [timePickerOpen, setTimePickerOpen] = useState(false);
+  const [reminderTime, setReminderTime] = useState(new Date());
 
   // Load pet name and type from storage
   useEffect(() => {
@@ -67,15 +72,22 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
         STORAGE_KEYS.NOTIFICATIONS_ENABLED,
       );
       setRemindersEnabled(enabled === 'true');
+
+      const notificationTime =
+        (await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATIONS_TIME)) ??
+        '20:00';
+
+      setReminderTime(timeToDateObject(notificationTime));
     };
     checkPermissions();
   }, []);
 
   // Store pet name and type in storage
-  const storePetInfo = async () => {
+  const storeSettings = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.PET_NAME, petName);
       await AsyncStorage.setItem(STORAGE_KEYS.PET_TYPE, petType);
+      await toggleReminders();
 
       event.emit(EVENT_NAMES.PROFILE_SET, petName);
       // Navigate to the next screen after successful storage
@@ -86,32 +98,113 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
     }
   };
 
-  // Toggle reminders
-  const toggleReminders = async () => {
-    let enabled = !remindersEnabled;
-
-    if (enabled) {
+  const checkPermissions = async () => {
+    if (Platform.OS === 'ios') {
       const settings = await notifee.requestPermission();
-      if (settings.authorizationStatus !== AuthorizationStatus.AUTHORIZED) {
-        enabled = false;
+      return Boolean(
+        settings.authorizationStatus === AuthorizationStatus.AUTHORIZED ||
+          settings.authorizationStatus === AuthorizationStatus.PROVISIONAL,
+      );
+    }
+    const settings =
+      Platform.OS === 'android' && Platform.Version >= 33
+        ? await notifee.requestPermission()
+        : await notifee.getNotificationSettings();
+    const channel = await notifee.getChannel('MyChannelID');
+    return (
+      settings.authorizationStatus === AuthorizationStatus.AUTHORIZED &&
+      !channel?.blocked
+    );
+  };
+
+  const enableReminders = async () => {
+    const hasPermissions = await checkPermissions();
+    if (hasPermissions) {
+      try {
+        await createTriggerNotification();
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
       }
     }
+    Alert.alert(
+      'Enable Notifications',
+      'To receive notifications opt in from your Settings.',
+      [
+        {text: t('buttons:cancel')},
+        {text: t('buttons:settings'), onPress: openPermissionSettings},
+      ],
+    );
+    return false;
+  };
 
-    if (enabled) {
-      initBackgroundFetch();
-      const x = await scheduleReminderTask();
-      console.log('Scheduled reminder task', x);
-      // startBackgroundTasks();
+  const openPermissionSettings = async () => {
+    if (Platform.OS === 'ios') {
+      await Linking.openSettings();
     } else {
-      stopBackgroundTasks();
+      await notifee.openNotificationSettings();
     }
+  };
+  const createTriggerNotification = async () => {
+    const channelId = await notifee.createChannel({
+      id: 'reminders',
+      name: i18next.t('measurements:reminders'),
+    });
 
+    const timestamp = reminderTime.getTime();
+    const validTimestamp =
+      moment(timestamp).seconds(0).valueOf() > moment().valueOf()
+        ? moment(timestamp).seconds(0).valueOf()
+        : moment(timestamp).add(1, 'days').seconds(0).valueOf();
+
+    // Create a time-based trigger
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: validTimestamp,
+      repeatFrequency: RepeatFrequency.DAILY,
+    };
+
+    await notifee.createTriggerNotification(
+      {
+        id: 'eu.sboo.ralph.reminder',
+        title: t('measurements:notificatationTitle'),
+        body: t('measurements:notificationBody', {
+          petName: petName,
+        }),
+        android: {
+          channelId: channelId,
+          smallIcon: 'ic_small_icon',
+          pressAction: {
+            id: 'default',
+          },
+        },
+      },
+      trigger,
+    );
+  };
+
+  const toggleReminderSwitch = async () => {
+    setRemindersEnabled(!remindersEnabled);
+  };
+
+  // Toggle reminders
+  const toggleReminders = async () => {
+    await notifee.cancelAllNotifications();
+    let enabled = remindersEnabled;
+    if (enabled) {
+      enabled = await enableReminders();
+      console.log('Notifications enabled', enabled);
+    }
     try {
       await AsyncStorage.setItem(
         STORAGE_KEYS.NOTIFICATIONS_ENABLED,
         enabled.toString(),
       );
-      setRemindersEnabled(enabled);
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.NOTIFICATIONS_TIME,
+        dateObjectToTimeString(reminderTime),
+      );
     } catch (error) {
       console.error(error);
     }
@@ -165,8 +258,33 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
           <Text variant="labelLarge">
             {t('settings:enableNotificationsLabel')}
           </Text>
-          <Switch value={remindersEnabled} onValueChange={toggleReminders} />
+          <Switch
+            value={remindersEnabled}
+            onValueChange={toggleReminderSwitch}
+          />
         </View>
+        {remindersEnabled ? (
+          <View style={styles.inputRow}>
+            <Text variant="labelLarge">{t('settings:reminderTimeLabel')}</Text>
+            <Button mode={'outlined'} onPress={() => setTimePickerOpen(true)}>
+              {dateObjectToTimeString(reminderTime)}
+            </Button>
+            <DatePicker
+              modal
+              mode={'time'}
+              minuteInterval={15}
+              open={timePickerOpen}
+              date={reminderTime}
+              onConfirm={date => {
+                setTimePickerOpen(false);
+                setReminderTime(date);
+              }}
+              onCancel={() => {
+                setTimePickerOpen(false);
+              }}
+            />
+          </View>
+        ) : null}
         <View style={styles.inputRow}>
           <Text variant="labelLarge">{t('settings:selectLanguageLabel')}</Text>
           <View style={styles.inputFlags}>
@@ -187,7 +305,7 @@ const Settings: React.FC<WelcomeScreenNavigationProps> = ({
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button onPress={storePetInfo} mode={'contained'}>
+        <Button onPress={storeSettings} mode={'contained'}>
           {buttonLabel ?? t('buttons:continue')}
         </Button>
       </View>

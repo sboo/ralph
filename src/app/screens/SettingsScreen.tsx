@@ -1,10 +1,11 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import {Text, useTheme} from 'react-native-paper';
 import {SettingsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import {useTranslation} from 'react-i18next';
 import Settings from '@/features/settings/components/Settings.tsx';
 import LinearGradient from 'react-native-linear-gradient';
+import DeviceInfo from 'react-native-device-info';
 
 const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
   navigation,
@@ -31,6 +32,9 @@ const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
           buttonLabel={t('buttons:save')}
         />
       </LinearGradient>
+      <Text style={styles.versionInfo} variant={'labelSmall'}>
+        v{DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
+      </Text>
     </SafeAreaView>
   );
 };
@@ -44,6 +48,14 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+  },
+  versionInfo: {
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    width: '100%',
+    textAlign: 'center',
+    color: '#afafaf',
   },
 });
 
