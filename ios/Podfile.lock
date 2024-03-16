@@ -946,6 +946,8 @@ PODS:
   - React-Mapbuffer (0.73.4):
     - glog
     - React-debug
+  - react-native-date-picker (4.4.1):
+    - React-Core
   - react-native-get-random-values (1.11.0):
     - React-Core
   - react-native-image-picker (7.1.0):
@@ -1127,6 +1129,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.22.3):
     - React-Core
+  - RNDeviceInfo (10.13.1):
+    - React-Core
   - RNIap (12.13.0):
     - React-Core
   - RNNotifee (7.8.2):
@@ -1201,6 +1205,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-localization-settings (from `../node_modules/react-native-localization-settings`)
@@ -1227,6 +1232,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RealmJS (from `../node_modules/realm`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNIap (from `../node_modules/react-native-iap`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -1308,6 +1314,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
   react-native-get-random-values:
     :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
@@ -1360,6 +1368,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/realm"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNIap:
     :path: "../node_modules/react-native-iap"
   RNNotifee:
@@ -1414,6 +1424,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 9ac353eccf6ab54d1e0a33862ba91221d1e88460
   React-logger: 0a57b68dd2aec7ff738195f081f0520724b35dab
   React-Mapbuffer: 63913773ed7f96b814a2521e13e6d010282096ad
+  react-native-date-picker: 28e4e57f16e869fa34907a0c6cdbecc1667f63c3
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-image-picker: 6c51359eca7a7df9f07e297218c25696eb9da976
   react-native-localization-settings: 496c6a21eae8e4008358f12b7ab2b388cf4efd85
@@ -1440,6 +1451,7 @@ SPEC CHECKSUMS:
   ReactCommon: 840a955d37b7f3358554d819446bffcf624b2522
   RealmJS: 385df5ee940d96f1de26b1dab153e325633d3052
   RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
+  RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
   RNIap: ce1af5f33e92af3aa6c5c3d8fb601c624748ac03
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNScreens: b582cb834dc4133307562e930e8fa914b8c04ef2

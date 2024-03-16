@@ -23,6 +23,11 @@ import {AVAILABLE_LANGUAGES} from '@/app/localization/i18n';
 import CountryFlag from 'react-native-country-flag';
 import i18next from 'i18next';
 import moment from 'moment';
+import DatePicker from 'react-native-date-picker';
+import {
+  dateObjectToTimeString,
+  timeToDateObject,
+} from '@/support/helpers/DateTimeHelpers';
 
 interface SettingsProps {
   onSettingsSaved: () => void;
@@ -35,6 +40,8 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
   const [petType, setPetType] = useState<string>('');
   const [petName, setPetName] = useState<string>('');
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
+  const [timePickerOpen, setTimePickerOpen] = useState(false);
+  const [reminderTime, setReminderTime] = useState(new Date());
 
   // Load pet name and type from storage
   useEffect(() => {
@@ -65,15 +72,22 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
         STORAGE_KEYS.NOTIFICATIONS_ENABLED,
       );
       setRemindersEnabled(enabled === 'true');
+
+      const notificationTime =
+        (await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATIONS_TIME)) ??
+        '20:00';
+
+      setReminderTime(timeToDateObject(notificationTime));
     };
     checkPermissions();
   }, []);
 
   // Store pet name and type in storage
-  const storePetInfo = async () => {
+  const storeSettings = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.PET_NAME, petName);
       await AsyncStorage.setItem(STORAGE_KEYS.PET_TYPE, petType);
+      await toggleReminders();
 
       event.emit(EVENT_NAMES.PROFILE_SET, petName);
       // Navigate to the next screen after successful storage
@@ -138,11 +152,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
       name: i18next.t('measurements:reminders'),
     });
 
-    const date = new Date(Date.now());
-    date.setHours(20);
-    date.setMinutes(0);
-
-    const timestamp = date.getTime();
+    const timestamp = reminderTime.getTime();
     const validTimestamp =
       moment(timestamp).seconds(0).valueOf() > moment().valueOf()
         ? moment(timestamp).seconds(0).valueOf()
@@ -174,23 +184,27 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
     );
   };
 
+  const toggleReminderSwitch = async () => {
+    setRemindersEnabled(!remindersEnabled);
+  };
+
   // Toggle reminders
   const toggleReminders = async () => {
-    let enabled = !remindersEnabled;
+    await notifee.cancelAllNotifications();
+    let enabled = remindersEnabled;
     if (enabled) {
       enabled = await enableReminders();
       console.log('Notifications enabled', enabled);
-    } else {
-      await notifee.cancelAllNotifications();
-      console.log('Notifications cancelled');
     }
-
     try {
       await AsyncStorage.setItem(
         STORAGE_KEYS.NOTIFICATIONS_ENABLED,
         enabled.toString(),
       );
-      setRemindersEnabled(enabled);
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.NOTIFICATIONS_TIME,
+        dateObjectToTimeString(reminderTime),
+      );
     } catch (error) {
       console.error(error);
     }
@@ -244,8 +258,32 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
           <Text variant="labelLarge">
             {t('settings:enableNotificationsLabel')}
           </Text>
-          <Switch value={remindersEnabled} onValueChange={toggleReminders} />
+          <Switch
+            value={remindersEnabled}
+            onValueChange={toggleReminderSwitch}
+          />
         </View>
+        {remindersEnabled ? (
+          <View style={styles.inputRow}>
+            <Text variant="labelLarge">{t('settings:reminderTimeLabel')}</Text>
+            <Button mode={'outlined'} onPress={() => setTimePickerOpen(true)}>
+              {dateObjectToTimeString(reminderTime)}
+            </Button>
+            <DatePicker
+              modal
+              mode={'time'}
+              open={timePickerOpen}
+              date={reminderTime}
+              onConfirm={date => {
+                setTimePickerOpen(false);
+                setReminderTime(date);
+              }}
+              onCancel={() => {
+                setTimePickerOpen(false);
+              }}
+            />
+          </View>
+        ) : null}
         <View style={styles.inputRow}>
           <Text variant="labelLarge">{t('settings:selectLanguageLabel')}</Text>
           <View style={styles.inputFlags}>
@@ -266,7 +304,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button onPress={storePetInfo} mode={'contained'}>
+        <Button onPress={storeSettings} mode={'contained'}>
           {buttonLabel ?? t('buttons:continue')}
         </Button>
       </View>

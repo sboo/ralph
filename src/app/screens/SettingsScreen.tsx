@@ -52,7 +52,9 @@ const styles = StyleSheet.create({
   versionInfo: {
     position: 'absolute',
     bottom: 10,
-    right: 40,
+    left: 0,
+    width: '100%',
+    textAlign: 'center',
     color: '#afafaf',
   },
 });
