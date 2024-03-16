@@ -111,6 +111,7 @@ const displayReminderNotification = async () => {
     }),
     android: {
       channelId,
+      smallIcon: 'ic_small_icon',
       pressAction: {
         id: 'default',
       },
