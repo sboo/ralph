@@ -18,6 +18,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import AddMeasurement from './screens/AddMeasurement';
 import EditMeasurement from './screens/EditMeasurement';
 import DebugScreen from './screens/DebugScreen';
+import AboutScreen from './screens/AboutScreen';
 import AllMeasurementsScreen from './screens/AllMeasurementsScreen';
 import {RootStackParamList} from '@/features/navigation/types.tsx';
 import defaultColors from '@/app/themes/lightTheme.json';
@@ -223,6 +224,7 @@ const App: React.FC = () => {
               headerStyle: {backgroundColor: theme.colors.primaryContainer},
             }}
           />
+          <Stack.Screen name="AboutScreen" component={AboutScreen} />
           <Stack.Screen name="DebugScreen" component={DebugScreen} />
         </Stack.Navigator>
       </NavigationContainer>

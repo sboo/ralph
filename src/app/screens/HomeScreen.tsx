@@ -238,6 +238,16 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               label: t('measurements:allMeasurements'),
               onPress: () => navigation.navigate('AllMeasurements'),
             },
+            // {
+            //   icon: 'information-variant',
+            //   label: t('about:about'),
+            //   onPress: () => navigation.navigate('AboutScreen'),
+            // },
+            // {
+            //   icon: 'bug-outline',
+            //   label: 'Debug',
+            //   onPress: () => navigation.navigate('DebugScreen'),
+            // },
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}
         />
