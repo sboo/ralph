@@ -13,7 +13,7 @@ import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {requestPurchase, useIAP} from 'react-native-iap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import {Platform, StyleSheet} from 'react-native';
+import {Linking, Platform, StyleSheet} from 'react-native';
 import {event, EVENT_NAMES} from '@/features/events';
 
 interface CoffeeButtonProps {
@@ -36,16 +36,16 @@ const CoffeeButton: React.FC<CoffeeButtonProps> = ({
       />
     );
   }
-  if (coffeePurchased === 'false') {
-    return (
-      <Appbar.Action
-        icon="coffee"
-        color={theme.colors.onPrimary}
-        onPress={onPress}
-      />
-    );
-  }
-  return null;
+  // if (coffeePurchased === 'false') {
+  return (
+    <Appbar.Action
+      icon="coffee"
+      color={theme.colors.onPrimary}
+      onPress={onPress}
+    />
+  );
+  // }
+  // return null;
 };
 
 const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
@@ -111,6 +111,13 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     <Appbar.Header style={options.headerStyle}>
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title={title} />
+      <Appbar.Action
+        icon="instagram"
+        color={theme.colors.onPrimary}
+        onPress={() =>
+          Linking.openURL('https://www.instagram.com/beagle_ralph')
+        }
+      />
       {!back ? (
         <CoffeeButton
           coffeePurchased={coffeePurchased}

@@ -7,7 +7,7 @@ export type RootStackParamList = {
   AddMeasurement: {timestamp: number};
   EditMeasurement: {measurementId: string};
   AllMeasurements: undefined;
-  IapScreen: undefined;
+  DebugScreen: undefined;
 };
 
 export type WelcomeScreenNavigationProps = NativeStackScreenProps<

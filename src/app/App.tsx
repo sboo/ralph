@@ -17,7 +17,7 @@ import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddMeasurement from './screens/AddMeasurement';
 import EditMeasurement from './screens/EditMeasurement';
-import IapScreen from './screens/IapScreen';
+import DebugScreen from './screens/DebugScreen';
 import AllMeasurementsScreen from './screens/AllMeasurementsScreen';
 import {RootStackParamList} from '@/features/navigation/types.tsx';
 import defaultColors from '@/app/themes/lightTheme.json';
@@ -223,7 +223,7 @@ const App: React.FC = () => {
               headerStyle: {backgroundColor: theme.colors.primaryContainer},
             }}
           />
-          <Stack.Screen name="IapScreen" component={IapScreen} />
+          <Stack.Screen name="DebugScreen" component={DebugScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
