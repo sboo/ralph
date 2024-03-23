@@ -66,7 +66,9 @@ const MeasurementItem: React.FC<Props> = ({
       <Text variant={'titleSmall'} style={styles.date}>
         {t('date')}: {date.toLocaleDateString()}
       </Text>
-      <Text variant={'bodyLarge'} style={styles.intro}>{t('measurements:intro', {petName})}</Text>
+      <Text variant={'bodyLarge'} style={styles.intro}>
+        {t('measurements:intro', {petName})}
+      </Text>
       <Text style={styles.label}>{t('measurements:hurt')}</Text>
       <Text style={styles.info}>{t('measurements:hurtInfo', {petName})}</Text>
       <RatingSlider
