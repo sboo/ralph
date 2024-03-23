@@ -3,6 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import RatingButtons from '@/support/components/RatingButtons.tsx';
+import RatingSlider from '@/support/components/RatingSlider';
 import {Measurement} from '@/app/models/Measurement.ts';
 
 interface Props {
@@ -65,50 +66,75 @@ const MeasurementItem: React.FC<Props> = ({
       <Text variant={'titleSmall'} style={styles.date}>
         {t('date')}: {date.toLocaleDateString()}
       </Text>
+      <Text variant={'bodyLarge'} style={styles.intro}>{t('measurements:intro', {petName})}</Text>
       <Text style={styles.label}>{t('measurements:hurt')}</Text>
       <Text style={styles.info}>{t('measurements:hurtInfo', {petName})}</Text>
-      <RatingButtons
-        onRatingChange={value => setHurt(parseInt(value, 10))}
-        initialRating={hurt?.toString() || ''}
+      <RatingSlider
+        onRatingChange={value => setHurt(value)}
+        initialRating={hurt}
+        optionTexts={t('measurements:hurtOptions', {
+          returnObjects: true,
+          petName,
+        })}
       />
 
       <Text style={styles.label}>{t('measurements:hunger')}</Text>
       <Text style={styles.info}>{t('measurements:hungerInfo', {petName})}</Text>
-      <RatingButtons
-        onRatingChange={value => setHunger(parseInt(value, 10))}
-        initialRating={hunger?.toString() || ''}
+      <RatingSlider
+        onRatingChange={value => setHunger(value)}
+        initialRating={hunger}
+        optionTexts={t('measurements:hungerOptions', {
+          returnObjects: true,
+          petName,
+        })}
       />
       <Text style={styles.label}>{t('measurements:hydration')}</Text>
       <Text style={styles.info}>
         {t('measurements:hydrationInfo', {petName})}
       </Text>
-      <RatingButtons
-        onRatingChange={value => setHydration(parseInt(value, 10))}
-        initialRating={hydration?.toString() || ''}
+      <RatingSlider
+        onRatingChange={value => setHydration(value)}
+        initialRating={hydration}
+        optionTexts={t('measurements:hydrationOptions', {
+          returnObjects: true,
+          petName,
+        })}
       />
       <Text style={styles.label}>{t('measurements:hygiene')}</Text>
       <Text style={styles.info}>
         {t('measurements:hygieneInfo', {petName})}
       </Text>
-      <RatingButtons
-        onRatingChange={value => setHygiene(parseInt(value, 10))}
-        initialRating={hygiene?.toString() || ''}
+      <RatingSlider
+        onRatingChange={value => setHygiene(value)}
+        initialRating={hygiene}
+        optionTexts={t('measurements:hygieneOptions', {
+          returnObjects: true,
+          petName,
+        })}
       />
       <Text style={styles.label}>{t('measurements:happiness')}</Text>
       <Text style={styles.info}>
         {t('measurements:happinessInfo', {petName})}
       </Text>
-      <RatingButtons
-        onRatingChange={value => setHappiness(parseInt(value, 10))}
-        initialRating={happiness?.toString() || ''}
+      <RatingSlider
+        onRatingChange={value => setHappiness(value)}
+        initialRating={happiness}
+        optionTexts={t('measurements:happinessOptions', {
+          returnObjects: true,
+          petName,
+        })}
       />
       <Text style={styles.label}>{t('measurements:mobility')}</Text>
       <Text style={styles.info}>
         {t('measurements:mobilityInfo', {petName})}
       </Text>
-      <RatingButtons
-        onRatingChange={value => setMoboility(parseInt(value, 10))}
-        initialRating={mobility?.toString() || ''}
+      <RatingSlider
+        onRatingChange={value => setMoboility(value)}
+        initialRating={mobility}
+        optionTexts={t('measurements:mobilityOptions', {
+          returnObjects: true,
+          petName,
+        })}
       />
       <View style={styles.buttons}>
         <Button
@@ -133,6 +159,9 @@ const styles = StyleSheet.create({
   date: {
     marginBottom: 20,
   },
+  intro: {
+    marginBottom: 50,
+  },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -142,7 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'italic',
-    marginBottom: 8,
+    marginBottom: 20,
   },
   slider: {
     marginBottom: 16,

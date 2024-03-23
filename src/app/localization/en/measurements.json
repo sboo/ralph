@@ -3,18 +3,182 @@
     "allMeasurements": "All Measurements",
     "pastMeasurements": "Past Measurements",
     "title": "How was {{petName}}'s day?",
-    "hurt": "Hurt",
+    "intro": "Let's take a moment to reflect on your {{petName}}'s day",
+    "hurt": "Pain",
     "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
-    "hunger": "Hunger",
+    "hurtOptions": [{
+        "value": 0,
+        "title": "Severe Pain",
+        "description": "{{petName}} shows clear signs of pain, like whimpering or difficulty moving, and can't seem to get comfortable."
+      },
+      {
+        "value": 2.5,
+        "title": "Moderate Pain",
+        "description": "Shows some discomfort, especially when moving or breathing, might avoid being touched in certain areas."        
+      },
+      {
+        "value": 5,
+        "title": "Mild Pain",
+        "description": "{{petName}} seems slightly uncomfortable at times but can still rest and move without too much trouble."
+      },
+      {
+        "value": 7.5,
+        "title": "Occasional Discomfort",
+        "description": "Rare signs of discomfort, mostly able to move and rest without issues."
+      },
+      {
+        "value": 10,
+        "title": "Pain-Free",
+        "description": "{{petName}} is comfortable, moves easily, and shows no signs of pain."
+      }],
+    "hunger": "Eeating",
     "hungerInfo": "Is {{petName}} eating enough? Does hand-feeding help? ",
-    "hydration": "Hydration",
+    "hungerOptions": [{
+        "value": 0,
+        "title": "Refuses to Eat",
+        "description": "{{petName}} won't eat anything, even their favorite treats."
+      },
+      {
+        "value": 2.5,
+        "title": "Struggles to Eat",
+        "description": "Shows interest in food but has difficulty eating without assistance."        
+      },
+      {
+        "value": 5,
+        "title": "Eats with Encouragement",
+        "description": "Eats only when encouraged or hand-fed, but not eagerly."
+      },
+      {
+        "value": 7.5,
+        "title": "Eats with Minor Issues",
+        "description": "Eats less than usual or prefers soft food, but generally manages on their own."
+      },
+      {
+        "value": 10,
+        "title": "Eats Normally",
+        "description": "{{petName}} eats regularly without any issues."
+      }],
+    "hydration": "Drinking",
     "hydrationInfo": "Is {{petName}} drinking enough?",
-    "hygiene": "Hygiene",
+    "hydrationOptions": [
+        {
+          "value": 0,
+          "title": "Refuses to Drink",
+          "description": "Won't drink any water, showing signs of severe dehydration."
+        },
+        {
+          "value": 2.5,
+          "title": "Needs Assistance to Drink",
+          "description": "Shows interest in water but can only drink when helped."
+        },
+        {
+          "value": 5,
+          "title": "Drinks a Little",
+          "description": "Drinks on their own but less than usual, might need reminders."
+        },
+        {
+          "value": 7.5,
+          "title": "Drinks with Encouragement",
+          "description": "Drinks a sufficient amount, though might need some coaxing or prefer certain ways of drinking."
+        },
+        {
+          "value": 10,
+          "title": "Hydrated and Healthy",
+          "description": "Drinks regularly without any issues, maintaining good hydration."
+        }
+      ],
+    "hygiene": "Cleanliness",
     "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
-    "happiness": "Happiness",
+    "hygieneOptions": [
+        {
+          "value": 0,
+          "title": "Severely Unkempt",
+          "description": "{{petName}} is often dirty, might have matted fur, and frequently soils themselves."
+        },
+        {
+          "value": 2.5,
+          "title": "Needs Frequent Help",
+          "description": "Can sometimes stay clean but often needs assistance to avoid lying in waste or staying clean."
+        },
+        {
+          "value": 5,
+          "title": "Occasionally Messy",
+          "description": "{{petName}} is mostly clean but may have occasional accidents or need help with grooming."
+        },
+        {
+          "value": 7.5,
+          "title": "Generally Clean",
+          "description": "Stays clean with minimal assistance, may just need help with difficult-to-reach spots."
+        },
+        {
+          "value": 10,
+          "title": "Always Clean",
+          "description": "{{petName}} manages their hygiene well, stays clean, and does not soil themselves."
+        }
+      ],
+    "happiness": "Joy",
     "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
+    "happinessOptions": [
+        {
+          "value": 0,
+          "title": "Severely Depressed",
+          "description": "Shows no interest in interaction, toys, or activities that used to be enjoyable."
+        },
+        {
+          "value": 2.5,
+          "title": "Often Uninterested",
+          "description": "Occasionally shows a glimmer of their old self, but mostly disinterested in surroundings or activities."
+        },
+        {
+          "value": 5,
+          "title": "Mildly Interested",
+          "description": "Shows interest in interactions or toys but less than before, enjoys being with family but may tire easily."
+        },
+        {
+          "value": 7.5,
+          "title": "Generally Happy",
+          "description": "Engages with family and toys, shows signs of happiness, but not as frequently or enthusiastically as before."
+        },
+        {
+          "value": 10,
+          "title": "Fully Joyful",
+          "description": "{{petName}} is responsive, enjoys interaction, play, and being part of the family activities as always."
+        }
+      ],
     "mobility": "Mobility",
     "mobilityInfo": "Can {{petName}} get up without assistance? Does {{petName}} feel like going for a walk?",
+    "mobilityOptions": [
+        {
+          "value": 0,
+          "title": "Immobile",
+          "description": "{{petName}} cannot move on their own at all. They need assistance for every movement and cannot stand up, walk, or change positions without help.",
+          "example": "Your dog cannot get up to go outside or even shift positions while lying down, requiring your help for every movement."
+        },
+        {
+          "value": 2.5,
+          "title": "Severely Limited",
+          "description": "{{petName}} can barely move and needs significant help to stand, walk, or reposition. They might only manage very short distances with support.",
+          "example": "Your dog needs a sling or harness to stand or take a few steps, and cannot go outdoors without being carried or supported."
+        },
+        {
+          "value": 5,
+          "title": "Moderately Limited",
+          "description": "{{petName}} can move a bit on their own but needs assistance or encouragement for longer distances or getting up from a lying position.",
+          "example": "Your dog struggles to get up from a lying position or hesitates before moving, and may need encouragement or a gentle push to move around."
+        },
+        {
+          "value": 7.5,
+          "title": "Slightly Limited",
+          "description": "{{petName}} is mostly mobile but shows signs of difficulty with some movements, like climbing stairs or jumping onto higher surfaces.",
+          "example": "Your dog can move around the house and go outdoors but avoids stairs and prefers staying on flat surfaces."
+        },
+        {
+          "value": 10,
+          "title": "Fully Mobile",
+          "description": "{{petName}} moves freely without any sign of discomfort. They can run, jump, and play as they always have, showing no hesitation or difficulty with any movement.",
+          "example": "Your dog eagerly goes for walks, can easily jump onto the couch or bed, and shows no signs of pain or hesitation when moving around."
+        }
+      ],
     "score": "Score",
     "reminders": "Reminders",
     "notificatationTitle": "Quality of Life Reminder",
