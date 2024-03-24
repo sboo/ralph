@@ -25,7 +25,7 @@ const RatingSlider: React.FC<Props> = ({
   const [selectedRating, setSelectedRating] = useState<number | undefined>(
     initialRating,
   );
-  const [slidig, setSliding] = useState(false);
+  const [sliding, setSliding] = useState(false);
   useEffect(() => {
     if (initialRating !== undefined) {
       setSelectedRating(initialRating);
@@ -107,7 +107,7 @@ const RatingSlider: React.FC<Props> = ({
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const Tooltip = () => {
-    if (!slidig) {
+    if (!sliding) {
       return null;
     }
     return (

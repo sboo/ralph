@@ -31,7 +31,7 @@
         "title": "Pain-Free",
         "description": "{{petName}} is comfortable, moves easily, and shows no signs of pain."
       }],
-    "hunger": "Eeating",
+    "hunger": "Eating",
     "hungerInfo": "Is {{petName}} eating enough? Does hand-feeding help? ",
     "hungerOptions": [{
         "value": 0,
