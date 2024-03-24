@@ -139,6 +139,7 @@ const RatingSlider: React.FC<Props> = ({
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
+    marginBottom: 20,
   },
   track: {
     height: 15,

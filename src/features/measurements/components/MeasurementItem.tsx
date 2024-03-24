@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'italic',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   slider: {
     marginBottom: 16,
