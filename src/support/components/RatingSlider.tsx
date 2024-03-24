@@ -112,7 +112,7 @@ const RatingSlider: React.FC<Props> = ({
     }
     return (
       <RatingSliderToolTip
-        color={getValueColor(selectedRating || 0)}
+        color={getValueColor(selectedRating !== undefined ? selectedRating : 5)}
         {...getSelectedLabel()}
       />
     );
@@ -122,7 +122,7 @@ const RatingSlider: React.FC<Props> = ({
     <View style={styles.container}>
       <Tooltip />
       <Slider
-        value={selectedRating || 5}
+        value={selectedRating !== undefined ? selectedRating : 5}
         onValueChange={value => onValueChange(value)}
         onSlidingStart={onSlidingStart}
         onSlidingComplete={value => onSlidingComplete(value)}
