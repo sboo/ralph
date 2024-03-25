@@ -6,6 +6,7 @@ interface PulsatingCircleProps {
   size?: number;
   x: number;
   y: number;
+  paused?: boolean;
 }
 
 const PulsatingCircle = ({
@@ -13,25 +14,30 @@ const PulsatingCircle = ({
   size = 10,
   x,
   y,
+  paused,
 }: PulsatingCircleProps) => {
   const pulseAnim = useRef(new Animated.Value(1)).current; // Initial scale
 
   useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 2,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ]),
-    ).start();
-  }, [pulseAnim]);
+    if (!paused) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 2,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    } else {
+      pulseAnim.setValue(1.5);
+    }
+  }, [pulseAnim, paused]);
 
   return (
     <Animated.View

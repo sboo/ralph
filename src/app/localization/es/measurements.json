@@ -3,7 +3,7 @@
     "allMeasurements": "Todas las Mediciones",
     "pastMeasurements": "Mediciones Pasadas",
     "title": "¿Cómo fue el día de {{petName}}?",
-    "intro": "Tomemos un momento para reflexionar sobre el día de {{petName}}",
+    "intro": "Tomemos un momento para reflexionar sobre el día de {{petName}}. Ajusta los deslizadores para indicar cómo está {{petName}} en cada área.",
     "hurt": "Dolor",
     "hurtInfo": "¿{{petName}} está libre de dolor? ¿O se puede manejar el dolor de {{petName}} de manera exitosa?",
     "hurtOptions": [{

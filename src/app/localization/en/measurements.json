@@ -3,7 +3,7 @@
     "allMeasurements": "All Measurements",
     "pastMeasurements": "Past Measurements",
     "title": "How was {{petName}}'s day?",
-    "intro": "Let's take a moment to reflect on {{petName}}'s day.",
+    "intro": "Let's take a moment to reflect on {{petName}}'s day. Adjust the sliders to indicate how {{petName}} is doing in each area.",
     "hurt": "Pain",
     "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
     "hurtOptions": [{

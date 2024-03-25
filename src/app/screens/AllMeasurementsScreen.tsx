@@ -27,11 +27,11 @@ const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({
   };
   const getIconColor = (score: number) => {
     if (score < 30) {
-      return '#FF0000';
+      return '#F44336';
     } else if (score < 50) {
-      return '#FFA500';
+      return '#F49503';
     } else {
-      return '#008000';
+      return '#4CAF50';
     }
   };
 

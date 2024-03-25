@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import {Trans, useTranslation} from 'react-i18next';
 import {
   Dimensions,
   SafeAreaView,
@@ -10,7 +10,7 @@ import {
 import {LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import {FAB, Icon, useTheme} from 'react-native-paper';
+import {Card, FAB, Icon, Text, useTheme} from 'react-native-paper';
 import {event, EVENT_NAMES} from '@/features/events';
 import {useQuery} from '@realm/react';
 import {Measurement} from '@/app/models/Measurement';
@@ -21,6 +21,7 @@ import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import QuotesAndInformation from '@/support/components/QuotesAndInformation.tsx';
+import PulsatingCircle from '@/support/components/PulsatingCircle';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -171,14 +172,14 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               <Icon
                 size={20}
                 source={'emoticon-excited-outline'}
-                color="#008000"
+                color="#4CAF50"
               />
               <Icon
                 size={20}
-                source={'emoticon-happy-outline'}
-                color="#FFA500"
+                source={'emoticon-neutral-outline'}
+                color="#F49503"
               />
-              <Icon size={20} source={'emoticon-sad-outline'} color="#FF0000" />
+              <Icon size={20} source={'emoticon-sad-outline'} color="#F44336" />
             </View>
             <LineChart
               data={data as LineChartData}
@@ -221,7 +222,43 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               }}
             />
           </View>
-          <QuotesAndInformation averageScore={averageScore} />
+          {measurements.length > 0 ? (
+            <QuotesAndInformation averageScore={averageScore} />
+          ) : (
+            <Card
+              mode="contained"
+              style={{
+                backgroundColor: theme.colors.primaryContainer,
+                ...styles.introduction,
+              }}>
+              <Card.Title
+                title={t('introduction_title')}
+                // eslint-disable-next-line react/no-unstable-nested-components
+                left={props => (
+                  <Icon
+                    {...props}
+                    source="calendar-month-outline"
+                    color={theme.colors.onPrimaryContainer}
+                  />
+                )}
+              />
+              <Card.Content>
+                <Text style={{position: 'relative'}} variant="bodyMedium">
+                  <Trans
+                    i18nKey={'introduction_text'}
+                    components={[
+                      <PulsatingCircle
+                        paused={true}
+                        color={theme.colors.error}
+                        x={0}
+                        y={0}
+                      />,
+                    ]}
+                  />
+                </Text>
+              </Card.Content>
+            </Card>
+          )}
         </ScrollView>
         <FAB.Group
           visible={true}
@@ -290,6 +327,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  introduction: {
+    marginTop: 45,
+    borderRadius: 15,
+    marginBottom: 100,
   },
 });
 
