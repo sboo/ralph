@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. User defaults (NSPrivacyAccessedAPICategoryUserDefaults) are accessed to remember the last used settings or preferences in the image picker, such as favorite filters or camera settings, providing a personalized and seamless experience for returning users.</string>
+			</array>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. The app references system boot time (NSPrivacyAccessedAPICategorySystemBootTime) to manage and optimize media selection and processing operations efficiently, reducing wait times for our users.</string>
+			</array>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. Monitoring available disk space (NSPrivacyAccessedAPICategoryDiskSpace) ensures that the device has enough storage for new captures, preventing errors and improving user experience.</string>
+			</array>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. Access to file timestamps (NSPrivacyAccessedAPICategoryFileTimestamp) is crucial for organizing and displaying media in a chronological order, enhancing user navigation and selection.</string>
+			</array>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+		</dict>
+	</array>
+</dict>
+</plist>
