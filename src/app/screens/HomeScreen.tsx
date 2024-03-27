@@ -151,6 +151,13 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     }
   };
 
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const RedDot = () => (
+    <Text variant={'bodyLarge'} style={{color: theme.colors.error}}>
+      ⬤
+    </Text>
+  );
+
   return (
     <SafeAreaView
       style={{
@@ -243,17 +250,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
                 )}
               />
               <Card.Content>
-                <Text style={{position: 'relative'}} variant="bodyMedium">
+                <Text variant="bodyMedium">
                   <Trans
                     i18nKey={'introduction_text'}
-                    components={[
-                      <PulsatingCircle
-                        paused={true}
-                        color={theme.colors.error}
-                        x={0}
-                        y={0}
-                      />,
-                    ]}
+                    components={{redDot: <RedDot />}}
                   />
                 </Text>
               </Card.Content>
