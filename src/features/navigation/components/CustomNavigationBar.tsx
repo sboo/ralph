@@ -118,11 +118,9 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
       <Appbar.Content title={title} />
       {!back ? (
         <Appbar.Action
-          icon="instagram"
+          icon="information"
           color={theme.colors.onPrimary}
-          onPress={() =>
-            Linking.openURL('https://www.instagram.com/beagle_ralph')
-          }
+          onPress={() => Linking.openURL('https://ralph.dog')}
         />
       ) : null}
       {!back ? (
