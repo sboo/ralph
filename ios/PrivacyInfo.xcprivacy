@@ -7,7 +7,7 @@
 		<dict>
 			<key>NSPrivacyAccessedAPITypeReasons</key>
 			<array>
-				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. User defaults (NSPrivacyAccessedAPICategoryUserDefaults) are accessed to remember the last used settings or preferences in the image picker, such as favorite filters or camera settings, providing a personalized and seamless experience for returning users.</string>
+				<string>CA92.1</string>
 			</array>
 			<key>NSPrivacyAccessedAPIType</key>
 			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
@@ -15,7 +15,7 @@
 		<dict>
 			<key>NSPrivacyAccessedAPITypeReasons</key>
 			<array>
-				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. The app references system boot time (NSPrivacyAccessedAPICategorySystemBootTime) to manage and optimize media selection and processing operations efficiently, reducing wait times for our users.</string>
+				<string>35F9.1</string>
 			</array>
 			<key>NSPrivacyAccessedAPIType</key>
 			<string>NSPrivacyAccessedAPICategorySystemBootTime</string>
@@ -23,7 +23,7 @@
 		<dict>
 			<key>NSPrivacyAccessedAPITypeReasons</key>
 			<array>
-				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. Monitoring available disk space (NSPrivacyAccessedAPICategoryDiskSpace) ensures that the device has enough storage for new captures, preventing errors and improving user experience.</string>
+				<string>E174.1</string>
 			</array>
 			<key>NSPrivacyAccessedAPIType</key>
 			<string>NSPrivacyAccessedAPICategoryDiskSpace</string>
@@ -31,7 +31,7 @@
 		<dict>
 			<key>NSPrivacyAccessedAPITypeReasons</key>
 			<array>
-				<string>Our app uses a library to enable users to pick images from their device&apos;s library or capture new ones using the camera. Access to file timestamps (NSPrivacyAccessedAPICategoryFileTimestamp) is crucial for organizing and displaying media in a chronological order, enhancing user navigation and selection.</string>
+				<string>3B52.1</string>
 			</array>
 			<key>NSPrivacyAccessedAPIType</key>
 			<string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
