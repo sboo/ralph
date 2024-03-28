@@ -89,6 +89,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (currentPurchaseError) {
       console.warn('currentPurchaseError', currentPurchaseError);
+      event.emit(EVENT_NAMES.COFFEE_PURCHASED, 'false');
     }
   }, [currentPurchaseError]);
 

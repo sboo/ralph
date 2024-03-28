@@ -36,6 +36,11 @@ const DebugScreen: React.FC = () => {
     console.log('initConnectionError', initConnectionError);
   }, [initConnectionError]);
 
+  const unpurchase = async () => {
+    await AsyncStorage.setItem(STORAGE_KEYS.COFFEE_PURCHASED, 'false');
+    event.emit(EVENT_NAMES.COFFEE_PURCHASED, false);
+  };
+
   const restorePurchases = useCallback(async () => {
     let purchased = false;
     try {
@@ -82,6 +87,8 @@ const DebugScreen: React.FC = () => {
       ))}
       <Divider />
       <Button title="Restore purchases" onPress={restorePurchases} />
+      <Divider />
+      <Button title="set to unpurchased" onPress={unpurchase} />
     </>
   );
 };

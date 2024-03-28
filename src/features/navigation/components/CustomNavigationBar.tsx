@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Appbar,
   Button,
   Dialog,
@@ -62,6 +63,8 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   );
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buyCoffeeVisible, setBuyCoffeeVisible] = React.useState(false);
+  const [awaitingInAppPurchase, setAwaitingInAppPurchase] =
+    React.useState(false);
   const {getProducts} = useIAP();
 
   const onCoffeeButtonPress = async () => {
@@ -84,6 +87,8 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     });
 
     const onCoffeePurchased = () => {
+      setBuyCoffeeVisible(false);
+      setAwaitingInAppPurchase(false);
       getCoffeeButtonPuchasedStatus().then(purchased => {
         setCoffeePurchased(purchased);
       });
@@ -99,7 +104,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   }, [getProducts]);
 
   const handlePurchase = async () => {
-    setBuyCoffeeVisible(false);
+    setAwaitingInAppPurchase(true);
     if (Platform.OS === 'ios') {
       await requestPurchase({sku: 'eu.sboo.ralph.coffee'});
     } else if (Platform.OS === 'android') {
@@ -165,10 +170,16 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
             </Text>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setBuyCoffeeVisible(false)}>
-              {t('buttons:cancel')}
-            </Button>
-            <Button onPress={handlePurchase}>{t('buttons:yes')}</Button>
+            {awaitingInAppPurchase ? (
+              <ActivityIndicator animating={true} />
+            ) : (
+              <>
+                <Button onPress={() => setBuyCoffeeVisible(false)}>
+                  {t('buttons:cancel')}
+                </Button>
+                <Button onPress={handlePurchase}>{t('buttons:yes')}</Button>
+              </>
+            )}
           </Dialog.Actions>
         </Dialog>
       </Portal>
