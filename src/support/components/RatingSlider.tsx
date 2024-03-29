@@ -87,7 +87,7 @@ const RatingSlider: React.FC<Props> = ({
 
   const getValueColor = (value: number | undefined) => {
     if (value === undefined) {
-      return theme.colors.backdrop;
+      return theme.colors.outline;
     }
     const rating = Math.round(value / 2.5) * 2.5;
     switch (rating) {
@@ -128,6 +128,7 @@ const RatingSlider: React.FC<Props> = ({
         onSlidingComplete={value => onSlidingComplete(value)}
         minimumValue={0}
         maximumValue={10}
+        thumbTintColor={theme.colors.onSurface}
         minimumTrackTintColor={getValueColor(selectedRating)}
         maximumTrackTintColor={getValueColor(selectedRating)}
         trackStyle={styles.track}
