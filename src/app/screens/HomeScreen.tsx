@@ -21,7 +21,6 @@ import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import QuotesAndInformation from '@/support/components/QuotesAndInformation.tsx';
-import PulsatingCircle from '@/support/components/PulsatingCircle';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();

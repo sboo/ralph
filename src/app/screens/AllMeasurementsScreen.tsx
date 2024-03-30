@@ -2,10 +2,11 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {useQuery} from '@realm/react';
-import {List, useTheme} from 'react-native-paper';
+import {Button, Divider, List, useTheme} from 'react-native-paper';
 import {Measurement} from '@/app/models/Measurement';
 import {AllMeasurementsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
+import ExportPdf from '@/features/pdfExport/components/ExportPdf';
 
 const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({
   navigation,
@@ -19,17 +20,22 @@ const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({
   const getIcon = (score: number) => {
     if (score < 30) {
       return 'emoticon-sad-outline';
-    } else if (score < 50) {
+    } else if (score < 45) {
       return 'emoticon-neutral-outline';
     } else {
       return 'emoticon-happy-outline';
     }
   };
+
   const getIconColor = (score: number) => {
-    if (score < 30) {
+    if (score < 6) {
       return '#F44336';
-    } else if (score < 50) {
+    } else if (score < 15) {
       return '#F49503';
+    } else if (score < 30) {
+      return '#F0E106';
+    } else if (score < 45) {
+      return '#74D400';
     } else {
       return '#4CAF50';
     }
@@ -50,6 +56,7 @@ const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <ScrollView style={styles.scrollview}>
+          <ExportPdf />
           {measurements.map((measurement, index) => (
             <List.Item
               key={index}
