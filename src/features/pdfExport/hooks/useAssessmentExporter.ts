@@ -99,19 +99,25 @@ const useAssessmentExporter = () => {
                   padding: 5px;
                   flex: 1 1 0px;
               }
+              .page-break-before {
+                display: block;
+                page-break-before: always; 
+                page-break-after: auto;
+                page-break-inside: avoid;
+            }
           </style>
       </head>
       <body>
           <h1>${petName}</h1>
           <div class="confirmationBox_content">
           ${assessments
-            .map(
-              assessment =>
-                `<div
-                    class="assessment"
-                    key=${assessment._id.toHexString()}
-  
-                  >
+            .map((assessment, index) => {
+              let pageBreak = '';
+              if ((index + 1) % 8 === 0) {
+                pageBreak = '<div class="page-break-before"> </div>';
+              }
+              return `${pageBreak}
+              <div class="assessment" key=${assessment._id.toHexString()}>
                   <div class="row">
                       <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
                       <p class="score">${assessment.score}</p>
@@ -124,14 +130,14 @@ const useAssessmentExporter = () => {
                       <p class="item" style="background-color: ${getItemColor(
                         assessment.hydration,
                       )}">${t('measurements:hydration')}:${
-                  assessment.hydration
-                }</p>
+                assessment.hydration
+              }</p>
 
                       <p class="item" style="background-color: ${getItemColor(
                         assessment.happiness,
                       )}">${t('measurements:happiness')}:${
-                  assessment.happiness
-                }</p>
+                assessment.happiness
+              }</p>
                   </div>
 
                   <div class="row">
@@ -141,18 +147,16 @@ const useAssessmentExporter = () => {
 
                       <p class="item" style="background-color: ${getItemColor(
                         assessment.hygiene,
-                      )}">${t('measurements:hygiene')}:${
-                  assessment.hygiene
-                }</p>
+                      )}">${t('measurements:hygiene')}:${assessment.hygiene}</p>
 
                       <p class="item" style="background-color: ${getItemColor(
                         assessment.mobility,
                       )}">${t('measurements:mobility')}:${
-                  assessment.mobility
-                }</p>
+                assessment.mobility
+              }</p>
                   </div>
-              </div>`,
-            )
+              </div>`;
+            })
             .join('')}
       </div>
       </body>
