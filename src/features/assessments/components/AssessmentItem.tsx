@@ -2,14 +2,13 @@ import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
-import RatingButtons from '@/support/components/RatingButtons.tsx';
 import RatingSlider from '@/support/components/RatingSlider';
 import {Measurement} from '@/app/models/Measurement.ts';
 
 interface Props {
   petName: string;
   date: Date;
-  measurement?: Measurement | null;
+  assessment?: Measurement | null;
   onCancel: () => void;
   onSubmit: (
     hurt: number,
@@ -21,12 +20,12 @@ interface Props {
   ) => void;
 }
 
-const MeasurementItem: React.FC<Props> = ({
+const AssessmentItem: React.FC<Props> = ({
   petName,
   date,
   onSubmit,
   onCancel,
-  measurement,
+  assessment: measurement,
 }) => {
   const {t} = useTranslation();
   const [hurt, setHurt] = useState<number | undefined>(measurement?.hurt);
@@ -196,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MeasurementItem;
+export default AssessmentItem;

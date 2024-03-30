@@ -21,7 +21,7 @@ import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import QuotesAndInformation from '@/support/components/QuotesAndInformation.tsx';
-import PulsatingCircle from '@/support/components/PulsatingCircle';
+import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -31,8 +31,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const [averageScore, setAverageScore] = useState(60);
 
   const theme = useTheme();
+  const {generateAndSharePDF} = useAssessmentExporter();
 
-  const measurements = useQuery(
+  const assessments = useQuery(
     Measurement,
     collection => {
       return collection
@@ -43,16 +44,16 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   );
 
   useEffect(() => {
-    if (!measurements.length || measurements.length < 5) {
+    if (!assessments.length || assessments.length < 5) {
       setAverageScore(60);
     } else {
-      const sum = measurements.reduce(
-        (acc, measurement) => acc + measurement.score,
+      const sum = assessments.reduce(
+        (acc, assessment) => acc + assessment.score,
         0,
       );
-      setAverageScore(sum / measurements.length);
+      setAverageScore(sum / assessments.length);
     }
-  }, [measurements]);
+  }, [assessments]);
 
   useEffect(() => {
     const fetchPetName = async () => {
@@ -104,10 +105,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
 
   const getScores = () => {
     const scoresWithDates = dateRange.map(date => {
-      const measurement = measurements.find(
+      const assessment = assessments.find(
         m => m.date === moment(date).format('YYYY-MM-DD'),
       );
-      return measurement ? measurement.score : null;
+      return assessment ? assessment.score : null;
     });
     return scoresWithDates;
   };
@@ -134,19 +135,19 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     ],
   };
 
-  const addOrEditMeasurement = (date?: Date) => {
+  const addOrEditAssessment = (date?: Date) => {
     if (!date) {
       date = new Date();
     }
     const today = moment(date).format('YYYY-MM-DD');
-    const measurement = measurements.find(m => m.date === today);
-    if (measurement === undefined) {
-      navigation.navigate('AddMeasurement', {
+    const assessment = assessments.find(m => m.date === today);
+    if (assessment === undefined) {
+      navigation.navigate('AddAssessment', {
         timestamp: date.getTime(),
       });
     } else {
-      navigation.navigate('EditMeasurement', {
-        measurementId: measurement._id.toHexString(),
+      navigation.navigate('EditAssessment', {
+        assessmentId: assessment._id.toHexString(),
       });
     }
   };
@@ -225,11 +226,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               bezier
               style={styles.chart}
               onDataPointClick={({index}) => {
-                addOrEditMeasurement(dateRange[index]);
+                addOrEditAssessment(dateRange[index]);
               }}
             />
           </View>
-          {measurements.length > 0 ? (
+          {assessments.length > 0 ? (
             <QuotesAndInformation averageScore={averageScore} />
           ) : (
             <Card
@@ -267,19 +268,19 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
           actions={[
             {
               icon: 'pencil-plus',
-              label: t('measurements:todaysMeasurement'),
-              onPress: () => addOrEditMeasurement(),
+              label: t('measurements:todaysAssessment'),
+              onPress: () => addOrEditAssessment(),
             },
             {
               icon: 'format-list-bulleted',
-              label: t('measurements:allMeasurements'),
-              onPress: () => navigation.navigate('AllMeasurements'),
+              label: t('measurements:allAssessments'),
+              onPress: () => navigation.navigate('AllAssessments'),
             },
-            // {
-            //   icon: 'information-variant',
-            //   label: t('about:about'),
-            //   onPress: () => navigation.navigate('AboutScreen'),
-            // },
+            {
+              icon: 'share-variant',
+              label: t('buttons:share_assessments'),
+              onPress: () => generateAndSharePDF(),
+            },
             // {
             //   icon: 'bug-outline',
             //   label: 'Debug',

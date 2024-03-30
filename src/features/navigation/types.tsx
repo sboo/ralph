@@ -4,9 +4,9 @@ export type RootStackParamList = {
   Welcome: undefined;
   Settings: undefined;
   Home: undefined;
-  AddMeasurement: {timestamp: number};
-  EditMeasurement: {measurementId: string};
-  AllMeasurements: undefined;
+  AddAssessment: {timestamp: number};
+  EditAssessment: {assessmentId: string};
+  AllAssessments: undefined;
   AboutScreen: undefined;
   DebugScreen: undefined;
 };
@@ -26,17 +26,17 @@ export type HomeScreenNavigationProps = NativeStackScreenProps<
   'Home'
 >;
 
-export type AddMeasurementScreenNavigationProps = NativeStackScreenProps<
+export type AddAssessmentScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
-  'AddMeasurement'
+  'AddAssessment'
 >;
 
-export type EditMeasurementScreenNavigationProps = NativeStackScreenProps<
+export type EditAssessmentScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
-  'EditMeasurement'
+  'EditAssessment'
 >;
 
-export type AllMeasurementsScreenNavigationProps = NativeStackScreenProps<
+export type AllAssessmentsScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
-  'AllMeasurements'
+  'AllAssessments'
 >;

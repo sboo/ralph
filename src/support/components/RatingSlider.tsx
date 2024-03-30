@@ -3,6 +3,7 @@ import {Slider} from '@miblanchard/react-native-slider';
 import {StyleSheet, View} from 'react-native';
 import RatingSliderToolTip from './RatingSliderToolTip';
 import {useTheme} from 'react-native-paper';
+import getValueColor from '../helpers/RatingsHelper';
 
 interface Props {
   initialRating: number | undefined;
@@ -85,26 +86,6 @@ const RatingSlider: React.FC<Props> = ({
     setSelectedRating(value[0]);
   };
 
-  const getValueColor = (value: number | undefined) => {
-    if (value === undefined) {
-      return theme.colors.outline;
-    }
-    const rating = Math.round(value / 2.5) * 2.5;
-    switch (rating) {
-      case 0:
-        return '#F44336';
-      case 2.5:
-        return '#F49503';
-      default:
-      case 5:
-        return '#F0E106';
-      case 7.5:
-        return '#74D400';
-      case 10:
-        return '#4CAF50';
-    }
-  };
-
   // eslint-disable-next-line react/no-unstable-nested-components
   const Tooltip = () => {
     if (!sliding) {
@@ -112,7 +93,10 @@ const RatingSlider: React.FC<Props> = ({
     }
     return (
       <RatingSliderToolTip
-        color={getValueColor(selectedRating !== undefined ? selectedRating : 5)}
+        color={getValueColor(
+          theme.colors.outline,
+          selectedRating !== undefined ? selectedRating : 5,
+        )}
         {...getSelectedLabel()}
       />
     );
@@ -129,8 +113,14 @@ const RatingSlider: React.FC<Props> = ({
         minimumValue={0}
         maximumValue={10}
         thumbTintColor={theme.colors.onSurface}
-        minimumTrackTintColor={getValueColor(selectedRating)}
-        maximumTrackTintColor={getValueColor(selectedRating)}
+        minimumTrackTintColor={getValueColor(
+          theme.colors.outline,
+          selectedRating,
+        )}
+        maximumTrackTintColor={getValueColor(
+          theme.colors.outline,
+          selectedRating,
+        )}
         trackStyle={styles.track}
       />
     </View>

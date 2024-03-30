@@ -80,8 +80,8 @@ android {
         applicationId "eu.sboo.ralph"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 34
-        versionName "1.0"
+        versionCode 37
+        versionName "1.1.0"
         missingDimensionStrategy "store", "play"
     }
     signingConfigs {

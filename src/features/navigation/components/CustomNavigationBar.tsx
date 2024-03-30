@@ -94,7 +94,11 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
       });
     };
 
-    fechProducts();
+    try {
+      fechProducts();
+    } catch (error) {
+      console.log(error);
+    }
 
     event.on(EVENT_NAMES.COFFEE_PURCHASED, onCoffeePurchased);
 
