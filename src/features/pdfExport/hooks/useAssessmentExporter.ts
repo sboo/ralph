@@ -50,6 +50,7 @@ const useAssessmentExporter = () => {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Pdf Content</title>
           <style>
+            @media print { * { -webkit-print-color-adjust: exact !important; } }
               body {
                   font-size: 16px;
                   color: #000000;
@@ -57,6 +58,7 @@ const useAssessmentExporter = () => {
               }
               h1 {
                   text-align: center;
+                  font-family: "Inter", sans-serif;
               }
               .assessment {
                   margin-bottom: 20px;
