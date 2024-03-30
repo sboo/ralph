@@ -21,6 +21,7 @@ import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import QuotesAndInformation from '@/support/components/QuotesAndInformation.tsx';
+import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -30,6 +31,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const [averageScore, setAverageScore] = useState(60);
 
   const theme = useTheme();
+  const {generateAndSharePDF} = useAssessmentExporter();
 
   const measurements = useQuery(
     Measurement,
@@ -274,11 +276,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               label: t('measurements:allMeasurements'),
               onPress: () => navigation.navigate('AllMeasurements'),
             },
-            // {
-            //   icon: 'information-variant',
-            //   label: t('about:about'),
-            //   onPress: () => navigation.navigate('AboutScreen'),
-            // },
+            {
+              icon: 'share-variant',
+              label: t('buttons:share_assessments'),
+              onPress: () => generateAndSharePDF(),
+            },
             // {
             //   icon: 'bug-outline',
             //   label: 'Debug',
