@@ -15,11 +15,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import AddMeasurement from './screens/AddMeasurement';
-import EditMeasurement from './screens/EditMeasurement';
+import AddAssessment from './screens/AddAssessment';
+import EditAssessment from './screens/EditAssessment';
 import DebugScreen from './screens/DebugScreen';
 import AboutScreen from './screens/AboutScreen';
-import AllMeasurementsScreen from './screens/AllMeasurementsScreen';
+import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
 import {RootStackParamList} from '@/features/navigation/types.tsx';
 import defaultColors from '@/app/themes/lightTheme.json';
 import darkColors from '@/app/themes/darkTheme.json';
@@ -202,26 +202,26 @@ const App: React.FC = () => {
             }}
           />
           <Stack.Screen
-            name="AddMeasurement"
-            component={AddMeasurement}
+            name="AddAssessment"
+            component={AddAssessment}
             options={{
               title: t('measurements:title', {petName}),
               headerStyle: {backgroundColor: theme.colors.primaryContainer},
             }}
           />
           <Stack.Screen
-            name="EditMeasurement"
-            component={EditMeasurement}
+            name="EditAssessment"
+            component={EditAssessment}
             options={{
               title: t('measurements:title', {petName}),
               headerStyle: {backgroundColor: theme.colors.primaryContainer},
             }}
           />
           <Stack.Screen
-            name="AllMeasurements"
-            component={AllMeasurementsScreen}
+            name="AllAssessments"
+            component={AllAssessmentsScreen}
             options={{
-              title: t('measurements:allMeasurements'),
+              title: t('measurements:allAssessments'),
               headerStyle: {backgroundColor: theme.colors.primaryContainer},
             }}
           />

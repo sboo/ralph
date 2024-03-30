@@ -1,7 +1,7 @@
 {
-    "todaysMeasurement": "Today's Measurement",
-    "allMeasurements": "All Measurements",
-    "pastMeasurements": "Past Measurements",
+    "todaysAssessment": "Today's Assessment",
+    "allAssessments": "All Assessments",
+    "pastAssessments": "Past Assessments",
     "title": "How was {{petName}}'s day?",
     "intro": "Let's take a moment to reflect on {{petName}}'s day. Adjust the sliders to indicate how {{petName}} is doing in each area.",
     "hurt": "Pain",

@@ -13,7 +13,7 @@ import Share from 'react-native-share';
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const measurements = useQuery(Measurement, collection =>
+  const assessments = useQuery(Measurement, collection =>
     collection.sorted('createdAt'),
   );
   const [petType, setPetType] = useState<string>('');
@@ -58,7 +58,7 @@ const useAssessmentExporter = () => {
               h1 {
                   text-align: center;
               }
-              .measurement {
+              .assessment {
                   margin-bottom: 20px;
               }
               p {
@@ -104,51 +104,51 @@ const useAssessmentExporter = () => {
       <body>
           <h1>${petName}</h1>
           <div class="confirmationBox_content">
-          ${measurements
+          ${assessments
             .map(
-              measurement =>
+              assessment =>
                 `<div
-                    class="measurement"
-                    key=${measurement._id.toHexString()}
+                    class="assessment"
+                    key=${assessment._id.toHexString()}
   
                   >
                   <div class="row">
-                      <p class="date">${measurement.createdAt.toLocaleDateString()}</p>
-                      <p class="score">${measurement.score}</p>
+                      <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
+                      <p class="score">${assessment.score}</p>
                   </div>
                   <div class="row">
                       <p class="item" style="background-color: ${getItemColor(
-                        measurement.hurt,
-                      )}">${t('measurements:hurt')}:${measurement.hurt}</p>
+                        assessment.hurt,
+                      )}">${t('measurements:hurt')}:${assessment.hurt}</p>
 
                       <p class="item" style="background-color: ${getItemColor(
-                        measurement.hydration,
+                        assessment.hydration,
                       )}">${t('measurements:hydration')}:${
-                  measurement.hydration
+                  assessment.hydration
                 }</p>
 
                       <p class="item" style="background-color: ${getItemColor(
-                        measurement.happiness,
+                        assessment.happiness,
                       )}">${t('measurements:happiness')}:${
-                  measurement.happiness
+                  assessment.happiness
                 }</p>
                   </div>
 
                   <div class="row">
                       <p class="item" style="background-color: ${getItemColor(
-                        measurement.hurt,
-                      )}">${t('measurements:hunger')}:${measurement.hunger}</p>
+                        assessment.hurt,
+                      )}">${t('measurements:hunger')}:${assessment.hunger}</p>
 
                       <p class="item" style="background-color: ${getItemColor(
-                        measurement.hygiene,
+                        assessment.hygiene,
                       )}">${t('measurements:hygiene')}:${
-                  measurement.hygiene
+                  assessment.hygiene
                 }</p>
 
                       <p class="item" style="background-color: ${getItemColor(
-                        measurement.mobility,
+                        assessment.mobility,
                       )}">${t('measurements:mobility')}:${
-                  measurement.mobility
+                  assessment.mobility
                 }</p>
                   </div>
               </div>`,

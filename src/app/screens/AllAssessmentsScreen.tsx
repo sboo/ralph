@@ -2,18 +2,18 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {useQuery} from '@realm/react';
-import {Button, Divider, List, useTheme} from 'react-native-paper';
+import {List, useTheme} from 'react-native-paper';
 import {Measurement} from '@/app/models/Measurement';
-import {AllMeasurementsScreenNavigationProps} from '@/features/navigation/types.tsx';
+import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
 
-const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({
+const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
   navigation,
 }) => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const measurements = useQuery(Measurement, collection =>
+  const assessments = useQuery(Measurement, collection =>
     collection.sorted('createdAt', true),
   );
 
@@ -57,23 +57,23 @@ const AllMeasurementsScreen: React.FC<AllMeasurementsScreenNavigationProps> = ({
         style={styles.gradient}>
         <ScrollView style={styles.scrollview}>
           <ExportPdf />
-          {measurements.map((measurement, index) => (
+          {assessments.map((assessment, index) => (
             <List.Item
               key={index}
-              title={measurement.createdAt.toLocaleDateString()}
-              description={`${t('measurements:score')}: ${measurement.score}`}
+              title={assessment.createdAt.toLocaleDateString()}
+              description={`${t('measurements:score')}: ${assessment.score}`}
               // eslint-disable-next-line react/no-unstable-nested-components
               left={() => (
                 <List.Icon
-                  color={getIconColor(measurement.score)}
-                  icon={getIcon(measurement.score)}
+                  color={getIconColor(assessment.score)}
+                  icon={getIcon(assessment.score)}
                 />
               )}
               // eslint-disable-next-line react/no-unstable-nested-components
               right={() => <List.Icon color="#afafaf" icon="pencil" />}
               onPress={() => {
-                navigation.navigate('EditMeasurement', {
-                  measurementId: measurement._id.toHexString(),
+                navigation.navigate('EditAssessment', {
+                  assessmentId: assessment._id.toHexString(),
                 });
               }}
             />
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  measurementItem: {
+  assessmentItem: {
     marginBottom: 15,
     padding: 10,
     borderWidth: 1,
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllMeasurementsScreen;
+export default AllAssessmentsScreen;

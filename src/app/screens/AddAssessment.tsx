@@ -1,21 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import MeasurementItem from '@/features/measurements/components/MeasurementItem.tsx';
-import {useObject, useRealm} from '@realm/react';
+import AssessmentItem from '@/features/assessments/components/AssessmentItem';
+import {useRealm} from '@realm/react';
 import {useTheme} from 'react-native-paper';
 import {Measurement} from '@/app/models/Measurement';
-import {BSON} from 'realm';
-import {EditMeasurementScreenNavigationProps} from '@/features/navigation/types.tsx';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {AddAssessmentScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
+import {SafeAreaView, StyleSheet} from 'react-native';
 
-const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
+const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
   route,
   navigation,
 }) => {
-  const _id = BSON.ObjectId.createFromHexString(route.params.measurementId);
-  const measurement = useObject(Measurement, _id);
+  const [date] = useState(new Date(route.params.timestamp));
   const [petName, setPetName] = useState('');
 
   const realm = useRealm();
@@ -30,16 +29,18 @@ const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
     mobility: number,
   ) => {
     realm.write(() => {
-      if (measurement) {
-        measurement.score =
-          hurt + hunger + hydration + hygiene + happiness + mobility;
-        measurement.hurt = hurt;
-        measurement.hunger = hunger;
-        measurement.hydration = hydration;
-        measurement.hygiene = hygiene;
-        measurement.happiness = happiness;
-        measurement.mobility = mobility;
-      }
+      const dateString = moment(date).format('YYYY-MM-DD');
+      realm.create(Measurement, {
+        date: dateString,
+        score: hurt + hunger + hydration + hygiene + happiness + mobility,
+        hurt,
+        hunger,
+        hydration,
+        hygiene,
+        happiness,
+        mobility,
+        createdAt: date,
+      });
     });
     navigation.goBack();
   };
@@ -69,10 +70,9 @@ const EditMeasurement: React.FC<EditMeasurementScreenNavigationProps> = ({
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <MeasurementItem
-          date={measurement!.createdAt}
+        <AssessmentItem
+          date={date}
           petName={petName}
-          measurement={measurement}
           onCancel={() => navigation.goBack()}
           onSubmit={handleSubmit}
         />
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditMeasurement;
+export default AddAssessment;

@@ -7,7 +7,7 @@ type Props = {
   measurements: Realm.Results<Measurement & Realm.Object>;
 };
 
-export const MeasurementsList: React.FC<Props> = ({measurements}) => {
+export const AssessmentsList: React.FC<Props> = ({measurements}) => {
   if (measurements.length > 0) {
     return (
       <View style={styles.listContainer}>
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MeasurementsList;
+export default AssessmentsList;
