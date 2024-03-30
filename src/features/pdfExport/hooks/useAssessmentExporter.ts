@@ -61,7 +61,7 @@ const useAssessmentExporter = () => {
                   font-family: "Inter", sans-serif;
               }
               .assessment {
-                  margin-bottom: 20px;
+                  margin-top: 20px;
               }
               p {
                   margin: 0;
