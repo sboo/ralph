@@ -2,11 +2,12 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {useQuery} from '@realm/react';
-import {List, useTheme} from 'react-native-paper';
+import {Divider, List, useTheme} from 'react-native-paper';
 import {Measurement} from '@/app/models/Measurement';
 import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
+import AssessmentChart from '@/features/charts/components/AssessmentChart';
 
 const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
   navigation,
@@ -57,6 +58,7 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
         style={styles.gradient}>
         <ScrollView style={styles.scrollview}>
           <ExportPdf />
+          <Divider style={styles.divider} />
           {assessments.map((assessment, index) => (
             <List.Item
               key={index}
@@ -78,6 +80,8 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
               }}
             />
           ))}
+          <Divider style={styles.divider} />
+          <AssessmentChart />
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>
@@ -108,6 +112,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
+  },
+  divider: {
+    marginVertical: 20,
   },
 });
 
