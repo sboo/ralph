@@ -34,12 +34,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     },
     [],
   );
-  const lastWeeksAssessments = useQuery(
+  const lastAssessments = useQuery(
     Measurement,
     collection => {
-      return collection
-        .filtered('createdAt >= $0', moment().subtract(7, 'days').toDate())
-        .sorted('createdAt');
+      return collection.sorted('createdAt', true);
     },
     [],
   );
@@ -47,15 +45,16 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const lastAssessment = assessments[assessments.length - 1];
 
   useEffect(() => {
-    if (!lastWeeksAssessments.length || lastWeeksAssessments.length < 5) {
+    if (!lastAssessments.length || lastAssessments.length < 5) {
       setAverageScore(60);
     } else {
-      const sum = lastWeeksAssessments
+      const lastSevenAssessments = lastAssessments.slice(0, 7);
+      const sum = lastSevenAssessments
         .filter(assessment => assessment.createdAt !== undefined)
         .reduce((acc, assessment) => acc + assessment.score, 0);
-      setAverageScore(sum / lastWeeksAssessments.length);
+      setAverageScore(sum / lastSevenAssessments.length);
     }
-  }, [lastWeeksAssessments]);
+  }, [lastAssessments]);
 
   useEffect(() => {
     const fetchPetName = async () => {
