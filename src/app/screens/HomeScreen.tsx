@@ -89,8 +89,16 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   }, [navigation]);
 
   const getScores = useCallback(() => {
-    const startDate =
-      assessments.length > 0 ? assessments[0].createdAt : new Date();
+    // Get the last 7 days of assessments or the last 7 days since the first assessment
+    const startDate = (
+      assessments.length > 0
+        ? moment.min(
+            moment(assessments[0].createdAt),
+            moment().subtract(7, 'days'),
+          )
+        : moment().subtract(7, 'days')
+    ).toDate();
+
     const endDate = new Date();
     const dateRange = [];
     let currentDate = new Date(startDate);
@@ -223,6 +231,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
                   withInnerLines={false}
                   withOuterLines={false}
                   withHorizontalLabels={false}
+                  verticalLabelRotation={-45}
                   xLabelsOffset={10}
                   chartConfig={{
                     fillShadowGradientToOpacity: 0,
@@ -353,7 +362,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   chart: {
-    paddingRight: 6,
+    paddingRight: 10,
   },
   chartLabels: {
     justifyContent: 'space-around',
