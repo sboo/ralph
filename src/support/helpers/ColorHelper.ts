@@ -1,3 +1,5 @@
+import {TipType} from '@/features/tips/hooks/useTips';
+
 const getValueColor = (neutralColor: string, value: number | undefined) => {
   if (value === undefined) {
     return neutralColor;
@@ -18,4 +20,14 @@ const getValueColor = (neutralColor: string, value: number | undefined) => {
   }
 };
 
-export default getValueColor;
+const getTipBackgroundColor = (tipType?: TipType) => {
+  switch (tipType) {
+    default:
+    case TipType.help:
+      return '#F0E10655';
+    case TipType.encouragement:
+      return '#74D40055';
+  }
+};
+
+export {getValueColor, getTipBackgroundColor};

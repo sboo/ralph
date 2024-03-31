@@ -1,0 +1,220 @@
+{
+    "hurt": [
+        {
+            "title": "Crear un Área de Descanso Cómoda",
+            "text": "Asegúrate de que tu mascota tenga un lugar tranquilo y acogedor para descansar, alejado de áreas concurridas para ayudarla a relajarse."
+        },
+        {
+            "title": "Considerar Opciones de Manejo del Dolor",
+            "text": "Consulta con tu veterinario sobre opciones de alivio del dolor, incluidos medicamentos, suplementos o terapias alternativas."
+        },
+        {
+            "title": "Manejo Suave",
+            "text": "Ten cuidado al tocar o mover a tu mascota, especialmente en áreas que parecen causarle incomodidad."
+        },
+        {
+            "title": "Compresas Calientes",
+            "text": "Para ciertos tipos de molestias, las compresas calientes pueden aliviar el dolor. Pregunta a tu veterinario si esto es adecuado para la condición de tu mascota."
+        },
+        {
+            "title": "Limitar la Actividad Rigurosa",
+            "text": "Mantén las actividades de bajo perfil para evitar exacerbar el dolor, enfocándote en interacciones suaves y breves."
+        }
+    ],
+    "hunger": [
+        {
+            "title": "Calentar Ligeramente la Comida o Añadir Caldo de Pollo",
+            "text": "Calentar la comida puede realzar su aroma, haciéndola más atractiva para tu mascota. Un chorrito de caldo de pollo también puede aumentar el interés en la comida sin abrumar sus sentidos."
+        },
+        {
+            "title": "Ofrecer Comidas Pequeñas y Más Frecuentes",
+            "text": "Las comidas pequeñas a lo largo del día pueden ser menos intimidantes para las mascotas con apetitos bajos y pueden ayudar a estimular el hambre más efectivamente que menos comidas grandes."
+        },
+        {
+            "title": "Experimentar con Diferentes Alimentos",
+            "text": "Descubrir las preferencias de tu mascota puede ser clave. Prueba varias opciones saludables, incluyendo comida húmeda, seca o una mezcla para ver lo que prefieren."
+        },
+        {
+            "title": "Asegurar un Espacio Tranquilo y Cómodo para Comer",
+            "text": "Un ambiente tranquilo libre de ruidos fuertes y tráfico intenso puede ayudar a tu mascota a relajarse y concentrarse en comer."
+        },
+        {
+            "title": "Mantener Agua Fresca Disponible",
+            "text": "La hidratación juega un papel crucial en el apetito. Ofrecer agua fresca junto con opciones de comida húmeda puede ayudar a mantener la hidratación y fomentar la ingesta de alimentos."
+        },
+        {
+            "title": "Usar un Plato Plano para un Acceso Más Fácil a la Comida",
+            "text": "Algunas mascotas encuentran intimidantes o incómodos los tazones para comer. Un plato plano puede hacer que la comida sea más accesible e invitante."
+        },
+        {
+            "title": "Ofrecer Comida en Pequeñas Cantidades a Intervalos Regulares",
+            "text": "Porciones consistentes y pequeñas pueden ayudar a manejar la ingesta de tu mascota sin abrumarla, haciendo las comidas más manejables."
+        },
+        {
+            "title": "Asegurar Fácil Acceso al Agua Fresca en Todo Momento",
+            "text": "La deshidratación puede afectar el apetito. Asegurarse de que tu mascota tenga acceso constante al agua es esencial para su salud general y puede mejorar los hábitos alimenticios."
+        }
+    ],
+    "hydration": [
+        {
+            "title": "Disponibilidad de Agua Fresca",
+            "text": "Siempre ten disponible agua fresca y limpia y fomenta la bebida colocando tazones de agua en varios lugares accesibles."
+        },
+        {
+            "title": "Aromatizar el Agua",
+            "text": "Añade un poco de sabor al agua, como una pequeña cantidad de caldo de pollo o jugo de atún, para fomentar la bebida (consulta a tu veterinario para opciones seguras)."
+        },
+        {
+            "title": "Integración de Comida Húmeda",
+            "text": "Aumenta la ingesta de humedad incorporando comida húmeda en la dieta de tu mascota, lo que puede ayudar con la hidratación."
+        },
+        {
+            "title": "Cubitos de Hielo como Golosinas",
+            "text": "Ofrece cubitos de hielo como una golosina baja en calorías – a algunas mascotas les gusta lamer o masticarlos."
+        },
+        {
+            "title": "Vigilar la Deshidratación",
+            "text": "Aprende los signos de deshidratación (como encías secas y letargo) y consulta a tu veterinario si notas estos síntomas."
+        }
+    ],
+    "hygiene": [
+        {
+            "title": "Sesiones Regulares de Aseo",
+            "text": "Mantén el aseo regular para ayudar a tu mascota a mantenerse limpia. Esto incluye cepillado, baños y limpieza de áreas sucias."
+        },
+        {
+            "title": "Toallitas Apropiadas para Mascotas",
+            "text": "Usa toallitas seguras para mascotas para limpiezas rápidas, especialmente si tu mascota lucha con mantener su limpieza."
+        },
+        {
+            "title": "Cuidado Dental",
+            "text": "Mantén la higiene oral con cepillos de dientes y pasta de dientes apropiados para mascotas para prevenir enfermedades dentales y mantenerlos sintiéndose frescos."
+        },
+        {
+            "title": "Asistir con las Necesidades del Baño",
+            "text": "Para mascotas que no pueden limpiarse después de ir al baño, límpialas suavemente para prevenir molestias o infecciones."
+        },
+        {
+            "title": "Ropa de Cama Cómoda",
+            "text": "Asegúrate de que la ropa de cama esté limpia y seca; cámbiala regularmente para evitar que tu mascota se acueste en suciedad o humedad, lo que puede llevar a problemas de piel."
+        }
+    ],
+    "happiness": [
+        {
+            "title": "Identificar Disparadores de Alegría",
+            "text": "Presta atención a actividades o juguetes que previamente hayan traído alegría a tu mascota. Incluso pequeñas interacciones pueden elevar su ánimo."
+        },
+        {
+            "title": "Tiempo de Calidad Juntos",
+            "text": "Pasa más tiempo con tu mascota, ofreciendo afecto suave y compañía para mejorar su ánimo."
+        },
+        {
+            "title": "Nuevas Experiencias",
+            "text": "Introduce nuevas actividades o ambientes de bajo estrés para estimular su interés y compromiso. A veces, un cambio de escenario puede ayudar."
+        },
+        {
+            "title": "Socialización",
+            "text": "Si a tu mascota le gusta la compañía de otros animales, considera citas de juego con mascotas conocidas para fomentar interacciones sociales positivas."
+        },
+        {
+            "title": "Objetos de Confort",
+            "text": "Proporciona a tu mascota objetos de confort, como una manta o juguete favorito, para ofrecerle una sensación de seguridad y felicidad."
+        },
+        {
+            "title": "Terapia Musical",
+            "text": "Algunas mascotas encuentran calma y consuelo en la música suave. Reproducir melodías suaves puede crear un ambiente relajante para tu mascota."
+        },
+        {
+            "title": "Consultar a un Veterinario",
+            "text": "La persistente baja felicidad puede ser señal de problemas de salud subyacentes. Un veterinario puede proporcionar asesoramiento sobre cómo abordar posibles causas médicas."
+        }
+    ],
+    "mobility": [
+        {
+            "title": "Comenzar con Paseos Cortos y Suaves",
+            "text": "Paseos breves y tranquilos pueden ayudar a mantener el tono muscular y la flexibilidad de las articulaciones sin poner demasiada tensión en tu mascota."
+        },
+        {
+            "title": "Usar Ropa de Cama Ortopédica para Mayor Comodidad Durante el Descanso",
+            "text": "Las camas ortopédicas apoyan las articulaciones y pueden prevenir el dolor después del descanso, haciendo que el movimiento sea más cómodo."
+        },
+        {
+            "title": "Masajear Suavemente las Patas de tu Mascota",
+            "text": "Masajear puede mejorar la circulación y reducir la incomodidad, facilitando el movimiento de tu mascota."
+        },
+        {
+            "title": "Participar en Juegos de Bajo Impacto con Juguetes Suaves",
+            "text": "Los juguetes que fomentan el juego suave pueden ayudar a mantener a tu mascota activa sin arriesgar lesiones o incomodidad."
+        },
+        {
+            "title": "Consultar a un Veterinario para Ejercicios Específicos de Fisioterapia",
+            "text": "Un profesional puede recomendar ejercicios adaptados a las necesidades de tu mascota, promoviendo la movilidad y la fuerza sin causar daño."
+        },
+        {
+            "title": "Crear un Entorno Seguro y Accesible",
+            "text": "Asegura que tu hogar sea amigable para mascotas, con rampas o escalones si es necesario, para ayudar a tu mascota a moverse fácilmente sin tener que saltar o trepar."
+        },
+        {
+            "title": "Monitorear el Peso para Reducir el Estrés en las Articulaciones",
+            "text": "Mantener a tu mascota en un peso saludable puede reducir significativamente la tensión en sus articulaciones y facilitar el movimiento."
+        },
+        {
+            "title": "Considerar Ayudas para la Movilidad:",
+            "text": "Para mascotas con problemas significativos de movilidad, ayudas como arneses o sillas de ruedas pueden ofrecer soporte, haciéndolo posible para ellas disfrutar de más libertad y actividad."
+        }
+    ],
+    "encouragement": [
+        {
+            "title": "Capturar Momentos Especiales",
+            "text": "Toma fotos de tu mascota para preservar el recuerdo de su alegría compartida. Una imagen puede congelar un momento de felicidad para toda la vida."
+        },
+        {
+            "title": "Celebrar con Nuevos Juguetes",
+            "text": "Introduce nuevos juegos o juguetes en los días buenos, agregando emoción y variedad al tiempo de juego de tu mascota."
+        },
+        {
+            "title": "Disfrutar de Sesiones de Mimos Extra-Largas",
+            "text": "Aprovecha al máximo los días buenos con tiempo de mimos extendido, fortaleciendo tu vínculo y proporcionando confort."
+        },
+        {
+            "title": "Crear una Pintura de Pata",
+            "text": "Participa en un proyecto de arte divertido creando una pintura de pata con tu mascota, lo que resulta en un recuerdo único y duradero."
+        },
+        {
+            "title": "Documentar los Días Felices en un Diario",
+            "text": "Escribe sobre los días buenos de tu mascota en un diario, detallando la alegría y los momentos memorables que compartes."
+        },
+        {
+            "title": "Organizar una Mini Sesión de Fotos",
+            "text": "Viste a tu mascota con atuendos divertidos y organiza una sesión de fotos en casa, capturando su personalidad y tu creatividad."
+        },
+        {
+            "title": "Explorar Nuevos Senderos o Parques",
+            "text": "Descubre nuevos espacios al aire libre con tu mascota, enriqueciendo su entorno y estimulando sus sentidos."
+        },
+        {
+            "title": "Organizar una Cita de Juego para Mascotas",
+            "text": "Organiza un encuentro para que tu mascota se reúna y juegue con amigos, fomentando la socialización y el disfrute compartido."
+        },
+        {
+            "title": "Terminar el Día con una Sesión de Cuentos",
+            "text": "Lee a tu mascota, permitiendo que tu voz los calme y relaje, creando un final pacífico para un buen día."
+        },
+        {
+            "title": "Comenzar una Caja de Momentos Felices",
+            "text": "Colecciona recuerdos de los días buenos de tu mascota, como juguetes, fotos o pequeñas notas, en una caja especial que puedas revisitar juntos."
+        },
+        {
+            "title": "Preparar una Comida Especial",
+            "text": "Cocina una comida o trata segura para mascotas para celebrar un día particularmente bueno, mostrando amor a través de sus sabores favoritos."
+        },
+        {
+            "title": "Visitar un Café o Tienda Amigable para Mascotas",
+            "text": "Comparte una nueva experiencia con tu mascota visitando un lugar donde sean bienvenidos para unirse a la diversión."
+        },
+        {
+            "title": "Tener un Día de Spa Relajante",
+            "text": "Mima a tu mascota con un baño suave, seguido de una sesión de aseo para hacerlos sentir amados y refrescados."
+        }
+    ]
+}

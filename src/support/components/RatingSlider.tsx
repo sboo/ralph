@@ -3,7 +3,7 @@ import {Slider} from '@miblanchard/react-native-slider';
 import {StyleSheet, View} from 'react-native';
 import RatingSliderToolTip from './RatingSliderToolTip';
 import {useTheme} from 'react-native-paper';
-import getValueColor from '../helpers/RatingsHelper';
+import {getValueColor} from '@/support/helpers/ColorHelper';
 
 interface Props {
   initialRating: number | undefined;

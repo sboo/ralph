@@ -3,7 +3,7 @@ import buttons from './buttons.json';
 import measurements from './measurements.json';
 import language from '../language.json';
 import settings from './settings.json';
-import quotes from './quotes.json';
+import tips from './tips.json';
 
 export default {
   common,
@@ -11,5 +11,5 @@ export default {
   measurements,
   language,
   settings,
-  quotes,
+  tips,
 };

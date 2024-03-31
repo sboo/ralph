@@ -11,10 +11,11 @@ import {HomeScreenNavigationProps} from '@/features/navigation/types.tsx';
 import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
-import QuotesAndInformation from '@/support/components/QuotesAndInformation.tsx';
 import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
 import {Svg} from 'react-native-svg';
 import AssessmentChart from '@/features/charts/components/AssessmentChart';
+import Tips from '@/features/tips/components/Tips';
+import TaslkToVetTip from '@/features/tips/components/TalkToVetTip';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -33,18 +34,28 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     },
     [],
   );
+  const lastWeeksAssessments = useQuery(
+    Measurement,
+    collection => {
+      return collection
+        .filtered('createdAt >= $0', moment().subtract(7, 'days').toDate())
+        .sorted('createdAt');
+    },
+    [],
+  );
+
+  const lastAssessment = assessments[assessments.length - 1];
 
   useEffect(() => {
-    if (!assessments.length || assessments.length < 5) {
+    if (!lastWeeksAssessments.length || lastWeeksAssessments.length < 5) {
       setAverageScore(60);
     } else {
-      const sum = assessments.reduce(
-        (acc, assessment) => acc + assessment.score,
-        0,
-      );
-      setAverageScore(sum / assessments.length);
+      const sum = lastWeeksAssessments
+        .filter(assessment => assessment.createdAt !== undefined)
+        .reduce((acc, assessment) => acc + assessment.score, 0);
+      setAverageScore(sum / lastWeeksAssessments.length);
     }
-  }, [assessments]);
+  }, [lastWeeksAssessments]);
 
   useEffect(() => {
     const fetchPetName = async () => {
@@ -118,7 +129,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             chartRef={chart}
           />
           {assessments.length > 0 ? (
-            <QuotesAndInformation averageScore={averageScore} />
+            averageScore < 30 ? (
+              <TaslkToVetTip />
+            ) : (
+              <Tips assessment={lastAssessment} />
+            )
           ) : (
             <Card
               mode="contained"

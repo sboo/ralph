@@ -7,7 +7,7 @@ import {Platform} from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {STORAGE_KEYS} from '@/app/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import getValueColor from '@/support/helpers/RatingsHelper';
+import {getValueColor} from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
 
 const useAssessmentExporter = () => {
@@ -16,7 +16,6 @@ const useAssessmentExporter = () => {
   const assessments = useQuery(Measurement, collection =>
     collection.sorted('createdAt'),
   );
-  const [petType, setPetType] = useState<string>('');
   const [petName, setPetName] = useState<string>('');
 
   // Load pet name and type from storage
@@ -27,13 +26,7 @@ const useAssessmentExporter = () => {
         setPetName(name);
       }
     };
-    const fetchPetType = async () => {
-      const type = await AsyncStorage.getItem(STORAGE_KEYS.PET_TYPE);
-      setPetType(type ?? '');
-    };
-
     fetchPetName();
-    fetchPetType();
   }, []);
 
   const getItemColor = (score: number) => {
