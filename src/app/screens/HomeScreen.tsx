@@ -1,4 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {Trans, useTranslation} from 'react-i18next';
 import {
   Dimensions,
@@ -22,13 +28,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import QuotesAndInformation from '@/support/components/QuotesAndInformation.tsx';
 import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
+import {Svg} from 'react-native-svg';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
   const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<Date[]>([]);
   const [averageScore, setAverageScore] = useState(60);
+  const [chartWidthMultiplier, setChartWidthMultiplier] = useState(1);
+  const chart = useRef<Svg>(null);
+  const chartScrollViewRef = useRef<ScrollView>();
 
   const theme = useTheme();
   const {generateAndSharePDF} = useAssessmentExporter();
@@ -36,11 +45,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const assessments = useQuery(
     Measurement,
     collection => {
-      return collection
-        .filtered('createdAt >= $0', dateRange[0])
-        .sorted('createdAt');
+      return collection.sorted('createdAt');
     },
-    [dateRange],
+    [],
   );
 
   useEffect(() => {
@@ -81,46 +88,47 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     };
   }, [navigation]);
 
-  useEffect(() => {
-    const getDateRange = () => {
-      const start = new Date();
-      start.setDate(start.getDate() - 6);
-      start.setHours(0, 0, 0, 0);
-      const _dateRange = Array.from({length: 7}, (_, i) => {
-        const date = new Date(start);
-        date.setDate(start.getDate() + i);
-        return date;
-      });
-      setDateRange(_dateRange);
-    };
-
-    getDateRange();
-  }, []);
-
-  const getLabels = () => {
-    return dateRange.map(date =>
-      date.toLocaleDateString('en-US', {weekday: 'short'}),
-    );
-  };
-
-  const getScores = () => {
+  const getScores = useCallback(() => {
+    const startDate =
+      assessments.length > 0 ? assessments[0].createdAt : new Date();
+    const endDate = new Date();
+    const dateRange = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      dateRange.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
     const scoresWithDates = dateRange.map(date => {
       const assessment = assessments.find(
         m => m.date === moment(date).format('YYYY-MM-DD'),
       );
       return assessment ? assessment.score : null;
     });
-    return scoresWithDates;
-  };
+    const labels = dateRange.map(date =>
+      date.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'}),
+    );
+    return {scoresWithDates, labels, dateRange};
+  }, [assessments]);
 
+  useEffect(() => {
+    const firstAssessmentDate =
+      assessments.length > 0 ? assessments[0].createdAt : new Date();
+    const daysSinceFirstAssessment = moment().diff(
+      moment(firstAssessmentDate),
+      'days',
+    );
+    setChartWidthMultiplier(Math.max(1, daysSinceFirstAssessment / 7));
+  }, [assessments]);
+
+  const {scoresWithDates, labels, dateRange} = getScores();
   const data = {
-    labels: getLabels(),
+    labels: labels,
     datasets: [
       {
-        data: getScores(),
+        data: scoresWithDates,
       },
       {
-        data: [30, 30, 30, 30, 30, 30, 30],
+        data: Array(scoresWithDates.length).fill(30),
         withDots: false,
         color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
       },
@@ -138,6 +146,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const addOrEditAssessment = (date?: Date) => {
     if (!date) {
       date = new Date();
+      // date.setDate(date.getDate() - 11);
     }
     const today = moment(date).format('YYYY-MM-DD');
     const assessment = assessments.find(m => m.date === today);
@@ -175,7 +184,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         style={styles.gradient}>
         <HomeHeader petName={petName} />
         <ScrollView style={styles.bodyContainer}>
-          <View style={styles.chartContainer}>
+          <View
+            style={{
+              backgroundColor: theme.colors.primaryContainer,
+              ...styles.chartContainer,
+            }}>
             <View style={styles.chartLabels}>
               <Icon
                 size={20}
@@ -189,46 +202,61 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               />
               <Icon size={20} source={'emoticon-sad-outline'} color="#F44336" />
             </View>
-            <LineChart
-              data={data as LineChartData}
-              width={Dimensions.get('window').width - 40}
-              height={200}
-              yAxisLabel=""
-              yAxisSuffix=""
-              fromZero={true}
-              withInnerLines={false}
-              withOuterLines={false}
-              withHorizontalLabels={false}
-              chartConfig={{
-                backgroundGradientFrom: theme.colors.primaryContainer,
-                backgroundGradientTo: theme.colors.primaryContainer,
-                backgroundGradientFromOpacity: 0,
-                backgroundGradientToOpacity: 1,
-                decimalPlaces: 0, // optional, defaults to 2dp
-                color: () => theme.colors.onPrimaryContainer,
-                labelColor: () => theme.colors.onPrimaryContainer,
-                propsForDots: {
-                  r: '6',
-                  strokeWidth: '2',
-                  stroke: '#fff',
-                },
-              }}
-              renderDotContent={({x, y, index, indexData}): any => (
-                <CustomDot
-                  key={index}
-                  value={indexData}
-                  index={index}
-                  x={x}
-                  y={y}
-                  scores={data.datasets[0].data as number[]}
+            <ScrollView
+              style={styles.chartScrollView}
+              horizontal={true}
+              ref={chartScrollViewRef as RefObject<ScrollView> | null}
+              onContentSizeChange={() =>
+                chartScrollViewRef.current?.scrollToEnd({animated: false})
+              }>
+              <Svg ref={chart}>
+                <LineChart
+                  style={styles.chart}
+                  data={data as LineChartData}
+                  width={
+                    Dimensions.get('window').width * chartWidthMultiplier - 40
+                  }
+                  height={200}
+                  yAxisLabel=""
+                  yAxisSuffix=""
+                  fromZero={true}
+                  withInnerLines={false}
+                  withOuterLines={false}
+                  withHorizontalLabels={false}
+                  xLabelsOffset={10}
+                  chartConfig={{
+                    fillShadowGradientToOpacity: 0,
+                    fillShadowGradientFromOpacity: 0,
+                    backgroundGradientFrom: theme.colors.primaryContainer,
+                    backgroundGradientTo: theme.colors.primaryContainer,
+                    backgroundGradientFromOpacity: 0,
+                    backgroundGradientToOpacity: 0,
+                    decimalPlaces: 0, // optional, defaults to 2dp
+                    color: () => theme.colors.onPrimaryContainer,
+                    labelColor: () => theme.colors.onPrimaryContainer,
+                    propsForDots: {
+                      r: '6',
+                      strokeWidth: '2',
+                      stroke: '#fff',
+                    },
+                  }}
+                  renderDotContent={({x, y, index, indexData}): any => (
+                    <CustomDot
+                      key={index}
+                      value={indexData}
+                      index={index}
+                      x={x}
+                      y={y}
+                      scores={data.datasets[0].data as number[]}
+                    />
+                  )}
+                  bezier
+                  onDataPointClick={({index}) => {
+                    addOrEditAssessment(dateRange[index]);
+                  }}
                 />
-              )}
-              bezier
-              style={styles.chart}
-              onDataPointClick={({index}) => {
-                addOrEditAssessment(dateRange[index]);
-              }}
-            />
+              </Svg>
+            </ScrollView>
           </View>
           {assessments.length > 0 ? (
             <QuotesAndInformation averageScore={averageScore} />
@@ -279,7 +307,12 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             {
               icon: 'share-variant',
               label: t('buttons:share_assessments'),
-              onPress: () => generateAndSharePDF(),
+              onPress: () => {
+                chart.current?.toDataURL(chartBase64 => {
+                  const dataUrl = `data:image/image/png;base64,${chartBase64}`;
+                  generateAndSharePDF(dataUrl);
+                });
+              },
             },
             // {
             //   icon: 'bug-outline',
@@ -313,15 +346,19 @@ const styles = StyleSheet.create({
   chartContainer: {
     flexDirection: 'row',
     borderRadius: 16,
+    paddingHorizontal: 15,
+  },
+  chartScrollView: {
+    marginLeft: 50,
+    paddingBottom: 10,
   },
   chart: {
-    marginVertical: 8,
-    borderRadius: 16,
+    paddingRight: 6,
   },
   chartLabels: {
     justifyContent: 'space-around',
     height: 195,
-    left: 25,
+    left: 15,
     position: 'absolute',
   },
   title: {

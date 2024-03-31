@@ -41,7 +41,11 @@ const useAssessmentExporter = () => {
     return `${color}AA`;
   };
 
-  const getHtmlContent = () => {
+  const getHtmlContent = (chartBase64: string) => {
+    const chart = chartBase64
+      ? `<img src="${chartBase64}" style="width: 100%; height: auto;"/>
+            <div class="page-break-before"> </div>`
+      : '';
     return `
       <!DOCTYPE html>
       <html lang="en">
@@ -111,65 +115,70 @@ const useAssessmentExporter = () => {
       </head>
       <body>
           <h1>${petName}</h1>
-          <div class="confirmationBox_content">
-          ${assessments
-            .map((assessment, index) => {
-              let pageBreak = '';
-              if ((index + 1) % 8 === 0) {
-                pageBreak = '<div class="page-break-before"> </div>';
-              }
-              return `${pageBreak}
-              <div class="assessment" key=${assessment._id.toHexString()}>
-                  <div class="row">
-                      <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
-                      <p class="score">${assessment.score}</p>
-                  </div>
-                  <div class="row">
-                      <p class="item" style="background-color: ${getItemColor(
-                        assessment.hurt,
-                      )}">${t('measurements:hurt')}:${assessment.hurt}</p>
+          <div>
+           ${chart}
+            ${assessments
+              .map((assessment, index) => {
+                let pageBreak = '';
+                if ((index + 1) % 9 === 0) {
+                  pageBreak = '<div class="page-break-before"> </div>';
+                }
+                return `
+                ${pageBreak}
+                
+                <div class="assessment" key=${assessment._id.toHexString()}>
+                    <div class="row">
+                        <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
+                        <p class="score">${assessment.score}</p>
+                    </div>
+                    <div class="row">
+                        <p class="item" style="background-color: ${getItemColor(
+                          assessment.hurt,
+                        )}">${t('measurements:hurt')}:${assessment.hurt}</p>
 
-                      <p class="item" style="background-color: ${getItemColor(
-                        assessment.hydration,
-                      )}">${t('measurements:hydration')}:${
-                assessment.hydration
-              }</p>
+                        <p class="item" style="background-color: ${getItemColor(
+                          assessment.hydration,
+                        )}">${t('measurements:hydration')}:${
+                  assessment.hydration
+                }</p>
 
-                      <p class="item" style="background-color: ${getItemColor(
-                        assessment.happiness,
-                      )}">${t('measurements:happiness')}:${
-                assessment.happiness
-              }</p>
-                  </div>
+                        <p class="item" style="background-color: ${getItemColor(
+                          assessment.happiness,
+                        )}">${t('measurements:happiness')}:${
+                  assessment.happiness
+                }</p>
+                    </div>
 
-                  <div class="row">
-                      <p class="item" style="background-color: ${getItemColor(
-                        assessment.hurt,
-                      )}">${t('measurements:hunger')}:${assessment.hunger}</p>
+                    <div class="row">
+                        <p class="item" style="background-color: ${getItemColor(
+                          assessment.hurt,
+                        )}">${t('measurements:hunger')}:${assessment.hunger}</p>
 
-                      <p class="item" style="background-color: ${getItemColor(
-                        assessment.hygiene,
-                      )}">${t('measurements:hygiene')}:${assessment.hygiene}</p>
+                        <p class="item" style="background-color: ${getItemColor(
+                          assessment.hygiene,
+                        )}">${t('measurements:hygiene')}:${
+                  assessment.hygiene
+                }</p>
 
-                      <p class="item" style="background-color: ${getItemColor(
-                        assessment.mobility,
-                      )}">${t('measurements:mobility')}:${
-                assessment.mobility
-              }</p>
-                  </div>
-              </div>`;
-            })
-            .join('')}
-      </div>
+                        <p class="item" style="background-color: ${getItemColor(
+                          assessment.mobility,
+                        )}">${t('measurements:mobility')}:${
+                  assessment.mobility
+                }</p>
+                    </div>
+                </div>`;
+              })
+              .join('')}
+        </div>
       </body>
       </html>
   `;
   };
 
-  const createPDF = async (): Promise<string | null> => {
+  const createPDF = async (chartBase64: string): Promise<string | null> => {
     try {
       let PDFOptions = {
-        html: getHtmlContent(),
+        html: getHtmlContent(chartBase64),
         fileName: 'assessments',
         directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
       };
@@ -184,8 +193,8 @@ const useAssessmentExporter = () => {
     }
   };
 
-  const generateAndSharePDF = async () => {
-    const filePath = await createPDF();
+  const generateAndSharePDF = async (chartBase64: string) => {
+    const filePath = await createPDF(chartBase64);
     if (filePath) {
       // Share the PDF file
       await Share.open({url: `file://${filePath}`});
