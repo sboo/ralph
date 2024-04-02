@@ -32,7 +32,7 @@
         "description": "{{petName}} is comfortable, moves easily, and shows no signs of pain."
       }],
     "hunger": "Eating",
-    "hungerInfo": "Is {{petName}} eating enough? Does hand-feeding help? ",
+    "hungerInfo": "Is {{petName}} eating enough?",
     "hungerOptions": [{
         "value": 0,
         "title": "Refuses to Eat",
@@ -64,7 +64,7 @@
         {
           "value": 0,
           "title": "Refuses to Drink",
-          "description": "Won't drink any water, showing signs of severe dehydration."
+          "description": "Won't drink any water, showing possible dehydration signs like lethargy, dry gums, and a dry nose."
         },
         {
           "value": 2.5,
