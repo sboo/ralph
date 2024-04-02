@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
+  Icon,
   IconButton,
   Switch,
   Text,
@@ -286,18 +287,18 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
           </View>
         ) : null}
         <View style={styles.inputRow}>
-          <Text variant="labelLarge">{t('settings:selectLanguageLabel')}</Text>
+          <Icon source={'earth'} size={30} />
           <View style={styles.inputFlags}>
             {AVAILABLE_LANGUAGES.map(lang => (
               <IconButton
                 key={lang.langCode}
                 // eslint-disable-next-line react/no-unstable-nested-components
-                icon={() => <CountryFlag isoCode={lang.isoCode} size={36} />}
+                icon={() => <CountryFlag isoCode={lang.isoCode} size={30} />}
                 onPress={() => {
                   i18next.changeLanguage(lang.langCode);
                 }}
                 accessibilityLabel={'lang'}
-                size={20}
+                size={15}
                 mode={'contained'}
               />
             ))}

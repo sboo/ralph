@@ -33,7 +33,10 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <Text variant="headlineLarge">{t('welcome')}</Text>
+        <Text variant="displayMedium">{t('welcome')}</Text>
+        <Text variant="titleLarge" style={styles.welcomeText}>
+          {t('welcome_text')}
+        </Text>
         <Settings onSettingsSaved={onSettingsSaved} />
       </LinearGradient>
     </SafeAreaView>
@@ -47,8 +50,12 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     padding: 20,
+    paddingTop: 60,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+  },
+  welcomeText: {
+    marginVertical: 20,
   },
 });
 
