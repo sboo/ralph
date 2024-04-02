@@ -11,19 +11,15 @@ import React, {
 } from 'react';
 import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
-import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
 import {Icon, useTheme} from 'react-native-paper';
-import Svg from 'react-native-svg';
 
 interface AssessmentChartProps {
   onDataPointClick?: (date: Date) => void;
-  chartRef?: RefObject<Svg>;
 }
 
 const AssessmentChart: React.FC<AssessmentChartProps> = ({
   onDataPointClick,
-  chartRef,
 }) => {
   const [chartWidthMultiplier, setChartWidthMultiplier] = useState(1);
   const chartScrollViewRef = useRef<ScrollView>();
@@ -119,54 +115,52 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
         onContentSizeChange={() =>
           chartScrollViewRef.current?.scrollToEnd({animated: false})
         }>
-        <Svg ref={chartRef}>
-          <LineChart
-            style={styles.chart}
-            data={data as LineChartData}
-            width={Dimensions.get('window').width * chartWidthMultiplier - 40}
-            height={200}
-            yAxisLabel=""
-            yAxisSuffix=""
-            fromZero={true}
-            withInnerLines={false}
-            withOuterLines={false}
-            withHorizontalLabels={false}
-            verticalLabelRotation={-45}
-            xLabelsOffset={10}
-            chartConfig={{
-              fillShadowGradientToOpacity: 0,
-              fillShadowGradientFromOpacity: 0,
-              backgroundGradientFrom: theme.colors.primaryContainer,
-              backgroundGradientTo: theme.colors.primaryContainer,
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 0,
-              decimalPlaces: 0, // optional, defaults to 2dp
-              color: () => theme.colors.onPrimaryContainer,
-              labelColor: () => theme.colors.onPrimaryContainer,
-              propsForDots: {
-                r: '6',
-                strokeWidth: '2',
-                stroke: '#fff',
-              },
-            }}
-            renderDotContent={({x, y, index, indexData}): any => (
-              <CustomDot
-                key={index}
-                value={indexData}
-                index={index}
-                x={x}
-                y={y}
-                scores={data.datasets[0].data as number[]}
-              />
-            )}
-            bezier
-            onDataPointClick={({index}) => {
-              if (onDataPointClick) {
-                onDataPointClick(dateRange[index]);
-              }
-            }}
-          />
-        </Svg>
+        <LineChart
+          style={styles.chart}
+          data={data as LineChartData}
+          width={Dimensions.get('window').width * chartWidthMultiplier - 40}
+          height={200}
+          yAxisLabel=""
+          yAxisSuffix=""
+          fromZero={true}
+          withInnerLines={false}
+          withOuterLines={false}
+          withHorizontalLabels={false}
+          verticalLabelRotation={-45}
+          xLabelsOffset={10}
+          chartConfig={{
+            fillShadowGradientToOpacity: 0,
+            fillShadowGradientFromOpacity: 0,
+            backgroundGradientFrom: theme.colors.primaryContainer,
+            backgroundGradientTo: theme.colors.primaryContainer,
+            backgroundGradientFromOpacity: 0,
+            backgroundGradientToOpacity: 0,
+            decimalPlaces: 0, // optional, defaults to 2dp
+            color: () => theme.colors.onPrimaryContainer,
+            labelColor: () => theme.colors.onPrimaryContainer,
+            propsForDots: {
+              r: '6',
+              strokeWidth: '2',
+              stroke: '#fff',
+            },
+          }}
+          renderDotContent={({x, y, index, indexData}): any => (
+            <CustomDot
+              key={index}
+              value={indexData}
+              index={index}
+              x={x}
+              y={y}
+              scores={data.datasets[0].data as number[]}
+            />
+          )}
+          bezier
+          onDataPointClick={({index}) => {
+            if (onDataPointClick) {
+              onDataPointClick(dateRange[index]);
+            }
+          }}
+        />
       </ScrollView>
     </View>
   );

@@ -34,11 +34,7 @@ const useAssessmentExporter = () => {
     return `${color}AA`;
   };
 
-  const getHtmlContent = (chartBase64: string) => {
-    const chart = chartBase64
-      ? `<img src="${chartBase64}" style="width: 100%; height: auto;"/>
-            <div class="page-break-before"> </div>`
-      : '';
+  const getHtmlContent = () => {
     return `
       <!DOCTYPE html>
       <html lang="en">
@@ -109,7 +105,6 @@ const useAssessmentExporter = () => {
       <body>
           <h1>${petName}</h1>
           <div>
-           ${chart}
             ${assessments
               .map((assessment, index) => {
                 let pageBreak = '';
@@ -168,10 +163,10 @@ const useAssessmentExporter = () => {
   `;
   };
 
-  const createPDF = async (chartBase64: string): Promise<string | null> => {
+  const createPDF = async (): Promise<string | null> => {
     try {
       let PDFOptions = {
-        html: getHtmlContent(chartBase64),
+        html: getHtmlContent(),
         fileName: 'assessments',
         directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
       };
@@ -186,8 +181,8 @@ const useAssessmentExporter = () => {
     }
   };
 
-  const generateAndSharePDF = async (chartBase64: string) => {
-    const filePath = await createPDF(chartBase64);
+  const generateAndSharePDF = async () => {
+    const filePath = await createPDF();
     if (filePath) {
       // Share the PDF file
       await Share.open({url: `file://${filePath}`});

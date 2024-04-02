@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Trans, useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,7 +12,6 @@ import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
-import {Svg} from 'react-native-svg';
 import AssessmentChart from '@/features/charts/components/AssessmentChart';
 import Tips from '@/features/tips/components/Tips';
 import TaslkToVetTip from '@/features/tips/components/TalkToVetTip';
@@ -22,8 +21,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [averageScore, setAverageScore] = useState(60);
-  const chart = useRef<Svg>(null);
-
   const theme = useTheme();
   const {generateAndSharePDF} = useAssessmentExporter();
 
@@ -123,10 +120,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         style={styles.gradient}>
         <HomeHeader petName={petName} />
         <ScrollView style={styles.bodyContainer}>
-          <AssessmentChart
-            onDataPointClick={addOrEditAssessment}
-            chartRef={chart}
-          />
+          <AssessmentChart onDataPointClick={addOrEditAssessment} />
           {assessments.length > 0 ? (
             averageScore < 30 ? (
               <TaslkToVetTip />
@@ -181,10 +175,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
               icon: 'share-variant',
               label: t('buttons:share_assessments'),
               onPress: () => {
-                chart.current?.toDataURL(chartBase64 => {
-                  const dataUrl = `data:image/image/png;base64,${chartBase64}`;
-                  generateAndSharePDF(dataUrl);
-                });
+                generateAndSharePDF();
               },
             },
             // {

@@ -7,7 +7,6 @@ import {Measurement} from '@/app/models/Measurement';
 import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
-import AssessmentChart from '@/features/charts/components/AssessmentChart';
 
 const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
   navigation,
@@ -81,7 +80,6 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
             />
           ))}
           <Divider style={styles.divider} />
-          <AssessmentChart />
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>
