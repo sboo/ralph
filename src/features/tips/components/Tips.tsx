@@ -1,7 +1,7 @@
 import {Measurement} from '@/app/models/Measurement';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Card, Icon, IconButton, Text} from 'react-native-paper';
+import {Card, Icon, Text} from 'react-native-paper';
 import useTips, {Tip, TipCategory} from '../hooks/useTips';
 import {getTipBackgroundColor} from '@/support/helpers/ColorHelper';
 import {useTranslation} from 'react-i18next';
@@ -72,7 +72,9 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
       </Text>
       <View style={styles.dotsHolder}>
         {[...new Array(numberOfTips).keys()].map(index => (
-          <Text style={currentIndex === index ? styles.activeDot : styles.dot}>
+          <Text
+            key={index}
+            style={currentIndex === index ? styles.activeDot : styles.dot}>
             •
           </Text>
         ))}
