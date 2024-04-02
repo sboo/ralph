@@ -18,7 +18,7 @@ const CustomDot = ({value, index, x, y, scores}: CustomDotProps) => {
   if (
     value === null &&
     ((firstNonNullScoreIndex >= 0 && index > firstNonNullScoreIndex) ||
-      index === 6)
+      index === scores.length - 1)
   ) {
     return (
       <PulsatingCircle
