@@ -214,7 +214,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
     <View style={styles.container}>
       <View style={styles.profileInput}>
         <View style={styles.inputRow}>
-          <Text style={styles.inputLabel} variant="labelLarge">
+        <Text style={styles.inputLabel} variant="labelLarge">
             {t('settings:petTypeInputLabel')}
           </Text>
           <View style={styles.inputRowPet}>
@@ -251,11 +251,11 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
           onChangeText={(text: string) => setPetName(text)}
         />
         <View style={styles.inputRow}>
-          <Text variant="labelLarge">{t('settings:avatarInputLabel')}</Text>
+          <Text style={styles.inputLabel} variant="labelLarge">{t('settings:avatarInputLabel')}</Text>
           <AvatarPicker />
         </View>
         <View style={styles.inputRow}>
-          <Text variant="labelLarge">
+          <Text style={styles.inputLabel} variant="labelLarge">
             {t('settings:enableNotificationsLabel')}
           </Text>
           <Switch
@@ -347,6 +347,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     flexShrink: 1,
+    marginRight: 10,
   },
   textInput: {
     alignSelf: 'stretch',

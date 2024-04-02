@@ -31,6 +31,7 @@ import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {event, EVENT_NAMES} from '@/features/events';
 import type {NavigationState} from '@react-navigation/routers';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('light-content');
@@ -172,64 +173,66 @@ const App: React.FC = () => {
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer onStateChange={onNavigationStateChange}>
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            // eslint-disable-next-line react/no-unstable-nested-components
-            header: props => <CustomNavigationBar {...props} />,
-          }}>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              title: '',
-              headerStyle: {backgroundColor: theme.colors.primary},
-            }}
-          />
-          <Stack.Screen
-            name="Welcome"
-            component={WelcomeScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{
-              title: t('settings'),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="AddAssessment"
-            component={AddAssessment}
-            options={{
-              title: t('measurements:title', {petName}),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="EditAssessment"
-            component={EditAssessment}
-            options={{
-              title: t('measurements:title', {petName}),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="AllAssessments"
-            component={AllAssessmentsScreen}
-            options={{
-              title: t('measurements:allAssessments'),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen name="AboutScreen" component={AboutScreen} />
-          <Stack.Screen name="DebugScreen" component={DebugScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer onStateChange={onNavigationStateChange}>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              // eslint-disable-next-line react/no-unstable-nested-components
+              header: props => <CustomNavigationBar {...props} />,
+            }}>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                title: '',
+                headerStyle: {backgroundColor: theme.colors.primary},
+              }}
+            />
+            <Stack.Screen
+              name="Welcome"
+              component={WelcomeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{
+                title: t('settings'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="AddAssessment"
+              component={AddAssessment}
+              options={{
+                title: t('measurements:title', {petName}),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="EditAssessment"
+              component={EditAssessment}
+              options={{
+                title: t('measurements:title', {petName}),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="AllAssessments"
+              component={AllAssessmentsScreen}
+              options={{
+                title: t('measurements:allAssessments'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen name="AboutScreen" component={AboutScreen} />
+            <Stack.Screen name="DebugScreen" component={DebugScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 };
 
