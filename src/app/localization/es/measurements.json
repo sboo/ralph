@@ -1,186 +1,180 @@
 {
-    "todaysAssessment": "Medición de Hoy",
-    "allAssessments": "Todas las Mediciones",
-    "pastAssessments": "Mediciones Pasadas",
-    "title": "¿Cómo fue el día de {{petName}}?",
-    "intro": "Tomemos un momento para reflexionar sobre el día de {{petName}}. Ajusta los deslizadores para indicar cómo está {{petName}} en cada área.",
-    "hurt": "Dolor",
-    "hurtInfo": "¿{{petName}} está libre de dolor? ¿O se puede manejar el dolor de {{petName}} de manera exitosa?",
-    "hurtOptions": [{
-        "value": 0,
-        "title": "Dolor Severo",
-        "description": "{{petName}} muestra signos claros de dolor, como gemidos o dificultad para moverse, y no parece poder estar cómodo."
-      },
-      {
-        "value": 2.5,
-        "title": "Dolor Moderado",
-        "description": "Muestra algo de incomodidad, especialmente al moverse o respirar, podría evitar ser tocado en ciertas áreas."
-      },
-      {
-        "value": 5,
-        "title": "Dolor Leve",
-        "description": "{{petName}} parece estar ligeramente incómodo a veces pero aún puede descansar y moverse sin demasiado problema."
-      },
-      {
-        "value": 7.5,
-        "title": "Molestias Ocasionales",
-        "description": "Signos raros de incomodidad, mayormente capaz de moverse y descansar sin problemas."
-      },
-      {
-        "value": 10,
-        "title": "Libre de Dolor",
-        "description": "{{petName}} está cómodo, se mueve fácilmente y no muestra signos de dolor."
-      }],
-    "hunger": "Comida",
-    "hungerInfo": "¿Está {{petName}} comiendo suficiente? ¿Ayuda alimentarlo a mano?",
-    "hungerOptions": [{
-        "value": 0,
-        "title": "Rechaza Comer",
-        "description": "{{petName}} no come nada, ni siquiera sus golosinas favoritas."
-      },
-      {
-        "value": 2.5,
-        "title": "Lucha para Comer",
-        "description": "Muestra interés en la comida pero tiene dificultad para comer sin asistencia."
-      },
-      {
-        "value": 5,
-        "title": "Come con Estímulo",
-        "description": "Solo come cuando se le anima o se le alimenta a mano, pero no con entusiasmo."
-      },
-      {
-        "value": 7.5,
-        "title": "Come con Pequeños Problemas",
-        "description": "Come menos de lo usual o prefiere comida suave, pero generalmente se las arregla por su cuenta."
-      },
-      {
-        "value": 10,
-        "title": "Come Normalmente",
-        "description": "{{petName}} come regularmente sin ningún problema."
-      }],
-    "hydration": "Bebida",
-    "hydrationInfo": "¿Está {{petName}} bebiendo suficiente?",
-    "hydrationOptions": [
-        {
-          "value": 0,
-          "title": "Rechaza Beber",
-          "description": "No bebe agua, mostrando signos de deshidratación severa."
-        },
-        {
-          "value": 2.5,
-          "title": "Necesita Asistencia para Beber",
-          "description": "Muestra interés en el agua pero solo puede beber cuando se le ayuda."
-        },
-        {
-          "value": 5,
-          "title": "Bebe un Poco",
-          "description": "Bebe por su cuenta pero menos de lo usual, podría necesitar recordatorios."
-        },
-        {
-          "value": 7.5,
-          "title": "Bebe con Estímulo",
-          "description": "Bebe una cantidad suficiente, aunque podría necesitar algo de persuasión o preferir ciertas formas de beber."
-        },
-        {
-          "value": 10,
-          "title": "Hidratado y Saludable",
-          "description": "Bebe regularmente sin ningún problema, manteniendo una buena hidratación."
-        }
-      ],
-    "hygiene": "Limpieza",
-    "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí mismo?",
-    "hygieneOptions": [
-        {
-          "value": 0,
-          "title": "Extremadamente Desaliñado",
-          "description": "{{petName}} a menudo está sucio, puede tener el pelo enredado y frecuentemente se ensucia."
-        },
-        {
-          "value": 2.5,
-          "title": "Necesita Ayuda Frecuentemente",
-          "description": "A veces puede mantenerse limpio pero a menudo necesita asistencia para evitar yacer en residuos o mantenerse limpio."
-        },
-        {
-          "value": 5,
-          "title": "Ocasionalmente Desordenado",
-          "description": "{{petName}} está mayormente limpio pero puede tener accidentes ocasionales o necesitar ayuda con el aseo."
-        },
-        {
-          "value": 7.5,
-          "title": "Generalmente Limpio",
-          "description": "Permanece limpio con asistencia mínima, puede que solo necesite ayuda con lugares difíciles de alcanzar."
-        },
-        {
-          "value": 10,
-          "title": "Siempre Limpio",
-          "description": "{{petName}} maneja bien su higiene, permanece limpio y no se ensucia."
-        }
-      ],
-    "happiness": "Alegría",
-    "happinessInfo": "¿{{petName}} expresa alegría e interés? ¿Es {{petName}} receptivo a las cosas a su alrededor (familia, juguetes, etc)?",
-    "happinessOptions": [
-        {
-          "value": 0,
-          "title": "Severamente Deprimido",
-          "description": "No muestra interés en interacción, juguetes o actividades que solían ser placenteras."
-        },
-        {
-          "value": 2.5,
-          "title": "Frecuentemente Desinteresado",
-          "description": "Ocasionalmente muestra un atisbo de su antiguo yo, pero mayormente desinteresado en su entorno o actividades."
-        },
-        {
-          "value": 5,
-          "title": "Ligeramente Interesado",
-          "description": "Muestra interés en interacciones o juguetes pero menos que antes, disfruta estar con la familia pero puede cansarse fácilmente."
-        },
-        {
-          "value": 7.5,
-          "title": "Generalmente Feliz",
-          "description": "Interactúa con la familia y juguetes, muestra signos de felicidad, pero no tan frecuentemente o con tanto entusiasmo como antes."
-        },
-        {
-          "value": 10,
-          "title": "Completamente Alegre",
-          "description": "{{petName}} es receptivo, disfruta la interacción, el juego y ser parte de las actividades familiares como siempre."
-        }
-      ],
-    "mobility": "Movilidad",
-    "mobilityInfo": "¿Puede {{petName}} levantarse sin asistencia? ¿{{petName}} tiene ganas de pasear?",
-    "mobilityOptions": [
-        {
-          "value": 0,
-          "title": "Inmóvil",
-          "description": "{{petName}} no puede moverse por sí mismo en absoluto. Necesita asistencia para cada movimiento y no puede levantarse, caminar o cambiar de posición sin ayuda.",
-          "example": "Tu perro no puede levantarse para salir al exterior o incluso cambiar de posición mientras está acostado, requiriendo tu ayuda para cada movimiento."
-        },
-        {
-          "value": 2.5,
-          "title": "Severamente Limitado",
-          "description": "{{petName}} apenas puede moverse y necesita ayuda significativa para ponerse de pie, caminar o reposicionarse. Quizás solo logre moverse muy cortas distancias con apoyo.",
-          "example": "Tu perro necesita una eslinga o arnés para ponerse de pie o dar unos pocos pasos, y no puede salir al exterior sin ser cargado o apoyado."
-        },
-        {
-          "value": 5,
-          "title": "Moderadamente Limitado",
-          "description": "{{petName}} puede moverse un poco por su cuenta pero necesita asistencia o estímulo para distancias más largas o para levantarse de una posición acostada.",
-          "example": "Tu perro lucha para levantarse de una posición acostada o duda antes de moverse, y puede necesitar estímulo o un empujón gentil para moverse."
-        },
-        {
-          "value": 7.5,
-          "title": "Ligeramente Limitado",
-          "description": "{{petName}} es mayormente móvil pero muestra signos de dificultad con algunos movimientos, como subir escaleras o saltar hacia superficies más altas.",
-          "example": "Tu perro puede moverse por la casa y salir al exterior pero evita las escaleras y prefiere permanecer en superficies planas."
-        },
-        {
-          "value": 10,
-          "title": "Completamente Móvil",
-          "description": "{{petName}} se mueve libremente sin ningún signo de incomodidad. Puede correr, saltar y jugar como siempre lo ha hecho, sin mostrar dudación o dificultad con ningún movimiento.",
-          "example": "Tu perro sale con entusiasmo a pasear, puede saltar fácilmente al sofá o la cama, y no muestra signos de dolor o dudación al moverse."
-        }
-      ],
-    "score": "Puntuación",
-    "reminders": "Recordatorios",
-    "notificatationTitle": "Recordatorio de Calidad de Vida",
-    "notificationBody": "No olvides registrar la calidad de vida de {{petName}} hoy."
+  "todaysAssessment": "Evaluación de Hoy",
+  "allAssessments": "Todas las Evaluaciones",
+  "pastAssessments": "Evaluaciones Pasadas",
+  "title": "¿Cómo estuvo el día de {{petName}}?",
+  "intro": "Tomemos un momento para reflexionar sobre el día de {{petName}}. Ajusta los deslizadores para indicar cómo se encuentra {{petName}} en cada área.",
+  "hurt": "Dolor",
+  "hurtInfo": "¿{{petName}} está libre de dolor? ¿O se puede manejar el dolor de {{petName}} con éxito?",
+  "hurtOptions": [
+    {
+      "value": 0,
+      "title": "Dolor Severo",
+      "description": "{{petName}} muestra signos claros de dolor, como quejidos o dificultad para moverse, y parece no poder estar cómodo."
+    },
+    {
+      "value": 2.5,
+      "title": "Dolor Moderado",
+      "description": "Muestra algo de incomodidad, especialmente al moverse o respirar, podría evitar ser tocado en ciertas áreas."
+    },
+    {
+      "value": 5,
+      "title": "Dolor Leve",
+      "description": "{{petName}} parece ligeramente incómodo a veces pero aún puede descansar y moverse sin demasiados problemas."
+    },
+    {
+      "value": 7.5,
+      "title": "Molestias Ocasionales",
+      "description": "Signos raros de incomodidad, mayormente capaz de moverse y descansar sin problemas."
+    },
+    {
+      "value": 10,
+      "title": "Libre de Dolor",
+      "description": "{{petName}} está cómodo, se mueve fácilmente y no muestra signos de dolor."
+    }
+  ],
+  "hunger": "Alimentación",
+  "hungerInfo": "¿{{petName}} está comiendo suficiente?",
+  "hungerOptions": [
+    {
+      "value": 0,
+      "title": "Rechaza Comer",
+      "description": "{{petName}} no quiere comer nada, ni siquiera sus golosinas favoritas."
+    },
+    {
+      "value": 2.5,
+      "title": "Lucha para Comer",
+      "description": "Muestra interés en la comida pero tiene dificultades para comer sin asistencia."
+    },
+    {
+      "value": 5,
+      "title": "Come con Estímulo",
+      "description": "Solo come cuando se le anima o se le alimenta a mano, pero no con entusiasmo."
+    },
+    {
+      "value": 7.5,
+      "title": "Come con Pequeños Problemas",
+      "description": "Come menos de lo usual o prefiere comida blanda, pero generalmente se las arregla solo."
+    },
+    {
+      "value": 10,
+      "title": "Come Normalmente",
+      "description": "{{petName}} come regularmente sin ningún problema."
+    }
+  ],
+  "hydration": "Hidratación",
+  "hydrationInfo": "¿{{petName}} está bebiendo suficiente?",
+  "hydrationOptions": [
+    {
+      "value": 0,
+      "title": "Rechaza Beber",
+      "description": "No bebe agua, mostrando posibles signos de deshidratación como letargo, encías secas y nariz seca."
+    },
+    {
+      "value": 2.5,
+      "title": "Necesita Asistencia para Beber",
+      "description": "Muestra interés en el agua pero solo puede beber con ayuda."
+    },
+    {
+      "value": 5,
+      "title": "Bebe un Poco",
+      "description": "Bebe por su cuenta pero menos de lo usual, podría necesitar recordatorios."
+    },
+    {
+      "value": 7.5,
+      "title": "Bebe con Estímulo",
+      "description": "Bebe una cantidad suficiente, aunque podría necesitar algo de persuasión o preferir ciertas maneras de beber."
+    },
+    {
+      "value": 10,
+      "title": "Hidratado y Saludable",
+      "description": "Bebe regularmente sin ningún problema, manteniendo una buena hidratación."
+    }
+  ],
+  "hygiene": "Limpieza",
+  "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí mismo?",
+  "hygieneOptions": [
+    {
+      "value": 0,
+      "title": "Severamente Desaliñado",
+      "description": "{{petName}} está a menudo sucio, podría tener el pelo enmarañado y frecuentemente se ensucia a sí mismo."
+    },
+    {
+      "value": 2.5,
+      "title": "Necesita Ayuda Frecuente",
+      "description": "A veces puede mantenerse limpio pero a menudo necesita asistencia para no acostarse en sus desechos o mantenerse limpio."
+    },
+    {
+      "value": 5,
+      "title": "Ocasionalmente Desordenado",
+      "description": "{{petName}} está mayormente limpio pero puede tener accidentes ocasionales o necesitar ayuda con el aseo."
+    },
+    {
+      "value": 7.5,
+      "title": "Generalmente Limpio",
+      "description": "Se mantiene limpio con mínima asistencia, puede que solo necesite ayuda con lugares difíciles de alcanzar."
+    },
+    {
+      "value": 10,
+      "title": "Siempre Limpio",
+      "description": "{{petName}} gestiona bien su higiene, se mantiene limpio y no se ensucia a sí mismo."
+    }
+  ],
+  "happiness": "Alegría",
+  "happinessInfo": "¿{{petName}} expresa alegría e interés? ¿{{petName}} responde a las cosas que le rodean (familia, juguetes, etc)?",
+  "happinessOptions": [
+    {
+      "value": 0,
+      "title": "Severamente Deprimido",
+      "description": "No muestra interés en la interacción, juguetes o actividades que antes disfrutaba."
+    },
+    {
+      "value": 2.5,
+      "title": "A menudo Desinteresado",
+      "description": "Ocasionalmente muestra un atisbo de su antiguo yo, pero mayormente desinteresado en su entorno o actividades."
+    },
+    {
+      "value": 5,
+      "title": "Ligeramente Interesado",
+      "description": "Muestra interés en interacciones o juguetes pero menos que antes, disfruta estar con la familia pero puede cansarse fácilmente."
+    },
+    {
+      "value": 7.5,
+      "title": "Generalmente Feliz",
+      "description": "Interactúa con la familia y juguetes, muestra signos de felicidad, pero no tan frecuente o entusiastamente como antes."
+    },
+    {
+      "value": 10,
+      "title": "Completamente Alegre",
+      "description": "{{petName}} responde, disfruta de la interacción, el juego y ser parte de las actividades familiares como siempre."
+    }
+  ],
+  "mobility": "Movilidad",
+  "mobilityInfo": "¿Puede {{petName}} levantarse sin asistencia? ¿{{petName}} tiene ganas de salir a pasear?",
+  "mobilityOptions": [
+    {
+      "value": 0,
+      "title": "Inmóvil",
+      "description": "{{petName}} no puede moverse por sí mismo en absoluto. Necesita asistencia para cada movimiento y no puede levantarse, caminar o cambiar de posición sin ayuda."    },
+    {
+      "value": 2.5,
+      "title": "Severamente Limitado",
+      "description": "{{petName}} apenas puede moverse y necesita mucha ayuda para pararse, caminar o reposicionarse. Puede que solo maneje distancias muy cortas con apoyo."    },
+    {
+      "value": 5,
+      "title": "Moderadamente Limitado",
+      "description": "{{petName}} puede moverse un poco por sí mismo pero necesita asistencia o ánimo para distancias más largas o levantarse de una posición acostada."    },
+    {
+      "value": 7.5,
+      "title": "Ligeramente Limitado",
+      "description": "{{petName}} es mayormente móvil pero muestra signos de dificultad con algunos movimientos, como subir escaleras o saltar a superficies más altas."    },
+    {
+      "value": 10,
+      "title": "Completamente Móvil",
+      "description": "{{petName}} se mueve libremente sin ningún signo de incomodidad. Puede correr, saltar y jugar como siempre, sin mostrar hesitación o dificultad con ningún movimiento."    }
+  ],
+  "score": "Puntuación",
+  "reminders": "Recordatorios",
+  "notificatationTitle": "Recordatorio de Calidad de Vida",
+  "notificationBody": "No olvides registrar la calidad de vida de {{petName}} hoy."
 }

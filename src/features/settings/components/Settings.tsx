@@ -293,7 +293,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
               <IconButton
                 key={lang.langCode}
                 // eslint-disable-next-line react/no-unstable-nested-components
-                icon={() => <CountryFlag isoCode={lang.isoCode} size={30} />}
+                icon={() => <CountryFlag isoCode={lang.isoCode} size={32} />}
                 onPress={() => {
                   i18next.changeLanguage(lang.langCode);
                 }}

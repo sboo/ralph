@@ -5,12 +5,10 @@
     "continue": "Continuar",
     "save": "Guardar",
     "close": "Cerrar",
-    "setttings": "Configuración",
+    "settings": "Configuración",
     "yes": "¡Sí!",
     "dog": "Perro",
     "cat": "Gato",
     "other": "Otro",
-    "bad": "Mal",
-    "good": "Bien",
-    "excellent": "Excelente"
-    }
+    "share_assessments": "Compartir Evaluaciones"
+}

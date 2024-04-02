@@ -3,15 +3,15 @@
   "greeting_afternoon": "Buenas tardes",
   "greeting_evening": "Buenas noches",
   "date": "Fecha",
-  "welcome": "Bienvenido",
-  "welcome_text": "Personalicemos Ralph y embarquémonos juntos en esta aventura de cuidado.",
-  "settings": "Configuración",
+  "welcome": "Bienvenido/a",
+  "welcome_text": "Vamos a personalizar a Ralph y embarcarnos juntos en esta aventura de cuidado.",
+  "settings": "Configuraciones",
   "talk_to_vet_title": "Habla con tu veterinario",
-  "talk_to_vet_text": "Parece que tu mascota está pasando últimamente más días difíciles que alegres. Podría ser útil pedir consejo a un veterinario.",
+  "talk_to_vet_text": "Parece que tu compañero está teniendo más días difíciles que alegres últimamente. Podría ser útil buscar orientación de un veterinario.",
   "thank_you": "¡Gracias!",
-  "thank_you_text": "¡Gracias por apoyar nuestra aplicación!",
+  "thank_you_text": "¡Gracias por apoyar mi aplicación!",
   "support_me": "Apóyame",
-  "support_me_text": "Por favor, apoya mis esfuerzos comprándome un café.",
+  "support_me_text": "Por favor, apoya mis esfuerzos comprándome un café.\n\nEsto no desbloqueará características adicionales, pero me ayudará a mantener la aplicación actualizada y en funcionamiento.",
   "introduction_title": "Evaluaciones Diarias",
-  "introduction_text": "Esta aplicación te ayuda a monitorear el bienestar de tu mascota, ofreciendo evaluaciones diarias y seguimiento de tendencias a lo largo del tiempo.\n\nHaz clic en el gráfico en el <redDot /> para comenzar."
+  "introduction_text": "Esta aplicación te ayuda a monitorear el bienestar de tu mascota, ofreciendo evaluaciones diarias y siguiendo tendencias a lo largo del tiempo.\n\nHaz clic en el gráfico en el <redDot /> para comenzar."
 }

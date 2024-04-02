@@ -1,0 +1,185 @@
+{
+  "todaysAssessment": "Beoordeling van Vandaag",
+  "allAssessments": "Alle Beoordelingen",
+  "pastAssessments": "Vorige Beoordelingen",
+  "title": "Hoe was {{petName}}'s dag?",
+  "intro": "Laten we even stilstaan bij hoe {{petName}}'s dag was. Pas de schuifregelaars aan om aan te geven hoe het met {{petName}} gaat op elk gebied.",
+  "hurt": "Pijn",
+  "hurtInfo": "Is {{petName}} pijnvrij? Of kan de pijn van {{petName}} succesvol beheerd worden?",
+  "hurtOptions": [
+    {
+      "value": 0,
+      "title": "Ernstige Pijn",
+      "description": "{{petName}} toont duidelijke tekenen van pijn, zoals piepen of moeite met bewegen, en lijkt geen comfortabele positie te kunnen vinden."
+    },
+    {
+      "value": 2.5,
+      "title": "Matige Pijn",
+      "description": "Toont enig ongemak, vooral bij bewegen of ademhalen, kan aanraking in bepaalde gebieden vermijden."
+    },
+    {
+      "value": 5,
+      "title": "Lichte Pijn",
+      "description": "{{petName}} lijkt soms een beetje oncomfortabel maar kan nog steeds rusten en bewegen zonder al te veel moeite."
+    },
+    {
+      "value": 7.5,
+      "title": "Af en Toe Oncomfortabel",
+      "description": "Zelden tekenen van ongemak, kan meestal zonder problemen bewegen en rusten."
+    },
+    {
+      "value": 10,
+      "title": "Pijnvrij",
+      "description": "{{petName}} is comfortabel, beweegt gemakkelijk en toont geen tekenen van pijn."
+    }
+  ],
+  "hunger": "Eten",
+  "hungerInfo": "Eet {{petName}} genoeg?",
+  "hungerOptions": [
+    {
+      "value": 0,
+      "title": "Weigert te Eten",
+      "description": "{{petName}} eet niets, zelfs hun favoriete lekkernijen niet."
+    },
+    {
+      "value": 2.5,
+      "title": "Moeite met Eten",
+      "description": "Toont interesse in voedsel maar heeft moeite met eten zonder hulp."
+    },
+    {
+      "value": 5,
+      "title": "Eet met Aanmoediging",
+      "description": "Eet alleen als er aangemoedigd wordt of uit de hand gevoerd, maar niet gretig."
+    },
+    {
+      "value": 7.5,
+      "title": "Eet met Kleine Problemen",
+      "description": "Eet minder dan normaal of geeft de voorkeur aan zacht voedsel, maar redt zich over het algemeen zelf."
+    },
+    {
+      "value": 10,
+      "title": "Eet Normaal",
+      "description": "{{petName}} eet regelmatig zonder problemen."
+    }
+  ],
+  "hydration": "Drinken",
+  "hydrationInfo": "Drinkt {{petName}} genoeg?",
+  "hydrationOptions": [
+    {
+      "value": 0,
+      "title": "Weigert te Drinken",
+      "description": "Drinkt geen water, toont mogelijk tekenen van uitdroging zoals lethargie, droge mond en een droge neus."
+    },
+    {
+      "value": 2.5,
+      "title": "Heeft Hulp Nodig bij Drinken",
+      "description": "Toont interesse in water maar kan alleen drinken met hulp."
+    },
+    {
+      "value": 5,
+      "title": "Drinkt Een Beetje",
+      "description": "Drinkt zelf maar minder dan gebruikelijk, heeft misschien herinneringen nodig."
+    },
+    {
+      "value": 7.5,
+      "title": "Drinkt met Aanmoediging",
+      "description": "Drinkt voldoende, al is soms wat aansporing nodig of geeft de voorkeur aan bepaalde manieren van drinken."
+    },
+    {
+      "value": 10,
+      "title": "Gehydrateerd en Gezond",
+      "description": "Drinkt regelmatig zonder problemen, blijft goed gehydrateerd."
+    }
+  ],
+  "hygiene": "Hygiëne",
+  "hygieneInfo": "Is {{petName}} schoon en comfortabel? Kan {{petName}} zichzelf schoon houden?",
+  "hygieneOptions": [
+    {
+      "value": 0,
+      "title": "Ernstig Verwaarloosd",
+      "description": "{{petName}} is vaak vies, kan klitten in de vacht hebben, en bevuilt zichzelf regelmatig."
+    },
+    {
+      "value": 2.5,
+      "title": "Heeft Vaak Hulp Nodig",
+      "description": "Kan soms schoon blijven maar heeft vaak hulp nodig om niet in vuil te liggen of schoon te blijven."
+    },
+    {
+      "value": 5,
+      "title": "Af en Toe Rommelig",
+      "description": "{{petName}} is meestal schoon maar kan af en toe ongelukjes hebben of hulp nodig hebben bij de verzorging."
+    },
+    {
+      "value": 7.5,
+      "title": "Over het Algemeen Schoon",
+      "description": "Blijft schoon met minimale hulp, heeft misschien alleen hulp nodig bij moeilijk bereikbare plekken."
+    },
+    {
+      "value": 10,
+      "title": "Altijd Schoon",
+      "description": "{{petName}} beheert hun hygiëne goed, blijft schoon en bevuilt zichzelf niet."
+    }
+  ],
+  "happiness": "Vreugde",
+  "happinessInfo": "Laat {{petName}} vreugde en interesse zien? Reageert {{petName}} op dingen om hem heen (familie, speeltjes, etc)?",
+  "happinessOptions": [
+    {
+      "value": 0,
+      "title": "Ernstig Depressief",
+      "description": "Toont geen interesse in interactie, speelgoed, of activiteiten die eerst leuk waren."
+    },
+    {
+      "value": 2.5,
+      "title": "Vaak Ongeïnteresseerd",
+      "description": "Toont af en toe een glimp van hun oude zelf, maar is meestal ongeïnteresseerd in de omgeving of activiteiten."
+    },
+    {
+      "value": 5,
+      "title": "Matig Geïnteresseerd",
+      "description": "Toont interesse in interacties of speelgoed maar minder dan voorheen, geniet van zijn met familie maar kan snel moe worden."
+    },
+    {
+      "value": 7.5,
+      "title": "Over het Algemeen Vrolijk",
+      "description": "Gaat om met familie en speelgoed, toont tekenen van geluk, maar niet zo vaak of enthousiast als voorheen."
+    },
+    {
+      "value": 10,
+      "title": "Volledig Vreugdevol",
+      "description": "{{petName}} reageert, geniet van interactie, spelen, en deel uitmaken van de familieactiviteiten zoals altijd."
+    }
+  ],
+  "mobility": "Mobiliteit",
+  "mobilityInfo": "Kan {{petName}} opstaan zonder hulp? Voelt {{petName}} zich alsof hij wil wandelen?",
+  "mobilityOptions": [
+    {
+      "value": 0,
+      "title": "Immobiel",
+      "description": "{{petName}} kan helemaal niet zelfstandig bewegen. Ze hebben hulp nodig bij elke beweging en kunnen niet opstaan, lopen of van positie veranderen zonder hulp."
+    },
+    {
+      "value": 2.5,
+      "title": "Ernstig Beperkt",
+      "description": "{{petName}} kan nauwelijks bewegen en heeft veel hulp nodig om te staan, lopen of zich te herpositioneren. Ze kunnen misschien alleen zeer korte afstanden afleggen met ondersteuning."
+    },
+    {
+      "value": 5,
+      "title": "Matig Beperkt",
+      "description": "{{petName}} kan een beetje op eigen houtje bewegen maar heeft hulp of aanmoediging nodig voor langere afstanden of om op te staan vanuit een liggende positie."
+    },
+    {
+      "value": 7.5,
+      "title": "Licht Beperkt",
+      "description": "{{petName}} is grotendeels mobiel maar toont tekenen van moeilijkheden met sommige bewegingen, zoals trappen klimmen of op hogere oppervlakken springen."
+    },
+    {
+      "value": 10,
+      "title": "Volledig Mobiel",
+      "description": "{{petName}} beweegt vrij zonder enig teken van ongemak. Ze kunnen rennen, springen en spelen zoals ze altijd hebben gedaan, zonder aarzeling of moeite met enige beweging."
+    }
+  ],
+  "score": "Score",
+  "reminders": "Herinneringen",
+  "notificatationTitle": "Herinnering aan Levenskwaliteit",
+  "notificationBody": "Vergeet niet de levenskwaliteit van {{petName}} vandaag te registreren."
+}
