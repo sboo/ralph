@@ -124,7 +124,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
         <Appbar.Action
           icon="information"
           color={theme.colors.onPrimary}
-          onPress={() => Linking.openURL('https://ralph.dog')}
+          onPress={() => Linking.openURL('https://ralph.pet')}
         />
       ) : null}
       {!back ? (
