@@ -4,9 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import {event, EVENT_NAMES} from '@/features/events';
 import {Avatar} from 'react-native-paper';
-import {StyleSheet} from 'react-native';
-import RNFS from 'react-native-fs';
+import {Platform, StyleSheet} from 'react-native';
+import * as RNFS from '@dr.pogodin/react-native-fs';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { t } from 'i18next';
 
 const AvatarPicker: React.FC = () => {
   const [avatar, setAvatar] = useState<string>();
@@ -19,28 +20,36 @@ const AvatarPicker: React.FC = () => {
       cropperCircleOverlay: true,
     }).then(image => {
       console.log(image);
-      storeAvatar(image).then(avatarPath => {
-        console.log('Avatar path: ', avatarPath);
-        if (avatarPath === undefined) {
+      storeAvatar(image).then(avatarFilename => {
+        console.log('Avatar path: ', avatarFilename);
+        if (avatarFilename === undefined) {
           return;
         }
-        setAvatar(avatarPath);
+        setAvatar(getAvatarPath(avatarFilename, true));
       });
     });
   };
 
-  const getAvatarPath = (filename: string): string => {
-    return `${RNFS.DocumentDirectoryPath}/${filename}`;
+  const getAvatarPath = (
+    filename: string,
+    addAndroidFilePrepend = false,
+  ): string => {
+    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+    if (Platform.OS === 'android' && addAndroidFilePrepend) {
+      return `file://${path}`;
+    }
+    return path;
   };
 
   const deleteAvatar = async () => {
     if (avatar === undefined) {
       return;
     }
-    const path = getAvatarPath(avatar);
-    const exists = await RNFS.exists(path);
+    console.log('Avatar path: ', avatar);
+    const exists = await RNFS.exists(avatar);
+    console.log('Avatar exists: ', exists);
     if (exists) {
-      await RNFS.unlink(path);
+      await RNFS.unlink(avatar);
     }
     await AsyncStorage.removeItem(STORAGE_KEYS.AVATAR);
     setAvatar(undefined);
@@ -70,7 +79,7 @@ const AvatarPicker: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-    return path;
+    return filename;
   };
 
   useEffect(() => {
@@ -78,7 +87,7 @@ const AvatarPicker: React.FC = () => {
       const fileName = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
       console.log('Avatar fileName: ', fileName);
       if (fileName !== null) {
-        setAvatar(getAvatarPath(fileName));
+        setAvatar(getAvatarPath(fileName, true));
       }
     };
     fetchAvatar();
