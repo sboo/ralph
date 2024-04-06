@@ -68,7 +68,7 @@ const AvatarPicker: React.FC = () => {
         console.error('Unsupported image type');
         return;
     }
-    deleteAvatar();
+    await deleteAvatar();
 
     const filename = `avatar_${Date.now()}.${extension}`;
     const path = getAvatarPath(filename);
