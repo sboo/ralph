@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {launchImageLibrary, MediaType} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import {event, EVENT_NAMES} from '@/features/events';
@@ -9,27 +9,17 @@ import {StyleSheet} from 'react-native';
 const AvatarPicker: React.FC = () => {
   const [avatar, setAvatar] = useState<string>();
   const openImagePicker = () => {
-    const options = {
-      mediaType: 'photo' as MediaType,
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.log('Image picker error: ', response.errorMessage);
-      } else {
-        let imageUri = response.assets?.[0]?.uri;
-        console.log('Image URI: ', imageUri);
-        if (imageUri !== undefined) {
-          storeAvatar(imageUri).then(() => {
-            setAvatar(imageUri);
-          });
-        }
-      }
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      mediaType: 'photo',
+      cropping: true,
+      cropperCircleOverlay: true,
+    }).then(image => {
+      console.log(image);
+      storeAvatar(image.path).then(() => {
+        setAvatar(image.path);
+      });
     });
   };
 
@@ -44,6 +34,7 @@ const AvatarPicker: React.FC = () => {
   useEffect(() => {
     const fetchAvatar = async () => {
       const uri = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
+      console.log('Avatar URI: ', uri);
       if (uri !== null) {
         setAvatar(uri);
       }
