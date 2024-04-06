@@ -20,6 +20,7 @@ const RatingSliderToolTip: React.FC<Props> = ({
       style={{width: Dimensions.get('window').width - 80, ...styles.tooltip}}>
       <Card.Title
         title={title}
+        titleNumberOfLines={2}
         // eslint-disable-next-line react/no-unstable-nested-components
         left={props => (
           <Icon {...props} size={24} source={icon} color={color} />
