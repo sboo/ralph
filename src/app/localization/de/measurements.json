@@ -180,6 +180,6 @@
   ],
   "score": "Punktzahl",
   "reminders": "Erinnerungen",
-  "notificatationTitle": "Erinnerung an die Lebensqualität",
-  "notificationBody": "Vergiss nicht, heute die Lebensqualität von {{petName}} aufzuzeichnen."
+  "notificationTitle": "Zeit für {{petName}}s Kontrolle",
+  "notificationBody": "Wie ging es {{petName}} heute? Tippe hier, um den Tag zu erfassen."
 }

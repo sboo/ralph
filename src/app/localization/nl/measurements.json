@@ -180,6 +180,6 @@
   ],
   "score": "Score",
   "reminders": "Herinneringen",
-  "notificatationTitle": "Herinnering aan Levenskwaliteit",
-  "notificationBody": "Vergeet niet de levenskwaliteit van {{petName}} vandaag te registreren."
+  "notificationTitle": "Tijd voor de controle van {{petName}}",
+  "notificationBody": "Hoe was {{petName}} vandaag? Tik hier om hun dag vast te leggen."
 }

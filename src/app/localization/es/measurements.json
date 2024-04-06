@@ -175,6 +175,6 @@
   ],
   "score": "Puntuación",
   "reminders": "Recordatorios",
-  "notificatationTitle": "Recordatorio de Calidad de Vida",
-  "notificationBody": "No olvides registrar la calidad de vida de {{petName}} hoy."
+  "notificationTitle": "Actualización Diaria de {{petName}}",
+  "notificationBody": "¿Cómo estuvo {{petName}} hoy? Toca aquí para registrar su día."
 }

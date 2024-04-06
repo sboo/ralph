@@ -169,7 +169,9 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
     await notifee.createTriggerNotification(
       {
         id: 'eu.sboo.ralph.reminder',
-        title: t('measurements:notificatationTitle'),
+        title: t('measurements:notificationTitle', {
+          petName: petName,
+        }),
         body: t('measurements:notificationBody', {
           petName: petName,
         }),

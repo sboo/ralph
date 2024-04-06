@@ -180,6 +180,6 @@
   ],
   "score": "Score",
   "reminders": "Reminders",
-  "notificatationTitle": "Quality of Life Reminder",
-  "notificationBody": "Don't forget to record {{petName}}'s quality of life today."
+  "notificationTitle": "Time for {{petName}}'s Check-Up",
+  "notificationBody": "How did {{petName}} do today? Tap here to record their day."
 }
