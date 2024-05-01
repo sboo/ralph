@@ -178,11 +178,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
                 generateAndSharePDF();
               },
             },
-            // {
-            //   icon: 'bug-outline',
-            //   label: 'Debug',
-            //   onPress: () => navigation.navigate('DebugScreen'),
-            // },
+            {
+              icon: 'bug-outline',
+              label: 'Debug',
+              onPress: () => navigation.navigate('DebugScreen'),
+            },
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}
         />

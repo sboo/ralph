@@ -6,8 +6,6 @@ import {event, EVENT_NAMES} from '@/features/events';
 import {Avatar} from 'react-native-paper';
 import {Platform, StyleSheet} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import { t } from 'i18next';
 
 const AvatarPicker: React.FC = () => {
   const [avatar, setAvatar] = useState<string>();

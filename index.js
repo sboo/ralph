@@ -7,13 +7,13 @@ import {AppRegistry} from 'react-native';
 import App from '@/app/App';
 import {name as appName} from './app.json';
 import {RealmProvider} from '@realm/react';
-import {schemas} from '@/app/models';
+import {schemas, onMigration} from '@/app/models';
 import '@/app/localization/i18n';
 import notifee, {EventType} from '@notifee/react-native';
 
 export default function Main() {
   return (
-    <RealmProvider schema={schemas}>
+    <RealmProvider schema={schemas} schemaVersion={1} onMigration={onMigration}>
       <App />
     </RealmProvider>
   );

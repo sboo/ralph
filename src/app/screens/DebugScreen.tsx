@@ -5,6 +5,8 @@ import {View, Text, Button, Alert} from 'react-native';
 import {requestPurchase, useIAP} from 'react-native-iap';
 import {Divider} from 'react-native-paper';
 import {STORAGE_KEYS} from '../store/storageKeys';
+import {useQuery} from '@realm/react';
+import {Pet} from '@/app/models/Pet';
 
 const DebugScreen: React.FC = () => {
   const {
@@ -57,6 +59,17 @@ const DebugScreen: React.FC = () => {
       console.log(e);
     }
   }, [getPurchaseHistory, purchaseHistory]);
+
+  const pets = useQuery(
+    Pet,
+    collection => {
+      return collection;
+    },
+    [],
+  );
+
+  const pet = pets[pets.length - 1];
+
   return (
     <>
       <Button
@@ -89,6 +102,10 @@ const DebugScreen: React.FC = () => {
       <Button title="Restore purchases" onPress={restorePurchases} />
       <Divider />
       <Button title="set to unpurchased" onPress={unpurchase} />
+      <Divider />
+      <Text>Pet:{pets.length}</Text>
+      <Text>Name: {pet?.name}</Text>
+      <Text>Species: {pet?.species}</Text>
     </>
   );
 };

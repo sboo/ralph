@@ -32,6 +32,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {event, EVENT_NAMES} from '@/features/events';
 import type {NavigationState} from '@react-navigation/routers';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Pet} from '@/app/models/Pet';
+import {useQuery, useRealm} from '@realm/react';
+import {getPetData} from '@/app/store/helper';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('light-content');
@@ -50,6 +53,16 @@ const App: React.FC = () => {
     finishTransaction,
     getPurchaseHistory,
   } = useIAP();
+
+  const realm = useRealm();
+
+  const pets = useQuery(
+    Pet,
+    collection => {
+      return collection.filtered('name = $0', 'INITIAL PET NAME');
+    },
+    [],
+  );
 
   const isFreshInstall = useCallback(async () => {
     const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
@@ -73,6 +86,27 @@ const App: React.FC = () => {
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
+  const fixPetData = useCallback(async () => {
+    // Fix pet data for existing installs with realm schema version 1
+    if (realm.schemaVersion === 1) {
+      console.log('fixPetData');
+      const petData = await getPetData();
+      pets.forEach(pet => {
+        realm.write(() => {
+          pet.name = petData.name;
+          pet.species = petData.species;
+          pet.notificationsEnabled = petData.notificationsEnabled;
+          if (petData.avatar) {
+            pet.avatar = petData.avatar;
+          }
+          if (petData.notificationsTime) {
+            pet.notificationsTime = petData.notificationsTime;
+          }
+        });
+      });
+    }
+  }, [pets, realm]);
+
   // Check if fresh install and restore purchases
   useEffect(() => {
     const initApp = async () => {
@@ -82,9 +116,10 @@ const App: React.FC = () => {
       if (isFresh) {
         restorePurchases();
       }
+      fixPetData();
     };
     initApp();
-  }, [isFreshInstall, restorePurchases]);
+  }, [isFreshInstall, restorePurchases, fixPetData]);
 
   // Log purchase error
   useEffect(() => {

@@ -1,4 +1,5 @@
 import Realm, {BSON, index} from 'realm';
+import {Pet} from './Pet';
 
 export class Measurement extends Realm.Object {
   _id: BSON.ObjectId = new BSON.ObjectId();
@@ -13,6 +14,7 @@ export class Measurement extends Realm.Object {
   mobility!: number;
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
+  pet?: Pet;
 
   static primaryKey = '_id';
 }
