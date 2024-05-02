@@ -8,4 +8,5 @@ export class Pet extends Realm.Object {
   avatar?: string;
   notificationsEnabled: boolean = false;
   notificationsTime?: string;
+  isActive: boolean = false;
 }

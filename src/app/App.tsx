@@ -35,6 +35,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Pet} from '@/app/models/Pet';
 import {useQuery, useRealm} from '@realm/react';
 import {getPetData} from '@/app/store/helper';
+import usePet from '@/features/pets/hooks/usePet';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('light-content');
@@ -45,7 +46,6 @@ if (Platform.OS === 'android') {
 
 const App: React.FC = () => {
   const {t} = useTranslation();
-  const [petName, setPetName] = useState('');
   const {
     purchaseHistory,
     currentPurchase,
@@ -56,13 +56,15 @@ const App: React.FC = () => {
 
   const realm = useRealm();
 
-  const pets = useQuery(
+  const petsToFix = useQuery(
     Pet,
     collection => {
       return collection.filtered('name = $0', 'INITIAL PET NAME');
     },
     [],
   );
+
+  const {activeOrFirstPet} = usePet();
 
   const isFreshInstall = useCallback(async () => {
     const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
@@ -91,8 +93,9 @@ const App: React.FC = () => {
     if (realm.schemaVersion === 1) {
       console.log('fixPetData');
       const petData = await getPetData();
-      pets.forEach(pet => {
+      petsToFix.forEach((pet, idx) => {
         realm.write(() => {
+          pet.isActive = idx === 0;
           pet.name = petData.name;
           pet.species = petData.species;
           pet.notificationsEnabled = petData.notificationsEnabled;
@@ -105,7 +108,7 @@ const App: React.FC = () => {
         });
       });
     }
-  }, [pets, realm]);
+  }, [petsToFix, realm]);
 
   // Check if fresh install and restore purchases
   useEffect(() => {
@@ -143,28 +146,6 @@ const App: React.FC = () => {
       });
     }
   }, [currentPurchase, finishTransaction]);
-
-  // Fetch pet name from storage
-  useEffect(() => {
-    const fetchPetName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      }
-    };
-
-    fetchPetName();
-
-    const onProfileSet = () => {
-      fetchPetName();
-    };
-
-    event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
-
-    return () => {
-      event.off(EVENT_NAMES.PROFILE_SET, onProfileSet);
-    };
-  }, []);
 
   // Change status bar color based on route
   const onNavigationStateChange = useCallback(
@@ -242,7 +223,9 @@ const App: React.FC = () => {
               name="AddAssessment"
               component={AddAssessment}
               options={{
-                title: t('measurements:title', {petName}),
+                title: t('measurements:title', {
+                  petName: activeOrFirstPet.name,
+                }),
                 headerStyle: {backgroundColor: theme.colors.primaryContainer},
               }}
             />
@@ -250,7 +233,9 @@ const App: React.FC = () => {
               name="EditAssessment"
               component={EditAssessment}
               options={{
-                title: t('measurements:title', {petName}),
+                title: t('measurements:title', {
+                  petName: activeOrFirstPet.name,
+                }),
                 headerStyle: {backgroundColor: theme.colors.primaryContainer},
               }}
             />
