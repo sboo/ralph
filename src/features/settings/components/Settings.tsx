@@ -11,7 +11,6 @@ import {
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import {event, EVENT_NAMES} from '@/features/events';
 import {useTranslation} from 'react-i18next';
 import notifee, {
   AuthorizationStatus,
@@ -29,6 +28,7 @@ import {
   dateObjectToTimeString,
   timeToDateObject,
 } from '@/support/helpers/DateTimeHelpers';
+import usePet from '@/features/pets/hooks/usePet';
 
 interface SettingsProps {
   onSettingsSaved: () => void;
@@ -38,28 +38,16 @@ interface SettingsProps {
 const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const [petType, setPetType] = useState<string>('');
-  const [petName, setPetName] = useState<string>('');
-  const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
+  const {activePet, updatePet} = usePet();
+  const [petType, setPetType] = useState<string>(activePet.species);
+  const [petName, setPetName] = useState<string>(activePet.name);
+  const [remindersEnabled, setRemindersEnabled] = useState<boolean>(
+    activePet.notificationsEnabled,
+  );
   const [timePickerOpen, setTimePickerOpen] = useState(false);
-  const [reminderTime, setReminderTime] = useState(new Date());
-
-  // Load pet name and type from storage
-  useEffect(() => {
-    const fetchPetName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      }
-    };
-    const fetchPetType = async () => {
-      const type = await AsyncStorage.getItem(STORAGE_KEYS.PET_TYPE);
-      setPetType(type ?? '');
-    };
-
-    fetchPetName();
-    fetchPetType();
-  }, []);
+  const [reminderTime, setReminderTime] = useState(
+    timeToDateObject(activePet.notificationsTime ?? '20:00'),
+  );
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -69,28 +57,21 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
         setRemindersEnabled(false);
         return;
       }
-      const enabled = await AsyncStorage.getItem(
-        STORAGE_KEYS.NOTIFICATIONS_ENABLED,
-      );
-      setRemindersEnabled(enabled === 'true');
-
-      const notificationTime =
-        (await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATIONS_TIME)) ??
-        '20:00';
-
-      setReminderTime(timeToDateObject(notificationTime));
+      const enabled = activePet.notificationsEnabled;
+      setRemindersEnabled(enabled);
     };
     checkPermissions();
-  }, []);
+  }, [activePet.notificationsEnabled]);
 
   // Store pet name and type in storage
   const storeSettings = async () => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEYS.PET_NAME, petName);
-      await AsyncStorage.setItem(STORAGE_KEYS.PET_TYPE, petType);
+      updatePet(activePet._id, {
+        name: petName,
+        species: petType,
+      });
       await toggleReminders();
 
-      event.emit(EVENT_NAMES.PROFILE_SET, petName);
       // Navigate to the next screen after successful storage
       onSettingsSaved();
     } catch (error) {
@@ -200,14 +181,10 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
       console.log('Notifications enabled', enabled);
     }
     try {
-      await AsyncStorage.setItem(
-        STORAGE_KEYS.NOTIFICATIONS_ENABLED,
-        enabled.toString(),
-      );
-      await AsyncStorage.setItem(
-        STORAGE_KEYS.NOTIFICATIONS_TIME,
-        dateObjectToTimeString(reminderTime),
-      );
+      updatePet(activePet._id, {
+        notificationsEnabled: enabled,
+        notificationsTime: dateObjectToTimeString(reminderTime),
+      });
     } catch (error) {
       console.error(error);
     }

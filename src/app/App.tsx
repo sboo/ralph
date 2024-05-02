@@ -64,7 +64,7 @@ const App: React.FC = () => {
     [],
   );
 
-  const {activeOrFirstPet} = usePet();
+  const {activePet} = usePet();
 
   const isFreshInstall = useCallback(async () => {
     const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
@@ -89,8 +89,8 @@ const App: React.FC = () => {
   }, [getPurchaseHistory, purchaseHistory]);
 
   const fixPetData = useCallback(async () => {
-    // Fix pet data for existing installs with realm schema version 1
-    if (realm.schemaVersion === 1) {
+    // Fix pet data for existing installs
+    if (realm.schemaVersion > 0) {
       console.log('fixPetData');
       const petData = await getPetData();
       petsToFix.forEach((pet, idx) => {
@@ -224,7 +224,7 @@ const App: React.FC = () => {
               component={AddAssessment}
               options={{
                 title: t('measurements:title', {
-                  petName: activeOrFirstPet.name,
+                  petName: activePet.name,
                 }),
                 headerStyle: {backgroundColor: theme.colors.primaryContainer},
               }}
@@ -234,7 +234,7 @@ const App: React.FC = () => {
               component={EditAssessment}
               options={{
                 title: t('measurements:title', {
-                  petName: activeOrFirstPet.name,
+                  petName: activePet.name,
                 }),
                 headerStyle: {backgroundColor: theme.colors.primaryContainer},
               }}

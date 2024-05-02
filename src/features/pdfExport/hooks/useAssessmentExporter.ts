@@ -1,33 +1,20 @@
-import {useEffect, useState} from 'react';
 import {useTheme} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import {useQuery} from '@realm/react';
 import {Measurement} from '@/app/models/Measurement';
 import {Platform} from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {STORAGE_KEYS} from '@/app/store/storageKeys';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getValueColor} from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
+import usePet from '@/features/pets/hooks/usePet';
 
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
   const theme = useTheme();
+  const {activePet} = usePet();
   const assessments = useQuery(Measurement, collection =>
     collection.sorted('createdAt'),
   );
-  const [petName, setPetName] = useState<string>('');
-
-  // Load pet name and type from storage
-  useEffect(() => {
-    const fetchPetName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      }
-    };
-    fetchPetName();
-  }, []);
 
   const getItemColor = (score: number) => {
     const color = getValueColor(theme.colors.outline, score);
@@ -103,7 +90,7 @@ const useAssessmentExporter = () => {
           </style>
       </head>
       <body>
-          <h1>${petName}</h1>
+          <h1>${activePet.name}</h1>
           <div>
             ${assessments
               .map((assessment, index) => {

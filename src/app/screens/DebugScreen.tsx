@@ -7,6 +7,7 @@ import {Divider} from 'react-native-paper';
 import {STORAGE_KEYS} from '../store/storageKeys';
 import {useQuery} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
+import usePet from '@/features/pets/hooks/usePet';
 
 const DebugScreen: React.FC = () => {
   const {
@@ -60,15 +61,7 @@ const DebugScreen: React.FC = () => {
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
-  const pets = useQuery(
-    Pet,
-    collection => {
-      return collection;
-    },
-    [],
-  );
-
-  const pet = pets[pets.length - 1];
+  const {activePet} = usePet();
 
   return (
     <>
@@ -103,9 +96,10 @@ const DebugScreen: React.FC = () => {
       <Divider />
       <Button title="set to unpurchased" onPress={unpurchase} />
       <Divider />
-      <Text>Pet:{pets.length}</Text>
-      <Text>Name: {pet?.name}</Text>
-      <Text>Species: {pet?.species}</Text>
+      <Text>Active Pet:</Text>
+      <Text>Name: {activePet.name}</Text>
+      <Text>Species: {activePet.species}</Text>
+      <Text>isActive: {activePet.isActive ? 'yes' : 'no'}</Text>
     </>
   );
 };

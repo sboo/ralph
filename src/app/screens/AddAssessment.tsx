@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
+import React, {useState} from 'react';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
 import {useRealm} from '@realm/react';
 import {useTheme} from 'react-native-paper';
@@ -9,16 +7,17 @@ import {AddAssessmentScreenNavigationProps} from '@/features/navigation/types.ts
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import {SafeAreaView, StyleSheet} from 'react-native';
+import usePet from '@/features/pets/hooks/usePet';
 
 const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
   route,
   navigation,
 }) => {
   const [date] = useState(new Date(route.params.timestamp));
-  const [petName, setPetName] = useState('');
 
   const realm = useRealm();
   const theme = useTheme();
+  const {activePet} = usePet();
 
   const handleSubmit = (
     hurt: number,
@@ -40,21 +39,11 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
         happiness,
         mobility,
         createdAt: date,
+        pet: activePet,
       });
     });
     navigation.goBack();
   };
-
-  useEffect(() => {
-    const fetchPetName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      }
-    };
-
-    fetchPetName();
-  }, []);
 
   return (
     <SafeAreaView
@@ -72,7 +61,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
         style={styles.gradient}>
         <AssessmentItem
           date={date}
-          petName={petName}
+          petName={activePet.name}
           onCancel={() => navigation.goBack()}
           onSubmit={handleSubmit}
         />

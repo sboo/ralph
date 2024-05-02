@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react';
 import ImagePicker, {Image} from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import {event, EVENT_NAMES} from '@/features/events';
 import {Avatar} from 'react-native-paper';
 import {Platform, StyleSheet} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
+import usePet from '@/features/pets/hooks/usePet';
 
 const AvatarPicker: React.FC = () => {
+  const {activePet, updatePet} = usePet();
   const [avatar, setAvatar] = useState<string>();
   const openImagePicker = () => {
     ImagePicker.openPicker({
@@ -49,7 +50,7 @@ const AvatarPicker: React.FC = () => {
     if (exists) {
       await RNFS.unlink(avatar);
     }
-    await AsyncStorage.removeItem(STORAGE_KEYS.AVATAR);
+    updatePet(activePet._id, {avatar: undefined});
     setAvatar(undefined);
   };
 
@@ -73,7 +74,7 @@ const AvatarPicker: React.FC = () => {
 
     try {
       await RNFS.moveFile(image.path, path);
-      await AsyncStorage.setItem(STORAGE_KEYS.AVATAR, filename);
+      updatePet(activePet._id, {avatar: filename});
     } catch (error) {
       console.error(error);
     }
@@ -81,25 +82,10 @@ const AvatarPicker: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchAvatar = async () => {
-      const fileName = await AsyncStorage.getItem(STORAGE_KEYS.AVATAR);
-      console.log('Avatar fileName: ', fileName);
-      if (fileName !== null) {
-        setAvatar(getAvatarPath(fileName, true));
-      }
-    };
-    fetchAvatar();
-
-    const onProfileSet = () => {
-      fetchAvatar();
-    };
-
-    event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
-
-    return () => {
-      event.off(EVENT_NAMES.PROFILE_SET, onProfileSet);
-    };
-  }, []);
+    if (activePet.avatar) {
+      setAvatar(getAvatarPath(activePet.avatar, true));
+    }
+  }, [activePet.avatar]);
 
   return (
     <Avatar.Image

@@ -15,13 +15,14 @@ import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExpor
 import AssessmentChart from '@/features/charts/components/AssessmentChart';
 import Tips from '@/features/tips/components/Tips';
 import TaslkToVetTip from '@/features/tips/components/TalkToVetTip';
+import usePet from '@/features/pets/hooks/usePet';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
-  const [petName, setPetName] = useState('');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [averageScore, setAverageScore] = useState(60);
   const theme = useTheme();
+  const {activePet} = usePet();
   const {generateAndSharePDF} = useAssessmentExporter();
 
   const assessments = useQuery(
@@ -52,32 +53,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       setAverageScore(sum / lastSevenAssessments.length);
     }
   }, [lastAssessments]);
-
-  useEffect(() => {
-    const fetchPetName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      } else {
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Welcome'}],
-        });
-      }
-    };
-
-    fetchPetName();
-
-    const onProfileSet = () => {
-      fetchPetName();
-    };
-
-    event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
-
-    return () => {
-      event.off(EVENT_NAMES.PROFILE_SET, onProfileSet);
-    };
-  }, [navigation]);
 
   const addOrEditAssessment = (date?: Date) => {
     if (!date) {
@@ -118,7 +93,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <HomeHeader petName={petName} />
+        <HomeHeader petName={activePet.name} />
         <ScrollView style={styles.bodyContainer}>
           <AssessmentChart onDataPointClick={addOrEditAssessment} />
           {assessments.length > 0 ? (
