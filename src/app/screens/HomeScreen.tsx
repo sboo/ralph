@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Trans, useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import {Card, FAB, Icon, Text, useTheme} from 'react-native-paper';
-import {event, EVENT_NAMES} from '@/features/events';
 import {useQuery} from '@realm/react';
 import {Measurement} from '@/app/models/Measurement';
 import {HomeScreenNavigationProps} from '@/features/navigation/types.tsx';
@@ -28,14 +25,18 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const assessments = useQuery(
     Measurement,
     collection => {
-      return collection.sorted('createdAt');
+      return collection
+        .filtered('pet._id = $0', activePet._id)
+        .sorted('createdAt');
     },
     [],
   );
   const lastAssessments = useQuery(
     Measurement,
     collection => {
-      return collection.sorted('createdAt', true);
+      return collection
+        .filtered('pet._id = $0', activePet._id)
+        .sorted('createdAt', true);
     },
     [],
   );
@@ -93,7 +94,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <HomeHeader petName={activePet.name} />
+        <HomeHeader />
         <ScrollView style={styles.bodyContainer}>
           <AssessmentChart onDataPointClick={addOrEditAssessment} />
           {assessments.length > 0 ? (

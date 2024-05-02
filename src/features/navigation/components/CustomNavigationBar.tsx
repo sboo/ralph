@@ -154,7 +154,10 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
             />
           }>
           <Menu.Item
-            onPress={() => {}}
+            onPress={() => {
+              closeMenu();
+              navigation.navigate('AddPet');
+            }}
             leadingIcon={'plus-circle-outline'}
             title={t('add_pet')}
           />

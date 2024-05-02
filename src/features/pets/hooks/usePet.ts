@@ -14,6 +14,9 @@ export interface PetData {
 const usePet = () => {
   const realm = useRealm();
   const pets = useQuery(Pet);
+  const inactivePets = useQuery(Pet, collection => {
+    return collection.filtered('isActive == false');
+  });
 
   const activePet = React.useMemo(() => {
     const _activePet = pets.find(pet => pet.isActive);
@@ -56,7 +59,23 @@ const usePet = () => {
     });
   };
 
-  return {pets, activePet, switchActivePet, updatePet};
+  const createPet = (data: PetData) => {
+    realm.write(() => {
+      const newPet = realm.create(Pet, {
+        ...data,
+        _id: new BSON.ObjectId(),
+        isActive: false,
+      });
+      // Find the currently active pet and deactivate it
+      const currentActivePets = realm.objects(Pet).filtered('isActive == true');
+      currentActivePets.forEach(currentActivePet => {
+        currentActivePet.isActive = false;
+      });
+      newPet.isActive = true;
+    });
+  };
+
+  return {pets, activePet, inactivePets, switchActivePet, updatePet, createPet};
 };
 
 export default usePet;

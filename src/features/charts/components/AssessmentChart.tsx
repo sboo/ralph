@@ -1,4 +1,5 @@
 import {Measurement} from '@/app/models/Measurement';
+import usePet from '@/features/pets/hooks/usePet';
 import CustomDot from '@/support/components/CustomChartDot';
 import {useQuery} from '@realm/react';
 import moment from 'moment';
@@ -25,13 +26,16 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
   const chartScrollViewRef = useRef<ScrollView>();
 
   const theme = useTheme();
+  const {activePet} = usePet();
 
   const assessments = useQuery(
     Measurement,
     collection => {
-      return collection.sorted('createdAt');
+      return collection
+        .filtered('pet._id = $0', activePet._id)
+        .sorted('createdAt');
     },
-    [],
+    [activePet],
   );
 
   const getScores = useCallback(() => {

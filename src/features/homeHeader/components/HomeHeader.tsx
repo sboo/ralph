@@ -4,15 +4,12 @@ import {StyleSheet, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import Avatar from '@/features/avatar/components/Avatar';
 import usePet from '@/features/pets/hooks/usePet';
+import {BSON} from 'realm';
 
-interface HomeHeaderPros {
-  petName: string;
-}
-
-const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
+const HomeHeader: React.FC = () => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const {activePet} = usePet();
+  const {activePet, inactivePets, switchActivePet} = usePet();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -23,6 +20,12 @@ const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
       return t('greeting_afternoon');
     }
     return t('greeting_evening');
+  };
+
+  const switchPet = (petId: BSON.ObjectID | undefined) => {
+    if (petId) {
+      switchActivePet(petId);
+    }
   };
 
   return (
@@ -36,10 +39,22 @@ const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
           {getGreeting()}
         </Text>
         <Text style={{color: theme.colors.onPrimary, ...styles.petName}}>
-          {petName}
+          {activePet.name}
         </Text>
       </View>
-      <Avatar pet={activePet} />
+      <View style={styles.avatarContainer}>
+        {inactivePets.map(pet => {
+          return (
+            <Avatar
+              key={pet._id.toHexString()}
+              pet={pet}
+              size={'small'}
+              onAvatarViewModeTouch={switchPet}
+            />
+          );
+        })}
+        <Avatar key={activePet._id.toHexString()} pet={activePet} />
+      </View>
     </View>
   );
 };
@@ -65,6 +80,12 @@ const styles = StyleSheet.create({
   petName: {
     fontSize: 22,
     fontWeight: 'bold',
+  },
+  avatarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    gap: 15,
   },
   avatar: {
     backgroundColor: '#ffffff',

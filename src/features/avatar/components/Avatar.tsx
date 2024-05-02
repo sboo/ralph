@@ -4,23 +4,32 @@ import {Avatar as BaseAvatar} from 'react-native-paper';
 import {Platform, StyleSheet} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import {Pet} from '@/app/models/Pet';
+import {BSON} from 'realm';
 
 interface AvatarProps {
   mode?: 'edit' | 'view';
+  size?: 'big' | 'small';
   pet?: Pet;
   onAvatarSelected?: (avatar: string | undefined) => void;
+  onAvatarViewModeTouch?: (petId: BSON.ObjectID | undefined) => void;
 }
 
 const Avatar: React.FC<AvatarProps> = ({
   pet,
   mode = 'view',
+  size = 'big',
   onAvatarSelected,
+  onAvatarViewModeTouch,
 }) => {
   const [avatar, setAvatar] = useState<string>();
 
   const onAvatarClick = () => {
     if (mode === 'edit') {
       openImagePicker();
+    } else {
+      if (onAvatarViewModeTouch) {
+        onAvatarViewModeTouch(pet?._id);
+      }
     }
   };
 
@@ -107,7 +116,7 @@ const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <BaseAvatar.Image
-      size={65}
+      size={size === 'big' ? 65 : 35}
       style={styles.avatar}
       source={avatar ? {uri: avatar} : require('@/app/assets/camera.png')}
       onTouchStart={onAvatarClick}
