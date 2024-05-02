@@ -2,7 +2,8 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
-import AvatarPicker from '@/features/avatar/components/AvatarPicker.tsx';
+import Avatar from '@/features/avatar/components/Avatar';
+import usePet from '@/features/pets/hooks/usePet';
 
 interface HomeHeaderPros {
   petName: string;
@@ -11,6 +12,7 @@ interface HomeHeaderPros {
 const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
   const {t} = useTranslation();
   const theme = useTheme();
+  const {activePet} = usePet();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -37,7 +39,7 @@ const HomeHeader: React.FC<HomeHeaderPros> = ({petName}) => {
           {petName}
         </Text>
       </View>
-      <AvatarPicker />
+      <Avatar pet={activePet} />
     </View>
   );
 };

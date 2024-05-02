@@ -17,6 +17,8 @@ import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddAssessment from './screens/AddAssessment';
 import EditAssessment from './screens/EditAssessment';
+import AddPet from './screens/AddPet';
+import EditPet from './screens/EditPet';
 import DebugScreen from './screens/DebugScreen';
 import AboutScreen from './screens/AboutScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
@@ -216,6 +218,22 @@ const App: React.FC = () => {
               component={SettingsScreen}
               options={{
                 title: t('settings'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="EditPet"
+              component={EditPet}
+              options={{
+                title: t('edit_pet'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="AddPet"
+              component={AddPet}
+              options={{
+                title: t('add_pet'),
                 headerStyle: {backgroundColor: theme.colors.primaryContainer},
               }}
             />

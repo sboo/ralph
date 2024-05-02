@@ -4,6 +4,8 @@ export type RootStackParamList = {
   Welcome: undefined;
   Settings: undefined;
   Home: undefined;
+  AddPet: undefined;
+  EditPet: undefined;
   AddAssessment: {timestamp: number};
   EditAssessment: {assessmentId: string};
   AllAssessments: undefined;
@@ -24,6 +26,15 @@ export type SettingsScreenNavigationProps = NativeStackScreenProps<
 export type HomeScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'Home'
+>;
+export type AddPetScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'AddPet'
+>;
+
+export type EditPetScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'EditPet'
 >;
 
 export type AddAssessmentScreenNavigationProps = NativeStackScreenProps<

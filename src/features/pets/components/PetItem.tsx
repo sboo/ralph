@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
-  Icon,
   IconButton,
   Switch,
   Text,
@@ -17,8 +16,6 @@ import notifee, {
   TriggerType,
 } from '@notifee/react-native';
 import Avatar from '@/features/avatar/components/Avatar';
-import {AVAILABLE_LANGUAGES} from '@/app/localization/i18n';
-import CountryFlag from 'react-native-country-flag';
 import i18next from 'i18next';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
@@ -26,25 +23,26 @@ import {
   dateObjectToTimeString,
   timeToDateObject,
 } from '@/support/helpers/DateTimeHelpers';
-import usePet from '@/features/pets/hooks/usePet';
+import {Pet} from '@/app/models/Pet';
+import {PetData} from '../hooks/usePet';
+import slugify from 'slugify';
 
-interface SettingsProps {
-  onSettingsSaved: () => void;
+interface Props {
+  pet?: Pet;
   buttonLabel?: string;
+  onSubmit: (data: PetData) => void;
 }
 
-const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
+const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const {activePet, updatePet} = usePet();
-  const [petType, setPetType] = useState<string>(activePet.species);
-  const [petName, setPetName] = useState<string>(activePet.name);
-  const [remindersEnabled, setRemindersEnabled] = useState<boolean>(
-    activePet.notificationsEnabled,
-  );
+  const [petType, setPetType] = useState<string>(pet?.species ?? '');
+  const [petName, setPetName] = useState<string>(pet?.name ?? '');
+  const [avatar, setAvatar] = useState<string | undefined>(pet?.avatar);
+  const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
   const [timePickerOpen, setTimePickerOpen] = useState(false);
   const [reminderTime, setReminderTime] = useState(
-    timeToDateObject(activePet.notificationsTime ?? '20:00'),
+    timeToDateObject(pet?.notificationsTime ?? '20:00'),
   );
 
   // Load reminders enabled from storage
@@ -55,27 +53,22 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
         setRemindersEnabled(false);
         return;
       }
-      const enabled = activePet.notificationsEnabled;
+      const enabled = pet?.notificationsEnabled ?? false;
       setRemindersEnabled(enabled);
     };
     checkPermissions();
-  }, [activePet.notificationsEnabled]);
+  }, [pet?.notificationsEnabled]);
 
   // Store pet name and type in storage
-  const storeSettings = async () => {
-    try {
-      updatePet(activePet._id, {
-        name: petName,
-        species: petType,
-      });
-      await toggleReminders();
-
-      // Navigate to the next screen after successful storage
-      onSettingsSaved();
-    } catch (error) {
-      // Error saving data
-      console.log(error);
-    }
+  const submitData = async () => {
+    const notificationsEnabled = await toggleReminders();
+    onSubmit({
+      name: petName,
+      species: petType,
+      notificationsEnabled,
+      notificationsTime: dateObjectToTimeString(reminderTime),
+      avatar: avatar,
+    });
   };
 
   const checkPermissions = async () => {
@@ -147,7 +140,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
 
     await notifee.createTriggerNotification(
       {
-        id: 'eu.sboo.ralph.reminder',
+        id: 'eu.sboo.ralph.reminder_' + slugify(petName),
         title: t('measurements:notificationTitle', {
           petName: petName,
         }),
@@ -178,14 +171,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
       enabled = await enableReminders();
       console.log('Notifications enabled', enabled);
     }
-    try {
-      updatePet(activePet._id, {
-        notificationsEnabled: enabled,
-        notificationsTime: dateObjectToTimeString(reminderTime),
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    return enabled;
   };
 
   return (
@@ -232,7 +218,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
           <Text style={styles.inputLabel} variant="labelLarge">
             {t('settings:avatarInputLabel')}
           </Text>
-          <Avatar mode={'edit'} />
+          <Avatar mode={'edit'} pet={pet} onAvatarSelected={setAvatar} />
         </View>
         <View style={styles.inputRow}>
           <Text style={styles.inputLabel} variant="labelLarge">
@@ -265,27 +251,9 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
             />
           </View>
         ) : null}
-        <View style={styles.inputRow}>
-          <Icon source={'earth'} size={30} />
-          <View style={styles.inputFlags}>
-            {AVAILABLE_LANGUAGES.map(lang => (
-              <IconButton
-                key={lang.langCode}
-                // eslint-disable-next-line react/no-unstable-nested-components
-                icon={() => <CountryFlag isoCode={lang.isoCode} size={32} />}
-                onPress={() => {
-                  i18next.changeLanguage(lang.langCode);
-                }}
-                accessibilityLabel={'lang'}
-                size={15}
-                mode={'contained'}
-              />
-            ))}
-          </View>
-        </View>
       </View>
       <View style={styles.buttons}>
-        <Button onPress={storeSettings} mode={'contained'}>
+        <Button onPress={submitData} mode={'contained'}>
           {buttonLabel ?? t('buttons:continue')}
         </Button>
       </View>

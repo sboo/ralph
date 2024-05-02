@@ -1,15 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import ImagePicker, {Image} from 'react-native-image-crop-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import {Avatar} from 'react-native-paper';
+import {Avatar as BaseAvatar} from 'react-native-paper';
 import {Platform, StyleSheet} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
-import usePet from '@/features/pets/hooks/usePet';
+import {Pet} from '@/app/models/Pet';
 
-const AvatarPicker: React.FC = () => {
-  const {activePet, updatePet} = usePet();
+interface AvatarProps {
+  mode?: 'edit' | 'view';
+  pet?: Pet;
+  onAvatarSelected?: (avatar: string | undefined) => void;
+}
+
+const Avatar: React.FC<AvatarProps> = ({
+  pet,
+  mode = 'view',
+  onAvatarSelected,
+}) => {
   const [avatar, setAvatar] = useState<string>();
+
+  const onAvatarClick = () => {
+    if (mode === 'edit') {
+      openImagePicker();
+    }
+  };
+
   const openImagePicker = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -50,7 +64,9 @@ const AvatarPicker: React.FC = () => {
     if (exists) {
       await RNFS.unlink(avatar);
     }
-    updatePet(activePet._id, {avatar: undefined});
+    if (onAvatarSelected) {
+      onAvatarSelected(undefined);
+    }
     setAvatar(undefined);
   };
 
@@ -67,14 +83,16 @@ const AvatarPicker: React.FC = () => {
         console.error('Unsupported image type');
         return;
     }
-    await deleteAvatar();
+    // await deleteAvatar();
 
     const filename = `avatar_${Date.now()}.${extension}`;
     const path = getAvatarPath(filename);
 
     try {
       await RNFS.moveFile(image.path, path);
-      updatePet(activePet._id, {avatar: filename});
+      if (onAvatarSelected) {
+        onAvatarSelected(filename);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -82,17 +100,17 @@ const AvatarPicker: React.FC = () => {
   };
 
   useEffect(() => {
-    if (activePet.avatar) {
-      setAvatar(getAvatarPath(activePet.avatar, true));
+    if (pet?.avatar) {
+      setAvatar(getAvatarPath(pet.avatar, true));
     }
-  }, [activePet.avatar]);
+  }, [pet?.avatar]);
 
   return (
-    <Avatar.Image
+    <BaseAvatar.Image
       size={65}
       style={styles.avatar}
       source={avatar ? {uri: avatar} : require('@/app/assets/camera.png')}
-      onTouchStart={openImagePicker}
+      onTouchStart={onAvatarClick}
     />
   );
 };
@@ -103,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AvatarPicker;
+export default Avatar;

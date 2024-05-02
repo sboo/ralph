@@ -3,7 +3,7 @@ import {useQuery, useRealm} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
 
-interface PetUpdate {
+export interface PetData {
   species?: string;
   name?: string;
   avatar?: string;
@@ -38,14 +38,14 @@ const usePet = () => {
     });
   };
 
-  const updatePet = (petId: BSON.ObjectId, updates: PetUpdate) => {
+  const updatePet = (petId: BSON.ObjectId, updates: PetData) => {
     realm.write(() => {
       const pet = realm.objectForPrimaryKey('Pet', petId);
       if (pet) {
         // Update the fields with the values provided in 'updates'
         Object.keys(updates).forEach(field => {
           if (field in pet) {
-            pet[field as keyof PetUpdate] = updates[field as keyof PetUpdate];
+            pet[field as keyof PetData] = updates[field as keyof PetData];
           } else {
             console.warn(`No such field '${field}' exists in the Pet schema`);
           }
