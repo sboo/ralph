@@ -57,7 +57,7 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
         <ScrollView style={styles.scrollview}>
           <ExportPdf />
           <Divider style={styles.divider} />
-          {lastAssessments.map((assessment, index) => (
+          {lastAssessments?.map((assessment, index) => (
             <List.Item
               key={index}
               title={assessment.createdAt.toLocaleDateString()}

@@ -20,13 +20,24 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const theme = useTheme();
   const {activePet} = usePet();
   const {generateAndSharePDF} = useAssessmentExporter();
-
   const {assessments, lastAssessments} = useAssessments(activePet);
 
-  const lastAssessment = assessments[assessments.length - 1];
+  useEffect(() => {
+    if (!activePet) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Welcome'}],
+      });
+    }
+  }, [activePet, navigation]);
+
+  const lastAssessment =
+    assessments && assessments.length > 0
+      ? assessments[assessments.length - 1]
+      : null;
 
   useEffect(() => {
-    if (!lastAssessments.length || lastAssessments.length < 5) {
+    if (!lastAssessments?.length || lastAssessments.length < 5) {
       setAverageScore(60);
     } else {
       const lastSevenAssessments = lastAssessments.slice(0, 7);
@@ -43,7 +54,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
       // date.setDate(date.getDate() - 11);
     }
     const today = moment(date).format('YYYY-MM-DD');
-    const assessment = assessments.find(m => m.date === today);
+    const assessment = assessments?.find(m => m.date === today);
     if (assessment === undefined) {
       navigation.navigate('AddAssessment', {
         timestamp: date.getTime(),
@@ -79,11 +90,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         <HomeHeader />
         <ScrollView style={styles.bodyContainer}>
           <AssessmentChart onDataPointClick={addOrEditAssessment} />
-          {assessments.length > 0 ? (
+          {assessments && assessments.length > 0 ? (
             averageScore < 30 ? (
               <TaslkToVetTip />
             ) : (
-              <Tips assessment={lastAssessment} />
+              <Tips assessment={lastAssessment!} />
             )
           ) : (
             <Card

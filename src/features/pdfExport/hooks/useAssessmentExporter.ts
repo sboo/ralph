@@ -87,10 +87,10 @@ const useAssessmentExporter = () => {
           </style>
       </head>
       <body>
-          <h1>${activePet.name}</h1>
+          <h1>${activePet?.name}</h1>
           <div>
             ${assessments
-              .map((assessment, index) => {
+              ?.map((assessment, index) => {
                 let pageBreak = '';
                 if ((index + 1) % 9 === 0) {
                   pageBreak = '<div class="page-break-before"> </div>';

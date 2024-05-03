@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Platform, StatusBar, useColorScheme} from 'react-native';
 import {
   adaptNavigationTheme,
@@ -242,7 +242,7 @@ const App: React.FC = () => {
               component={AddAssessment}
               options={{
                 title: t('measurements:title', {
-                  petName: activePet.name,
+                  petName: activePet?.name,
                 }),
                 headerStyle: {backgroundColor: theme.colors.primaryContainer},
               }}
@@ -252,7 +252,7 @@ const App: React.FC = () => {
               component={EditAssessment}
               options={{
                 title: t('measurements:title', {
-                  petName: activePet.name,
+                  petName: activePet?.name,
                 }),
                 headerStyle: {backgroundColor: theme.colors.primaryContainer},
               }}

@@ -39,7 +39,7 @@ const HomeHeader: React.FC = () => {
           {getGreeting()}
         </Text>
         <Text style={{color: theme.colors.onPrimary, ...styles.petName}}>
-          {activePet.name}
+          {activePet?.name}
         </Text>
       </View>
       <View style={styles.avatarContainer}>
@@ -53,7 +53,7 @@ const HomeHeader: React.FC = () => {
             />
           );
         })}
-        <Avatar key={activePet._id.toHexString()} pet={activePet} />
+        <Avatar key={activePet?._id.toHexString()} pet={activePet} />
       </View>
     </View>
   );

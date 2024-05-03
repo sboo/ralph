@@ -5,14 +5,18 @@ import {WelcomeScreenNavigationProps} from '@/features/navigation/types.tsx';
 import {useTranslation} from 'react-i18next';
 import Settings from '@/features/settings/components/Settings.tsx';
 import LinearGradient from 'react-native-linear-gradient';
+import usePet, {PetData} from '@/features/pets/hooks/usePet';
+import PetItem from '@/features/pets/components/PetItem';
 
 const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   navigation,
 }) => {
   const {t} = useTranslation();
   const theme = useTheme();
+  const {createPet} = usePet();
 
-  const onSettingsSaved = () => {
+  const onSubmit = (data: PetData) => {
+    createPet(data);
     navigation.reset({
       index: 0,
       routes: [{name: 'Home'}],
@@ -37,7 +41,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         <Text variant="titleLarge" style={styles.welcomeText}>
           {t('welcome_text')}
         </Text>
-        <Settings onSettingsSaved={onSettingsSaved} />
+        <PetItem onSubmit={onSubmit} />
       </LinearGradient>
     </SafeAreaView>
   );

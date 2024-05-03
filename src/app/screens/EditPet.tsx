@@ -10,6 +10,11 @@ const EditPet: React.FC<EditPetScreenNavigationProps> = ({navigation}) => {
   const theme = useTheme();
   const {activePet, updatePet, deletePet} = usePet();
 
+  if (!activePet) {
+    navigation.goBack();
+    return;
+  }
+
   const onSubmit = (data: PetData) => {
     if (data.delete) {
       deletePet(activePet._id);

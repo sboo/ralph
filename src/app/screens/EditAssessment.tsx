@@ -20,6 +20,11 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
   const {activePet} = usePet();
   const {editAssessment} = useAssessments(activePet);
 
+  if (!activePet) {
+    navigation.goBack();
+    return;
+  }
+
   const handleSubmit = (
     hurt: number,
     hunger: number,

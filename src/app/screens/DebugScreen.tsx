@@ -97,9 +97,9 @@ const DebugScreen: React.FC = () => {
       <Button title="set to unpurchased" onPress={unpurchase} />
       <Divider />
       <Text>Active Pet:</Text>
-      <Text>Name: {activePet.name}</Text>
-      <Text>Species: {activePet.species}</Text>
-      <Text>isActive: {activePet.isActive ? 'yes' : 'no'}</Text>
+      <Text>Name: {activePet?.name}</Text>
+      <Text>Species: {activePet?.species}</Text>
+      <Text>isActive: {activePet?.isActive ? 'yes' : 'no'}</Text>
     </>
   );
 };

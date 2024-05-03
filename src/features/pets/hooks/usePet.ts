@@ -45,6 +45,9 @@ const usePet = () => {
   );
 
   const activePet = React.useMemo(() => {
+    if (pets.length === 0) {
+      return undefined;
+    }
     const _activePet = pets.find(pet => pet.isActive);
     if (!_activePet && pets.length > 0) {
       switchActivePet(pets[0]._id);

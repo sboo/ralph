@@ -17,6 +17,11 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
   const {activePet} = usePet();
   const {addAssessment} = useAssessments(activePet);
 
+  if (!activePet) {
+    navigation.goBack();
+    return;
+  }
+
   const handleSubmit = (
     hurt: number,
     hunger: number,

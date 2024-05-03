@@ -31,7 +31,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
   const getScores = useCallback(() => {
     // Get the last 7 days of assessments or the last 7 days since the first assessment
     const startDate = (
-      assessments.length > 0
+      assessments && assessments.length > 0
         ? moment.min(
             moment(assessments[0].createdAt),
             moment().subtract(7, 'days'),
@@ -47,7 +47,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
       currentDate.setDate(currentDate.getDate() + 1);
     }
     const scoresWithDates = dateRange.map(date => {
-      const assessment = assessments.find(
+      const assessment = assessments?.find(
         m => m.date === moment(date).format('YYYY-MM-DD'),
       );
       return assessment ? assessment.score : null;
@@ -60,7 +60,9 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
 
   useEffect(() => {
     const firstAssessmentDate =
-      assessments.length > 0 ? assessments[0].createdAt : new Date();
+      assessments && assessments.length > 0
+        ? assessments[0].createdAt
+        : new Date();
     const daysSinceFirstAssessment = moment().diff(
       moment(firstAssessmentDate),
       'days',

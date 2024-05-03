@@ -15,15 +15,21 @@ export interface AssessmentData {
   mobility: number;
 }
 
-const useAssessments = (pet: Pet) => {
+const useAssessments = (pet?: Pet) => {
   const realm = useRealm();
   const _assessments = useQuery(Measurement);
 
   const assessments = React.useMemo(() => {
+    if (!pet) {
+      return null;
+    }
     return _assessments.filtered('pet._id = $0', pet._id).sorted('createdAt');
   }, [_assessments, pet]);
 
   const lastAssessments = React.useMemo(() => {
+    if (!pet) {
+      return null;
+    }
     return _assessments
       .filtered('pet._id = $0', pet._id)
       .sorted('createdAt', true);
