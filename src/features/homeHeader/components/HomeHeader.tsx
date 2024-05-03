@@ -9,7 +9,7 @@ import {BSON} from 'realm';
 const HomeHeader: React.FC = () => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const {activePet, inactivePets, switchActivePet} = usePet();
+  const {activePet, inactivePets, switchActivePet, getHeaderColor} = usePet();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -31,7 +31,7 @@ const HomeHeader: React.FC = () => {
   return (
     <View
       style={{
-        backgroundColor: theme.colors.primary,
+        backgroundColor: getHeaderColor(theme),
         ...styles.container,
       }}>
       <View style={styles.greetingsContainer}>

@@ -1,6 +1,7 @@
 import Realm from 'realm';
 import {Measurement} from '@/app/models/Measurement';
 import {Pet} from '@/app/models/Pet';
+import {PET_REQUIRES_MIGRATION} from '../store/helper';
 
 export const schemas = [Measurement, Pet];
 
@@ -8,7 +9,7 @@ export const onMigration = (oldRealm: Realm, newRealm: Realm) => {
   console.log('Migrating from version ' + oldRealm.schemaVersion);
   console.log('Migrating to version ' + newRealm.schemaVersion);
   if (oldRealm.schemaVersion < 1) {
-    const name = 'INITIAL PET NAME';
+    const name = PET_REQUIRES_MIGRATION;
     const species = 'other';
     const notificationsEnabled = false;
 

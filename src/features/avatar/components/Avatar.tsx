@@ -114,11 +114,25 @@ const Avatar: React.FC<AvatarProps> = ({
     }
   }, [pet?.avatar]);
 
+  const defaultAvatar = () => {
+    if (mode === 'edit') {
+      return require('@/app/assets/camera.png');
+    }
+    switch (pet?.species) {
+      case 'dog':
+        return require('@/app/assets/dog.png');
+      case 'cat':
+        return require('@/app/assets/cat.png');
+      default:
+        return require('@/app/assets/google-downasaur.png');
+    }
+  };
+
   return (
     <BaseAvatar.Image
       size={size === 'big' ? 65 : 35}
       style={styles.avatar}
-      source={avatar ? {uri: avatar} : require('@/app/assets/camera.png')}
+      source={avatar ? {uri: avatar} : defaultAvatar()}
       onTouchStart={onAvatarClick}
     />
   );

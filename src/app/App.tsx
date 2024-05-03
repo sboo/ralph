@@ -36,7 +36,7 @@ import type {NavigationState} from '@react-navigation/routers';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Pet} from '@/app/models/Pet';
 import {useQuery, useRealm} from '@realm/react';
-import {getPetData} from '@/app/store/helper';
+import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
 import usePet from '@/features/pets/hooks/usePet';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -61,12 +61,10 @@ const App: React.FC = () => {
   const petsToFix = useQuery(
     Pet,
     collection => {
-      return collection.filtered('name = $0', 'INITIAL PET NAME');
+      return collection.filtered('name = $0', PET_REQUIRES_MIGRATION);
     },
     [],
   );
-
-  const {activePet} = usePet();
 
   const isFreshInstall = useCallback(async () => {
     const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
@@ -92,7 +90,7 @@ const App: React.FC = () => {
 
   const fixPetData = useCallback(async () => {
     // Fix pet data for existing installs
-    if (realm.schemaVersion > 0) {
+    if (realm.schemaVersion > 0 && petsToFix.length > 0) {
       console.log('fixPetData');
       const petData = await getPetData();
       petsToFix.forEach((pet, idx) => {
@@ -183,12 +181,14 @@ const App: React.FC = () => {
     colors: darkColors, // Copy it from the color codes scheme and then use it here
   };
 
-  const CombinedDefaultTheme = merge(CustomLightTheme, LightTheme);
-  const CombinedDarkTheme = merge(CustomDarkTheme, DarkTheme);
+  const CombinedDefaultTheme = merge(LightTheme, CustomLightTheme);
+  const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
 
   const colorScheme = useColorScheme();
 
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  const {activePet, getHeaderColor} = usePet();
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -205,7 +205,7 @@ const App: React.FC = () => {
               component={HomeScreen}
               options={{
                 title: '',
-                headerStyle: {backgroundColor: theme.colors.primary},
+                headerStyle: {backgroundColor: getHeaderColor(theme)},
               }}
             />
             <Stack.Screen

@@ -2,6 +2,7 @@ import React from 'react';
 import {useQuery, useRealm} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
+import { MD3Theme, useTheme } from 'react-native-paper';
 
 export interface PetData {
   species?: string;
@@ -9,10 +10,12 @@ export interface PetData {
   avatar?: string;
   notificationsEnabled?: boolean;
   notificationsTime?: string;
+  headerColor?: string;
 }
 
 const usePet = () => {
   const realm = useRealm();
+  const theme = useTheme();
   const pets = useQuery(Pet);
   const inactivePets = useQuery(Pet, collection => {
     return collection.filtered('isActive == false');
@@ -75,7 +78,29 @@ const usePet = () => {
     });
   };
 
-  return {pets, activePet, inactivePets, switchActivePet, updatePet, createPet};
+  const getHeaderColor = (colorTheme: MD3Theme) => {
+    const activePetIndex = pets.findIndex(pet => pet.isActive) % 3;
+    switch (activePetIndex) {
+      case 0:
+        return colorTheme.colors.primary;
+      case 1:
+        return colorTheme.colors.secondary;
+      case 2:
+        return colorTheme.colors.tertiary;
+      default:
+        return colorTheme.colors.primary;
+    }
+  };
+
+  return {
+    pets,
+    activePet,
+    inactivePets,
+    switchActivePet,
+    updatePet,
+    createPet,
+    getHeaderColor,
+  };
 };
 
 export default usePet;

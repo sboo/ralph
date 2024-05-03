@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '../store/storageKeys.ts';
 
+export const PET_REQUIRES_MIGRATION = 'PET_REQUIRES_MIGRATION';
+
 export const getPetData = async () => {
   const data = await AsyncStorage.multiGet([
     STORAGE_KEYS.PET_NAME,
