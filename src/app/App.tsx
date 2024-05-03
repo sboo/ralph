@@ -148,7 +148,7 @@ const App: React.FC = () => {
           petId &&
           ((activePet?._id && !petId.equals(activePet._id)) || !activePet?._id)
         ) {
-          console.log('switching active pet', petId);
+          console.log('InitialNotification: switching active pet', petId);
           switchActivePet(petId);
         }
       }
