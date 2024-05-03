@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ImagePicker, {Image} from 'react-native-image-crop-picker';
 import {Avatar as BaseAvatar} from 'react-native-paper';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
@@ -114,33 +114,79 @@ const Avatar: React.FC<AvatarProps> = ({
     }
   }, [pet?.avatar]);
 
-  const defaultAvatar = () => {
-    if (mode === 'edit') {
-      return require('@/app/assets/camera.png');
-    }
-    switch (pet?.species) {
-      case 'dog':
-        return require('@/app/assets/dog.png');
-      case 'cat':
-        return require('@/app/assets/cat.png');
-      default:
-        return require('@/app/assets/google-downasaur.png');
-    }
-  };
-
-  return (
-    <BaseAvatar.Image
-      size={size === 'big' ? 65 : 35}
-      style={styles.avatar}
-      source={avatar ? {uri: avatar} : defaultAvatar()}
-      onTouchStart={onAvatarClick}
-    />
-  );
+  if (avatar) {
+    return (
+      <View style={styles.avatarHolder}>
+        <BaseAvatar.Image
+          size={size === 'big' ? 65 : 35}
+          style={styles.avatar}
+          source={{uri: avatar}}
+          onTouchStart={onAvatarClick}
+        />
+        {mode === 'edit' ? (
+          <BaseAvatar.Icon
+            size={25}
+            style={styles.editAvatar}
+            icon="camera"
+            onTouchStart={onAvatarClick}
+          />
+        ) : null}
+      </View>
+    );
+  }
+  if (mode === 'edit') {
+    return (
+      <BaseAvatar.Icon
+        size={size === 'big' ? 65 : 35}
+        style={styles.avatar}
+        icon="camera"
+        onTouchStart={onAvatarClick}
+      />
+    );
+  }
+  switch (pet?.species) {
+    case 'dog':
+      return (
+        <BaseAvatar.Icon
+          size={size === 'big' ? 65 : 35}
+          style={styles.avatar}
+          icon="dog"
+          onTouchStart={onAvatarClick}
+        />
+      );
+    case 'cat':
+      return (
+        <BaseAvatar.Icon
+          size={size === 'big' ? 65 : 35}
+          style={styles.avatar}
+          icon="cat"
+          onTouchStart={onAvatarClick}
+        />
+      );
+    default:
+      return (
+        <BaseAvatar.Icon
+          size={size === 'big' ? 65 : 35}
+          style={styles.avatar}
+          icon="google-downasaur"
+          onTouchStart={onAvatarClick}
+        />
+      );
+  }
 };
 
 const styles = StyleSheet.create({
+  avatarHolder: {
+    position: 'relative',
+  },
   avatar: {
     backgroundColor: '#ffffff',
+  },
+  editAvatar: {
+    backgroundColor: '#ffffff',
+    position: 'absolute',
+    right: -5,
+    bottom: -5,
   },
 });
 
