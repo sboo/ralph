@@ -1,7 +1,6 @@
-import {Measurement} from '@/app/models/Measurement';
+import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
 import CustomDot from '@/support/components/CustomChartDot';
-import {useQuery} from '@realm/react';
 import moment from 'moment';
 import React, {
   RefObject,
@@ -27,16 +26,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
 
   const theme = useTheme();
   const {activePet} = usePet();
-
-  const assessments = useQuery(
-    Measurement,
-    collection => {
-      return collection
-        .filtered('pet._id = $0', activePet._id)
-        .sorted('createdAt');
-    },
-    [activePet],
-  );
+  const {assessments} = useAssessments(activePet);
 
   const getScores = useCallback(() => {
     // Get the last 7 days of assessments or the last 7 days since the first assessment

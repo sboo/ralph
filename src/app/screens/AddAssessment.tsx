@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
-import {useRealm} from '@realm/react';
 import {useTheme} from 'react-native-paper';
-import {Measurement} from '@/app/models/Measurement';
 import {AddAssessmentScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
-import moment from 'moment';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import usePet from '@/features/pets/hooks/usePet';
+import useAssessments from '@/features/assessments/hooks/useAssessments';
 
 const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
   route,
@@ -15,9 +13,9 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
 }) => {
   const [date] = useState(new Date(route.params.timestamp));
 
-  const realm = useRealm();
   const theme = useTheme();
   const {activePet} = usePet();
+  const {addAssessment} = useAssessments(activePet);
 
   const handleSubmit = (
     hurt: number,
@@ -27,20 +25,14 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
     happiness: number,
     mobility: number,
   ) => {
-    realm.write(() => {
-      const dateString = moment(date).format('YYYY-MM-DD');
-      realm.create(Measurement, {
-        date: dateString,
-        score: hurt + hunger + hydration + hygiene + happiness + mobility,
-        hurt,
-        hunger,
-        hydration,
-        hygiene,
-        happiness,
-        mobility,
-        createdAt: date,
-        pet: activePet,
-      });
+    addAssessment({
+      date,
+      hurt,
+      hunger,
+      hydration,
+      hygiene,
+      happiness,
+      mobility,
     });
     navigation.goBack();
   };

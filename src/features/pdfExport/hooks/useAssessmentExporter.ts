@@ -1,20 +1,17 @@
 import {useTheme} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import {useQuery} from '@realm/react';
-import {Measurement} from '@/app/models/Measurement';
 import {Platform} from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {getValueColor} from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
 import usePet from '@/features/pets/hooks/usePet';
+import useAssessments from '@/features/assessments/hooks/useAssessments';
 
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
   const theme = useTheme();
   const {activePet} = usePet();
-  const assessments = useQuery(Measurement, collection =>
-    collection.sorted('createdAt'),
-  );
+  const {assessments} = useAssessments(activePet);
 
   const getItemColor = (score: number) => {
     const color = getValueColor(theme.colors.outline, score);
@@ -162,7 +159,7 @@ const useAssessmentExporter = () => {
         return null;
       }
       return file.filePath;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to generate pdf', error.message);
       return null;
     }

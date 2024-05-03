@@ -1,21 +1,20 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {useQuery} from '@realm/react';
 import {Divider, List, useTheme} from 'react-native-paper';
-import {Measurement} from '@/app/models/Measurement';
 import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
+import useAssessments from '@/features/assessments/hooks/useAssessments';
+import usePet from '@/features/pets/hooks/usePet';
 
 const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
   navigation,
 }) => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const assessments = useQuery(Measurement, collection =>
-    collection.sorted('createdAt', true),
-  );
+  const {activePet} = usePet();
+  const {lastAssessments} = useAssessments(activePet);
 
   const getIcon = (score: number) => {
     if (score < 30) {
@@ -58,7 +57,7 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
         <ScrollView style={styles.scrollview}>
           <ExportPdf />
           <Divider style={styles.divider} />
-          {assessments.map((assessment, index) => (
+          {lastAssessments.map((assessment, index) => (
             <List.Item
               key={index}
               title={assessment.createdAt.toLocaleDateString()}

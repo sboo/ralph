@@ -1,6 +1,6 @@
 import React from 'react';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
-import {useObject, useRealm} from '@realm/react';
+import {useObject} from '@realm/react';
 import {useTheme} from 'react-native-paper';
 import {Measurement} from '@/app/models/Measurement';
 import {BSON} from 'realm';
@@ -8,6 +8,7 @@ import {EditAssessmentScreenNavigationProps} from '@/features/navigation/types.t
 import {SafeAreaView, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import usePet from '@/features/pets/hooks/usePet';
+import useAssessments from '@/features/assessments/hooks/useAssessments';
 
 const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
   route,
@@ -15,9 +16,9 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
 }) => {
   const _id = BSON.ObjectId.createFromHexString(route.params.assessmentId);
   const assessment = useObject(Measurement, _id);
-  const realm = useRealm();
   const theme = useTheme();
   const {activePet} = usePet();
+  const {editAssessment} = useAssessments(activePet);
 
   const handleSubmit = (
     hurt: number,
@@ -27,18 +28,17 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
     happiness: number,
     mobility: number,
   ) => {
-    realm.write(() => {
-      if (assessment) {
-        assessment.score =
-          hurt + hunger + hydration + hygiene + happiness + mobility;
-        assessment.hurt = hurt;
-        assessment.hunger = hunger;
-        assessment.hydration = hydration;
-        assessment.hygiene = hygiene;
-        assessment.happiness = happiness;
-        assessment.mobility = mobility;
-      }
-    });
+    if (assessment) {
+      editAssessment(assessment, {
+        date: assessment!.createdAt,
+        hurt,
+        hunger,
+        hydration,
+        hygiene,
+        happiness,
+        mobility,
+      });
+    }
     navigation.goBack();
   };
 

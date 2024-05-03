@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Trans, useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {Card, FAB, Icon, Text, useTheme} from 'react-native-paper';
-import {useQuery} from '@realm/react';
-import {Measurement} from '@/app/models/Measurement';
 import {HomeScreenNavigationProps} from '@/features/navigation/types.tsx';
 import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,6 +11,7 @@ import AssessmentChart from '@/features/charts/components/AssessmentChart';
 import Tips from '@/features/tips/components/Tips';
 import TaslkToVetTip from '@/features/tips/components/TalkToVetTip';
 import usePet from '@/features/pets/hooks/usePet';
+import useAssessments from '@/features/assessments/hooks/useAssessments';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -22,24 +21,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {activePet} = usePet();
   const {generateAndSharePDF} = useAssessmentExporter();
 
-  const assessments = useQuery(
-    Measurement,
-    collection => {
-      return collection
-        .filtered('pet._id = $0', activePet._id)
-        .sorted('createdAt');
-    },
-    [],
-  );
-  const lastAssessments = useQuery(
-    Measurement,
-    collection => {
-      return collection
-        .filtered('pet._id = $0', activePet._id)
-        .sorted('createdAt', true);
-    },
-    [],
-  );
+  const {assessments, lastAssessments} = useAssessments(activePet);
 
   const lastAssessment = assessments[assessments.length - 1];
 
