@@ -156,18 +156,18 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
           <Menu.Item
             onPress={() => {
               closeMenu();
-              navigation.navigate('AddPet');
+              navigation.navigate('EditPet');
             }}
-            leadingIcon={'plus-circle-outline'}
-            title={t('add_pet')}
+            leadingIcon={'pencil-outline'}
+            title={t('buttons:edit_pet')}
           />
           <Menu.Item
             onPress={() => {
               closeMenu();
-              navigation.navigate('EditPet');
+              navigation.navigate('AddPet');
             }}
-            leadingIcon={'pencil-outline'}
-            title={t('edit_pet')}
+            leadingIcon={'plus-circle-outline'}
+            title={t('buttons:add_pet')}
           />
           <Divider />
           <Menu.Item

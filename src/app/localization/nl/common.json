@@ -17,7 +17,7 @@
     "add_pet": "Huisdier toevoegen",
     "edit_pet": "Bewerk huisdier",
     "delete_pet": "Verwijder huisdier",
-    "stop_assessments": "Stop beoordelingen"
+    "delete_pet_text": "Weet je zeker dat je {{petName}} wilt verwijderen?"
     
   }
   

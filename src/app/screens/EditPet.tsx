@@ -8,9 +8,14 @@ import {useTheme} from 'react-native-paper';
 
 const EditPet: React.FC<EditPetScreenNavigationProps> = ({navigation}) => {
   const theme = useTheme();
-  const {activePet, updatePet} = usePet();
+  const {activePet, updatePet, deletePet} = usePet();
 
   const onSubmit = (data: PetData) => {
+    if (data.delete) {
+      deletePet(activePet._id);
+      navigation.goBack();
+      return;
+    }
     updatePet(activePet._id, data);
     navigation.goBack();
   };

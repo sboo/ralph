@@ -10,5 +10,9 @@
     "dog": "Perro",
     "cat": "Gato",
     "other": "Otro",
-    "share_assessments": "Compartir Evaluaciones"
+    "share_assessments": "Compartir Evaluaciones",
+    "add_pet": "Añadir mascota",
+    "edit_pet": "Editar mascota",
+    "delete_pet": "Eliminar mascota",
+    "stop_assessments": "Dejar de evaluar"
 }

@@ -17,5 +17,5 @@
   "add_pet": "Añadir mascota",
   "edit_pet": "Editar mascota",
   "delete_pet": "Eliminar mascota",
-  "stop_assessments": "Dejar de evaluar"
+  "delete_pet_text": "¿Estás seguro de que deseas eliminar a {{petName}}?"
 }

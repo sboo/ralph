@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
+  Dialog,
   IconButton,
+  Portal,
   Switch,
   Text,
   TextInput,
@@ -44,6 +46,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   const [reminderTime, setReminderTime] = useState(
     timeToDateObject(pet?.notificationsTime ?? '20:00'),
   );
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -69,6 +72,11 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
       notificationsTime: dateObjectToTimeString(reminderTime),
       avatar: avatar,
     });
+  };
+
+  const deletePet = async () => {
+    await notifee.cancelAllNotifications();
+    onSubmit({delete: true});
   };
 
   const checkPermissions = async () => {
@@ -253,10 +261,42 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
         ) : null}
       </View>
       <View style={styles.buttons}>
+        {pet ? (
+          <Button
+            textColor={theme.colors.error}
+            buttonColor={theme.colors.errorContainer}
+            onPress={() => setConfirmDeleteVisible(true)}
+            mode={'contained'}>
+            {t('buttons:delete_pet')}
+          </Button>
+        ) : null}
         <Button onPress={submitData} mode={'contained'}>
-          {buttonLabel ?? t('buttons:continue')}
+          {buttonLabel ?? t('buttons:save')}
         </Button>
       </View>
+      <Portal>
+        <Dialog
+          visible={confirmDeleteVisible}
+          onDismiss={() => setConfirmDeleteVisible(false)}>
+          <Dialog.Icon icon="alert" color={theme.colors.error} />
+          <Dialog.Title style={styles.dialogTitle}>
+            {t('delete_pet')}
+          </Dialog.Title>
+          <Dialog.Content>
+            <Text style={styles.dialogText} variant="bodyMedium">
+              {t('delete_pet_text', {petName})}
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setConfirmDeleteVisible(false)}>
+              {t('buttons:cancel')}
+            </Button>
+            <Button textColor={theme.colors.error} onPress={deletePet}>
+              {t('buttons:delete_pet')}
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
@@ -301,11 +341,20 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginTop: 20,
     alignItems: 'center',
   },
   avatar: {
     backgroundColor: '#ffffff',
+  },
+  dialogTitle: {
+    textAlign: 'center',
+  },
+  dialogText: {
+    textAlign: 'center',
   },
 });
 

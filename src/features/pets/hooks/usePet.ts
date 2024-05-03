@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useQuery, useRealm} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
-import { MD3Theme, useTheme } from 'react-native-paper';
+import {MD3Theme} from 'react-native-paper';
 
 export interface PetData {
   species?: string;
@@ -11,38 +11,46 @@ export interface PetData {
   notificationsEnabled?: boolean;
   notificationsTime?: string;
   headerColor?: string;
+  delete?: boolean;
 }
 
 const usePet = () => {
   const realm = useRealm();
-  const theme = useTheme();
   const pets = useQuery(Pet);
   const inactivePets = useQuery(Pet, collection => {
     return collection.filtered('isActive == false');
   });
 
+  const switchActivePet = useCallback(
+    (newActivePetId: BSON.ObjectId) => {
+      realm.write(() => {
+        // Find the currently active pet and deactivate it
+        const currentActivePets = realm
+          .objects(Pet)
+          .filtered('isActive == true');
+        currentActivePets.forEach(currentActivePet => {
+          currentActivePet.isActive = false;
+        });
+
+        // Activate the new pet
+        const newActivePet = realm.objectForPrimaryKey(Pet, newActivePetId);
+        if (newActivePet) {
+          newActivePet.isActive = true;
+        } else {
+          console.error('No pet found with the given ID');
+        }
+      });
+    },
+    [realm],
+  );
+
   const activePet = React.useMemo(() => {
     const _activePet = pets.find(pet => pet.isActive);
+    if (!_activePet && pets.length > 0) {
+      switchActivePet(pets[0]._id);
+    }
     return _activePet || pets[0];
-  }, [pets]);
-
-  const switchActivePet = (newActivePetId: BSON.ObjectId) => {
-    realm.write(() => {
-      // Find the currently active pet and deactivate it
-      const currentActivePets = realm.objects(Pet).filtered('isActive == true');
-      currentActivePets.forEach(currentActivePet => {
-        currentActivePet.isActive = false;
-      });
-
-      // Activate the new pet
-      const newActivePet = realm.objectForPrimaryKey(Pet, newActivePetId);
-      if (newActivePet) {
-        newActivePet.isActive = true;
-      } else {
-        console.error('No pet found with the given ID');
-      }
-    });
-  };
+  }, [pets, switchActivePet]);
 
   const updatePet = (petId: BSON.ObjectId, updates: PetData) => {
     realm.write(() => {
@@ -78,6 +86,21 @@ const usePet = () => {
     });
   };
 
+  const deletePet = (petId: BSON.ObjectId) => {
+    if (pets.length === 1) {
+      console.error('Cannot delete the only pet in the list');
+      return;
+    }
+    realm.write(() => {
+      const pet = realm.objectForPrimaryKey('Pet', petId);
+      if (pet) {
+        realm.delete(pet);
+      } else {
+        console.error('No pet found with the given ID');
+      }
+    });
+  };
+
   const getHeaderColor = (colorTheme: MD3Theme) => {
     const activePetIndex = pets.findIndex(pet => pet.isActive) % 3;
     switch (activePetIndex) {
@@ -99,6 +122,7 @@ const usePet = () => {
     switchActivePet,
     updatePet,
     createPet,
+    deletePet,
     getHeaderColor,
   };
 };

@@ -17,6 +17,6 @@
     "add_pet": "Haustier hinzufügen",
     "edit_pet": "Haustier bearbeiten",
     "delete_pet": "Haustier löschen",
-    "stop_assessments": "Beurteilungen stoppen"
-  }
+    "delete_pet_text": "Bist du sicher, dass du {{petName}} löschen möchtest?"
+    }
   

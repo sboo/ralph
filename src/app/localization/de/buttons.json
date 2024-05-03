@@ -10,5 +10,9 @@
     "dog": "Hund",
     "cat": "Katze",
     "other": "Andere",
-    "share_assessments": "Beurteilungen teilen"
+    "share_assessments": "Beurteilungen teilen",
+    "add_pet": "Haustier hinzufügen",
+    "edit_pet": "Haustier bearbeiten",
+    "delete_pet": "Haustier löschen",
+    "stop_assessments": "Beurteilungen stoppen"
 }
