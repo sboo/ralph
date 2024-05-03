@@ -131,31 +131,37 @@ const App: React.FC = () => {
     initApp();
   }, [isFreshInstall, restorePurchases, fixPetData]);
 
-  const [handledInitialNotification, setHandledInitialNotification] =
-    useState(false);
+  const [handledInitialNotificationId, setHandledInitialNotificationId] =
+    useState<string | undefined>();
   // Handle notifications
   useEffect(() => {
     const consumeInitialNotification = async () => {
       const initialNotification = await getInitialNotification();
-      setHandledInitialNotification(true);
-      console.log('initialNotification', initialNotification?.notification.id);
-      if (initialNotification?.notification.id) {
-        const petId = getPetIdFromNotificationId(
-          initialNotification.notification.id,
+      if (
+        initialNotification?.notification.id !== handledInitialNotificationId
+      ) {
+        console.log(
+          'initialNotification',
+          initialNotification?.notification.id,
         );
-        if (
-          petId &&
-          ((activePet?._id && !petId.equals(activePet._id)) || !activePet?._id)
-        ) {
-          console.log('InitialNotification: switching active pet', petId);
-          switchActivePet(petId);
+        if (initialNotification?.notification.id) {
+          const petId = getPetIdFromNotificationId(
+            initialNotification.notification.id,
+          );
+          if (
+            petId &&
+            ((activePet?._id && !petId.equals(activePet._id)) ||
+              !activePet?._id)
+          ) {
+            console.log('InitialNotification: switching active pet', petId);
+            switchActivePet(petId);
+          }
         }
+        setHandledInitialNotificationId(initialNotification?.notification.id);
       }
     };
 
-    if (!handledInitialNotification) {
-      consumeInitialNotification();
-    }
+    consumeInitialNotification();
     onForegroundNotification();
   }, [
     getInitialNotification,
@@ -163,7 +169,7 @@ const App: React.FC = () => {
     getPetIdFromNotificationId,
     activePet?._id,
     switchActivePet,
-    handledInitialNotification,
+    handledInitialNotificationId,
   ]);
 
   // Log purchase error
