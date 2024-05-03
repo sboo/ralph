@@ -5,6 +5,7 @@ import {BSON} from 'realm';
 import {MD3Theme} from 'react-native-paper';
 
 export interface PetData {
+  id?: BSON.ObjectId;
   species?: string;
   name?: string;
   avatar?: string;
@@ -63,8 +64,6 @@ const usePet = () => {
         Object.keys(updates).forEach(field => {
           if (field in pet) {
             pet[field as keyof PetData] = updates[field as keyof PetData];
-          } else {
-            console.warn(`No such field '${field}' exists in the Pet schema`);
           }
         });
       } else {
@@ -77,7 +76,7 @@ const usePet = () => {
     realm.write(() => {
       const newPet = realm.create(Pet, {
         ...data,
-        _id: new BSON.ObjectId(),
+        _id: data.id ?? new BSON.ObjectId(),
         isActive: false,
       });
       // Find the currently active pet and deactivate it

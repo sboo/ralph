@@ -26,8 +26,9 @@ import {
   timeToDateObject,
 } from '@/support/helpers/DateTimeHelpers';
 import {Pet} from '@/app/models/Pet';
-import {PetData} from '../hooks/usePet';
-import slugify from 'slugify';
+import usePet, {PetData} from '../hooks/usePet';
+import {BSON} from 'realm';
+import useNotifications from '@/features/notifications/hooks/useNotifications';
 
 interface Props {
   pet?: Pet;
@@ -38,6 +39,7 @@ interface Props {
 const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   const {t} = useTranslation();
   const theme = useTheme();
+  const {getNotificationId} = useNotifications();
   const [petType, setPetType] = useState<string>(pet?.species ?? '');
   const [petName, setPetName] = useState<string>(pet?.name ?? '');
   const [avatar, setAvatar] = useState<string | undefined>(pet?.avatar);
@@ -47,6 +49,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     timeToDateObject(pet?.notificationsTime ?? '20:00'),
   );
   const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
+  const {pets} = usePet();
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -64,8 +67,10 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
 
   // Store pet name and type in storage
   const submitData = async () => {
-    const notificationsEnabled = await toggleReminders();
+    const id = pet?._id ?? new BSON.ObjectId();
+    const notificationsEnabled = await toggleReminders(id);
     onSubmit({
+      id,
       name: petName,
       species: petType,
       notificationsEnabled,
@@ -98,11 +103,11 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     );
   };
 
-  const enableReminders = async () => {
+  const enableReminders = async (petId: BSON.ObjectId) => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
       try {
-        await createTriggerNotification();
+        await createTriggerNotification(petId);
         return true;
       } catch (error) {
         console.error(error);
@@ -127,7 +132,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
       await notifee.openNotificationSettings();
     }
   };
-  const createTriggerNotification = async () => {
+  const createTriggerNotification = async (petId: BSON.ObjectId) => {
     const channelId = await notifee.createChannel({
       id: 'reminders',
       name: i18next.t('measurements:reminders'),
@@ -148,7 +153,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
 
     await notifee.createTriggerNotification(
       {
-        id: 'eu.sboo.ralph.reminder_' + slugify(petName),
+        id: getNotificationId(petId),
         title: t('measurements:notificationTitle', {
           petName: petName,
         }),
@@ -172,11 +177,11 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   };
 
   // Toggle reminders
-  const toggleReminders = async () => {
-    await notifee.cancelAllNotifications();
+  const toggleReminders = async (petId: BSON.ObjectId) => {
+    await notifee.cancelAllNotifications([getNotificationId(petId)]);
     let enabled = remindersEnabled;
     if (enabled) {
-      enabled = await enableReminders();
+      enabled = await enableReminders(petId);
       console.log('Notifications enabled', enabled);
     }
     return enabled;
@@ -246,7 +251,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             <DatePicker
               modal
               mode={'time'}
-              minuteInterval={15}
+              minuteInterval={1}
               open={timePickerOpen}
               date={reminderTime}
               onConfirm={date => {
@@ -261,7 +266,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
         ) : null}
       </View>
       <View style={styles.buttons}>
-        {pet ? (
+        {pet && pets.length > 1 ? (
           <Button
             textColor={theme.colors.error}
             buttonColor={theme.colors.errorContainer}

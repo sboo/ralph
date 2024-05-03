@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Platform, StatusBar, useColorScheme} from 'react-native';
 import {
   adaptNavigationTheme,
@@ -38,6 +38,7 @@ import {Pet} from '@/app/models/Pet';
 import {useQuery, useRealm} from '@realm/react';
 import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
 import usePet from '@/features/pets/hooks/usePet';
+import useNotifications from '@/features/notifications/hooks/useNotifications';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('light-content');
@@ -57,6 +58,13 @@ const App: React.FC = () => {
   } = useIAP();
 
   const realm = useRealm();
+  const {
+    getInitialNotification,
+    onForegroundNotification,
+    getPetIdFromNotificationId,
+  } = useNotifications();
+
+  const {activePet, getHeaderColor, switchActivePet} = usePet();
 
   const petsToFix = useQuery(
     Pet,
@@ -124,6 +132,41 @@ const App: React.FC = () => {
     initApp();
   }, [isFreshInstall, restorePurchases, fixPetData]);
 
+  const [handledInitialNotification, setHandledInitialNotification] =
+    useState(false);
+  // Handle notifications
+  useEffect(() => {
+    const consumeInitialNotification = async () => {
+      const initialNotification = await getInitialNotification();
+      setHandledInitialNotification(true);
+      console.log('initialNotification', initialNotification?.notification.id);
+      if (initialNotification?.notification.id) {
+        const petId = getPetIdFromNotificationId(
+          initialNotification.notification.id,
+        );
+        if (
+          petId &&
+          ((activePet?._id && !petId.equals(activePet._id)) || !activePet?._id)
+        ) {
+          console.log('switching active pet', petId);
+          switchActivePet(petId);
+        }
+      }
+    };
+
+    if (!handledInitialNotification) {
+      consumeInitialNotification();
+    }
+    onForegroundNotification();
+  }, [
+    getInitialNotification,
+    onForegroundNotification,
+    getPetIdFromNotificationId,
+    activePet?._id,
+    switchActivePet,
+    handledInitialNotification,
+  ]);
+
   // Log purchase error
   useEffect(() => {
     if (currentPurchaseError) {
@@ -187,8 +230,6 @@ const App: React.FC = () => {
   const colorScheme = useColorScheme();
 
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
-
-  const {activePet, getHeaderColor} = usePet();
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>

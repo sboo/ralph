@@ -24,10 +24,10 @@ AppRegistry.registerComponent(appName, () => Main);
 notifee.onBackgroundEvent(async ({type, detail}) => {
   switch (type) {
     case EventType.PRESS:
-      console.log('User pressed notification', detail.id);
+      console.log('User pressed notification', detail.notification.id);
       break;
     case EventType.DISMISSED:
-      console.log('User dismissed notification', detail.id);
+      console.log('User dismissed notification', detail.notification.id);
       break;
     case EventType.ACTION_PRESS:
       console.log('User pressed action button', detail.id, detail.pressAction);

@@ -94,7 +94,8 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             averageScore < 30 ? (
               <TaslkToVetTip />
             ) : (
-              <Tips assessment={lastAssessment!} />
+              // <Tips assessment={lastAssessment!} />
+              null
             )
           ) : (
             <Card
