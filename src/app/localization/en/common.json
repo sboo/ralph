@@ -15,5 +15,7 @@
   "introduction_title": "Daily Assesments",
   "introduction_text": "This app helps you monitor your pet's well-being, offering daily assessments and tracking trends over time.\n\nClick in the chart on the <redDot /> to get started.",
   "add_pet": "Add Pet",
-  "edit_pet": "Edit Pet"
+  "edit_pet": "Edit Pet",
+  "delete_pet": "Delete Pet",
+  "stop_assessments": "Stop Assessments"
 }
