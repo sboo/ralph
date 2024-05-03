@@ -33,7 +33,6 @@ import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {event, EVENT_NAMES} from '@/features/events';
 import type {NavigationState} from '@react-navigation/routers';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Pet} from '@/app/models/Pet';
 import {useQuery, useRealm} from '@realm/react';
 import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
@@ -232,86 +231,84 @@ const App: React.FC = () => {
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer onStateChange={onNavigationStateChange}>
-          <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              // eslint-disable-next-line react/no-unstable-nested-components
-              header: props => <CustomNavigationBar {...props} />,
-            }}>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                title: '',
-                headerStyle: {backgroundColor: getHeaderColor(theme)},
-              }}
-            />
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{
-                title: t('settings'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="EditPet"
-              component={EditPet}
-              options={{
-                title: t('edit_pet'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="AddPet"
-              component={AddPet}
-              options={{
-                title: t('add_pet'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="AddAssessment"
-              component={AddAssessment}
-              options={{
-                title: t('measurements:title', {
-                  petName: activePet?.name,
-                }),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="EditAssessment"
-              component={EditAssessment}
-              options={{
-                title: t('measurements:title', {
-                  petName: activePet?.name,
-                }),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="AllAssessments"
-              component={AllAssessmentsScreen}
-              options={{
-                title: t('measurements:allAssessments'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen name="AboutScreen" component={AboutScreen} />
-            <Stack.Screen name="DebugScreen" component={DebugScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </GestureHandlerRootView>
+    <PaperProvider theme={theme}>
+      <NavigationContainer onStateChange={onNavigationStateChange}>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            // eslint-disable-next-line react/no-unstable-nested-components
+            header: props => <CustomNavigationBar {...props} />,
+          }}>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              title: '',
+              headerStyle: {backgroundColor: getHeaderColor(theme)},
+            }}
+          />
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+              title: t('settings'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="EditPet"
+            component={EditPet}
+            options={{
+              title: t('edit_pet'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="AddPet"
+            component={AddPet}
+            options={{
+              title: t('add_pet'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="AddAssessment"
+            component={AddAssessment}
+            options={{
+              title: t('measurements:title', {
+                petName: activePet?.name,
+              }),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="EditAssessment"
+            component={EditAssessment}
+            options={{
+              title: t('measurements:title', {
+                petName: activePet?.name,
+              }),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="AllAssessments"
+            component={AllAssessmentsScreen}
+            options={{
+              title: t('measurements:allAssessments'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen name="AboutScreen" component={AboutScreen} />
+          <Stack.Screen name="DebugScreen" component={DebugScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
