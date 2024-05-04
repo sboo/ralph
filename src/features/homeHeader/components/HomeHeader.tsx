@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import Avatar from '@/features/avatar/components/Avatar';
 import usePet from '@/features/pets/hooks/usePet';
 import {BSON} from 'realm';
+import {event, EVENT_NAMES} from '@/features/events';
 
 const HomeHeader: React.FC = () => {
   const {t} = useTranslation();
@@ -24,6 +25,7 @@ const HomeHeader: React.FC = () => {
 
   const switchPet = (petId: BSON.ObjectID | undefined) => {
     if (petId) {
+      event.emit(EVENT_NAMES.SWITCHING_PET, petId);
       switchActivePet(petId);
     }
   };

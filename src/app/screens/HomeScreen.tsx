@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Trans, useTranslation} from 'react-i18next';
-import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {Dimensions, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {Card, FAB, Icon, Text, useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '@/features/navigation/types.tsx';
+import {SkeletonSimpler} from 'react-native-skeleton-simpler';
 import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
@@ -12,6 +13,7 @@ import Tips from '@/features/tips/components/Tips';
 import TaslkToVetTip from '@/features/tips/components/TalkToVetTip';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
+import {EVENT_NAMES, event} from '@/features/events';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
@@ -21,6 +23,24 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {activePet} = usePet();
   const {generateAndSharePDF} = useAssessmentExporter();
   const {assessments, lastAssessments} = useAssessments(activePet);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const petIsSwitching = () => {
+      setLoading(true);
+    };
+    event.on(EVENT_NAMES.SWITCHING_PET, petIsSwitching);
+    return () => {
+      event.off(EVENT_NAMES.SWITCHING_PET, petIsSwitching);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activePet) {
+      event.emit(EVENT_NAMES.FINISHED_SWITCHING_PET, activePet._id);
+      setLoading(false);
+    }
+  }, [activePet]);
 
   useEffect(() => {
     if (!activePet) {
@@ -73,6 +93,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     </Text>
   );
 
+  const width = Dimensions.get('window').width - 40;
+  const height = (width / 16) * 7;
+
   return (
     <SafeAreaView
       style={{
@@ -88,43 +111,63 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <HomeHeader />
-        <ScrollView style={styles.bodyContainer}>
-          <AssessmentChart onDataPointClick={addOrEditAssessment} />
-          {assessments && assessments.length > 0 ? (
-            averageScore < 30 ? (
-              <TaslkToVetTip />
+        <SkeletonSimpler
+          loading={loading}
+          layout={[
+            {
+              width: width,
+              height: 210,
+              margin: 20,
+              borderRadius: 15,
+              marginBottom: 25,
+              backgroundColor: theme.colors.primaryContainer,
+            },
+            {
+              width: width,
+              height: height + 45,
+              margin: 20,
+              borderRadius: 15,
+              backgroundColor: theme.colors.primaryContainer,
+            },
+          ]}>
+          <ScrollView style={styles.bodyContainer}>
+            <AssessmentChart onDataPointClick={addOrEditAssessment} />
+            {assessments && assessments.length > 0 ? (
+              averageScore < 30 ? (
+                <TaslkToVetTip />
+              ) : (
+                <Tips assessment={lastAssessment!} />
+              )
             ) : (
-              <Tips assessment={lastAssessment!} />
-            )
-          ) : (
-            <Card
-              mode="contained"
-              style={{
-                backgroundColor: theme.colors.primaryContainer,
-                ...styles.introduction,
-              }}>
-              <Card.Title
-                title={t('introduction_title')}
-                // eslint-disable-next-line react/no-unstable-nested-components
-                left={props => (
-                  <Icon
-                    {...props}
-                    source="calendar-month-outline"
-                    color={theme.colors.onPrimaryContainer}
-                  />
-                )}
-              />
-              <Card.Content>
-                <Text variant="bodyMedium">
-                  <Trans
-                    i18nKey={'introduction_text'}
-                    components={{redDot: <RedDot />}}
-                  />
-                </Text>
-              </Card.Content>
-            </Card>
-          )}
-        </ScrollView>
+              <Card
+                mode="contained"
+                style={{
+                  backgroundColor: theme.colors.primaryContainer,
+                  ...styles.introduction,
+                }}>
+                <Card.Title
+                  title={t('introduction_title')}
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  left={props => (
+                    <Icon
+                      {...props}
+                      source="calendar-month-outline"
+                      color={theme.colors.onPrimaryContainer}
+                    />
+                  )}
+                />
+                <Card.Content>
+                  <Text variant="bodyMedium">
+                    <Trans
+                      i18nKey={'introduction_text'}
+                      components={{redDot: <RedDot />}}
+                    />
+                  </Text>
+                </Card.Content>
+              </Card>
+            )}
+          </ScrollView>
+        </SkeletonSimpler>
         <FAB.Group
           visible={true}
           open={isFabOpen}
