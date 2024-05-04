@@ -251,7 +251,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             <DatePicker
               modal
               mode={'time'}
-              minuteInterval={1}
+              minuteInterval={15}
               open={timePickerOpen}
               date={reminderTime}
               onConfirm={date => {
