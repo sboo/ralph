@@ -1,40 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
-import {
-  Button,
-  Icon,
-  IconButton,
-  Switch,
-  Text,
-  TextInput,
-  useTheme,
-} from 'react-native-paper';
+import React from 'react';
+import {Linking, Platform, StyleSheet, View} from 'react-native';
+import {Button, Divider, Icon, IconButton, Text} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import notifee, {
-  AuthorizationStatus,
-  RepeatFrequency,
-  TimestampTrigger,
-  TriggerType,
-} from '@notifee/react-native';
-import Avatar from '@/features/avatar/components/Avatar';
 import {AVAILABLE_LANGUAGES} from '@/app/localization/i18n';
 import CountryFlag from 'react-native-country-flag';
 import i18next from 'i18next';
-import moment from 'moment';
-import DatePicker from 'react-native-date-picker';
-import {
-  dateObjectToTimeString,
-  timeToDateObject,
-} from '@/support/helpers/DateTimeHelpers';
-import usePet from '@/features/pets/hooks/usePet';
+import {ANDROID_APP_ID, IOS_APP_ID} from '@/support/constants';
 
 interface SettingsProps {
   onSettingsSaved: () => void;
-  buttonLabel?: string;
 }
 
-const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
+const Settings: React.FC<SettingsProps> = ({onSettingsSaved}) => {
   const {t} = useTranslation();
+
+  const APP_STORE_LINK = `itms-apps://apps.apple.com/app/id${IOS_APP_ID}?action=write-review`;
+  const PLAY_STORE_LINK = `market://details?id=${ANDROID_APP_ID}`;
+
+  const STORE_LINK = Platform.select({
+    ios: APP_STORE_LINK,
+    android: PLAY_STORE_LINK,
+  });
+
+  const openReviewInStore = () => Linking.openURL(STORE_LINK!);
 
   // Store pet name and type in storage
   const storeSettings = async () => {
@@ -63,10 +51,17 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved, buttonLabel}) => {
             ))}
           </View>
         </View>
+        <Divider style={styles.divider} bold={true} />
+        <View style={styles.inputRowReview}>
+          <Text>{t('settings:app_useful')}</Text>
+          <Button onPress={openReviewInStore} icon={'star'} mode={'outlined'}>
+            {t('settings:review_app')}
+          </Button>
+        </View>
       </View>
       <View style={styles.buttons}>
         <Button onPress={storeSettings} mode={'contained'}>
-          {buttonLabel ?? t('buttons:continue')}
+          {t('buttons:done')}
         </Button>
       </View>
     </View>
@@ -80,6 +75,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
   },
+  divider: {
+    width: '100%',
+  },
   profileInput: {
     flex: 1,
     alignItems: 'center',
@@ -92,6 +90,13 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'space-between',
     height: 50,
+  },
+  inputRowReview: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    alignSelf: 'stretch',
+    gap: 15,
+    justifyContent: 'space-between',
   },
   inputRowPet: {
     flexDirection: 'row',

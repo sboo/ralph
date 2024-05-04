@@ -4,5 +4,7 @@
     "enableNotificationsLabel": "Erinnerungsbenachrichtigungen aktivieren",
     "reminderTimeLabel": "Erinnerungszeitpunkt",
     "petTypeInputLabel": "Dein Haustier ist ein/e",
-    "selectLanguageLabel": "Sprache auswählen"
+    "selectLanguageLabel": "Sprache auswählen",
+    "app_useful": "Findest du Ralph nützlich? Hilf uns, mehr Menschen zu erreichen, indem du uns eine Bewertung hinterlässt!",
+    "review_app": "Ralph bewerten"
 }
