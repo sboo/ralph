@@ -2,13 +2,7 @@ import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
 import CustomDot from '@/support/components/CustomChartDot';
 import moment from 'moment';
-import React, {
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {RefObject, useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
@@ -28,8 +22,9 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
   const {activePet} = usePet();
   const {assessments} = useAssessments(activePet);
 
-  const getScores = useCallback(() => {
-    // Get the last 7 days of assessments or the last 7 days since the first assessment
+  const scores = useMemo(() => {
+    console.log('getScores', assessments?.[0]?.petId);
+    // Get the date range for the last 7 days or since the first assessment
     const startDate = (
       assessments && assessments.length > 0
         ? moment.min(
@@ -70,28 +65,30 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
     setChartWidthMultiplier(Math.max(1, daysSinceFirstAssessment / 9));
   }, [assessments]);
 
-  const {scoresWithDates, labels, dateRange} = getScores();
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        data: scoresWithDates,
-      },
-      {
-        data: Array(scoresWithDates.length).fill(30),
-        withDots: false,
-        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-      },
-      {
-        data: [0],
-        withDots: false,
-      },
-      {
-        data: [60],
-        withDots: false,
-      },
-    ],
-  };
+  const {scoresWithDates, labels, dateRange} = scores;
+  const data = useMemo(() => {
+    return {
+      labels: labels,
+      datasets: [
+        {
+          data: scoresWithDates,
+        },
+        {
+          data: Array(scoresWithDates.length).fill(30),
+          withDots: false,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        },
+        {
+          data: [0],
+          withDots: false,
+        },
+        {
+          data: [60],
+          withDots: false,
+        },
+      ],
+    };
+  }, [labels, scoresWithDates]);
 
   return (
     <View

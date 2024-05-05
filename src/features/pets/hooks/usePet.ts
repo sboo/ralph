@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import {useCallback, useMemo} from 'react';
 import {useQuery, useRealm} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
@@ -25,6 +25,7 @@ const usePet = () => {
 
   const switchActivePet = useCallback(
     (newActivePetId: BSON.ObjectId) => {
+      console.log('switchActivePet', newActivePetId);
       realm.write(() => {
         // Find the currently active pet and deactivate it
         const currentActivePets = realm
@@ -61,7 +62,7 @@ const usePet = () => {
     [realm],
   );
 
-  const activePet = React.useMemo(() => {
+  const activePet = useMemo(() => {
     if (pets.length === 0) {
       return undefined;
     }
@@ -136,7 +137,7 @@ const usePet = () => {
     [pets],
   );
 
-  const headerColor = React.useMemo(() => {
+  const headerColor = useMemo(() => {
     const activePetIndex = pets.findIndex(pet => pet.isActive) % 3;
     switch (activePetIndex) {
       case 0:

@@ -3,7 +3,7 @@ import {Pet} from '@/app/models/Pet';
 import {useQuery, useRealm} from '@realm/react';
 import moment from 'moment';
 
-import React from 'react';
+import {useMemo} from 'react';
 
 export interface AssessmentData {
   date: Date;
@@ -19,19 +19,19 @@ const useAssessments = (pet?: Pet) => {
   const realm = useRealm();
   const _assessments = useQuery(Measurement);
 
-  const assessments = React.useMemo(() => {
+  const assessments = useMemo(() => {
     if (!pet) {
       return null;
     }
-    return _assessments.filtered('pet._id = $0', pet._id).sorted('createdAt');
+    return _assessments.filtered('petId = $0', pet._id).sorted('createdAt');
   }, [_assessments, pet]);
 
-  const lastAssessments = React.useMemo(() => {
+  const lastAssessments = useMemo(() => {
     if (!pet) {
       return null;
     }
     return _assessments
-      .filtered('pet._id = $0', pet._id)
+      .filtered('petId= $0', pet._id)
       .sorted('createdAt', true);
   }, [_assessments, pet]);
 
@@ -47,6 +47,9 @@ const useAssessments = (pet?: Pet) => {
   };
 
   const addAssessment = (assessmentData: AssessmentData) => {
+    if (!pet) {
+      return;
+    }
     realm.write(() => {
       const dateString = moment(assessmentData.date).format('YYYY-MM-DD');
       realm.create(Measurement, {
@@ -59,7 +62,7 @@ const useAssessments = (pet?: Pet) => {
         happiness: assessmentData.happiness,
         mobility: assessmentData.mobility,
         createdAt: assessmentData.date,
-        pet: pet,
+        petId: pet._id,
       });
     });
   };

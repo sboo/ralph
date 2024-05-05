@@ -4,7 +4,7 @@ import {useCallback} from 'react';
 import usePet from '@/features/pets/hooks/usePet';
 
 const useNotifications = () => {
-  const {activePet, enableNotifcationDot} = usePet();
+  const {enableNotifcationDot} = usePet();
   const NOTIFICATION_PREFIX = 'eu.sboo.ralph.reminder_';
 
   const getNotificationId = useCallback((petId: BSON.ObjectId) => {

@@ -16,7 +16,7 @@
     "introduction_text": "Diese App hilft dir, das Wohlbefinden deines Haustieres zu überwachen, bietet tägliche Beurteilungen und verfolgt Trends über die Zeit.\n\nKlicke im Diagramm auf den <redDot />, um zu beginnen.",
     "add_pet": "Haustier hinzufügen",
     "edit_pet": "Haustier bearbeiten",
-    "delete_pet": "Haustier löschen",
-    "delete_pet_text": "Bist du sicher, dass du {{petName}} löschen möchtest?"
+    "delete_pet": "Haustier entfernen",
+    "delete_pet_text": "Bist du sicher, dass du {{petName}} entfernen möchtest?"
     }
   

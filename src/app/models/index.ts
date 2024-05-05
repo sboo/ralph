@@ -32,7 +32,7 @@ export const onMigration = (oldRealm: Realm, newRealm: Realm) => {
       const newObject = newObjects[objectIndex];
       console.log(newObject.createdAt);
       console.log(newObject.score);
-      newObject.pet = pet;
+      newObject.petId = pet._id;
     }
   }
 };

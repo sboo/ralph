@@ -16,6 +16,6 @@
   "introduction_text": "This app helps you monitor your pet's well-being, offering daily assessments and tracking trends over time.\n\nClick in the chart on the <redDot /> to get started.",
   "add_pet": "Add Pet",
   "edit_pet": "Edit Pet",
-  "delete_pet": "Delete Pet",
-  "delete_pet_text": "Are you sure you want to delete {{petName}}?"
+  "delete_pet": "Remove Pet",
+  "delete_pet_text": "Are you sure you want to remove {{petName}}?"
 }
