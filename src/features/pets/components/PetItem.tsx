@@ -84,7 +84,10 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
       return;
     }
     const notificationId = getNotificationId(pet._id);
-    await notifee.cancelAllNotifications([notificationId]);
+    await notifee.cancelAllNotifications([
+      'eu.sboo.ralph.reminder',
+      notificationId,
+    ]);
     onSubmit({delete: true});
   };
 
@@ -137,9 +140,16 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     }
   };
   const createTriggerNotification = async (petId: BSON.ObjectId) => {
-    const channelId = await notifee.createChannel({
+
+    const channelGroupId = await notifee.createChannelGroup({
       id: 'reminders',
       name: i18next.t('measurements:reminders'),
+    });
+
+    const channelId = await notifee.createChannel({
+      id: petId.toHexString(),
+      groupId: channelGroupId,
+      name: petName,
     });
 
     const timestamp = reminderTime.getTime();
@@ -182,7 +192,10 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
 
   // Toggle reminders
   const toggleReminders = async (petId: BSON.ObjectId) => {
-    await notifee.cancelAllNotifications([getNotificationId(petId)]);
+    await notifee.cancelAllNotifications([
+      'eu.sboo.ralph.reminder',
+      getNotificationId(petId),
+    ]);
     let enabled = remindersEnabled;
     if (enabled) {
       enabled = await enableReminders(petId);
