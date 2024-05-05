@@ -80,7 +80,11 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   };
 
   const deletePet = async () => {
-    await notifee.cancelAllNotifications();
+    if (!pet) {
+      return;
+    }
+    const notificationId = getNotificationId(pet._id);
+    await notifee.cancelAllNotifications([notificationId]);
     onSubmit({delete: true});
   };
 
