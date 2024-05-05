@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ImagePicker, {Image} from 'react-native-image-crop-picker';
-import {Avatar as BaseAvatar} from 'react-native-paper';
+import {Badge, Avatar as BaseAvatar} from 'react-native-paper';
 import {Platform, StyleSheet, View} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import {Pet} from '@/app/models/Pet';
@@ -114,65 +114,78 @@ const Avatar: React.FC<AvatarProps> = ({
     }
   }, [pet?.avatar]);
 
-  if (avatar) {
-    return (
-      <View style={styles.avatarHolder}>
-        <BaseAvatar.Image
-          size={size === 'big' ? 65 : 35}
-          style={styles.avatar}
-          source={{uri: avatar}}
-          onTouchStart={onAvatarClick}
-        />
-        {mode === 'edit' ? (
-          <BaseAvatar.Icon
-            size={25}
-            style={styles.editAvatar}
-            icon="camera"
+  const getAvatar = () => {
+    if (avatar) {
+      return (
+        <View style={styles.avatarHolder}>
+          <BaseAvatar.Image
+            size={size === 'big' ? 65 : 35}
+            style={styles.avatar}
+            source={{uri: avatar}}
             onTouchStart={onAvatarClick}
           />
-        ) : null}
-      </View>
-    );
-  }
-  if (mode === 'edit') {
-    return (
-      <BaseAvatar.Icon
-        size={size === 'big' ? 65 : 35}
-        style={styles.avatar}
-        icon="camera"
-        onTouchStart={onAvatarClick}
-      />
-    );
-  }
-  switch (pet?.species) {
-    case 'dog':
+          {mode === 'edit' ? (
+            <BaseAvatar.Icon
+              size={25}
+              style={styles.editAvatar}
+              icon="camera"
+              onTouchStart={onAvatarClick}
+            />
+          ) : null}
+        </View>
+      );
+    }
+    if (mode === 'edit') {
       return (
         <BaseAvatar.Icon
           size={size === 'big' ? 65 : 35}
           style={styles.avatar}
-          icon="dog"
+          icon="camera"
           onTouchStart={onAvatarClick}
         />
       );
-    case 'cat':
-      return (
-        <BaseAvatar.Icon
-          size={size === 'big' ? 65 : 35}
-          style={styles.avatar}
-          icon="cat"
-          onTouchStart={onAvatarClick}
-        />
-      );
-    default:
-      return (
-        <BaseAvatar.Icon
-          size={size === 'big' ? 65 : 35}
-          style={styles.avatar}
-          icon="google-downasaur"
-          onTouchStart={onAvatarClick}
-        />
-      );
-  }
+    }
+    switch (pet?.species) {
+      case 'dog':
+        return (
+          <BaseAvatar.Icon
+            size={size === 'big' ? 65 : 35}
+            style={styles.avatar}
+            icon="dog"
+            onTouchStart={onAvatarClick}
+          />
+        );
+      case 'cat':
+        return (
+          <BaseAvatar.Icon
+            size={size === 'big' ? 65 : 35}
+            style={styles.avatar}
+            icon="cat"
+            onTouchStart={onAvatarClick}
+          />
+        );
+      default:
+        return (
+          <BaseAvatar.Icon
+            size={size === 'big' ? 65 : 35}
+            style={styles.avatar}
+            icon="google-downasaur"
+            onTouchStart={onAvatarClick}
+          />
+        );
+    }
+  };
+
+  return (
+    <View style={styles.avatarHolder}>
+      {getAvatar()}
+      {mode === 'view' &&
+      pet?.showNotificationDot === true &&
+      !pet?.isActive ? (
+        <Badge style={styles.notificationDot} size={10} />
+      ) : null}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -188,6 +201,11 @@ const styles = StyleSheet.create({
     right: -5,
     bottom: -5,
   },
+  notificationDot: {
+    position: 'absolute',
+    right: -2,
+    top: -2,
+  }
 });
 
 export default Avatar;

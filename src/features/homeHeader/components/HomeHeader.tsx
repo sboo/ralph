@@ -10,7 +10,7 @@ import {event, EVENT_NAMES} from '@/features/events';
 const HomeHeader: React.FC = () => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const {activePet, inactivePets, switchActivePet, getHeaderColor} = usePet();
+  const {activePet, inactivePets, switchActivePet, headerColor} = usePet();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -33,7 +33,7 @@ const HomeHeader: React.FC = () => {
   return (
     <View
       style={{
-        backgroundColor: getHeaderColor(theme),
+        backgroundColor: headerColor,
         ...styles.container,
       }}>
       <View style={styles.greetingsContainer}>

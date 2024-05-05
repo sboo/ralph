@@ -63,7 +63,7 @@ const App: React.FC = () => {
     getPetIdFromNotificationId,
   } = useNotifications();
 
-  const {activePet, getHeaderColor, switchActivePet} = usePet();
+  const {activePet, getHeaderColor, enableNotifcationDot} = usePet();
 
   const petsToFix = useQuery(
     Pet,
@@ -148,13 +148,8 @@ const App: React.FC = () => {
           const petId = getPetIdFromNotificationId(
             initialNotification.notification.id,
           );
-          if (
-            petId &&
-            ((activePet?._id && !petId.equals(activePet._id)) ||
-              !activePet?._id)
-          ) {
-            console.log('InitialNotification: switching active pet', petId);
-            switchActivePet(petId);
+          if (petId) {
+            enableNotifcationDot(petId);
           }
         }
         setHandledInitialNotificationId(initialNotification?.notification.id);
@@ -167,8 +162,7 @@ const App: React.FC = () => {
     getInitialNotification,
     onForegroundNotification,
     getPetIdFromNotificationId,
-    activePet?._id,
-    switchActivePet,
+    enableNotifcationDot,
     handledInitialNotificationId,
   ]);
 

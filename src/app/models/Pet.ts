@@ -9,6 +9,7 @@ export class Pet extends Realm.Object {
   avatar?: string;
   notificationsEnabled: boolean = false;
   notificationsTime?: string;
+  showNotificationDot: boolean = false;
   @index
   isActive: boolean = false;
   headerColor?: string;
