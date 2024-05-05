@@ -3,6 +3,7 @@
     "cancel": "Abbrechen",
     "back": "Zurück",
     "continue": "Weiter",
+    "done": "Fertig",
     "save": "Speichern",
     "close": "Schließen",
     "settings": "Einstellungen",
@@ -10,5 +11,9 @@
     "dog": "Hund",
     "cat": "Katze",
     "other": "Andere",
-    "share_assessments": "Bewertungen teilen"
+    "share_assessments": "Beurteilungen teilen",
+    "add_pet": "Haustier hinzufügen",
+    "edit_pet": "Haustier bearbeiten",
+    "delete_pet": "Haustier löschen",
+    "stop_assessments": "Beurteilungen stoppen"
 }

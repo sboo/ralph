@@ -5,7 +5,7 @@ import {Card, Icon, Text} from 'react-native-paper';
 import useTips, {Tip, TipCategory} from '../hooks/useTips';
 import {getTipBackgroundColor} from '@/support/helpers/ColorHelper';
 import {useTranslation} from 'react-i18next';
-import Carousel from 'react-native-reanimated-carousel';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
 
 interface TipsProps {
   assessment: Measurement;
@@ -57,7 +57,6 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
     setCurrentTips(randomTips);
   }, [tips]);
 
-  const width = Dimensions.get('window').width - 40;
   useEffect(() => {
     if (tips.length > 0) {
       getRandomTip();
@@ -89,17 +88,15 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
         backgroundColor: getTipBackgroundColor(currentTips[currentIndex]?.type),
         ...styles.tip,
       }}>
-      <Carousel
-        loop
-        width={width}
-        height={(width / 16) * 7}
-        autoPlay={true}
-        autoPlayInterval={7000}
+      <SwiperFlatList
+        style={styles.swiper}
+        // autoplay
+        // autoplayLoop
+        // autoplayDelay={7}
         data={currentTips}
-        scrollAnimationDuration={1000}
-        onSnapToItem={index => setCurrentIndex(index)}
+        onChangeIndex={({index}) => setCurrentIndex(index)}
         renderItem={({item}) => (
-          <>
+          <View style={styles.cardContent}>
             <Card.Title
               title={item?.title}
               titleNumberOfLines={2}
@@ -112,7 +109,7 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
             <Card.Content>
               <Text variant="bodyMedium">{item?.text}</Text>
             </Card.Content>
-          </>
+          </View>
         )}
       />
       <Card.Actions>
@@ -122,11 +119,22 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
   );
 };
 
+const width = Dimensions.get('window').width - 40;
+const height = (width / 16) * 7;
+
 const styles = StyleSheet.create({
   tip: {
     marginTop: 45,
     borderRadius: 15,
     marginBottom: 100,
+  },
+  swiper: {
+    // justifyContent: 'center',
+  },
+  cardContent: {
+    width,
+    height,
+    justifyContent: 'center',
   },
   IconButton: {
     backgroundColor: 'transparent',

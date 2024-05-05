@@ -1,26 +1,18 @@
+import {AddPetScreenNavigationProps} from '@/features/navigation/types';
+import PetItem from '@/features/pets/components/PetItem';
+import usePet, {PetData} from '@/features/pets/hooks/usePet';
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
-import {WelcomeScreenNavigationProps} from '@/features/navigation/types.tsx';
-import {useTranslation} from 'react-i18next';
-import Settings from '@/features/settings/components/Settings.tsx';
 import LinearGradient from 'react-native-linear-gradient';
-import usePet, {PetData} from '@/features/pets/hooks/usePet';
-import PetItem from '@/features/pets/components/PetItem';
+import {useTheme} from 'react-native-paper';
 
-const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
-  navigation,
-}) => {
-  const {t} = useTranslation();
+const AddPet: React.FC<AddPetScreenNavigationProps> = ({navigation}) => {
   const theme = useTheme();
   const {createPet} = usePet();
 
   const onSubmit = (data: PetData) => {
     createPet(data);
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Home'}],
-    });
+    navigation.goBack();
   };
 
   return (
@@ -37,10 +29,6 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <Text variant="displayMedium">{t('welcome')}</Text>
-        <Text variant="titleLarge" style={styles.welcomeText}>
-          {t('welcome_text')}
-        </Text>
         <PetItem onSubmit={onSubmit} />
       </LinearGradient>
     </SafeAreaView>
@@ -54,13 +42,9 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     padding: 20,
-    paddingTop: 60,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
   },
-  welcomeText: {
-    marginVertical: 20,
-  },
 });
 
-export default WelcomeScreen;
+export default AddPet;

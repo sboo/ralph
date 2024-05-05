@@ -1,7 +1,7 @@
 {
-  "todaysAssessment": "Heutige Bewertung",
-  "allAssessments": "Alle Bewertungen",
-  "pastAssessments": "Vergangene Bewertungen",
+  "todaysAssessment": "Heutige Beurteilung",
+  "allAssessments": "Alle Beurteilungen",
+  "pastAssessments": "Vergangene Beurteilungen",
   "title": "Wie war {{petName}}s Tag?",
   "intro": "Lass uns einen Moment nehmen, um über {{petName}}s Tag nachzudenken. Passe die Schieberegler an, um zu zeigen, wie es {{petName}} in jedem Bereich ergangen ist.",
   "hurt": "Schmerz",

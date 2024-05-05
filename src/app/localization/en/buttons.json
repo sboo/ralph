@@ -3,6 +3,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "continue": "Continue",
+    "done": "Done",
     "save": "Save",
     "close": "Close",
     "settings": "Settings",
@@ -10,5 +11,9 @@
     "dog": "Dog",
     "cat": "Cat",
     "other": "Other",
-    "share_assessments": "Share Assessments"
+    "share_assessments": "Share Assessments",
+    "add_pet": "Add Pet",
+    "edit_pet": "Edit Pet",
+    "delete_pet": "Delete Pet",
+    "stop_assessments": "Stop Assessments"
 }

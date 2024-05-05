@@ -1,8 +1,10 @@
 {
-    "avatarInputLabel": "Sube una foto de tu mascota",
+    "avatarInputLabel": "Elija una foto de tu mascota",
     "petNameInputLabel": "Ingresa el nombre de tu mascota",
     "enableNotificationsLabel": "Activar notificaciones de recordatorio",
     "reminderTimeLabel": "Hora del recordatorio",
     "petTypeInputLabel": "Tu mascota es un(a)",
-    "selectLanguageLabel": "Selecciona idioma"
+    "selectLanguageLabel": "Selecciona idioma",
+    "app_useful": "¿Te parece útil Ralph? Ayúdanos a llegar a más gente dejándonos una reseña.",
+    "review_app": "Deja tu opinión"
 }

@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-Ralph-RalphTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Ralph-RalphTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		F62546622BE7C3B600B233BD /* Ralph App logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F62546612BE7C3B600B233BD /* Ralph App logo.png */; };
 		F6769D742BB455B800C9508C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6769D732BB455B800C9508C /* StoreKit.framework */; };
 		F6769D762BB459E300C9508C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F6769D752BB459E300C9508C /* PrivacyInfo.xcprivacy */; };
 		F69E8A812BA0C784007E9E91 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */; };
@@ -67,6 +68,7 @@
 		F608CD0F2B8BABD300B901D6 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Brands.ttf; sourceTree = "<group>"; };
 		F608CD102B8BABD300B901D6 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		F60A4EBA2B9C934B0030CE8D /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
+		F62546612BE7C3B600B233BD /* Ralph App logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ralph App logo.png"; sourceTree = "<group>"; };
 		F6769D732BB455B800C9508C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F6769D752BB459E300C9508C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 		13B07FAE1A68108700A75B9A /* Ralph */ = {
 			isa = PBXGroup;
 			children = (
+				F625465F2BE7C38E00B233BD /* Files */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -205,6 +208,22 @@
 			);
 			name = Fonts;
 			path = "../../node_modules/react-native-vector-icons/Fonts";
+			sourceTree = "<group>";
+		};
+		F625465F2BE7C38E00B233BD /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				F62546602BE7C39A00B233BD /* Images */,
+			);
+			name = Files;
+			sourceTree = "<group>";
+		};
+		F62546602BE7C39A00B233BD /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				F62546612BE7C3B600B233BD /* Ralph App logo.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -306,6 +325,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				F62546622BE7C3B600B233BD /* Ralph App logo.png in Resources */,
 				F6769D762BB459E300C9508C /* PrivacyInfo.xcprivacy in Resources */,
 				F69E8A812BA0C784007E9E91 /* Localizable.xcstrings in Resources */,
 			);
@@ -542,7 +562,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 2.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -571,7 +591,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 2.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

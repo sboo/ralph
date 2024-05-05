@@ -3,6 +3,7 @@
     "cancel": "Annuleren",
     "back": "Terug",
     "continue": "Doorgaan",
+    "done": "Klaar",
     "save": "Opslaan",
     "close": "Sluiten",
     "settings": "Instellingen",
@@ -10,5 +11,9 @@
     "dog": "Hond",
     "cat": "Kat",
     "other": "Anders",
-    "share_assessments": "Beoordelingen Delen"
+    "share_assessments": "Beoordelingen Delen",
+    "add_pet": "Huisdier toevoegen",
+    "edit_pet": "Bewerk huisdier",
+    "delete_pet": "Verwijder huisdier",
+    "stop_assessments": "Stop beoordelingen"
 }

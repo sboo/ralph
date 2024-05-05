@@ -3,6 +3,8 @@ import {
   Appbar,
   Button,
   Dialog,
+  Divider,
+  Menu,
   Portal,
   Text,
   useTheme,
@@ -63,6 +65,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   );
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buyCoffeeVisible, setBuyCoffeeVisible] = React.useState(false);
+  const [menuVisible, setMenuVisible] = React.useState(false);
   const [awaitingInAppPurchase, setAwaitingInAppPurchase] =
     React.useState(false);
   const {getProducts} = useIAP();
@@ -107,6 +110,10 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     };
   }, [getProducts]);
 
+  const openMenu = () => setMenuVisible(true);
+
+  const closeMenu = () => setMenuVisible(false);
+
   const handlePurchase = async () => {
     setAwaitingInAppPurchase(true);
     if (Platform.OS === 'ios') {
@@ -134,11 +141,44 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
         />
       ) : null}
       {!back ? (
-        <Appbar.Action
-          icon="cog-outline"
-          color={theme.colors.onPrimary}
-          onPress={() => navigation.navigate('Settings')}
-        />
+        <Menu
+          style={styles.menu}
+          visible={menuVisible}
+          onDismiss={closeMenu}
+          anchorPosition={'bottom'}
+          anchor={
+            <Appbar.Action
+              icon="dots-vertical"
+              color={theme.colors.onPrimary}
+              onPress={openMenu}
+            />
+          }>
+          <Menu.Item
+            onPress={() => {
+              closeMenu();
+              navigation.navigate('EditPet');
+            }}
+            leadingIcon={'pencil-outline'}
+            title={t('buttons:edit_pet')}
+          />
+          <Menu.Item
+            onPress={() => {
+              closeMenu();
+              navigation.navigate('AddPet');
+            }}
+            leadingIcon={'plus-circle-outline'}
+            title={t('buttons:add_pet')}
+          />
+          <Divider />
+          <Menu.Item
+            onPress={() => {
+              closeMenu();
+              navigation.navigate('Settings');
+            }}
+            leadingIcon="cog-outline"
+            title={t('settings')}
+          />
+        </Menu>
       ) : null}
       <Portal>
         <Dialog
@@ -195,6 +235,9 @@ const styles = StyleSheet.create({
   },
   dialogText: {
     textAlign: 'center',
+  },
+  menu: {
+    marginTop: 20,
   },
 });
 

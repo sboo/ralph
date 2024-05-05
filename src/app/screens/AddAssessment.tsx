@@ -1,24 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
+import React, {useState} from 'react';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
-import {useRealm} from '@realm/react';
 import {useTheme} from 'react-native-paper';
-import {Measurement} from '@/app/models/Measurement';
 import {AddAssessmentScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
-import moment from 'moment';
 import {SafeAreaView, StyleSheet} from 'react-native';
+import usePet from '@/features/pets/hooks/usePet';
+import useAssessments from '@/features/assessments/hooks/useAssessments';
 
 const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
   route,
   navigation,
 }) => {
   const [date] = useState(new Date(route.params.timestamp));
-  const [petName, setPetName] = useState('');
 
-  const realm = useRealm();
   const theme = useTheme();
+  const {activePet} = usePet();
+  const {addAssessment} = useAssessments(activePet);
+
+  if (!activePet) {
+    navigation.goBack();
+    return;
+  }
 
   const handleSubmit = (
     hurt: number,
@@ -28,33 +30,17 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
     happiness: number,
     mobility: number,
   ) => {
-    realm.write(() => {
-      const dateString = moment(date).format('YYYY-MM-DD');
-      realm.create(Measurement, {
-        date: dateString,
-        score: hurt + hunger + hydration + hygiene + happiness + mobility,
-        hurt,
-        hunger,
-        hydration,
-        hygiene,
-        happiness,
-        mobility,
-        createdAt: date,
-      });
+    addAssessment({
+      date,
+      hurt,
+      hunger,
+      hydration,
+      hygiene,
+      happiness,
+      mobility,
     });
     navigation.goBack();
   };
-
-  useEffect(() => {
-    const fetchPetName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      }
-    };
-
-    fetchPetName();
-  }, []);
 
   return (
     <SafeAreaView
@@ -72,7 +58,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
         style={styles.gradient}>
         <AssessmentItem
           date={date}
-          petName={petName}
+          petName={activePet.name}
           onCancel={() => navigation.goBack()}
           onSubmit={handleSubmit}
         />

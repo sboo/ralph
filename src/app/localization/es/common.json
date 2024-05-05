@@ -13,5 +13,9 @@
   "support_me": "Apóyame",
   "support_me_text": "Por favor, apoya mis esfuerzos comprándome un café.\n\nEsto no desbloqueará características adicionales, pero me ayudará a mantener la aplicación actualizada y en funcionamiento.",
   "introduction_title": "Evaluaciones Diarias",
-  "introduction_text": "Esta aplicación te ayuda a monitorear el bienestar de tu mascota, ofreciendo evaluaciones diarias y siguiendo tendencias a lo largo del tiempo.\n\nHaz clic en el gráfico en el <redDot /> para comenzar."
+  "introduction_text": "Esta aplicación te ayuda a monitorear el bienestar de tu mascota, ofreciendo evaluaciones diarias y siguiendo tendencias a lo largo del tiempo.\n\nHaz clic en el gráfico en el <redDot /> para comenzar.",
+  "add_pet": "Añadir mascota",
+  "edit_pet": "Editar mascota",
+  "delete_pet": "Eliminar mascota",
+  "delete_pet_text": "¿Estás seguro de que deseas eliminar a {{petName}}?"
 }

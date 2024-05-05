@@ -17,6 +17,8 @@ import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddAssessment from './screens/AddAssessment';
 import EditAssessment from './screens/EditAssessment';
+import AddPet from './screens/AddPet';
+import EditPet from './screens/EditPet';
 import DebugScreen from './screens/DebugScreen';
 import AboutScreen from './screens/AboutScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
@@ -31,7 +33,11 @@ import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {event, EVENT_NAMES} from '@/features/events';
 import type {NavigationState} from '@react-navigation/routers';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Pet} from '@/app/models/Pet';
+import {useQuery, useRealm} from '@realm/react';
+import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
+import usePet from '@/features/pets/hooks/usePet';
+import useNotifications from '@/features/notifications/hooks/useNotifications';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('light-content');
@@ -42,7 +48,6 @@ if (Platform.OS === 'android') {
 
 const App: React.FC = () => {
   const {t} = useTranslation();
-  const [petName, setPetName] = useState('');
   const {
     purchaseHistory,
     currentPurchase,
@@ -50,6 +55,23 @@ const App: React.FC = () => {
     finishTransaction,
     getPurchaseHistory,
   } = useIAP();
+
+  const realm = useRealm();
+  const {
+    getInitialNotification,
+    onForegroundNotification,
+    getPetIdFromNotificationId,
+  } = useNotifications();
+
+  const {activePet, getHeaderColor, enableNotifcationDot} = usePet();
+
+  const petsToFix = useQuery(
+    Pet,
+    collection => {
+      return collection.filtered('name = $0', PET_REQUIRES_MIGRATION);
+    },
+    [],
+  );
 
   const isFreshInstall = useCallback(async () => {
     const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
@@ -73,6 +95,28 @@ const App: React.FC = () => {
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
+  const fixPetData = useCallback(async () => {
+    // Fix pet data for existing installs
+    if (realm.schemaVersion > 0 && petsToFix.length > 0) {
+      console.log('fixPetData');
+      const petData = await getPetData();
+      petsToFix.forEach((pet, idx) => {
+        realm.write(() => {
+          pet.isActive = idx === 0;
+          pet.name = petData.name;
+          pet.species = petData.species;
+          pet.notificationsEnabled = petData.notificationsEnabled;
+          if (petData.avatar) {
+            pet.avatar = petData.avatar;
+          }
+          if (petData.notificationsTime) {
+            pet.notificationsTime = petData.notificationsTime;
+          }
+        });
+      });
+    }
+  }, [petsToFix, realm]);
+
   // Check if fresh install and restore purchases
   useEffect(() => {
     const initApp = async () => {
@@ -82,9 +126,45 @@ const App: React.FC = () => {
       if (isFresh) {
         restorePurchases();
       }
+      fixPetData();
     };
     initApp();
-  }, [isFreshInstall, restorePurchases]);
+  }, [isFreshInstall, restorePurchases, fixPetData]);
+
+  const [handledInitialNotificationId, setHandledInitialNotificationId] =
+    useState<string | undefined>();
+  // Handle notifications
+  useEffect(() => {
+    const consumeInitialNotification = async () => {
+      const initialNotification = await getInitialNotification();
+      if (
+        initialNotification?.notification.id !== handledInitialNotificationId
+      ) {
+        console.log(
+          'initialNotification',
+          initialNotification?.notification.id,
+        );
+        if (initialNotification?.notification.id) {
+          const petId = getPetIdFromNotificationId(
+            initialNotification.notification.id,
+          );
+          if (petId) {
+            enableNotifcationDot(petId);
+          }
+        }
+        setHandledInitialNotificationId(initialNotification?.notification.id);
+      }
+    };
+
+    consumeInitialNotification();
+    onForegroundNotification();
+  }, [
+    getInitialNotification,
+    onForegroundNotification,
+    getPetIdFromNotificationId,
+    enableNotifcationDot,
+    handledInitialNotificationId,
+  ]);
 
   // Log purchase error
   useEffect(() => {
@@ -108,28 +188,6 @@ const App: React.FC = () => {
       });
     }
   }, [currentPurchase, finishTransaction]);
-
-  // Fetch pet name from storage
-  useEffect(() => {
-    const fetchPetName = async () => {
-      const name = await AsyncStorage.getItem(STORAGE_KEYS.PET_NAME);
-      if (name !== null) {
-        setPetName(name);
-      }
-    };
-
-    fetchPetName();
-
-    const onProfileSet = () => {
-      fetchPetName();
-    };
-
-    event.on(EVENT_NAMES.PROFILE_SET, onProfileSet);
-
-    return () => {
-      event.off(EVENT_NAMES.PROFILE_SET, onProfileSet);
-    };
-  }, []);
 
   // Change status bar color based on route
   const onNavigationStateChange = useCallback(
@@ -165,74 +223,92 @@ const App: React.FC = () => {
     colors: darkColors, // Copy it from the color codes scheme and then use it here
   };
 
-  const CombinedDefaultTheme = merge(CustomLightTheme, LightTheme);
-  const CombinedDarkTheme = merge(CustomDarkTheme, DarkTheme);
+  const CombinedDefaultTheme = merge(LightTheme, CustomLightTheme);
+  const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
 
   const colorScheme = useColorScheme();
 
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer onStateChange={onNavigationStateChange}>
-          <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              // eslint-disable-next-line react/no-unstable-nested-components
-              header: props => <CustomNavigationBar {...props} />,
-            }}>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                title: '',
-                headerStyle: {backgroundColor: theme.colors.primary},
-              }}
-            />
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{
-                title: t('settings'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="AddAssessment"
-              component={AddAssessment}
-              options={{
-                title: t('measurements:title', {petName}),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="EditAssessment"
-              component={EditAssessment}
-              options={{
-                title: t('measurements:title', {petName}),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen
-              name="AllAssessments"
-              component={AllAssessmentsScreen}
-              options={{
-                title: t('measurements:allAssessments'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
-              }}
-            />
-            <Stack.Screen name="AboutScreen" component={AboutScreen} />
-            <Stack.Screen name="DebugScreen" component={DebugScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </GestureHandlerRootView>
+    <PaperProvider theme={theme}>
+      <NavigationContainer onStateChange={onNavigationStateChange}>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            // eslint-disable-next-line react/no-unstable-nested-components
+            header: props => <CustomNavigationBar {...props} />,
+          }}>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              title: '',
+              headerStyle: {backgroundColor: getHeaderColor(theme)},
+            }}
+          />
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+              title: t('settings'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="EditPet"
+            component={EditPet}
+            options={{
+              title: t('edit_pet'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="AddPet"
+            component={AddPet}
+            options={{
+              title: t('add_pet'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="AddAssessment"
+            component={AddAssessment}
+            options={{
+              title: t('measurements:title', {
+                petName: activePet?.name,
+              }),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="EditAssessment"
+            component={EditAssessment}
+            options={{
+              title: t('measurements:title', {
+                petName: activePet?.name,
+              }),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen
+            name="AllAssessments"
+            component={AllAssessmentsScreen}
+            options={{
+              title: t('measurements:allAssessments'),
+              headerStyle: {backgroundColor: theme.colors.primaryContainer},
+            }}
+          />
+          <Stack.Screen name="AboutScreen" component={AboutScreen} />
+          <Stack.Screen name="DebugScreen" component={DebugScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
