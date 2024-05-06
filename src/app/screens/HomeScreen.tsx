@@ -171,15 +171,15 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         <FAB.Group
           visible={true}
           open={isFabOpen}
-          icon={isFabOpen ? 'close' : 'plus'}
+          icon={isFabOpen ? 'close' : 'notebook-outline'}
           actions={[
             {
-              icon: 'pencil-plus',
+              icon: 'notebook-plus-outline',
               label: t('measurements:todaysAssessment'),
               onPress: () => addOrEditAssessment(),
             },
             {
-              icon: 'format-list-bulleted',
+              icon: 'calendar-month-outline',
               label: t('measurements:allAssessments'),
               onPress: () => navigation.navigate('AllAssessments'),
             },
