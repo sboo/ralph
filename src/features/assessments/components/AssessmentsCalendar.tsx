@@ -1,5 +1,5 @@
 import usePet from '@/features/pets/hooks/usePet';
-import React from 'react';
+import React, {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Calendar, DateData, LocaleConfig} from 'react-native-calendars';
 import {useTheme} from 'react-native-paper';
@@ -33,22 +33,22 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
     }
   };
 
-  const markedDates: MarkedDates =
-    lastAssessments?.reduce((acc, assessment) => {
-      const date = moment(assessment.createdAt).format('YYYY-MM-DD');
-      acc[date] = {
-        selected: true,
-        selectedColor: getIconColor(assessment.score),
-      };
-      return acc;
-    }, {} as MarkedDates) ?? ({} as MarkedDates);
+  const markedDates: MarkedDates = useMemo(() => {
+    return (
+      lastAssessments?.reduce((acc, assessment) => {
+        const date = moment(assessment.createdAt).format('YYYY-MM-DD');
+        acc[date] = {
+          selected: true,
+          selectedColor: getIconColor(assessment.score),
+        };
+        return acc;
+      }, {} as MarkedDates) ?? ({} as MarkedDates)
+    );
+  }, [lastAssessments]);
 
   return (
     <Calendar
       style={styles.calendar}
-      theme={{
-        arrowColor: theme.colors.primary,
-      }}
       onDayPress={onCalendarDayPress}
       markedDates={markedDates}
       maxDate={moment().format('YYYY-MM-DD')}
