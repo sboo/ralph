@@ -10,6 +10,7 @@ const ExportPdf: React.FC = () => {
 
   return (
     <Button
+      icon={'share-variant'}
       style={styles.button}
       mode={'contained'}
       onPress={() => generateAndSharePDF()}>

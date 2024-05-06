@@ -1,30 +1,24 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {Divider, List, useTheme} from 'react-native-paper';
+import {Divider, useTheme} from 'react-native-paper';
 import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import moment from 'moment';
+import {DateData, MarkedDates} from 'react-native-calendars/src/types';
 
 const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
   navigation,
 }) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const theme = useTheme();
   const {activePet} = usePet();
   const {lastAssessments} = useAssessments(activePet);
-
-  const getIcon = (score: number) => {
-    if (score < 30) {
-      return 'emoticon-sad-outline';
-    } else if (score < 45) {
-      return 'emoticon-neutral-outline';
-    } else {
-      return 'emoticon-happy-outline';
-    }
-  };
+  LocaleConfig.defaultLocale = i18n.resolvedLanguage;
 
   const getIconColor = (score: number) => {
     if (score < 6) {
@@ -39,6 +33,31 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
       return '#4CAF50';
     }
   };
+
+  const addOrEditAssessment = (dateData: DateData) => {
+    const assessment = lastAssessments?.find(
+      m => m.date === dateData.dateString,
+    );
+    if (assessment === undefined) {
+      navigation.navigate('AddAssessment', {
+        timestamp: dateData.timestamp,
+      });
+    } else {
+      navigation.navigate('EditAssessment', {
+        assessmentId: assessment._id.toHexString(),
+      });
+    }
+  };
+
+  const markedDates: MarkedDates =
+    lastAssessments?.reduce((acc, assessment) => {
+      const date = moment(assessment.createdAt).format('YYYY-MM-DD');
+      acc[date] = {
+        selected: true,
+        selectedColor: getIconColor(assessment.score),
+      };
+      return acc;
+    }, {} as MarkedDates) ?? ({} as MarkedDates);
 
   return (
     <SafeAreaView
@@ -55,30 +74,17 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <ScrollView style={styles.scrollview}>
+          <Calendar
+            style={styles.calendar}
+            theme={{
+              arrowColor: theme.colors.primary,
+            }}
+            onDayPress={addOrEditAssessment}
+            markedDates={markedDates}
+            maxDate={moment().format('YYYY-MM-DD')}
+          />
+          <Divider style={styles.divider} bold={true} />
           <ExportPdf />
-          <Divider style={styles.divider} />
-          {lastAssessments?.map((assessment, index) => (
-            <List.Item
-              key={index}
-              title={assessment.createdAt.toLocaleDateString()}
-              description={`${t('measurements:score')}: ${assessment.score}`}
-              // eslint-disable-next-line react/no-unstable-nested-components
-              left={() => (
-                <List.Icon
-                  color={getIconColor(assessment.score)}
-                  icon={getIcon(assessment.score)}
-                />
-              )}
-              // eslint-disable-next-line react/no-unstable-nested-components
-              right={() => <List.Icon color="#afafaf" icon="pencil" />}
-              onPress={() => {
-                navigation.navigate('EditAssessment', {
-                  assessmentId: assessment._id.toHexString(),
-                });
-              }}
-            />
-          ))}
-          <Divider style={styles.divider} />
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>
@@ -103,12 +109,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  assessmentItem: {
-    marginBottom: 15,
+  calendar: {
+    borderRadius: 10,
     padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
+    margin: 10,
   },
   divider: {
     marginVertical: 20,
