@@ -33,8 +33,10 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
           )
         : moment().subtract(7, 'days')
     ).toDate();
+    startDate.setHours(0, 0, 0, 0);
 
     const endDate = new Date();
+    endDate.setHours(23, 59, 59, 999);
     const dateRange = [];
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
