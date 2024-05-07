@@ -52,6 +52,7 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
       onDayPress={onCalendarDayPress}
       markedDates={markedDates}
       maxDate={moment().format('YYYY-MM-DD')}
+      enableSwipeMonths={true}
     />
   );
 };

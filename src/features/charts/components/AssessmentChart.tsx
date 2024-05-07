@@ -23,7 +23,6 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
   const {assessments} = useAssessments(activePet);
 
   const scores = useMemo(() => {
-    console.log('getScores', assessments?.[0]?.petId);
     // Get the date range for the last 7 days or since the first assessment
     const startDate = (
       assessments && assessments.length > 0

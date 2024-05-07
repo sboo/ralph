@@ -98,6 +98,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     addOrEditAssessment(new Date(dateData.dateString));
   };
 
+  const toggleViewMode = () => {
+    setViewMode(viewMode === 'chart' ? 'calendar' : 'chart');
+  };
+
   const width = Dimensions.get('window').width - 40;
   const height = (width / 16) * 7;
 
@@ -171,14 +175,14 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             style={styles.fab}
             icon={'chart-bell-curve-cumulative'}
             mode={'flat'}
-            onPress={() => setViewMode('chart')}
+            onPress={toggleViewMode}
             variant={viewMode === 'chart' ? 'secondary' : 'surface'}
           />
           <FAB
             style={styles.fab}
             icon={'calendar-month-outline'}
             mode={'flat'}
-            onPress={() => setViewMode('calendar')}
+            onPress={toggleViewMode}
             variant={viewMode === 'calendar' ? 'secondary' : 'surface'}
           />
         </View>
