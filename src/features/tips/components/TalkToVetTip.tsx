@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {StyleSheet} from 'react-native';
 import {useTheme, Card, Icon, Text} from 'react-native-paper';
 
-const TaslkToVetTip: React.FC = () => {
+const TalkToVetTip: React.FC = () => {
   const {t} = useTranslation();
   const theme = useTheme();
 
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TaslkToVetTip;
+export default TalkToVetTip;

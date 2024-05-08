@@ -1,7 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Trans, useTranslation} from 'react-i18next';
-import {Dimensions, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {Card, FAB, Icon, Text, useTheme} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
+import {
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {FAB, useTheme} from 'react-native-paper';
 import {HomeScreenNavigationProps} from '@/features/navigation/types.tsx';
 import {SkeletonSimpler} from 'react-native-skeleton-simpler';
 import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
@@ -10,19 +16,22 @@ import moment from 'moment';
 import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
 import AssessmentChart from '@/features/charts/components/AssessmentChart';
 import Tips from '@/features/tips/components/Tips';
-import TaslkToVetTip from '@/features/tips/components/TalkToVetTip';
+import TalkToVetTip from '@/features/tips/components/TalkToVetTip';
+import GetStartedTip from '@/features/tips/components/GetStartedTip';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import {EVENT_NAMES, event} from '@/features/events';
+import {DateData} from 'react-native-calendars';
+import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {t} = useTranslation();
-  const [isFabOpen, setIsFabOpen] = useState(false);
   const [averageScore, setAverageScore] = useState(60);
   const theme = useTheme();
   const {activePet} = usePet();
   const {generateAndSharePDF} = useAssessmentExporter();
   const {assessments, lastAssessments} = useAssessments(activePet);
+  const [viewMode, setViewMode] = useState<'chart' | 'calendar'>('chart');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -71,7 +80,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const addOrEditAssessment = (date?: Date) => {
     if (!date) {
       date = new Date();
-      // date.setDate(date.getDate() - 11);
     }
     const today = moment(date).format('YYYY-MM-DD');
     const assessment = assessments?.find(m => m.date === today);
@@ -86,12 +94,13 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     }
   };
 
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const RedDot = () => (
-    <Text variant={'bodyLarge'} style={{color: theme.colors.error}}>
-      ⬤
-    </Text>
-  );
+  const onCalendarDayPress = (dateData: DateData) => {
+    addOrEditAssessment(new Date(dateData.dateString));
+  };
+
+  const toggleViewMode = () => {
+    setViewMode(viewMode === 'chart' ? 'calendar' : 'chart');
+  };
 
   const width = Dimensions.get('window').width - 40;
   const height = (width / 16) * 7;
@@ -113,73 +122,88 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         <HomeHeader />
         <SkeletonSimpler
           loading={loading}
-          layout={[
-            {
-              width: width,
-              height: 210,
-              margin: 20,
-              borderRadius: 15,
-              marginBottom: 25,
-              backgroundColor: theme.colors.primaryContainer,
-            },
-            {
-              width: width,
-              height: height + 45,
-              margin: 20,
-              borderRadius: 15,
-              backgroundColor: theme.colors.primaryContainer,
-            },
-          ]}>
+          layout={
+            viewMode === 'chart'
+              ? [
+                  {
+                    width: width,
+                    height: 210,
+                    margin: 20,
+                    borderRadius: 15,
+                    marginBottom: 25,
+                    backgroundColor: theme.colors.surface,
+                  },
+                  {
+                    width: width,
+                    height: height + 45,
+                    margin: 20,
+                    borderRadius: 15,
+                    backgroundColor: theme.colors.surface,
+                  },
+                ]
+              : [
+                  {
+                    width: width,
+                    height: 335,
+                    margin: 20,
+                    borderRadius: 15,
+                    backgroundColor: theme.colors.surface,
+                  },
+                ]
+          }>
           <ScrollView style={styles.bodyContainer}>
-            <AssessmentChart onDataPointClick={addOrEditAssessment} />
-            {assessments && assessments.length > 0 ? (
-              averageScore < 30 ? (
-                <TaslkToVetTip />
-              ) : (
-                <Tips assessment={lastAssessment!} />
-              )
+            {viewMode === 'calendar' ? (
+              <AssessmentsCalendar onCalendarDayPress={onCalendarDayPress} />
             ) : (
-              <Card
-                mode="contained"
-                style={{
-                  backgroundColor: theme.colors.primaryContainer,
-                  ...styles.introduction,
-                }}>
-                <Card.Title
-                  title={t('introduction_title')}
-                  // eslint-disable-next-line react/no-unstable-nested-components
-                  left={props => (
-                    <Icon
-                      {...props}
-                      source="calendar-month-outline"
-                      color={theme.colors.onPrimaryContainer}
-                    />
-                  )}
-                />
-                <Card.Content>
-                  <Text variant="bodyMedium">
-                    <Trans
-                      i18nKey={'introduction_text'}
-                      components={{redDot: <RedDot />}}
-                    />
-                  </Text>
-                </Card.Content>
-              </Card>
+              <>
+                <AssessmentChart onDataPointClick={addOrEditAssessment} />
+                {assessments && assessments.length > 0 ? (
+                  averageScore < 30 ? (
+                    <TalkToVetTip />
+                  ) : (
+                    <Tips assessment={lastAssessment!} />
+                  )
+                ) : (
+                  <GetStartedTip />
+                )}
+              </>
             )}
           </ScrollView>
         </SkeletonSimpler>
-        <FAB.Group
+        <View style={styles.fabHolder}>
+          <FAB
+            style={styles.fab}
+            icon={'chart-bell-curve-cumulative'}
+            mode={'flat'}
+            onPress={toggleViewMode}
+            variant={viewMode === 'chart' ? 'secondary' : 'surface'}
+          />
+          <FAB
+            style={styles.fab}
+            icon={'calendar-month-outline'}
+            mode={'flat'}
+            onPress={toggleViewMode}
+            variant={viewMode === 'calendar' ? 'secondary' : 'surface'}
+          />
+        </View>
+        <FAB
+          style={styles.shareFab}
+          icon={'share-variant'}
+          mode={'flat'}
+          onPress={generateAndSharePDF}
+        />
+        {/* <FAB.Group
           visible={true}
           open={isFabOpen}
-          icon={isFabOpen ? 'close' : 'plus'}
+          icon={isFabOpen ? 'close' : 'notebook-outline'}
           actions={[
             {
-              icon: 'pencil-plus',
+              icon: 'notebook-plus-outline',
               label: t('measurements:todaysAssessment'),
               onPress: () => addOrEditAssessment(),
             },
             {
-              icon: 'format-list-bulleted',
+              icon: 'calendar-month-outline',
               label: t('measurements:allAssessments'),
               onPress: () => navigation.navigate('AllAssessments'),
             },
@@ -197,7 +221,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             // },
           ]}
           onStateChange={({open}) => setIsFabOpen(open)}
-        />
+        /> */}
       </LinearGradient>
     </SafeAreaView>
   );
@@ -246,6 +270,23 @@ const styles = StyleSheet.create({
     marginTop: 45,
     borderRadius: 15,
     marginBottom: 100,
+  },
+  fabHolder: {
+    position: 'absolute',
+    margin: 16,
+    left: 0,
+    bottom: 0,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  fab: {
+    margin: 8,
+  },
+  shareFab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });
 

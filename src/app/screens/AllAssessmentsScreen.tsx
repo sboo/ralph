@@ -1,42 +1,33 @@
 import React from 'react';
-import {useTranslation} from 'react-i18next';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {Divider, List, useTheme} from 'react-native-paper';
+import {Divider, useTheme} from 'react-native-paper';
 import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
+import {DateData} from 'react-native-calendars/src/types';
+import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
 
 const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
   navigation,
 }) => {
-  const {t} = useTranslation();
   const theme = useTheme();
   const {activePet} = usePet();
   const {lastAssessments} = useAssessments(activePet);
 
-  const getIcon = (score: number) => {
-    if (score < 30) {
-      return 'emoticon-sad-outline';
-    } else if (score < 45) {
-      return 'emoticon-neutral-outline';
+  const addOrEditAssessment = (dateData: DateData) => {
+    const assessment = lastAssessments?.find(
+      m => m.date === dateData.dateString,
+    );
+    if (assessment === undefined) {
+      navigation.navigate('AddAssessment', {
+        timestamp: dateData.timestamp,
+      });
     } else {
-      return 'emoticon-happy-outline';
-    }
-  };
-
-  const getIconColor = (score: number) => {
-    if (score < 6) {
-      return '#F44336';
-    } else if (score < 15) {
-      return '#F49503';
-    } else if (score < 30) {
-      return '#F0E106';
-    } else if (score < 45) {
-      return '#74D400';
-    } else {
-      return '#4CAF50';
+      navigation.navigate('EditAssessment', {
+        assessmentId: assessment._id.toHexString(),
+      });
     }
   };
 
@@ -55,30 +46,9 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <ScrollView style={styles.scrollview}>
+          <AssessmentsCalendar onCalendarDayPress={addOrEditAssessment} />
+          <Divider style={styles.divider} bold={true} />
           <ExportPdf />
-          <Divider style={styles.divider} />
-          {lastAssessments?.map((assessment, index) => (
-            <List.Item
-              key={index}
-              title={assessment.createdAt.toLocaleDateString()}
-              description={`${t('measurements:score')}: ${assessment.score}`}
-              // eslint-disable-next-line react/no-unstable-nested-components
-              left={() => (
-                <List.Icon
-                  color={getIconColor(assessment.score)}
-                  icon={getIcon(assessment.score)}
-                />
-              )}
-              // eslint-disable-next-line react/no-unstable-nested-components
-              right={() => <List.Icon color="#afafaf" icon="pencil" />}
-              onPress={() => {
-                navigation.navigate('EditAssessment', {
-                  assessmentId: assessment._id.toHexString(),
-                });
-              }}
-            />
-          ))}
-          <Divider style={styles.divider} />
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>
@@ -103,12 +73,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  assessmentItem: {
-    marginBottom: 15,
+  calendar: {
+    borderRadius: 10,
     padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
+    margin: 10,
   },
   divider: {
     marginVertical: 20,
