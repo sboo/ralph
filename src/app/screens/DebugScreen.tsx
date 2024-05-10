@@ -1,6 +1,6 @@
 import {event, EVENT_NAMES} from '@/features/events';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, Button, Alert} from 'react-native';
 import {requestPurchase, useIAP} from 'react-native-iap';
 import {Divider} from 'react-native-paper';
@@ -8,6 +8,8 @@ import {STORAGE_KEYS} from '../store/storageKeys';
 import {useQuery} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
 import usePet from '@/features/pets/hooks/usePet';
+import useTips, {Tip} from '@/features/tips/hooks/useTips';
+import Tips from '@/features/tips/components/Tips';
 
 const DebugScreen: React.FC = () => {
   const {
@@ -100,6 +102,10 @@ const DebugScreen: React.FC = () => {
       <Text>Name: {activePet?.name}</Text>
       <Text>Species: {activePet?.species}</Text>
       <Text>isActive: {activePet?.isActive ? 'yes' : 'no'}</Text>
+      <Divider />
+      <View style={{padding: 20}}>
+        {activePet ? <Tips activePet={activePet} /> : null}
+      </View>
     </>
   );
 };

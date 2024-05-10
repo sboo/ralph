@@ -587,8 +587,29 @@ const useTips = () => {
     [t],
   );
 
+  const getAllTips = useCallback(
+    (petSpecies: string) => {
+      if (petSpecies === 'other') {
+        return [];
+      }
+      const tips = getTips(petSpecies);
+      let allTips: Tip[] = [];
+      allTips = allTips.concat(
+        tips.hurt,
+        tips.hunger,
+        tips.hydration,
+        tips.hygiene,
+        tips.happiness,
+        tips.mobility,
+        tips.encouragement,
+      );
+      return allTips;
+    },
+    [getTips],
+  );
+
   const getTipsForAssessment = useCallback(
-    (petSpecies: string = 'other', assessment: Measurement) => {
+    (petSpecies: string, assessment: Measurement) => {
       if (petSpecies === 'other') {
         return [];
       }
@@ -634,7 +655,7 @@ const useTips = () => {
     [getTips],
   );
 
-  return {getTipsForAssessment};
+  return {getTipsForAssessment, getAllTips};
 };
 
 export default useTips;

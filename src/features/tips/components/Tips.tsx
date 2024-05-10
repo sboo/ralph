@@ -6,23 +6,28 @@ import useTips, {Tip, TipCategory} from '../hooks/useTips';
 import {getTipBackgroundColor} from '@/support/helpers/ColorHelper';
 import {useTranslation} from 'react-i18next';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
-import usePet from '@/features/pets/hooks/usePet';
+import {Pet} from '@/app/models/Pet';
 
 interface TipsProps {
-  assessment: Measurement;
+  activePet: Pet;
+  assessment?: Measurement;
+  numberOfTips?: number | undefined;
 }
 
-const Tips: React.FC<TipsProps> = ({assessment}) => {
+const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
   const [currentTips, setCurrentTips] = useState<Tip[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [tips, setTips] = useState<Tip[]>([]);
-  const {getTipsForAssessment} = useTips();
-  const {activePet} = usePet();
+  const {getTipsForAssessment, getAllTips} = useTips();
   const {t} = useTranslation();
 
   useEffect(() => {
-    setTips(getTipsForAssessment(activePet?.species, assessment));
-  }, [activePet, assessment, getTipsForAssessment]);
+    if (assessment) {
+      setTips(getTipsForAssessment(activePet?.species, assessment));
+    } else {
+      setTips(getAllTips(activePet.species));
+    }
+  }, [activePet, assessment, getTipsForAssessment, getAllTips]);
 
   const getIcon = useCallback((category?: TipCategory) => {
     switch (category) {
@@ -46,10 +51,9 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
     }
   }, []);
 
-  const numberOfTips = 4;
   const getRandomTip = useCallback(() => {
     const randomNumbers: number[] = [];
-    while (randomNumbers.length < numberOfTips) {
+    while (randomNumbers.length < (numberOfTips ?? tips.length)) {
       const randomNumber = Math.floor(Math.random() * tips.length);
       if (!randomNumbers.includes(randomNumber)) {
         randomNumbers.push(randomNumber);

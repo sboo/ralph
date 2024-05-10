@@ -32,7 +32,9 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const {generateAndSharePDF} = useAssessmentExporter();
   const {assessments, lastAssessments} = useAssessments(activePet);
   const [viewMode, setViewMode] = useState<'chart' | 'calendar'>('chart');
+  const [isFabOpen, setIsFabOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const debug = false;
 
   useEffect(() => {
     const petIsSwitching = () => {
@@ -157,11 +159,15 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             ) : (
               <>
                 <AssessmentChart onDataPointClick={addOrEditAssessment} />
-                {assessments && assessments.length > 0 ? (
+                {activePet && assessments && assessments.length > 0 ? (
                   averageScore < 30 ? (
                     <TalkToVetTip />
                   ) : (
-                    <Tips assessment={lastAssessment!} />
+                    <Tips
+                      assessment={lastAssessment!}
+                      activePet={activePet}
+                      numberOfTips={4}
+                    />
                   )
                 ) : (
                   <GetStartedTip />
@@ -186,42 +192,35 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             variant={viewMode === 'calendar' ? 'secondary' : 'surface'}
           />
         </View>
-        <FAB
-          style={styles.shareFab}
-          icon={'share-variant'}
-          mode={'flat'}
-          onPress={generateAndSharePDF}
-        />
-        {/* <FAB.Group
-          visible={true}
-          open={isFabOpen}
-          icon={isFabOpen ? 'close' : 'notebook-outline'}
-          actions={[
-            {
-              icon: 'notebook-plus-outline',
-              label: t('measurements:todaysAssessment'),
-              onPress: () => addOrEditAssessment(),
-            },
-            {
-              icon: 'calendar-month-outline',
-              label: t('measurements:allAssessments'),
-              onPress: () => navigation.navigate('AllAssessments'),
-            },
-            {
-              icon: 'share-variant',
-              label: t('buttons:share_assessments'),
-              onPress: () => {
-                generateAndSharePDF();
+        {debug ? (
+          <FAB.Group
+            visible={true}
+            open={isFabOpen}
+            icon={isFabOpen ? 'close' : 'bug-outline'}
+            actions={[
+              {
+                icon: 'share-variant',
+                label: t('buttons:share_assessments'),
+                onPress: () => {
+                  generateAndSharePDF();
+                },
               },
-            },
-            // {
-            //   icon: 'bug-outline',
-            //   label: 'Debug',
-            //   onPress: () => navigation.navigate('DebugScreen'),
-            // },
-          ]}
-          onStateChange={({open}) => setIsFabOpen(open)}
-        /> */}
+              {
+                icon: 'bug-outline',
+                label: 'Debug',
+                onPress: () => navigation.navigate('DebugScreen'),
+              },
+            ]}
+            onStateChange={({open}) => setIsFabOpen(open)}
+          />
+        ) : (
+          <FAB
+            style={styles.shareFab}
+            icon={'share-variant'}
+            mode={'flat'}
+            onPress={generateAndSharePDF}
+          />
+        )}
       </LinearGradient>
     </SafeAreaView>
   );
