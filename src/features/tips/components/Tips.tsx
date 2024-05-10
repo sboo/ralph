@@ -6,6 +6,7 @@ import useTips, {Tip, TipCategory} from '../hooks/useTips';
 import {getTipBackgroundColor} from '@/support/helpers/ColorHelper';
 import {useTranslation} from 'react-i18next';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import usePet from '@/features/pets/hooks/usePet';
 
 interface TipsProps {
   assessment: Measurement;
@@ -16,11 +17,12 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [tips, setTips] = useState<Tip[]>([]);
   const {getTipsForAssessment} = useTips();
+  const {activePet} = usePet();
   const {t} = useTranslation();
 
   useEffect(() => {
-    setTips(getTipsForAssessment(assessment));
-  }, [assessment, getTipsForAssessment]);
+    setTips(getTipsForAssessment(activePet?.species, assessment));
+  }, [activePet, assessment, getTipsForAssessment]);
 
   const getIcon = useCallback((category?: TipCategory) => {
     switch (category) {
@@ -80,6 +82,10 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
       </View>
     </View>
   );
+
+  if (tips.length === 0) {
+    return null;
+  }
 
   return (
     <Card

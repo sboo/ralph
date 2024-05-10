@@ -1,0 +1,194 @@
+{
+    "tips": {
+        "hurt": [
+        ],
+        "hunger": [
+        ],
+        "hydration": [
+        ],
+        "hygiene": [
+        ],
+        "happiness": [
+        ],
+        "mobility": [
+        ],
+        "encouragement": [
+        ]
+    },
+    "assessments": {
+        "hurt": "Pain",
+        "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
+        "hurtOptions": [
+            {
+                "value": 0,
+                "title": "Severe Pain",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Moderate Pain",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Mild Pain",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Occasional Discomfort",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Pain-Free",
+                "description": ""
+            }
+        ],
+        "hunger": "Eating",
+        "hungerInfo": "Is {{petName}} eating enough?",
+        "hungerOptions": [
+            {
+                "value": 0,
+                "title": "Refuses to Eat",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Struggles to Eat",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Eats with Encouragement",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Eats with Minor Issues",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Eats Normally",
+                "description": ""
+            }
+        ],
+        "hydration": "Drinking",
+        "hydrationInfo": "Is {{petName}} drinking enough?",
+        "hydrationOptions": [
+            {
+                "value": 0,
+                "title": "Refuses to Drink",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Needs Assistance to Drink",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Drinks a Little",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Drinks with Encouragement",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Hydrated and Healthy",
+                "description": ""
+            }
+        ],
+        "hygiene": "Cleanliness",
+        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
+        "hygieneOptions": [
+            {
+                "value": 0,
+                "title": "Severely Unkempt",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Needs Frequent Help",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Occasionally Messy",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Generally Clean",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Always Clean",
+                "description": ""
+            }
+        ],
+        "happiness": "Joy",
+        "happinessInfo": "Does {{petName}} express joy and interest?",
+        "happinessOptions": [
+            {
+                "value": 0,
+                "title": "Severely Depressed",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Often Uninterested",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Mildly Interested",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Generally Happy",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Fully Joyful",
+                "description": ""
+            }
+        ],
+        "mobility": "Mobility",
+        "mobilityInfo": "Can {{petName}} move without assistance?",
+        "mobilityOptions": [
+            {
+                "value": 0,
+                "title": "Immobile",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Severely Limited",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Moderately Limited",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Slightly Limited",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Fully Mobile",
+                "description": ""
+            }
+        ]
+    }
+}

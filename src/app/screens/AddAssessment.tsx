@@ -59,6 +59,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
         <AssessmentItem
           date={date}
           petName={activePet.name}
+          petSpecies={activePet.species}
           onCancel={() => navigation.goBack()}
           onSubmit={handleSubmit}
         />
