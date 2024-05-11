@@ -1,6 +1,398 @@
 {
     "tips": {
+        "hurt": [
+            {
+                "title": "Create a Quiet, Safe Haven",
+                "text": "Provide a soft, warm, and secluded area where your cat can rest undisturbed, away from noise and high traffic areas."
+            },
+            {
+                "title": "Consult on Pain Management",
+                "text": "Discuss with your veterinarian the use of pain medications or supplements suitable for cats, considering any renal or hepatic sensitivities."
+            },
+            {
+                "title": "Gentle Handling",
+                "text": "Handle your cat gently, avoiding pressure on sensitive areas to minimize discomfort."
+            },
+            {
+                "title": "Thermal Comfort",
+                "text": "Use warm compresses or a heated blanket approved for pets to provide comfort, particularly for arthritic joints, but always monitor the temperature to avoid burns."
+            },
+            {
+                "title": "Restrict High-Impact Activities",
+                "text": "Reduce jumping or climbing activities by providing steps or ramps to their favorite spots to prevent strain."
+            }
+        ],
+        "hunger": [
+            {
+                "title": "Warm the Food",
+                "text": "Gently warming food can increase its aroma and palatability for cats. Always check the temperature to ensure it's just warm, not hot."
+            },
+            {
+                "title": "Small, Frequent Meals",
+                "text": "Offer smaller portions more frequently, which can be easier on your cat’s digestion and more appealing."
+            },
+            {
+                "title": "Variety is Key",
+                "text": "Introduce a variety of textures and flavors, including pâté-style wet food, which may be easier for cats with dental issues or reduced appetite to consume."
+            },
+            {
+                "title": "Tranquil Eating Environment",
+                "text": "Ensure the feeding area is calm and away from loud noises to help your cat relax during meals."
+            },
+            {
+                "title": "Encourage Hydration",
+                "text": "Place water bowls in various comfortable and quiet locations. Consider a cat water fountain to attract your cat to drink more, as the movement of water can be enticing."
+            },
+            {
+                "title": "Use a Flat Dish for Easier Food Access",
+                "text": "Some cat find bowls intimidating or uncomfortable to eat from. A flat dish can make food more accessible and inviting."
+            },
+            {
+                "title": "Offer Food in Small Amounts at Regular Intervals",
+                "text": "Consistent, small portions can help manage your cat's intake without overwhelming them, making meals more manageable."
+            },
+            {
+                "title": "Ensure Easy Access to Fresh Water at All Times",
+                "text": "Dehydration can affect appetite. Making sure your cat has constant access to water is essential for their overall health and can improve eating habits."
+            }
+        ],
+        "hydration": [
+            {
+                "title": "Maintain Fresh Water",
+                "text": "Change water frequently and use wide, shallow bowls to make it easier for your cat to drink without whisker fatigue."
+            },
+            {
+                "title": "Flavor the Water",
+                "text": "Adding a small amount of flavor, such as chicken or tuna water (always ensure it's free from salt and additives), can entice your cat to drink more."
+            },
+            {
+                "title": "Incorporate Wet Food",
+                "text": "Increase your cat’s moisture intake by incorporating a higher proportion of wet food into their diet."
+            },
+            {
+                "title": "Ice Cubes as Treats",
+                "text": "Offer ice cubes with a hint of flavor or small frozen treats if your cat shows interest, as some cats enjoy playing with or licking ice."
+            },
+            {
+                "title": "Watch for Signs of Dehydration",
+                "text": "Be vigilant for symptoms like dry gums or reduced elasticity in the skin, and consult your veterinarian if these signs appear."
+            }
+        ],
+        "hygiene": [
+            {
+                "title": "Regular Brushing",
+                "text": "Maintain your cat's coat by gentle brushing to reduce matting and remove dirt, especially for long-haired breeds."
+            },
+            {
+                "title": "Use of Grooming Wipes",
+                "text": "Employ cat-friendly grooming wipes to clean your cat, particularly if they are less able to groom themselves."
+            },
+            {
+                "title": "Oral Hygiene Maintenance",
+                "text": "Regular dental care is crucial. Use feline toothbrushes and toothpaste to maintain oral health and prevent diseases that can affect overall well-being."
+            },
+            {
+                "title": "Assistance with Grooming",
+                "text": "Help your cat with cleaning after using the litter box if they are unable to do so themselves to prevent irritation or infection."
+            },
+            {
+                "title": "Clean and Dry Bedding",
+                "text": "Ensure that bedding is frequently changed to keep the sleeping area clean and dry, reducing the risk of skin infections."
+            }
+        ],
+        "happiness": [
+            {
+                "title": "Recognize Preferred Stimuli",
+                "text": "Observe and reintroduce specific toys or activities that have previously engaged your cat, adjusting for any physical limitations they might now have."
+            },
+            {
+                "title": "Increase Companion Time",
+                "text": "Spend quiet, quality time with your cat, providing gentle petting or simply sitting together, to enhance their emotional well-being."
+            },
+            {
+                "title": "Introduce New Gentle Activities",
+                "text": "Offer new forms of mental stimulation such as puzzle feeders or window perches to help keep their environment engaging."
+            },
+            {
+                "title": "Encourage Gentle Socialization",
+                "text": "Allow your cat to interact with other familiar pets if they show interest, but ensure these interactions are controlled and stress-free."
+            },
+            {
+                "title": "Comforting Items",
+                "text": "Provide familiar and comforting items like their favorite blanket or a piece of your clothing to help them feel secure."
+            },
+            {
+                "title": "Soothing Sounds",
+                "text": "Play soft, calming music or utilize white noise to help soothe your cat, which can be particularly beneficial for those sensitive to loud or unfamiliar sounds."
+            },
+            {
+                "title": "Consult a Vet",
+                "text": "If your cat’s mood does not improve, consult a veterinarian to rule out underlying health issues that might be affecting their mood or comfort."
+            }
+        ],
+        "mobility": [
+            {
+                "title": "Encourage Light Activity",
+                "text": "Promote gentle movement through light play with soft toys to maintain muscle tone and joint health without excessive strain."
+            },
+            {
+                "title": "Orthopedic Support",
+                "text": "Provide an orthopedic or heated cat bed to support joints and offer comfort, which can be especially helpful for cats with arthritis."
+            },
+            {
+                "title": "Therapeutic Massage",
+                "text": "Gently massage your cat’s limbs to enhance circulation and reduce discomfort, particularly before and after periods of rest."
+            },
+            {
+                "title": "Safe Play Options",
+                "text": "Introduce low-impact toys that encourage activity without requiring vigorous movement, such as toys that can be batted or small automated toys."
+            },
+            {
+                "title": "Professional Physical Therapy",
+                "text": "Consider consulting with a veterinary physical therapist who can tailor exercises to your cat’s specific needs to enhance mobility."
+            },
+            {
+                "title": "Adapt Home Environment",
+                "text": "Make your home more accessible for your cat by adding steps to furniture or a ramp to their favorite window sill."
+            },
+            {
+                "title": "Optimal Weight Management",
+                "text": "Monitor your cat’s diet closely to maintain a healthy weight, thereby reducing stress on their joints and facilitating easier movement."
+            },
+            {
+                "title": "Mobility Aids Consideration",
+                "text": "For cats with significant mobility challenges, discuss with your veterinarian the possibility of mobility aids like supportive slings or wheelchairs for cats."
+            }
+        ],
+        "encouragement": [
+            {
+                "title": "Scent Enrichment Activities",
+                "text": "Introduce natural scents that can intrigue and comfort your cat without overwhelming them. E.g. dried catnip, valerian root, or a blanket with your scent."
+            },
+            {
+                "title": "Introduce New Toys",
+                "text": "Offer new, stimulating toys that cater to a cat’s hunting instincts or provide gentle interaction."
+            },
+            {
+                "title": "Extended Cuddle Time",
+                "text": "Spend extra time cuddling your cat on good days, using soft blankets or your lap as a cozy spot."
+            },
+            {
+                "title": "Sunbathing Areas",
+                "text": "Set up a comfortable, warm spot near a window where your cat can bask in the sunlight. Ensure that the area is safe and easily accessible."
+            },
+            {
+                "title": "Document Joyful Days",
+                "text": "Maintain a journal dedicated to the joyful days spent with your cat, noting details that brought you both happiness."
+            },
+            {
+                "title": "Organize a Mini Photo Shoot",
+                "text": "Set up a calm photo session at home with minimal props to capture your cat’s natural demeanor."
+            },
+            {
+                "title": "Interactive Food Puzzles",
+                "text": "Use simple food puzzles that do not require much effort to solve. These can be as straightforward as hiding small amounts of food in easy-to-reach places."
+            },
+            {
+                "title": "Gentle Grooming Sessions",
+                "text": "Regular, gentle grooming sessions can help maintain your cat’s coat and skin health while providing a soothing interaction between you and your pet."
+            },
+            {
+                "title": "Storytime",
+                "text": "Read aloud to your cat from a comfortable spot, letting them relax to the sound of your voice."
+            },
+            {
+                "title": "Happy Moments Box",
+                "text": "Start a collection box of mementos from special days, like feathers from toys or snippets from your cat’s favorite blanket."
+            },
+            {
+                "title": "Special Treat Preparation",
+                "text": "Prepare a cat-safe treat on particularly good days, something delicious and healthy."
+            },
+            {
+                "title": "Comfort Zones",
+                "text": "Create multiple small comfort zones around your home with favorite blankets, pillows, or even a heated pet bed."
+            },
+            {
+                "title": "Have a Relaxing Spa Day",
+                "text": "Offer a gentle grooming session, including brushing and maybe a soothing wipe-down."
+            }
+        ]
     },
     "assessments": {
+        "hurt": "Pain",
+        "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
+        "hurtOptions": [
+            {
+                "value": 0,
+                "title": "Severe Pain",
+                "description": "{{petName}} shows clear signs of pain, such as hissing or growling when touched, reluctance to move, and inability to find a comfortable resting position."
+            },
+            {
+                "value": 2.5,
+                "title": "Moderate Pain",
+                "description": "Visible discomfort during movements or when being petted in certain areas, may have reduced grooming."
+            },
+            {
+                "value": 5,
+                "title": "Mild Pain",
+                "description": "{{petName}} seems slightly uncomfortable, may avoid jumping or high activity, but can still use the litter box and rest without significant issues."
+            },
+            {
+                "value": 7.5,
+                "title": "Occasional Discomfort",
+                "description": "Rare signs of discomfort, such as hesitance jumping onto high surfaces or mild stiffness after rest."
+            },
+            {
+                "value": 10,
+                "title": "Pain-Free",
+                "description": "{{petName}} is agile and shows no signs of discomfort. Able to jump and climb as usual."
+            }
+        ],
+        "hunger": "Eating",
+        "hungerInfo": "Is {{petName}} eating enough?",
+        "hungerOptions": [
+            {
+                "value": 0,
+                "title": "Refuses to Eat",
+                "description": "{{petName}} won't eat anything, ncluding favorite treats and especially dry food, showing a complete loss of appetite."
+            },
+            {
+                "value": 2.5,
+                "title": "Struggles to Eat",
+                "description": "Shows interest in food but struggles to eat without assistance; may only lick juice or gravy."
+            },
+            {
+                "value": 5,
+                "title": "Eats with Encouragement",
+                "description": "Requires encouragement or prefers highly palatable food, may eat slower than usual."
+            },
+            {
+                "value": 7.5,
+                "title": "Eats with Minor Issues",
+                "description": "Eats slightly less than usual or shows a preference for softer foods."
+            },
+            {
+                "value": 10,
+                "title": "Eats Normally",
+                "description": "{{petName}} egular meals without hesitation, including dry and wet food."
+            }
+        ],
+        "hydration": "Drinking",
+        "hydrationInfo": "Is {{petName}} drinking enough?",
+        "hydrationOptions": [
+            {
+                "value": 0,
+                "title": "Refuses to Drink",
+                "description": "Won't drink any water, showing possible dehydration signs like lethargy, dry gums."
+            },
+            {
+                "value": 2.5,
+                "title": "Needs Assistance to Drink",
+                "description": "Shows interest in water but may need encouragement like being brought to the water or gentle stroking while drinking."
+            },
+            {
+                "value": 5,
+                "title": "Drinks a Little",
+                "description": "Drinks less than usual, may need water to be placed near resting areas or prefers certain types of bowls or locations."
+            },
+            {
+                "value": 7.5,
+                "title": "Drinks with Encouragement",
+                "description": "Prefers running water or may only drink when fresh water is provided, might be more enticed by water with a bit of flavor."
+            },
+            {
+                "value": 10,
+                "title": "Hydrated and Healthy",
+                "description": "Regularly drinks water from bowls or fountains, showing no signs of dehydration."
+            }
+        ],
+        "hygiene": "Cleanliness",
+        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
+        "hygieneOptions": [
+            {
+                "value": 0,
+                "title": "Severely Unkempt",
+                "description": "{{petName}} regularly soils themselves, does not use litter box properly, fur may become matted and dirty, indicating severe decline."
+            },
+            {
+                "value": 2.5,
+                "title": "Needs Frequent Help",
+                "description": "{{petName}} needs help grooming hard-to-reach areas, may begin to neglect fur cleaning, increased risk of dermatitis or matting."
+            },
+            {
+                "value": 5,
+                "title": "Occasionally Messy",
+                "description": "Requires occasional help with grooming, especially if arthritic or weak, may have minor accidents."
+            },
+            {
+                "value": 7.5,
+                "title": "Generally Clean",
+                "description": "{{petName}} mostly self-grooms but might not reach all areas, might avoid the litter box if not clean but generally manages well."
+            },
+            {
+                "value": 10,
+                "title": "Always Clean",
+                "description": "{{petName}} maintains good grooming habits, fur remains clean and sleek, uses litter box effectively."
+            }
+        ],
+        "happiness": "Joy",
+        "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
+        "happinessOptions": [
+            {
+                "value": 0,
+                "title": "Severely Depressed",
+                "description": "Disinterested in all forms of interaction, shows no response to toys or family, may hide or sleep excessively."
+            },
+            {
+                "value": 2.5,
+                "title": "Often Uninterested",
+                "description": "Infrequently interacts or plays, shows little interest in surroundings, may withdraw from family activities."
+            },
+            {
+                "value": 5,
+                "title": "Mildly Interested",
+                "description": "Occasionally engages in play or seeks attention, prefers quieter activities, may spend more time resting."
+            },
+            {
+                "value": 7.5,
+                "title": "Generally Happy",
+                "description": "Still engages with family and may play with toys, but may be less active or show mild signs of withdrawal."
+            },
+            {
+                "value": 10,
+                "title": "Fully Joyful",
+                "description": "{{petName}} shows usual curiosity and playfulness, actively seeks out family for interaction and plays with favorite toys."
+            }
+        ],
+        "mobility": "Mobility",
+        "mobilityInfo": "Can {{petName}} get up without assistance? Can {{petName}} access their favorite spots?",
+        "mobilityOptions": [
+            {
+                "value": 0,
+                "title": "Immobile",
+                "description": "{{petName}} requires assistance for all movement, may be unable to reach litter box or food without help."
+            },
+            {
+                "value": 2.5,
+                "title": "Severely Limited",
+                "description": "Limited movement, may need assistance to reach litter box or feeding areas, avoids previous activities."
+            },
+            {
+                "value": 5,
+                "title": "Moderately Limited",
+                "description": "{{petName}} shows some difficulty with movement, may avoid stairs or no longer jump, moves slower."
+            },
+            {
+                "value": 7.5,
+                "title": "Slightly Limited",
+                "description": "{{petName}} is mostly independent but may hesitate at higher jumps or need a little help climbing onto favored perches."
+            },
+            {
+                "value": 10,
+                "title": "Fully Mobile",
+                "description": "{{petName}} moves with ease throughout the house, jumps and climbs without hesitation."
+            }
+        ]
     }
 }
