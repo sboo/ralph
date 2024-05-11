@@ -2,396 +2,396 @@
     "tips": {
         "hurt": [
             {
-                "title": "Create a Quiet, Safe Haven",
-                "text": "Provide a soft, warm, and secluded area where your cat can rest undisturbed, away from noise and high traffic areas."
+                "title": "Creëer een rustige, veilige haven",
+                "text": "Bied een zachte, warme en afgezonderde plek waar je kat ongestoord kan rusten, weg van lawaai en drukte."
             },
             {
-                "title": "Consult on Pain Management",
-                "text": "Discuss with your veterinarian the use of pain medications or supplements suitable for cats, considering any renal or hepatic sensitivities."
+                "title": "Overleg over pijnbeheersing",
+                "text": "Bespreek met je dierenarts het gebruik van pijnstillers of supplementen die geschikt zijn voor katten, rekening houdend met eventuele nier- of levergevoeligheden."
             },
             {
-                "title": "Gentle Handling",
-                "text": "Handle your cat gently, avoiding pressure on sensitive areas to minimize discomfort."
+                "title": "Zachte behandeling",
+                "text": "Behandel je kat voorzichtig, vermijd druk op gevoelige plekken om ongemak te minimaliseren."
             },
             {
-                "title": "Thermal Comfort",
-                "text": "Use warm compresses or a heated blanket approved for pets to provide comfort, particularly for arthritic joints, but always monitor the temperature to avoid burns."
+                "title": "Warme Kompres",
+                "text": "Gebruik warme kompressen of een verwarmde deken goedgekeurd voor huisdieren om comfort te bieden, vooral voor artritische gewrichten, maar controleer altijd de temperatuur om brandwonden te voorkomen."
             },
             {
-                "title": "Restrict High-Impact Activities",
-                "text": "Reduce jumping or climbing activities by providing steps or ramps to their favorite spots to prevent strain."
+                "title": "Beperk intensieve activiteiten",
+                "text": "Beperk spring- of klimactiviteiten door te zorgen voor treden of hellingen naar hun favoriete plekjes om overbelasting te voorkomen."
             }
         ],
         "hunger": [
             {
-                "title": "Warm the Food",
-                "text": "Gently warming food can increase its aroma and palatability for cats. Always check the temperature to ensure it's just warm, not hot."
+                "title": "Warm het voedsel op",
+                "text": "Het zachtjes opwarmen van het voer kan de geur en smakelijkheid voor katten verhogen. Controleer altijd de temperatuur om ervoor te zorgen dat het slechts warm is, niet heet."
             },
             {
-                "title": "Small, Frequent Meals",
-                "text": "Offer smaller portions more frequently, which can be easier on your cat’s digestion and more appealing."
+                "title": "Kleine, frequente maaltijden",
+                "text": "Bied kleinere porties vaker aan, wat gemakkelijker kan zijn voor de spijsvertering van je kat en aantrekkelijker."
             },
             {
-                "title": "Variety is Key",
-                "text": "Introduce a variety of textures and flavors, including pâté-style wet food, which may be easier for cats with dental issues or reduced appetite to consume."
+                "title": "Variatie is belangrijk",
+                "text": "Introduceer een verscheidenheid aan texturen en smaken, inclusief paté-stijl natvoer, wat makkelijker kan zijn voor katten met tandproblemen of verminderde eetlust om te consumeren."
             },
             {
-                "title": "Tranquil Eating Environment",
-                "text": "Ensure the feeding area is calm and away from loud noises to help your cat relax during meals."
+                "title": "Rustige eetomgeving",
+                "text": "Zorg ervoor dat het voedingsgebied kalm is en weg van harde geluiden om je kat te helpen ontspannen tijdens de maaltijden."
             },
             {
-                "title": "Encourage Hydration",
-                "text": "Place water bowls in various comfortable and quiet locations. Consider a cat water fountain to attract your cat to drink more, as the movement of water can be enticing."
+                "title": "Stimuleer hydratatie",
+                "text": "Plaats waterbakken op verschillende comfortabele en rustige locaties. Overweeg een kattenwaterfontein om je kat te motiveren om meer te drinken, omdat de beweging van water verleidelijk kan zijn."
             },
             {
-                "title": "Use a Flat Dish for Easier Food Access",
-                "text": "Some cat find bowls intimidating or uncomfortable to eat from. A flat dish can make food more accessible and inviting."
+                "title": "Gebruik een platte schaal voor gemakkelijkere toegang tot voedsel",
+                "text": "Sommige katten vinden kommen intimiderend of oncomfortabel om uit te eten. Een platte schaal kan het voedsel toegankelijker en uitnodigender maken."
             },
             {
-                "title": "Offer Food in Small Amounts at Regular Intervals",
-                "text": "Consistent, small portions can help manage your cat's intake without overwhelming them, making meals more manageable."
+                "title": "Bied voedsel in kleine hoeveelheden aan op regelmatige tijdstippen",
+                "text": "Consistente, kleine porties kunnen helpen om de inname van je kat te beheren zonder overweldigend te zijn, waardoor maaltijden beheersbaarder worden."
             },
             {
-                "title": "Ensure Easy Access to Fresh Water at All Times",
-                "text": "Dehydration can affect appetite. Making sure your cat has constant access to water is essential for their overall health and can improve eating habits."
+                "title": "Zorg voor gemakkelijke toegang tot vers water te allen tijde",
+                "text": "Uitdroging kan de eetlust beïnvloeden. Zorgen dat je kat constant toegang heeft tot water is essentieel voor hun algehele gezondheid en kan eetgewoonten verbeteren."
             }
         ],
         "hydration": [
             {
-                "title": "Maintain Fresh Water",
-                "text": "Change water frequently and use wide, shallow bowls to make it easier for your cat to drink without whisker fatigue."
+                "title": "Vers water onderhouden",
+                "text": "Ververs het water regelmatig en gebruik brede, ondiepe kommen om het voor je kat gemakkelijker te maken om te drinken zonder snorhaarvermoeidheid."
             },
             {
-                "title": "Flavor the Water",
-                "text": "Adding a small amount of flavor, such as chicken or tuna water (always ensure it's free from salt and additives), can entice your cat to drink more."
+                "title": "Smaak aan het water toevoegen",
+                "text": "Een kleine hoeveelheid smaak toevoegen, zoals kippen- of tonijnwater (zorg ervoor dat het vrij is van zout en toevoegingen), kan je kat aansporen om meer te drinken."
             },
             {
-                "title": "Incorporate Wet Food",
-                "text": "Increase your cat’s moisture intake by incorporating a higher proportion of wet food into their diet."
+                "title": "Natvoer opnemen",
+                "text": "Verhoog de vochtinname van je kat door een groter aandeel natvoer in hun dieet op te nemen."
             },
             {
-                "title": "Ice Cubes as Treats",
-                "text": "Offer ice cubes with a hint of flavor or small frozen treats if your cat shows interest, as some cats enjoy playing with or licking ice."
+                "title": "IJsblokjes als traktaties",
+                "text": "Bied ijsblokjes aan met een vleugje smaak of kleine bevroren traktaties als je kat interesse toont, aangezien sommige katten het leuk vinden om met of aan ijs te spelen."
             },
             {
-                "title": "Watch for Signs of Dehydration",
-                "text": "Be vigilant for symptoms like dry gums or reduced elasticity in the skin, and consult your veterinarian if these signs appear."
+                "title": "Let op tekenen van uitdroging",
+                "text": "Wees alert op symptomen zoals droge tandvlees of verminderde elasticiteit van de huid, en raadpleeg je dierenarts als deze tekenen verschijnen."
             }
         ],
         "hygiene": [
             {
-                "title": "Regular Brushing",
-                "text": "Maintain your cat's coat by gentle brushing to reduce matting and remove dirt, especially for long-haired breeds."
+                "title": "Regelmatig borstelen",
+                "text": "Houd de vacht van je kat in goede staat door deze zachtjes te borstelen om klitten te verminderen en vuil te verwijderen, vooral bij langharige rassen."
             },
             {
-                "title": "Use of Grooming Wipes",
-                "text": "Employ cat-friendly grooming wipes to clean your cat, particularly if they are less able to groom themselves."
+                "title": "Gebruik van verzorgingsdoekjes",
+                "text": "Gebruik katvriendelijke verzorgingsdoekjes om je kat schoon te maken, vooral als ze minder in staat zijn zichzelf te verzorgen."
             },
             {
-                "title": "Oral Hygiene Maintenance",
-                "text": "Regular dental care is crucial. Use feline toothbrushes and toothpaste to maintain oral health and prevent diseases that can affect overall well-being."
+                "title": "Onderhoud van mondhygiëne",
+                "text": "Regelmatige gebitsverzorging is cruciaal. Gebruik kattentandenborstels en -tandpasta om de mondgezondheid te onderhouden en ziektes te voorkomen die het algemene welzijn kunnen aantasten."
             },
             {
-                "title": "Assistance with Grooming",
-                "text": "Help your cat with cleaning after using the litter box if they are unable to do so themselves to prevent irritation or infection."
+                "title": "Hulp bij verzorging",
+                "text": "Help je kat met schoonmaken na het gebruik van de kattenbak als ze dit zelf niet kan om irritatie of infectie te voorkomen."
             },
             {
-                "title": "Clean and Dry Bedding",
-                "text": "Ensure that bedding is frequently changed to keep the sleeping area clean and dry, reducing the risk of skin infections."
+                "title": "Schone en droge beddengoed",
+                "text": "Zorg ervoor dat het beddengoed regelmatig wordt vervangen om het slaapgedeelte schoon en droog te houden, wat het risico op huidinfecties vermindert."
             }
         ],
         "happiness": [
             {
-                "title": "Recognize Preferred Stimuli",
-                "text": "Observe and reintroduce specific toys or activities that have previously engaged your cat, adjusting for any physical limitations they might now have."
+                "title": "Gewenste prikkels herkennen",
+                "text": "Observeer en herintroduceer specifieke speeltjes of activiteiten die eerder je kat hebben betrokken, met aanpassingen voor eventuele fysieke beperkingen die ze nu kunnen hebben."
             },
             {
-                "title": "Increase Companion Time",
-                "text": "Spend quiet, quality time with your cat, providing gentle petting or simply sitting together, to enhance their emotional well-being."
+                "title": "Meer tijd samen doorbrengen",
+                "text": "Breng rustige, kwalitatieve tijd door met je kat, bied zachte aaien aan of zit gewoon samen, om hun emotioneel welzijn te verbeteren."
             },
             {
-                "title": "Introduce New Gentle Activities",
-                "text": "Offer new forms of mental stimulation such as puzzle feeders or window perches to help keep their environment engaging."
+                "title": "Nieuwe zachte activiteiten introduceren",
+                "text": "Bied nieuwe vormen van mentale stimulatie zoals puzzelvoeders of vensterbanken aan om hun omgeving boeiend te houden."
             },
             {
-                "title": "Encourage Gentle Socialization",
-                "text": "Allow your cat to interact with other familiar pets if they show interest, but ensure these interactions are controlled and stress-free."
+                "title": "Zachte socialisatie aanmoedigen",
+                "text": "Laat je kat interageren met andere bekende huisdieren als ze interesse tonen, maar zorg ervoor dat deze interacties gecontroleerd en stressvrij zijn."
             },
             {
-                "title": "Comforting Items",
-                "text": "Provide familiar and comforting items like their favorite blanket or a piece of your clothing to help them feel secure."
+                "title": "Troostende voorwerpen",
+                "text": "Bied vertrouwde en troostende voorwerpen aan zoals hun favoriete deken of een stuk van je kleding om hen een gevoel van veiligheid te geven."
             },
             {
-                "title": "Soothing Sounds",
-                "text": "Play soft, calming music or utilize white noise to help soothe your cat, which can be particularly beneficial for those sensitive to loud or unfamiliar sounds."
+                "title": "Geruststellende geluiden",
+                "text": "Speel zachte, kalmerende muziek af of gebruik witte ruis om je kat te helpen kalmeren, wat vooral gunstig kan zijn voor degenen die gevoelig zijn voor luide of onbekende geluiden."
             },
             {
-                "title": "Consult a Vet",
-                "text": "If your cat’s mood does not improve, consult a veterinarian to rule out underlying health issues that might be affecting their mood or comfort."
+                "title": "Raadpleeg een dierenarts",
+                "text": "Als de stemming van je kat niet verbetert, raadpleeg dan een dierenarts om onderliggende gezondheidsproblemen uit te sluiten die hun stemming of comfort kunnen beïnvloeden."
             }
         ],
         "mobility": [
             {
-                "title": "Encourage Light Activity",
-                "text": "Promote gentle movement through light play with soft toys to maintain muscle tone and joint health without excessive strain."
+                "title": "Lichte activiteit aanmoedigen",
+                "text": "Bevorder zachte beweging door licht spel met zachte speeltjes om spiertonus en gewrichtsgezondheid te onderhouden zonder overmatige belasting."
             },
             {
-                "title": "Orthopedic Support",
-                "text": "Provide an orthopedic or heated cat bed to support joints and offer comfort, which can be especially helpful for cats with arthritis."
+                "title": "Orthopedische ondersteuning",
+                "text": "Bied een orthopedisch of verwarmd kattenbed aan om gewrichten te ondersteunen en comfort te bieden, wat vooral nuttig kan zijn voor katten met artritis."
             },
             {
-                "title": "Therapeutic Massage",
-                "text": "Gently massage your cat’s limbs to enhance circulation and reduce discomfort, particularly before and after periods of rest."
+                "title": "Therapeutische massage",
+                "text": "Masseer de ledematen van je kat zachtjes om de bloedsomloop te verbeteren en ongemak te verminderen, vooral voor en na rustperioden."
             },
             {
-                "title": "Safe Play Options",
-                "text": "Introduce low-impact toys that encourage activity without requiring vigorous movement, such as toys that can be batted or small automated toys."
+                "title": "Veilige speelopties",
+                "text": "Introduceer speelgoed met lage impact dat activiteit aanmoedigt zonder krachtige bewegingen te vereisen, zoals speelgoed dat kan worden gemept of kleine geautomatiseerde speeltjes."
             },
             {
-                "title": "Professional Physical Therapy",
-                "text": "Consider consulting with a veterinary physical therapist who can tailor exercises to your cat’s specific needs to enhance mobility."
+                "title": "Professionele fysiotherapie",
+                "text": "Overweeg om een dierfysiotherapeut te raadplegen die oefeningen kan aanpassen aan de specifieke behoeften van je kat om de mobiliteit te verbeteren."
             },
             {
-                "title": "Adapt Home Environment",
-                "text": "Make your home more accessible for your cat by adding steps to furniture or a ramp to their favorite window sill."
+                "title": "Thuisomgeving aanpassen",
+                "text": "Maak je huis toegankelijker voor je kat door trappen toe te voegen aan meubels of een helling naar hun favoriete vensterbank."
             },
             {
-                "title": "Optimal Weight Management",
-                "text": "Monitor your cat’s diet closely to maintain a healthy weight, thereby reducing stress on their joints and facilitating easier movement."
+                "title": "Optimaal gewichtsbeheer",
+                "text": "Bewaak het dieet van je kat nauwgezet om een gezond gewicht te behouden, waardoor stress op hun gewrichten wordt verminderd en beweging gemakkelijker wordt."
             },
             {
-                "title": "Mobility Aids Consideration",
-                "text": "For cats with significant mobility challenges, discuss with your veterinarian the possibility of mobility aids like supportive slings or wheelchairs for cats."
+                "title": "Overweeg mobiliteitshulpmiddelen",
+                "text": "Voor katten met aanzienlijke mobiliteitsuitdagingen, bespreek met je dierenarts de mogelijkheid van mobiliteitshulpmiddelen zoals ondersteunende draagzakken of rolstoelen voor katten."
             }
         ],
         "encouragement": [
             {
-                "title": "Scent Enrichment Activities",
-                "text": "Introduce natural scents that can intrigue and comfort your cat without overwhelming them. E.g. dried catnip, valerian root, or a blanket with your scent."
+                "title": "Activiteiten voor geurverrijking",
+                "text": "Introduceer natuurlijke geuren die je kat kunnen intrigeren en troosten zonder ze te overweldigen. Bijv. gedroogde kattenkruid, valeriaanwortel of een deken met jouw geur."
             },
             {
-                "title": "Introduce New Toys",
-                "text": "Offer new, stimulating toys that cater to a cat’s hunting instincts or provide gentle interaction."
+                "title": "Nieuwe speeltjes introduceren",
+                "text": "Bied nieuwe, stimulerende speeltjes aan die aansluiten bij de jachtinstincten van een kat of zachte interactie bieden."
             },
             {
-                "title": "Extended Cuddle Time",
-                "text": "Spend extra time cuddling your cat on good days, using soft blankets or your lap as a cozy spot."
+                "title": "Extra knuffeltijd",
+                "text": "Breng extra tijd door met knuffelen met je kat op goede dagen, gebruik zachte dekens of je schoot als een gezellige plek."
             },
             {
-                "title": "Sunbathing Areas",
-                "text": "Set up a comfortable, warm spot near a window where your cat can bask in the sunlight. Ensure that the area is safe and easily accessible."
+                "title": "Zonnebadgebieden",
+                "text": "Richt een comfortabele, warme plek in de buurt van een raam in waar je kat in het zonlicht kan liggen. Zorg ervoor dat het gebied veilig en gemakkelijk toegankelijk is."
             },
             {
-                "title": "Document Joyful Days",
-                "text": "Maintain a journal dedicated to the joyful days spent with your cat, noting details that brought you both happiness."
+                "title": "Vrolijke dagen documenteren",
+                "text": "Houd een dagboek bij gewijd aan de vrolijke dagen die je met je kat hebt doorgebracht, met details die jullie beiden geluk hebben gebracht."
             },
             {
-                "title": "Organize a Mini Photo Shoot",
-                "text": "Set up a calm photo session at home with minimal props to capture your cat’s natural demeanor."
+                "title": "Organiseer een mini-fotoshoot",
+                "text": "Zet een rustige fotosessie thuis op met minimale rekwisieten om het natuurlijke gedrag van je kat vast te leggen."
             },
             {
-                "title": "Interactive Food Puzzles",
-                "text": "Use simple food puzzles that do not require much effort to solve. These can be as straightforward as hiding small amounts of food in easy-to-reach places."
+                "title": "Interactieve voedselpuzzels",
+                "text": "Gebruik eenvoudige voedselpuzzels die niet veel inspanning vereisen om op te lossen. Deze kunnen zo eenvoudig zijn als het verstoppen van kleine hoeveelheden voedsel op gemakkelijk bereikbare plaatsen."
             },
             {
-                "title": "Gentle Grooming Sessions",
-                "text": "Regular, gentle grooming sessions can help maintain your cat’s coat and skin health while providing a soothing interaction between you and your pet."
+                "title": "Zachte verzorgingssessies",
+                "text": "Regelmatige, zachte verzorgingssessies kunnen helpen om de vacht en huidgezondheid van je kat te onderhouden terwijl ze een rustgevende interactie tussen jou en je huisdier bieden."
             },
             {
-                "title": "Storytime",
-                "text": "Read aloud to your cat from a comfortable spot, letting them relax to the sound of your voice."
+                "title": "Verhaaltjestijd",
+                "text": "Lees hardop voor aan je kat vanuit een comfortabele plek, waardoor ze kunnen ontspannen bij het geluid van je stem."
             },
             {
-                "title": "Happy Moments Box",
-                "text": "Start a collection box of mementos from special days, like feathers from toys or snippets from your cat’s favorite blanket."
+                "title": "Doos met gelukkige momenten",
+                "text": "Begin een verzamelbox met aandenkens van speciale dagen, zoals veren van speeltjes of stukjes van je kats favoriete deken."
             },
             {
-                "title": "Special Treat Preparation",
-                "text": "Prepare a cat-safe treat on particularly good days, something delicious and healthy."
+                "title": "Speciale traktaties bereiden",
+                "text": "Bereid een kattenvriendelijke traktatie op bijzonder goede dagen, iets lekkers en gezonds."
             },
             {
-                "title": "Comfort Zones",
-                "text": "Create multiple small comfort zones around your home with favorite blankets, pillows, or even a heated pet bed."
+                "title": "Comfortzones",
+                "text": "Creëer meerdere kleine comfortzones rond je huis met favoriete dekens, kussens, of zelfs een verwarmd huisdierbed."
             },
             {
-                "title": "Have a Relaxing Spa Day",
-                "text": "Offer a gentle grooming session, including brushing and maybe a soothing wipe-down."
+                "title": "Een ontspannende spadag hebben",
+                "text": "Bied een zachte verzorgingssessie aan, inclusief borstelen en misschien een kalmerende afveegbeurt."
             }
         ]
     },
     "assessments": {
-        "hurt": "Pain",
-        "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
+        "hurt": "Pijn",
+        "hurtInfo": "Is {{petName}} pijnvrij? Of kan de pijn van {{petName}} succesvol beheerd worden?",
         "hurtOptions": [
             {
                 "value": 0,
-                "title": "Severe Pain",
-                "description": "{{petName}} shows clear signs of pain, such as hissing or growling when touched, reluctance to move, and inability to find a comfortable resting position."
+                "title": "Ernstige pijn",
+                "description": "{{petName}} toont duidelijke tekenen van pijn, zoals sissen of grommen bij aanraking, onwil om te bewegen, en onvermogen om een comfortabele rustpositie te vinden."
             },
             {
                 "value": 2.5,
-                "title": "Moderate Pain",
-                "description": "Visible discomfort during movements or when being petted in certain areas, may have reduced grooming."
+                "title": "Matige pijn",
+                "description": "Zichtbaar ongemak tijdens bewegingen of bij het aaien op bepaalde plekken, mogelijk verminderde verzorging."
             },
             {
                 "value": 5,
-                "title": "Mild Pain",
-                "description": "{{petName}} seems slightly uncomfortable, may avoid jumping or high activity, but can still use the litter box and rest without significant issues."
+                "title": "Milde pijn",
+                "description": "{{petName}} lijkt enigszins ongemakkelijk, kan springen of hoge activiteit vermijden, maar kan nog steeds de kattenbak gebruiken en rusten zonder significante problemen."
             },
             {
                 "value": 7.5,
-                "title": "Occasional Discomfort",
-                "description": "Rare signs of discomfort, such as hesitance jumping onto high surfaces or mild stiffness after rest."
+                "title": "Af en toe ongemak",
+                "description": "Zeldzame tekenen van ongemak, zoals aarzeling om op hoge oppervlakken te springen of lichte stijfheid na rust."
             },
             {
                 "value": 10,
-                "title": "Pain-Free",
-                "description": "{{petName}} is agile and shows no signs of discomfort. Able to jump and climb as usual."
+                "title": "Pijnvrij",
+                "description": "{{petName}} is behendig en toont geen tekenen van ongemak. Kan zoals gewoonlijk springen en klimmen."
             }
         ],
-        "hunger": "Eating",
-        "hungerInfo": "Is {{petName}} eating enough?",
+        "hunger": "Eten",
+        "hungerInfo": "Eet {{petName}} genoeg?",
         "hungerOptions": [
             {
                 "value": 0,
-                "title": "Refuses to Eat",
-                "description": "{{petName}} won't eat anything, ncluding favorite treats and especially dry food, showing a complete loss of appetite."
+                "title": "Weigert te eten",
+                "description": "{{petName}} wil niets eten, inclusief favoriete snacks en vooral droogvoer, toont een volledig verlies van eetlust."
             },
             {
                 "value": 2.5,
-                "title": "Struggles to Eat",
-                "description": "Shows interest in food but struggles to eat without assistance; may only lick juice or gravy."
+                "title": "Moeite met eten",
+                "description": "Toont interesse in voedsel maar heeft moeite om te eten zonder hulp; mag alleen sap of jus likken."
             },
             {
                 "value": 5,
-                "title": "Eats with Encouragement",
-                "description": "Requires encouragement or prefers highly palatable food, may eat slower than usual."
+                "title": "Eet met aanmoediging",
+                "description": "Heeft aanmoediging nodig of geeft de voorkeur aan zeer smakelijk voedsel, eet mogelijk langzamer dan normaal."
             },
             {
                 "value": 7.5,
-                "title": "Eats with Minor Issues",
-                "description": "Eats slightly less than usual or shows a preference for softer foods."
+                "title": "Eet met kleine problemen",
+                "description": "Eet iets minder dan normaal of toont een voorkeur voor zachter voedsel."
             },
             {
                 "value": 10,
-                "title": "Eats Normally",
-                "description": "{{petName}} egular meals without hesitation, including dry and wet food."
+                "title": "Eet normaal",
+                "description": "{{petName}} neemt zijn reguliere maaltijden zonder aarzeling op, inclusief droog- en natvoer."
             }
         ],
-        "hydration": "Drinking",
-        "hydrationInfo": "Is {{petName}} drinking enough?",
+        "hydration": "Drinken",
+        "hydrationInfo": "Drinkt {{petName}} genoeg?",
         "hydrationOptions": [
             {
                 "value": 0,
-                "title": "Refuses to Drink",
-                "description": "Won't drink any water, showing possible dehydration signs like lethargy, dry gums."
+                "title": "Weigert te drinken",
+                "description": "Wil geen water drinken, toont mogelijke tekenen van uitdroging zoals lethargie, droge tandvlees."
             },
             {
                 "value": 2.5,
-                "title": "Needs Assistance to Drink",
-                "description": "Shows interest in water but may need encouragement like being brought to the water or gentle stroking while drinking."
+                "title": "Heeft hulp nodig om te drinken",
+                "description": "Toont interesse in water, maar kan aanmoediging nodig hebben zoals naar het water gebracht worden of zachtjes aaien tijdens het drinken."
             },
             {
                 "value": 5,
-                "title": "Drinks a Little",
-                "description": "Drinks less than usual, may need water to be placed near resting areas or prefers certain types of bowls or locations."
+                "title": "Drinkt een beetje",
+                "description": "Drinkt minder dan gebruikelijk, kan nodig hebben dat water dicht bij rustgebieden wordt geplaatst of geeft de voorkeur aan bepaalde soorten kommen of locaties."
             },
             {
                 "value": 7.5,
-                "title": "Drinks with Encouragement",
-                "description": "Prefers running water or may only drink when fresh water is provided, might be more enticed by water with a bit of flavor."
+                "title": "Drinkt met aanmoediging",
+                "description": "Geeft de voorkeur aan stromend water of drinkt misschien alleen als er vers water wordt aangeboden, kan meer aangetrokken worden door water met een beetje smaak."
             },
             {
                 "value": 10,
-                "title": "Hydrated and Healthy",
-                "description": "Regularly drinks water from bowls or fountains, showing no signs of dehydration."
+                "title": "Gehydrateerd en gezond",
+                "description": "Drinkt regelmatig water uit kommen of fonteinen, toont geen tekenen van uitdroging."
             }
         ],
-        "hygiene": "Cleanliness",
-        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
+        "hygiene": "Hygiëne",
+        "hygieneInfo": "Is {{petName}} schoon en comfortabel? Kan {{petName}} zichzelf schoon houden?",
         "hygieneOptions": [
             {
                 "value": 0,
-                "title": "Severely Unkempt",
-                "description": "{{petName}} regularly soils themselves, does not use litter box properly, fur may become matted and dirty, indicating severe decline."
+                "title": "Zeer onverzorgd",
+                "description": "{{petName}} vervuilt zich regelmatig, gebruikt de kattenbak niet goed, de vacht kan verward en vuil worden, wat duidt op een ernstige achteruitgang."
             },
             {
                 "value": 2.5,
-                "title": "Needs Frequent Help",
-                "description": "{{petName}} needs help grooming hard-to-reach areas, may begin to neglect fur cleaning, increased risk of dermatitis or matting."
+                "title": "Heeft vaak hulp nodig",
+                "description": "{{petName}} heeft hulp nodig bij het verzorgen van moeilijk bereikbare plaatsen, kan beginnen met het verwaarlozen van vachtverzorging, verhoogd risico op dermatitis of klitten."
             },
             {
                 "value": 5,
-                "title": "Occasionally Messy",
-                "description": "Requires occasional help with grooming, especially if arthritic or weak, may have minor accidents."
+                "title": "Af en toe slordig",
+                "description": "Heeft af en toe hulp nodig bij de verzorging, vooral als het artritisch of zwak is, kan kleine ongelukjes hebben."
             },
             {
                 "value": 7.5,
-                "title": "Generally Clean",
-                "description": "{{petName}} mostly self-grooms but might not reach all areas, might avoid the litter box if not clean but generally manages well."
+                "title": "Over het algemeen schoon",
+                "description": "{{petName}} verzorgt zichzelf meestal, maar kan niet alle gebieden bereiken, kan de kattenbak vermijden als het niet schoon is, maar komt over het algemeen goed overweg."
             },
             {
                 "value": 10,
-                "title": "Always Clean",
-                "description": "{{petName}} maintains good grooming habits, fur remains clean and sleek, uses litter box effectively."
+                "title": "Altijd schoon",
+                "description": "{{petName}} onderhoudt goede verzorgingsgewoonten, de vacht blijft schoon en strak, gebruikt de kattenbak effectief."
             }
         ],
-        "happiness": "Joy",
-        "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
+        "happiness": "Vreugde",
+        "happinessInfo": "Uit {{petName}} vreugde en interesse? Reageert {{petName}} op dingen om hem heen (familie, speelgoed, etc.)?",
         "happinessOptions": [
             {
                 "value": 0,
-                "title": "Severely Depressed",
-                "description": "Disinterested in all forms of interaction, shows no response to toys or family, may hide or sleep excessively."
+                "title": "Ernstig depressief",
+                "description": "Toont geen interesse in welke vorm van interactie dan ook, reageert niet op speelgoed of familie, kan zich verstoppen of buitensporig slapen."
             },
             {
                 "value": 2.5,
-                "title": "Often Uninterested",
-                "description": "Infrequently interacts or plays, shows little interest in surroundings, may withdraw from family activities."
+                "title": "Vaak ongeïnteresseerd",
+                "description": "Interageert of speelt zelden, toont weinig interesse in de omgeving, kan zich terugtrekken van familieactiviteiten."
             },
             {
                 "value": 5,
-                "title": "Mildly Interested",
-                "description": "Occasionally engages in play or seeks attention, prefers quieter activities, may spend more time resting."
+                "title": "Licht geïnteresseerd",
+                "description": "Doet af en toe mee aan spelletjes of zoekt aandacht, geeft de voorkeur aan rustigere activiteiten, kan meer tijd doorbrengen met rusten."
             },
             {
                 "value": 7.5,
-                "title": "Generally Happy",
-                "description": "Still engages with family and may play with toys, but may be less active or show mild signs of withdrawal."
+                "title": "Over het algemeen gelukkig",
+                "description": "Doet nog steeds mee met de familie en kan met speelgoed spelen, maar kan minder actief zijn of milde tekenen van terugtrekking vertonen."
             },
             {
                 "value": 10,
-                "title": "Fully Joyful",
-                "description": "{{petName}} shows usual curiosity and playfulness, actively seeks out family for interaction and plays with favorite toys."
+                "title": "Volledig vrolijk",
+                "description": "{{petName}} toont gebruikelijke nieuwsgierigheid en speelsheid, zoekt actief de familie op voor interactie en speelt met favoriete speeltjes."
             }
         ],
-        "mobility": "Mobility",
-        "mobilityInfo": "Can {{petName}} get up without assistance? Can {{petName}} access their favorite spots?",
+        "mobility": "Mobiliteit",
+        "mobilityInfo": "Kan {{petName}} zonder hulp opstaan? Kan {{petName}} zijn favoriete plekjes bereiken?",
         "mobilityOptions": [
             {
                 "value": 0,
-                "title": "Immobile",
-                "description": "{{petName}} requires assistance for all movement, may be unable to reach litter box or food without help."
+                "title": "Immobiel",
+                "description": "{{petName}} heeft hulp nodig voor alle bewegingen, kan mogelijk de kattenbak of het voer niet bereiken zonder hulp."
             },
             {
                 "value": 2.5,
-                "title": "Severely Limited",
-                "description": "Limited movement, may need assistance to reach litter box or feeding areas, avoids previous activities."
+                "title": "Ernstig beperkt",
+                "description": "Beperkte beweging, kan hulp nodig hebben om de kattenbak of voergebieden te bereiken, vermijdt eerdere activiteiten."
             },
             {
                 "value": 5,
-                "title": "Moderately Limited",
-                "description": "{{petName}} shows some difficulty with movement, may avoid stairs or no longer jump, moves slower."
+                "title": "Matig beperkt",
+                "description": "{{petName}} vertoont enige moeite met bewegen, kan trappen vermijden of niet meer springen, beweegt langzamer."
             },
             {
                 "value": 7.5,
-                "title": "Slightly Limited",
-                "description": "{{petName}} is mostly independent but may hesitate at higher jumps or need a little help climbing onto favored perches."
+                "title": "Licht beperkt",
+                "description": "{{petName}} is meestal onafhankelijk maar kan aarzelen bij hogere sprongen of een beetje hulp nodig hebben om op favoriete plekjes te klimmen."
             },
             {
                 "value": 10,
-                "title": "Fully Mobile",
-                "description": "{{petName}} moves with ease throughout the house, jumps and climbs without hesitation."
+                "title": "Volledig mobiel",
+                "description": "{{petName}} beweegt gemakkelijk door het huis, springt en klimt zonder aarzeling."
             }
         ]
     }

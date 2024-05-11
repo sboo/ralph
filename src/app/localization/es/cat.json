@@ -2,396 +2,396 @@
     "tips": {
         "hurt": [
             {
-                "title": "Create a Quiet, Safe Haven",
-                "text": "Provide a soft, warm, and secluded area where your cat can rest undisturbed, away from noise and high traffic areas."
+                "title": "Crear un refugio tranquilo y seguro",
+                "text": "Proporciona un área suave, cálida y aislada donde tu gato pueda descansar sin ser molestado, lejos de ruidos y áreas con mucho tráfico."
             },
             {
-                "title": "Consult on Pain Management",
-                "text": "Discuss with your veterinarian the use of pain medications or supplements suitable for cats, considering any renal or hepatic sensitivities."
+                "title": "Consulta sobre el manejo del dolor",
+                "text": "Consulta con tu veterinario sobre el uso de medicamentos para el dolor o suplementos adecuados para gatos, teniendo en cuenta cualquier sensibilidad renal o hepática."
             },
             {
-                "title": "Gentle Handling",
-                "text": "Handle your cat gently, avoiding pressure on sensitive areas to minimize discomfort."
+                "title": "Manejo suave",
+                "text": "Maneja a tu gato suavemente, evitando presionar áreas sensibles para minimizar el malestar."
             },
             {
-                "title": "Thermal Comfort",
-                "text": "Use warm compresses or a heated blanket approved for pets to provide comfort, particularly for arthritic joints, but always monitor the temperature to avoid burns."
+                "title": "Confort térmico",
+                "text": "Utiliza compresas calientes o una manta térmica aprobada para mascotas para proporcionar confort, especialmente para articulaciones artríticas, pero siempre monitorea la temperatura para evitar quemaduras."
             },
             {
-                "title": "Restrict High-Impact Activities",
-                "text": "Reduce jumping or climbing activities by providing steps or ramps to their favorite spots to prevent strain."
+                "title": "Restringir actividades de alto impacto",
+                "text": "Reduce las actividades de saltar o trepar proporcionando escalones o rampas a sus lugares favoritos para prevenir esfuerzos."
             }
         ],
         "hunger": [
             {
-                "title": "Warm the Food",
-                "text": "Gently warming food can increase its aroma and palatability for cats. Always check the temperature to ensure it's just warm, not hot."
+                "title": "Calentar la comida",
+                "text": "Calentar suavemente la comida puede aumentar su aroma y palatabilidad para los gatos. Siempre verifica la temperatura para asegurarte de que esté tibia, no caliente."
             },
             {
-                "title": "Small, Frequent Meals",
-                "text": "Offer smaller portions more frequently, which can be easier on your cat’s digestion and more appealing."
+                "title": "Comidas pequeñas y frecuentes",
+                "text": "Porciones consistentes y pequeñas pueden ayudar a manejar la ingesta de tu gato sin abrumarlos, haciendo las comidas más manejables."
             },
             {
-                "title": "Variety is Key",
-                "text": "Introduce a variety of textures and flavors, including pâté-style wet food, which may be easier for cats with dental issues or reduced appetite to consume."
+                "title": "La variedad es clave",
+                "text": "Introduce una variedad de texturas y sabores, incluyendo comida húmeda estilo paté, que puede ser más fácil de consumir para gatos con problemas dentales o apetito reducido."
             },
             {
-                "title": "Tranquil Eating Environment",
-                "text": "Ensure the feeding area is calm and away from loud noises to help your cat relax during meals."
+                "title": "Ambiente tranquilo para comer",
+                "text": "Asegura que el área de alimentación esté tranquila y alejada de ruidos fuertes para ayudar a tu gato a relajarse durante las comidas."
             },
             {
-                "title": "Encourage Hydration",
-                "text": "Place water bowls in various comfortable and quiet locations. Consider a cat water fountain to attract your cat to drink more, as the movement of water can be enticing."
+                "title": "Fomentar la hidratación",
+                "text": "Coloca tazones de agua en varios lugares cómodos y tranquilos. Considera una fuente de agua para gatos para atraer a tu gato a beber más, ya que el movimiento del agua puede ser tentador."
             },
             {
-                "title": "Use a Flat Dish for Easier Food Access",
-                "text": "Some cat find bowls intimidating or uncomfortable to eat from. A flat dish can make food more accessible and inviting."
+                "title": "Usar un plato plano para facilitar el acceso a la comida",
+                "text": "Algunos gatos encuentran intimidantes o incómodos los platos. Un plato plano puede hacer que la comida sea más accesible e invitante."
             },
             {
-                "title": "Offer Food in Small Amounts at Regular Intervals",
-                "text": "Consistent, small portions can help manage your cat's intake without overwhelming them, making meals more manageable."
+                "title": "Ofrecer comida en pequeñas cantidades a intervalos regulares",
+                "text": "Porciones consistentes y pequeñas pueden ayudar a manejar la ingesta de tu gato sin abrumarlos, haciendo las comidas más manejables."
             },
             {
-                "title": "Ensure Easy Access to Fresh Water at All Times",
-                "text": "Dehydration can affect appetite. Making sure your cat has constant access to water is essential for their overall health and can improve eating habits."
+                "title": "Asegurar fácil acceso a agua fresca en todo momento",
+                "text": "La deshidratación puede afectar el apetito. Asegurarse de que tu gato tenga acceso constante al agua es esencial para su salud general y puede mejorar sus hábitos alimenticios."
             }
         ],
         "hydration": [
             {
-                "title": "Maintain Fresh Water",
-                "text": "Change water frequently and use wide, shallow bowls to make it easier for your cat to drink without whisker fatigue."
+                "title": "Mantener agua fresca",
+                "text": "Cambia el agua con frecuencia y usa tazones anchos y poco profundos para facilitar que tu gato beba sin fatiga de los bigotes."
             },
             {
-                "title": "Flavor the Water",
-                "text": "Adding a small amount of flavor, such as chicken or tuna water (always ensure it's free from salt and additives), can entice your cat to drink more."
+                "title": "Saborizar el agua",
+                "text": "Agregar una pequeña cantidad de sabor, como agua de pollo o atún (siempre asegurándose de que esté libre de sal y aditivos), puede incitar a tu gato a beber más."
             },
             {
-                "title": "Incorporate Wet Food",
-                "text": "Increase your cat’s moisture intake by incorporating a higher proportion of wet food into their diet."
+                "title": "Incorporar comida húmeda",
+                "text": "Aumenta la ingesta de humedad de tu gato incorporando una mayor proporción de comida húmeda en su dieta."
             },
             {
-                "title": "Ice Cubes as Treats",
-                "text": "Offer ice cubes with a hint of flavor or small frozen treats if your cat shows interest, as some cats enjoy playing with or licking ice."
+                "title": "Cubitos de hielo como golosinas",
+                "text": "Ofrece cubitos de hielo con un toque de sabor o pequeños premios congelados si a tu gato le interesa, ya que a algunos gatos les gusta jugar o lamer hielo."
             },
             {
-                "title": "Watch for Signs of Dehydration",
-                "text": "Be vigilant for symptoms like dry gums or reduced elasticity in the skin, and consult your veterinarian if these signs appear."
+                "title": "Vigilar signos de deshidratación",
+                "text": "Estate atento a síntomas como encías secas o reducida elasticidad en la piel, y consulta a tu veterinario si aparecen estos signos."
             }
         ],
         "hygiene": [
             {
-                "title": "Regular Brushing",
-                "text": "Maintain your cat's coat by gentle brushing to reduce matting and remove dirt, especially for long-haired breeds."
+                "title": "Cepillado regular",
+                "text": "Mantén el pelaje de tu gato cepillándolo suavemente para reducir los enredos y eliminar la suciedad, especialmente en razas de pelo largo."
             },
             {
-                "title": "Use of Grooming Wipes",
-                "text": "Employ cat-friendly grooming wipes to clean your cat, particularly if they are less able to groom themselves."
+                "title": "Uso de toallitas de aseo",
+                "text": "Utiliza toallitas de aseo adecuadas para gatos para limpiar a tu gato, especialmente si son menos capaces de acicalarse por sí mismos."
             },
             {
-                "title": "Oral Hygiene Maintenance",
-                "text": "Regular dental care is crucial. Use feline toothbrushes and toothpaste to maintain oral health and prevent diseases that can affect overall well-being."
+                "title": "Mantenimiento de la higiene oral",
+                "text": "El cuidado dental regular es crucial. Usa cepillos de dientes y pasta dental felina para mantener la salud oral y prevenir enfermedades que puedan afectar el bienestar general."
             },
             {
-                "title": "Assistance with Grooming",
-                "text": "Help your cat with cleaning after using the litter box if they are unable to do so themselves to prevent irritation or infection."
+                "title": "Asistencia con el aseo",
+                "text": "Ayuda a tu gato con la limpieza después de usar la caja de arena si no pueden hacerlo por sí mismos para prevenir irritaciones o infecciones."
             },
             {
-                "title": "Clean and Dry Bedding",
-                "text": "Ensure that bedding is frequently changed to keep the sleeping area clean and dry, reducing the risk of skin infections."
+                "title": "Ropa de cama limpia y seca",
+                "text": "Asegúrate de que la ropa de cama se cambie frecuentemente para mantener el área de descanso limpia y seca, reduciendo el riesgo de infecciones cutáneas."
             }
         ],
         "happiness": [
             {
-                "title": "Recognize Preferred Stimuli",
-                "text": "Observe and reintroduce specific toys or activities that have previously engaged your cat, adjusting for any physical limitations they might now have."
+                "title": "Reconocer estímulos preferidos",
+                "text": "Observa y reintroduce juguetes o actividades específicas que hayan involucrado previamente a tu gato, ajustando cualquier limitación física que ahora puedan tener."
             },
             {
-                "title": "Increase Companion Time",
-                "text": "Spend quiet, quality time with your cat, providing gentle petting or simply sitting together, to enhance their emotional well-being."
+                "title": "Aumentar el tiempo de compañía",
+                "text": "Pasa tiempo tranquilo y de calidad con tu gato, proporcionando caricias suaves o simplemente sentándote juntos, para mejorar su bienestar emocional."
             },
             {
-                "title": "Introduce New Gentle Activities",
-                "text": "Offer new forms of mental stimulation such as puzzle feeders or window perches to help keep their environment engaging."
+                "title": "Introducir nuevas actividades suaves",
+                "text": "Ofrece nuevas formas de estimulación mental como comederos de rompecabezas o perchas de ventana para ayudar a mantener su entorno atractivo."
             },
             {
-                "title": "Encourage Gentle Socialization",
-                "text": "Allow your cat to interact with other familiar pets if they show interest, but ensure these interactions are controlled and stress-free."
+                "title": "Fomentar la socialización suave",
+                "text": "Permite que tu gato interactúe con otras mascotas familiares si muestra interés, pero asegúrate de que estas interacciones sean controladas y libres de estrés."
             },
             {
-                "title": "Comforting Items",
-                "text": "Provide familiar and comforting items like their favorite blanket or a piece of your clothing to help them feel secure."
+                "title": "Artículos reconfortantes",
+                "text": "Proporciona artículos familiares y reconfortantes como su manta favorita o una pieza de tu ropa para ayudarles a sentirse seguros."
             },
             {
-                "title": "Soothing Sounds",
-                "text": "Play soft, calming music or utilize white noise to help soothe your cat, which can be particularly beneficial for those sensitive to loud or unfamiliar sounds."
+                "title": "Sonidos reconfortantes",
+                "text": "Reproduce música suave y calmante o utiliza ruido blanco para ayudar a tranquilizar a tu gato, lo cual puede ser particularmente beneficioso para aquellos sensibles a sonidos fuertes o desconocidos."
             },
             {
-                "title": "Consult a Vet",
-                "text": "If your cat’s mood does not improve, consult a veterinarian to rule out underlying health issues that might be affecting their mood or comfort."
+                "title": "Consulta a un veterinario",
+                "text": "Si el ánimo de tu gato no mejora, consulta a un veterinario para descartar problemas de salud subyacentes que puedan estar afectando su estado de ánimo o comodidad."
             }
         ],
         "mobility": [
             {
-                "title": "Encourage Light Activity",
-                "text": "Promote gentle movement through light play with soft toys to maintain muscle tone and joint health without excessive strain."
+                "title": "Fomentar actividad ligera",
+                "text": "Promueve el movimiento suave a través del juego ligero con juguetes blandos para mantener el tono muscular y la salud de las articulaciones sin excesivo esfuerzo."
             },
             {
-                "title": "Orthopedic Support",
-                "text": "Provide an orthopedic or heated cat bed to support joints and offer comfort, which can be especially helpful for cats with arthritis."
+                "title": "Soporte ortopédico",
+                "text": "Proporciona una cama para gatos ortopédica o calentada para apoyar las articulaciones y ofrecer confort, lo cual puede ser especialmente útil para gatos con artritis."
             },
             {
-                "title": "Therapeutic Massage",
-                "text": "Gently massage your cat’s limbs to enhance circulation and reduce discomfort, particularly before and after periods of rest."
+                "title": "Masaje terapéutico",
+                "text": "Masajea suavemente las extremidades de tu gato para mejorar la circulación y reducir la incomodidad, especialmente antes y después de períodos de descanso."
             },
             {
-                "title": "Safe Play Options",
-                "text": "Introduce low-impact toys that encourage activity without requiring vigorous movement, such as toys that can be batted or small automated toys."
+                "title": "Opciones de juego seguro",
+                "text": "Introduce juguetes de bajo impacto que fomenten la actividad sin requerir movimientos vigorosos, como juguetes que puedan ser golpeados o juguetes automatizados pequeños."
             },
             {
-                "title": "Professional Physical Therapy",
-                "text": "Consider consulting with a veterinary physical therapist who can tailor exercises to your cat’s specific needs to enhance mobility."
+                "title": "Terapia física profesional",
+                "text": "Considera consultar con un fisioterapeuta veterinario que pueda adaptar ejercicios a las necesidades específicas de tu gato para mejorar la movilidad."
             },
             {
-                "title": "Adapt Home Environment",
-                "text": "Make your home more accessible for your cat by adding steps to furniture or a ramp to their favorite window sill."
+                "title": "Adaptar el entorno del hogar",
+                "text": "Haz tu hogar más accesible para tu gato agregando escalones a los muebles o una rampa a su ventana favorita."
             },
             {
-                "title": "Optimal Weight Management",
-                "text": "Monitor your cat’s diet closely to maintain a healthy weight, thereby reducing stress on their joints and facilitating easier movement."
+                "title": "Manejo óptimo del peso",
+                "text": "Controla de cerca la dieta de tu gato para mantener un peso saludable, reduciendo así el estrés en sus articulaciones y facilitando el movimiento."
             },
             {
-                "title": "Mobility Aids Consideration",
-                "text": "For cats with significant mobility challenges, discuss with your veterinarian the possibility of mobility aids like supportive slings or wheelchairs for cats."
+                "title": "Consideración de ayudas para la movilidad",
+                "text": "Para gatos con desafíos de movilidad significativos, discute con tu veterinario la posibilidad de ayudas para la movilidad como eslingas de apoyo o sillas de ruedas para gatos."
             }
         ],
         "encouragement": [
             {
-                "title": "Scent Enrichment Activities",
-                "text": "Introduce natural scents that can intrigue and comfort your cat without overwhelming them. E.g. dried catnip, valerian root, or a blanket with your scent."
+                "title": "Actividades de enriquecimiento de aromas",
+                "text": "Introduce aromas naturales que puedan intrigar y reconfortar a tu gato sin abrumarlos. Ej. hierba gatera seca, raíz de valeriana o una manta con tu aroma."
             },
             {
-                "title": "Introduce New Toys",
-                "text": "Offer new, stimulating toys that cater to a cat’s hunting instincts or provide gentle interaction."
+                "title": "Introducir nuevos juguetes",
+                "text": "Ofrece juguetes nuevos y estimulantes que se adapten a los instintos de caza de un gato o proporcionen interacción suave."
             },
             {
-                "title": "Extended Cuddle Time",
-                "text": "Spend extra time cuddling your cat on good days, using soft blankets or your lap as a cozy spot."
+                "title": "Tiempo de mimos extendido",
+                "text": "Pasa tiempo extra mimando a tu gato en días buenos, utilizando mantas suaves o tu regazo como un lugar acogedor."
             },
             {
-                "title": "Sunbathing Areas",
-                "text": "Set up a comfortable, warm spot near a window where your cat can bask in the sunlight. Ensure that the area is safe and easily accessible."
+                "title": "Áreas para tomar el sol",
+                "text": "Prepara un lugar cómodo y cálido cerca de una ventana donde tu gato pueda disfrutar del sol. Asegúrate de que el área sea segura y fácilmente accesible."
             },
             {
-                "title": "Document Joyful Days",
-                "text": "Maintain a journal dedicated to the joyful days spent with your cat, noting details that brought you both happiness."
+                "title": "Documentar días alegres",
+                "text": "Mantén un diario dedicado a los días alegres pasados con tu gato, anotando detalles que os hayan traído felicidad a ambos."
             },
             {
-                "title": "Organize a Mini Photo Shoot",
-                "text": "Set up a calm photo session at home with minimal props to capture your cat’s natural demeanor."
+                "title": "Organizar una sesión de fotos miniatura",
+                "text": "Prepara una sesión de fotos tranquila en casa con accesorios mínimos para capturar el comportamiento natural de tu gato."
             },
             {
-                "title": "Interactive Food Puzzles",
-                "text": "Use simple food puzzles that do not require much effort to solve. These can be as straightforward as hiding small amounts of food in easy-to-reach places."
+                "title": "Rompecabezas interactivos de comida",
+                "text": "Utiliza rompecabezas de comida simples que no requieran mucho esfuerzo para resolver. Estos pueden ser tan simples como esconder pequeñas cantidades de comida en lugares de fácil acceso."
             },
             {
-                "title": "Gentle Grooming Sessions",
-                "text": "Regular, gentle grooming sessions can help maintain your cat’s coat and skin health while providing a soothing interaction between you and your pet."
+                "title": "Sesiones de aseo suave",
+                "text": "Sesiones regulares de aseo suave pueden ayudar a mantener el pelaje y la salud de la piel de tu gato mientras proporcionan una interacción reconfortante entre tú y tu mascota."
             },
             {
-                "title": "Storytime",
-                "text": "Read aloud to your cat from a comfortable spot, letting them relax to the sound of your voice."
+                "title": "Hora del cuento",
+                "text": "Lee en voz alta a tu gato desde un lugar cómodo, permitiéndoles relajarse al sonido de tu voz."
             },
             {
-                "title": "Happy Moments Box",
-                "text": "Start a collection box of mementos from special days, like feathers from toys or snippets from your cat’s favorite blanket."
+                "title": "Caja de momentos felices",
+                "text": "Inicia una caja de recuerdos de días especiales, como plumas de juguetes o trozos de la manta favorita de tu gato."
             },
             {
-                "title": "Special Treat Preparation",
-                "text": "Prepare a cat-safe treat on particularly good days, something delicious and healthy."
+                "title": "Preparación de golosinas especiales",
+                "text": "Prepara una golosina segura para gatos en días particularmente buenos, algo delicioso y saludable."
             },
             {
-                "title": "Comfort Zones",
-                "text": "Create multiple small comfort zones around your home with favorite blankets, pillows, or even a heated pet bed."
+                "title": "Zonas de confort",
+                "text": "Crea múltiples pequeñas zonas de confort alrededor de tu casa con mantas favoritas, almohadas o incluso una cama térmica para mascotas."
             },
             {
-                "title": "Have a Relaxing Spa Day",
-                "text": "Offer a gentle grooming session, including brushing and maybe a soothing wipe-down."
+                "title": "Tener un día de spa relajante",
+                "text": "Ofrece una sesión de aseo suave, incluyendo cepillado y quizás una limpieza calmante con toallitas."
             }
         ]
     },
     "assessments": {
-        "hurt": "Pain",
-        "hurtInfo": "Is {{petName}} painfree? Or can {{petName}}’s pain be successfully managed?",
+        "hurt": "Dolor",
+        "hurtInfo": "¿Está {{petName}} libre de dolor? ¿O se puede manejar el dolor de {{petName}} con éxito?",
         "hurtOptions": [
             {
                 "value": 0,
-                "title": "Severe Pain",
-                "description": "{{petName}} shows clear signs of pain, such as hissing or growling when touched, reluctance to move, and inability to find a comfortable resting position."
+                "title": "Dolor severo",
+                "description": "{{petName}} muestra signos claros de dolor, como siseos o gruñidos cuando se le toca, renuencia a moverse e incapacidad para encontrar una posición cómoda de descanso."
             },
             {
                 "value": 2.5,
-                "title": "Moderate Pain",
-                "description": "Visible discomfort during movements or when being petted in certain areas, may have reduced grooming."
+                "title": "Dolor moderado",
+                "description": "Incomodidad visible durante los movimientos o al ser acariciado en ciertas áreas, puede haber reducido el acicalamiento."
             },
             {
                 "value": 5,
-                "title": "Mild Pain",
-                "description": "{{petName}} seems slightly uncomfortable, may avoid jumping or high activity, but can still use the litter box and rest without significant issues."
+                "title": "Dolor leve",
+                "description": "{{petName}} parece ligeramente incómodo, puede evitar saltar o actividades de alta energía, pero aún puede usar la caja de arena y descansar sin problemas significativos."
             },
             {
                 "value": 7.5,
-                "title": "Occasional Discomfort",
-                "description": "Rare signs of discomfort, such as hesitance jumping onto high surfaces or mild stiffness after rest."
+                "title": "Malestar ocasional",
+                "description": "Signos raros de malestar, como hesitación para saltar a superficies altas o rigidez leve después de descansar."
             },
             {
                 "value": 10,
-                "title": "Pain-Free",
-                "description": "{{petName}} is agile and shows no signs of discomfort. Able to jump and climb as usual."
+                "title": "Libre de dolor",
+                "description": "{{petName}} es ágil y no muestra signos de incomodidad. Capaz de saltar y trepar como de costumbre."
             }
         ],
-        "hunger": "Eating",
-        "hungerInfo": "Is {{petName}} eating enough?",
+        "hunger": "Alimentación",
+        "hungerInfo": "¿Está {{petName}} comiendo lo suficiente?",
         "hungerOptions": [
             {
                 "value": 0,
-                "title": "Refuses to Eat",
-                "description": "{{petName}} won't eat anything, ncluding favorite treats and especially dry food, showing a complete loss of appetite."
+                "title": "Rechaza comer",
+                "description": "{{petName}} no quiere comer nada, incluyendo golosinas favoritas y especialmente comida seca, mostrando una pérdida completa del apetito."
             },
             {
                 "value": 2.5,
-                "title": "Struggles to Eat",
-                "description": "Shows interest in food but struggles to eat without assistance; may only lick juice or gravy."
+                "title": "Lucha para comer",
+                "description": "Muestra interés en la comida pero lucha para comer sin ayuda; puede solo lamer jugo o salsa."
             },
             {
                 "value": 5,
-                "title": "Eats with Encouragement",
-                "description": "Requires encouragement or prefers highly palatable food, may eat slower than usual."
+                "title": "Come con ánimo",
+                "description": "Requiere ánimo o prefiere comida altamente palatable, puede comer más lentamente que lo habitual."
             },
             {
                 "value": 7.5,
-                "title": "Eats with Minor Issues",
-                "description": "Eats slightly less than usual or shows a preference for softer foods."
+                "title": "Come con problemas menores",
+                "description": "Come un poco menos de lo habitual o muestra preferencia por comidas más blandas."
             },
             {
                 "value": 10,
-                "title": "Eats Normally",
-                "description": "{{petName}} egular meals without hesitation, including dry and wet food."
+                "title": "Come normalmente",
+                "description": "{{petName}} toma sus comidas regulares sin dudarlo, incluyendo comida seca y húmeda."
             }
         ],
-        "hydration": "Drinking",
-        "hydrationInfo": "Is {{petName}} drinking enough?",
+        "hydration": "Hidratación",
+        "hydrationInfo": "¿Está {{petName}} bebiendo suficiente?",
         "hydrationOptions": [
             {
                 "value": 0,
-                "title": "Refuses to Drink",
-                "description": "Won't drink any water, showing possible dehydration signs like lethargy, dry gums."
+                "title": "Rechaza beber",
+                "description": "No quiere beber agua, mostrando posibles signos de deshidratación como letargo, encías secas."
             },
             {
                 "value": 2.5,
-                "title": "Needs Assistance to Drink",
-                "description": "Shows interest in water but may need encouragement like being brought to the water or gentle stroking while drinking."
+                "title": "Necesita ayuda para beber",
+                "description": "Muestra interés en el agua pero puede necesitar ánimo como ser llevado al agua o acariciado suavemente mientras bebe."
             },
             {
                 "value": 5,
-                "title": "Drinks a Little",
-                "description": "Drinks less than usual, may need water to be placed near resting areas or prefers certain types of bowls or locations."
+                "title": "Bebe un poco",
+                "description": "Bebe menos de lo usual, puede necesitar que el agua se coloque cerca de las áreas de descanso o prefiere ciertos tipos de tazones o ubicaciones."
             },
             {
                 "value": 7.5,
-                "title": "Drinks with Encouragement",
-                "description": "Prefers running water or may only drink when fresh water is provided, might be more enticed by water with a bit of flavor."
+                "title": "Bebe con ánimo",
+                "description": "Prefiere agua corriente o puede beber solo cuando se proporciona agua fresca, podría ser más atraído por agua con un poco de sabor."
             },
             {
                 "value": 10,
-                "title": "Hydrated and Healthy",
-                "description": "Regularly drinks water from bowls or fountains, showing no signs of dehydration."
+                "title": "Hidratado y saludable",
+                "description": "Bebe agua regularmente de tazones o fuentes, sin mostrar signos de deshidratación."
             }
         ],
-        "hygiene": "Cleanliness",
-        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
+        "hygiene": "Limpieza",
+        "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí mismo?",
         "hygieneOptions": [
             {
                 "value": 0,
-                "title": "Severely Unkempt",
-                "description": "{{petName}} regularly soils themselves, does not use litter box properly, fur may become matted and dirty, indicating severe decline."
+                "title": "Extremadamente desaliñado",
+                "description": "{{petName}} se ensucia regularmente, no usa la caja de arena adecuadamente, el pelaje puede volverse enredado y sucio, indicando un grave deterioro."
             },
             {
                 "value": 2.5,
-                "title": "Needs Frequent Help",
-                "description": "{{petName}} needs help grooming hard-to-reach areas, may begin to neglect fur cleaning, increased risk of dermatitis or matting."
+                "title": "Necesita ayuda frecuente",
+                "description": "{{petName}} necesita ayuda para acicalar áreas difíciles de alcanzar, puede comenzar a descuidar la limpieza del pelaje, aumentando el riesgo de dermatitis o enredos."
             },
             {
                 "value": 5,
-                "title": "Occasionally Messy",
-                "description": "Requires occasional help with grooming, especially if arthritic or weak, may have minor accidents."
+                "title": "Ocasionalmente desordenado",
+                "description": "Requiere ayuda ocasional con el aseo, especialmente si tiene artritis o está débil, puede tener accidentes menores."
             },
             {
                 "value": 7.5,
-                "title": "Generally Clean",
-                "description": "{{petName}} mostly self-grooms but might not reach all areas, might avoid the litter box if not clean but generally manages well."
+                "title": "Generalmente limpio",
+                "description": "{{petName}} se acicala mayormente por sí mismo pero puede no alcanzar todas las áreas, puede evitar la caja de arena si no está limpia pero generalmente se maneja bien."
             },
             {
                 "value": 10,
-                "title": "Always Clean",
-                "description": "{{petName}} maintains good grooming habits, fur remains clean and sleek, uses litter box effectively."
+                "title": "Siempre limpio",
+                "description": "{{petName}} mantiene buenos hábitos de acicalado, el pelaje permanece limpio y elegante, usa la caja de arena de manera efectiva."
             }
         ],
-        "happiness": "Joy",
-        "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
+        "happiness": "Alegría",
+        "happinessInfo": "¿Expresa {{petName}} alegría e interés? ¿Responde {{petName}} a las cosas a su alrededor (familia, juguetes, etc)?",
         "happinessOptions": [
             {
                 "value": 0,
-                "title": "Severely Depressed",
-                "description": "Disinterested in all forms of interaction, shows no response to toys or family, may hide or sleep excessively."
+                "title": "Severamente deprimido",
+                "description": "Desinteresado en todas las formas de interacción, no responde a juguetes ni a la familia, puede esconderse o dormir excesivamente."
             },
             {
                 "value": 2.5,
-                "title": "Often Uninterested",
-                "description": "Infrequently interacts or plays, shows little interest in surroundings, may withdraw from family activities."
+                "title": "A menudo desinteresado",
+                "description": "Interactúa o juega infrecuentemente, muestra poco interés en su entorno, puede retirarse de actividades familiares."
             },
             {
                 "value": 5,
-                "title": "Mildly Interested",
-                "description": "Occasionally engages in play or seeks attention, prefers quieter activities, may spend more time resting."
+                "title": "Ligeramente interesado",
+                "description": "Ocasionalmente participa en juegos o busca atención, prefiere actividades más tranquilas, puede pasar más tiempo descansando."
             },
             {
                 "value": 7.5,
-                "title": "Generally Happy",
-                "description": "Still engages with family and may play with toys, but may be less active or show mild signs of withdrawal."
+                "title": "Generalmente feliz",
+                "description": "Todavía se involucra con la familia y puede jugar con juguetes, pero puede ser menos activo o mostrar signos leves de retiro."
             },
             {
                 "value": 10,
-                "title": "Fully Joyful",
-                "description": "{{petName}} shows usual curiosity and playfulness, actively seeks out family for interaction and plays with favorite toys."
+                "title": "Completamente alegre",
+                "description": "{{petName}} muestra la curiosidad y juguetonidad habitual, busca activamente a la familia para interactuar y juega con sus juguetes favoritos."
             }
         ],
-        "mobility": "Mobility",
-        "mobilityInfo": "Can {{petName}} get up without assistance? Can {{petName}} access their favorite spots?",
+        "mobility": "Movilidad",
+        "mobilityInfo": "¿Puede {{petName}} levantarse sin ayuda? ¿Puede {{petName}} acceder a sus lugares favoritos?",
         "mobilityOptions": [
             {
                 "value": 0,
-                "title": "Immobile",
-                "description": "{{petName}} requires assistance for all movement, may be unable to reach litter box or food without help."
+                "title": "Inmóvil",
+                "description": "{{petName}} necesita ayuda para todo movimiento, puede ser incapaz de alcanzar la caja de arena o la comida sin ayuda."
             },
             {
                 "value": 2.5,
-                "title": "Severely Limited",
-                "description": "Limited movement, may need assistance to reach litter box or feeding areas, avoids previous activities."
+                "title": "Severamente limitado",
+                "description": "Movimiento limitado, puede necesitar ayuda para alcanzar la caja de arena o las áreas de alimentación, evita actividades anteriores."
             },
             {
                 "value": 5,
-                "title": "Moderately Limited",
-                "description": "{{petName}} shows some difficulty with movement, may avoid stairs or no longer jump, moves slower."
+                "title": "Moderadamente limitado",
+                "description": "{{petName}} muestra alguna dificultad con el movimiento, puede evitar escaleras o ya no saltar, se mueve más lento."
             },
             {
                 "value": 7.5,
-                "title": "Slightly Limited",
-                "description": "{{petName}} is mostly independent but may hesitate at higher jumps or need a little help climbing onto favored perches."
+                "title": "Ligeramente limitado",
+                "description": "{{petName}} es mayormente independiente pero puede dudar en saltos más altos o necesitar un poco de ayuda para subir a perchas favorecidas."
             },
             {
                 "value": 10,
-                "title": "Fully Mobile",
-                "description": "{{petName}} moves with ease throughout the house, jumps and climbs without hesitation."
+                "title": "Completamente móvil",
+                "description": "{{petName}} se mueve con facilidad por toda la casa, salta y trepa sin dudarlo."
             }
         ]
     }

@@ -1,19 +1,12 @@
 {
     "tips": {
-        "hurt": [
-        ],
-        "hunger": [
-        ],
-        "hydration": [
-        ],
-        "hygiene": [
-        ],
-        "happiness": [
-        ],
-        "mobility": [
-        ],
-        "encouragement": [
-        ]
+        "hurt": [],
+        "hunger": [],
+        "hydration": [],
+        "hygiene": [],
+        "happiness": [],
+        "mobility": [],
+        "encouragement": []
     },
     "assessments": {
         "hurt": "Pain",

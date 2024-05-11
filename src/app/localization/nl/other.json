@@ -1,6 +1,187 @@
 {
     "tips": {
+        "hurt": [],
+        "hunger": [],
+        "hydration": [],
+        "hygiene": [],
+        "happiness": [],
+        "mobility": [],
+        "encouragement": []
     },
     "assessments": {
+        "hurt": "Pijn",
+        "hurtInfo": "Is {{petName}} pijnvrij? Of kan de pijn van {{petName}} succesvol beheerd worden?",
+        "hurtOptions": [
+            {
+                "value": 0,
+                "title": "Ernstige Pijn",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Matige Pijn",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Lichte Pijn",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Af en Toe Oncomfortabel",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Pijnvrij",
+                "description": ""
+            }
+        ],
+        "hunger": "Eten",
+        "hungerInfo": "Eet {{petName}} genoeg?",
+        "hungerOptions": [
+            {
+                "value": 0,
+                "title": "Weigert te Eten",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Moeite met Eten",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Eet met Aanmoediging",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Eet met Kleine Problemen",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Eet Normaal",
+                "description": ""
+            }
+        ],
+        "hydration": "Drinken",
+        "hydrationInfo": "Drinkt {{petName}} genoeg?",
+        "hydrationOptions": [
+            {
+                "value": 0,
+                "title": "Weigert te Drinken",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Heeft Hulp Nodig bij Drinken",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Drinkt Een Beetje",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Drinkt met Aanmoediging",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Gehydrateerd en Gezond",
+                "description": ""
+            }
+        ],
+        "hygiene": "Hygiëne",
+        "hygieneInfo": "Is {{petName}} schoon en comfortabel? Kan {{petName}} zichzelf schoon houden?",
+        "hygieneOptions": [
+            {
+                "value": 0,
+                "title": "Ernstig Verwaarloosd",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Heeft Vaak Hulp Nodig",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Af en Toe Rommelig",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Over het Algemeen Schoon",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Altijd Schoon",
+                "description": ""
+            }
+        ],
+        "happiness": "Vreugde",
+        "happinessInfo": "Laat {{petName}} vreugde en interesse zien? Reageert {{petName}} op dingen om hem heen (familie, speeltjes, etc)?",
+        "happinessOptions": [
+            {
+                "value": 0,
+                "title": "Ernstig Depressief",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Vaak Ongeïnteresseerd",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Matig Geïnteresseerd",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Over het Algemeen Vrolijk",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Volledig Vreugdevol",
+                "description": ""
+            }
+        ],
+        "mobility": "Mobiliteit",
+        "mobilityInfo": "Kan {{petName}} opstaan zonder hulp?",
+        "mobilityOptions": [
+            {
+                "value": 0,
+                "title": "Immobiel",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Ernstig Beperkt",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Matig Beperkt",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Licht Beperkt",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Volledig Mobiel",
+                "description": ""
+            }
+        ]
     }
 }
