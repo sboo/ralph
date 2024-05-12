@@ -61,7 +61,7 @@ const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
     }
     const randomTips = randomNumbers.map(index => tips[index]);
     setCurrentTips(randomTips);
-  }, [tips]);
+  }, [numberOfTips, tips]);
 
   useEffect(() => {
     if (tips.length > 0) {
@@ -130,7 +130,7 @@ const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
 };
 
 const width = Dimensions.get('window').width - 40;
-const height = (width / 16) * 7;
+const height = (width / 16) * 8;
 
 const styles = StyleSheet.create({
   tip: {
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   cardContent: {
     width,
     height,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   IconButton: {
     backgroundColor: 'transparent',
