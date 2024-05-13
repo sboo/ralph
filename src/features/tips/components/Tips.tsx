@@ -6,21 +6,28 @@ import useTips, {Tip, TipCategory} from '../hooks/useTips';
 import {getTipBackgroundColor} from '@/support/helpers/ColorHelper';
 import {useTranslation} from 'react-i18next';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import {Pet} from '@/app/models/Pet';
 
 interface TipsProps {
-  assessment: Measurement;
+  activePet: Pet;
+  assessment?: Measurement;
+  numberOfTips?: number | undefined;
 }
 
-const Tips: React.FC<TipsProps> = ({assessment}) => {
+const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
   const [currentTips, setCurrentTips] = useState<Tip[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [tips, setTips] = useState<Tip[]>([]);
-  const {getTipsForAssessment} = useTips();
+  const {getTipsForAssessment, getAllTips} = useTips();
   const {t} = useTranslation();
 
   useEffect(() => {
-    setTips(getTipsForAssessment(assessment));
-  }, [assessment, getTipsForAssessment]);
+    if (assessment) {
+      setTips(getTipsForAssessment(activePet?.species, assessment));
+    } else {
+      setTips(getAllTips(activePet.species));
+    }
+  }, [activePet, assessment, getTipsForAssessment, getAllTips]);
 
   const getIcon = useCallback((category?: TipCategory) => {
     switch (category) {
@@ -44,10 +51,9 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
     }
   }, []);
 
-  const numberOfTips = 4;
   const getRandomTip = useCallback(() => {
     const randomNumbers: number[] = [];
-    while (randomNumbers.length < numberOfTips) {
+    while (randomNumbers.length < (numberOfTips ?? tips.length)) {
       const randomNumber = Math.floor(Math.random() * tips.length);
       if (!randomNumbers.includes(randomNumber)) {
         randomNumbers.push(randomNumber);
@@ -55,7 +61,7 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
     }
     const randomTips = randomNumbers.map(index => tips[index]);
     setCurrentTips(randomTips);
-  }, [tips]);
+  }, [numberOfTips, tips]);
 
   useEffect(() => {
     if (tips.length > 0) {
@@ -80,6 +86,10 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
       </View>
     </View>
   );
+
+  if (tips.length === 0) {
+    return null;
+  }
 
   return (
     <Card
@@ -120,7 +130,7 @@ const Tips: React.FC<TipsProps> = ({assessment}) => {
 };
 
 const width = Dimensions.get('window').width - 40;
-const height = (width / 16) * 7;
+const height = (width / 16) * 8;
 
 const styles = StyleSheet.create({
   tip: {
@@ -134,7 +144,7 @@ const styles = StyleSheet.create({
   cardContent: {
     width,
     height,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   IconButton: {
     backgroundColor: 'transparent',

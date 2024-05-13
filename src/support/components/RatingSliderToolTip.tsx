@@ -26,11 +26,13 @@ const RatingSliderToolTip: React.FC<Props> = ({
           <Icon {...props} size={24} source={icon} color={color} />
         )}
       />
-      <Card.Content>
-        <Text variant="bodyMedium" style={styles.tooltipText}>
-          {description}
-        </Text>
-      </Card.Content>
+      {description ? (
+        <Card.Content>
+          <Text variant="bodyMedium" style={styles.tooltipText}>
+            {description}
+          </Text>
+        </Card.Content>
+      ) : null}
     </Card>
   );
 };

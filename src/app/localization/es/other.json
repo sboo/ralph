@@ -1,0 +1,187 @@
+{
+    "tips": {
+        "hurt": [],
+        "hunger": [],
+        "hydration": [],
+        "hygiene": [],
+        "happiness": [],
+        "mobility": [],
+        "encouragement": []
+    },
+    "assessments": {
+        "hurt": "Dolor",
+        "hurtInfo": "¿{{petName}} está libre de dolor? ¿O se puede manejar el dolor de {{petName}} con éxito?",
+        "hurtOptions": [
+            {
+                "value": 0,
+                "title": "Dolor Severo",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Dolor Moderado",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Dolor Leve",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Molestias Ocasionales",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Libre de Dolor",
+                "description": ""
+            }
+        ],
+        "hunger": "Alimentación",
+        "hungerInfo": "¿{{petName}} está comiendo suficiente?",
+        "hungerOptions": [
+            {
+                "value": 0,
+                "title": "Rechaza Comer",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Lucha para Comer",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Come con Estímulo",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Come con Pequeños Problemas",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Come Normalmente",
+                "description": ""
+            }
+        ],
+        "hydration": "Hidratación",
+        "hydrationInfo": "¿{{petName}} está bebiendo suficiente?",
+        "hydrationOptions": [
+            {
+                "value": 0,
+                "title": "Rechaza Beber",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Necesita Asistencia para Beber",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Bebe un Poco",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Bebe con Estímulo",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Hidratado y Saludable",
+                "description": ""
+            }
+        ],
+        "hygiene": "Limpieza",
+        "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí mismo?",
+        "hygieneOptions": [
+            {
+                "value": 0,
+                "title": "Severamente Desaliñado",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Necesita Ayuda Frecuente",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Ocasionalmente Desordenado",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Generalmente Limpio",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Siempre Limpio",
+                "description": ""
+            }
+        ],
+        "happiness": "Alegría",
+        "happinessInfo": "¿{{petName}} expresa alegría e interés? ¿{{petName}} responde a las cosas que le rodean (familia, juguetes, etc)?",
+        "happinessOptions": [
+            {
+                "value": 0,
+                "title": "Severamente Deprimido",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "A menudo Desinteresado",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Ligeramente Interesado",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Generalmente Feliz",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Completamente Alegre",
+                "description": ""
+            }
+        ],
+        "mobility": "Movilidad",
+        "mobilityInfo": "¿Puede {{petName}} levantarse sin asistencia?",
+        "mobilityOptions": [
+            {
+                "value": 0,
+                "title": "Inmóvil",
+                "description": ""
+            },
+            {
+                "value": 2.5,
+                "title": "Severamente Limitado",
+                "description": ""
+            },
+            {
+                "value": 5,
+                "title": "Moderadamente Limitado",
+                "description": ""
+            },
+            {
+                "value": 7.5,
+                "title": "Ligeramente Limitado",
+                "description": ""
+            },
+            {
+                "value": 10,
+                "title": "Completamente Móvil",
+                "description": ""
+            }
+        ]
+    }
+}

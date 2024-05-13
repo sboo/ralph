@@ -1,0 +1,398 @@
+{
+    "tips": {
+        "hurt": [
+            {
+                "title": "Einen ruhigen, sicheren Zufluchtsort schaffen",
+                "text": "Biete einen weichen, warmen und abgelegenen Bereich, wo dein Kätzchen ungestört ausruhen kann, fern von Lärm und stark frequentierten Bereichen."
+            },
+            {
+                "title": "Schmerzmanagement besprechen",
+                "text": "Sprich mit deinem Tierarzt über den Einsatz von Schmerzmitteln oder geeigneten Ergänzungsmitteln für Katzen, unter Berücksichtigung von Nieren- oder Leberempfindlichkeiten."
+            },
+            {
+                "title": "Sanftes Handling",
+                "text": "Geh mit deiner Katze sanft um, vermeide Druck auf empfindliche Bereiche, um Unbehagen zu minimieren."
+            },
+            {
+                "title": "Thermischer Komfort",
+                "text": "Verwende warme Kompressen oder eine für Haustiere zugelassene Heizdecke, um Komfort zu bieten, besonders bei arthritischen Gelenken, aber überwache stets die Temperatur, um Verbrennungen zu vermeiden."
+            },
+            {
+                "title": "Aktivitäten mit hoher Belastung einschränken",
+                "text": "Reduziere Springen oder Klettern, indem du Stufen oder Rampen zu ihren Lieblingsplätzen bereitstellst, um Belastungen zu verhindern."
+            }
+        ],
+        "hunger": [
+            {
+                "title": "Das Futter erwärmen",
+                "text": "Das sanfte Erwärmen des Futters kann seinen Duft und die Schmackhaftigkeit für Katzen steigern. Überprüfe immer die Temperatur, um sicherzustellen, dass es nur warm und nicht heiß ist."
+            },
+            {
+                "title": "Kleine, häufige Mahlzeiten",
+                "text": "Biete kleinere Portionen häufiger an, was leichter für die Verdauung deiner Katze sein kann und ansprechender ist."
+            },
+            {
+                "title": "Abwechslung ist der Schlüssel",
+                "text": "Führe eine Vielzahl von Texturen und Geschmäckern ein, einschließlich Pasteten-artigem Nassfutter, das für Katzen mit Zahnproblemen oder reduziertem Appetit leichter zu konsumieren sein kann."
+            },
+            {
+                "title": "Ruhige Fressumgebung",
+                "text": "Stelle sicher, dass der Fütterungsbereich ruhig und fern von lauten Geräuschen ist, um deiner Katze zu helfen, sich während der Mahlzeiten zu entspannen."
+            },
+            {
+                "title": "Hydration fördern",
+                "text": "Platziere Wasserschüsseln an verschiedenen gemütlichen und ruhigen Orten. Erwäge eine Katzenwasserfontäne, um deine Katze zum Trinken zu animieren, da die Bewegung des Wassers verlockend sein kann."
+            },
+            {
+                "title": "Ein flaches Geschirr für einfacheren Zugang zum Futter verwenden",
+                "text": "Einige Katzen finden Schüsseln einschüchternd oder unangenehm. Ein flaches Geschirr kann das Futter zugänglicher und einladender machen."
+            },
+            {
+                "title": "Futter in kleinen Mengen zu regelmäßigen Intervallen anbieten",
+                "text": "Beständige, kleine Portionen können helfen, die Aufnahme deiner Katze zu steuern, ohne sie zu überfordern, und machen Mahlzeiten handhabbarer."
+            },
+            {
+                "title": "Stets leichten Zugang zu frischem Wasser gewährleisten",
+                "text": "Dehydration kann den Appetit beeinflussen. Sicherzustellen, dass deine Katze ständig Zugang zu Wasser hat, ist entscheidend für ihre allgemeine Gesundheit und kann die Essgewohnheiten verbessern."
+            }
+        ],
+        "hydration": [
+            {
+                "title": "Frisches Wasser bereitstellen",
+                "text": "Wechsle das Wasser häufig und verwende breite, flache Schüsseln, damit es für deine Katze einfacher ist, zu trinken, ohne dass die Schnurrhaare ermüden."
+            },
+            {
+                "title": "Das Wasser aromatisieren",
+                "text": "Ein wenig Geschmack, wie Hühner- oder Thunfischwasser (immer sicherstellen, dass es frei von Salz und Zusätzen ist), kann deine Katze dazu animieren, mehr zu trinken."
+            },
+            {
+                "title": "Nassfutter einbeziehen",
+                "text": "Steigere die Feuchtigkeitsaufnahme deiner Katze, indem du einen höheren Anteil an Nassfutter in ihre Ernährung einbeziehst."
+            },
+            {
+                "title": "Eiswürfel als Leckerli",
+                "text": "Biete Eiswürfel mit einem Hauch von Geschmack oder kleine gefrorene Leckerlis an, wenn deine Katze Interesse zeigt, da einige Katzen gerne mit oder lecken an Eis spielen."
+            },
+            {
+                "title": "Auf Anzeichen von Dehydration achten",
+                "text": "Sei wachsam für Symptome wie trockene Zahnfleisch oder reduzierte Hautelastizität und konsultiere deinen Tierarzt, wenn diese Anzeichen auftreten."
+            }
+        ],
+        "hygiene": [
+            {
+                "title": "Regelmäßiges Bürsten",
+                "text": "Erhalte das Fell deiner Katze durch sanftes Bürsten, um Verfilzungen zu reduzieren und Schmutz zu entfernen, besonders bei Langhaarrassen."
+            },
+            {
+                "title": "Verwendung von Pflegetüchern",
+                "text": "Verwende katzenfreundliche Pflegetücher, um deine Katze zu reinigen, besonders wenn sie weniger fähig ist, sich selbst zu putzen."
+            },
+            {
+                "title": "Mundhygiene aufrechterhalten",
+                "text": "Regelmäßige Zahnpflege ist entscheidend. Verwende Katzenzahnbürsten und -paste, um die Mundgesundheit zu erhalten und Krankheiten vorzubeugen, die das allgemeine Wohlbefinden beeinträchtigen können."
+            },
+            {
+                "title": "Unterstützung beim Putzen",
+                "text": "Hilf deiner Katze beim Saubermachen nach der Benutzung des Katzenklos, wenn sie es selbst nicht schafft, um Reizungen oder Infektionen zu vermeiden."
+            },
+            {
+                "title": "Saubere und trockene Bettwäsche",
+                "text": "Stelle sicher, dass die Bettwäsche häufig gewechselt wird, um den Schlafbereich sauber und trocken zu halten, was das Risiko von Hautinfektionen verringert."
+            }
+        ],
+        "happiness": [
+            {
+                "title": "Bevorzugte Reize erkennen",
+                "text": "Beobachte und führe spezifische Spielzeuge oder Aktivitäten wieder ein, die dein Kätzchen früher beschäftigt haben, unter Anpassung an etwaige körperliche Einschränkungen, die sie jetzt haben könnten."
+            },
+            {
+                "title": "Mehr Zeit zusammen verbringen",
+                "text": "Verbringe ruhige, qualitativ hochwertige Zeit mit deiner Katze, biete sanftes Streicheln oder sitze einfach zusammen, um ihr emotionales Wohlbefinden zu verbessern."
+            },
+            {
+                "title": "Neue sanfte Aktivitäten einführen",
+                "text": "Biete neue Formen der geistigen Anregung wie Puzzle-Futterautomaten oder Fensterbänke an, um ihre Umgebung spannend zu halten."
+            },
+            {
+                "title": "Sanfte Sozialisation fördern",
+                "text": "Lasse deine Katze mit anderen bekannten Haustieren interagieren, wenn sie Interesse zeigen, aber stelle sicher, dass diese Interaktionen kontrolliert und stressfrei sind."
+            },
+            {
+                "title": "Tröstende Gegenstände",
+                "text": "Biete vertraute und tröstende Gegenstände wie ihre Lieblingsdecke oder ein Stück deiner Kleidung an, um ihnen ein Gefühl von Sicherheit zu geben."
+            },
+            {
+                "title": "Beruhigende Klänge",
+                "text": "Spiele sanfte, beruhigende Musik oder nutze weißes Rauschen, um deine Katze zu beruhigen, was besonders für diejenigen nützlich sein kann, die empfindlich auf laute oder fremde Geräusche reagieren."
+            },
+            {
+                "title": "Einen Tierarzt konsultieren",
+                "text": "Wenn sich die Stimmung deiner Katze nicht bessert, konsultiere einen Tierarzt, um zugrunde liegende Gesundheitsprobleme auszuschließen, die ihre Stimmung oder ihren Komfort beeinträchtigen könnten."
+            }
+        ],
+        "mobility": [
+            {
+                "title": "Leichte Aktivität fördern",
+                "text": "Fördere sanfte Bewegung durch leichtes Spiel mit weichen Spielzeugen, um Muskeltonus und Gelenkgesundheit ohne übermäßige Belastung zu erhalten."
+            },
+            {
+                "title": "Orthopädische Unterstützung",
+                "text": "Biete ein orthopädisches oder beheiztes Katzenbett zur Unterstützung der Gelenke und für Komfort an, was besonders hilfreich für Katzen mit Arthritis sein kann."
+            },
+            {
+                "title": "Therapeutische Massage",
+                "text": "Massiere die Gliedmaßen deiner Katze sanft, um die Durchblutung zu verbessern und Unbehagen zu reduzieren, besonders vor und nach Ruhephasen."
+            },
+            {
+                "title": "Sichere Spielmöglichkeiten",
+                "text": "Führe Spielzeuge mit geringer Belastung ein, die Aktivität fördern, ohne anstrengende Bewegungen zu erfordern, wie Spielzeuge, die man schlagen kann oder kleine automatisierte Spielzeuge."
+            },
+            {
+                "title": "Professionelle Physiotherapie",
+                "text": "Erwäge die Konsultation eines tierärztlichen Physiotherapeuten, der Übungen speziell auf die Bedürfnisse deiner Katze abstimmen kann, um die Mobilität zu verbessern."
+            },
+            {
+                "title": "Wohnraum anpassen",
+                "text": "Mache dein Zuhause zugänglicher für deine Katze, indem du Stufen zu Möbeln oder eine Rampe zu ihrem Lieblingsfenstersims hinzufügst."
+            },
+            {
+                "title": "Optimales Gewichtsmanagement",
+                "text": "Überwache die Ernährung deiner Katze genau, um ein gesundes Gewicht zu halten, wodurch der Stress auf ihre Gelenke reduziert wird und die Bewegung erleichtert wird."
+            },
+            {
+                "title": "Überlegung von Mobilitätshilfen",
+                "text": "Für Katzen mit erheblichen Mobilitätsherausforderungen, bespreche mit deinem Tierarzt die Möglichkeit von Mobilitätshilfen wie unterstützenden Schlingen oder Rollstühlen für Katzen."
+            }
+        ],
+        "encouragement": [
+            {
+                "title": "Aktivitäten zur Geruchsanreicherung",
+                "text": "Führe natürliche Düfte ein, die dein Kätzchen faszinieren und trösten können, ohne sie zu überwältigen. Z.B. getrocknete Katzenminze, Baldrianwurzel oder eine Decke mit deinem Duft."
+            },
+            {
+                "title": "Neue Spielzeuge einführen",
+                "text": "Biete neue, anregende Spielzeuge an, die auf die Jagdinstinkte einer Katze zugeschnitten sind oder sanfte Interaktion bieten."
+            },
+            {
+                "title": "Erweiterte Kuschelzeit",
+                "text": "Verbringe extra Zeit mit Kuscheln mit deiner Katze an guten Tagen, verwende weiche Decken oder deinen Schoß als gemütlichen Ort."
+            },
+            {
+                "title": "Sonnige Bereiche",
+                "text": "Richte einen bequemen, warmen Platz in der Nähe eines Fensters ein, wo deine Katze in der Sonne baden kann. Stelle sicher, dass der Bereich sicher und leicht zugänglich ist."
+            },
+            {
+                "title": "Freudige Tage dokumentieren",
+                "text": "Führe ein Tagebuch über die freudigen Tage, die du mit deiner Katze verbracht hast, und notiere Details, die euch beiden Freude bereitet haben."
+            },
+            {
+                "title": "Ein Mini-Fotoshooting organisieren",
+                "text": "Richte zu Hause eine ruhige Fotosession mit minimalen Requisiten ein, um das natürliche Verhalten deiner Katze einzufangen."
+            },
+            {
+                "title": "Interaktive Futterpuzzles",
+                "text": "Verwende einfache Futterpuzzles, die nicht viel Mühe erfordern, um gelöst zu werden. Diese können so einfach sein wie das Verstecken kleiner Mengen Futter an leicht zugänglichen Orten."
+            },
+            {
+                "title": "Sanfte Pflegesitzungen",
+                "text": "Regelmäßige, sanfte Pflegesitzungen können dazu beitragen, das Fell und die Hautgesundheit deiner Katze zu erhalten und gleichzeitig eine beruhigende Interaktion zwischen dir und deinem Haustier zu bieten."
+            },
+            {
+                "title": "Geschichtenzeit",
+                "text": "Lese deiner Katze aus einem bequemen Platz vor, sodass sie sich beim Klang deiner Stimme entspannen kann."
+            },
+            {
+                "title": "Kiste für glückliche Momente",
+                "text": "Beginne eine Sammlungskiste mit Andenken an besondere Tage, wie Federn von Spielzeugen oder Schnipsel von der Lieblingsdecke deiner Katze."
+            },
+            {
+                "title": "Besondere Leckereien zubereiten",
+                "text": "Bereite an besonders guten Tagen eine katzensichere Leckerei zu, etwas Leckeres und Gesundes."
+            },
+            {
+                "title": "Komfortzonen",
+                "text": "Richte mehrere kleine Komfortzonen in deinem Zuhause mit Lieblingsdecken, Kissen oder sogar einem beheizten Haustierbett ein."
+            },
+            {
+                "title": "Einen entspannenden Spa-Tag haben",
+                "text": "Biete eine sanfte Pflegesitzung an, einschließlich Bürsten und vielleicht einem beruhigenden Abwischen."
+            }
+        ]
+    },
+    "assessments": {
+        "hurt": "Schmerz",
+        "hurtInfo": "Ist {{petName}} schmerzfrei? Oder kann der Schmerz von {{petName}} erfolgreich gemanagt werden?",
+        "hurtOptions": [
+            {
+                "value": 0,
+                "title": "Starker Schmerz",
+                "description": "{{petName}} zeigt deutliche Schmerzanzeichen, wie Fauchen oder Knurren bei Berührung, Unwilligkeit sich zu bewegen und Unfähigkeit, eine bequeme Ruheposition zu finden."
+            },
+            {
+                "value": 2.5,
+                "title": "Mäßiger Schmerz",
+                "description": "Sichtbares Unbehagen bei Bewegungen oder beim Streicheln bestimmter Bereiche, möglicherweise vermindertes Putzen."
+            },
+            {
+                "value": 5,
+                "title": "Leichter Schmerz",
+                "description": "{{petName}} scheint leicht unwohl, vermeidet möglicherweise Sprünge oder hohe Aktivitäten, kann aber noch die Katzentoilette benutzen und ohne größere Probleme ruhen."
+            },
+            {
+                "value": 7.5,
+                "title": "Gelegentliches Unbehagen",
+                "description": "Seltene Anzeichen von Unbehagen, wie Zögern, auf hohe Oberflächen zu springen oder leichte Steifheit nach dem Ruhen."
+            },
+            {
+                "value": 10,
+                "title": "Schmerzfrei",
+                "description": "{{petName}} ist agil und zeigt keine Anzeichen von Unbehagen. Kann wie gewohnt springen und klettern."
+            }
+        ],
+        "hunger": "Fütterung",
+        "hungerInfo": "Frisst {{petName}} genug?",
+        "hungerOptions": [
+            {
+                "value": 0,
+                "title": "Verweigert das Fressen",
+                "description": "{{petName}} will nichts fressen, einschließlich Lieblingsleckereien und besonders Trockenfutter, zeigt einen völligen Appetitverlust."
+            },
+            {
+                "value": 2.5,
+                "title": "Hat Schwierigkeiten zu fressen",
+                "description": "Zeigt Interesse an Futter, hat aber Schwierigkeiten zu fressen ohne Hilfe; mag vielleicht nur Saft oder Soße lecken."
+            },
+            {
+                "value": 5,
+                "title": "Frisst mit Ermutigung",
+                "description": "Braucht Ermutigung oder bevorzugt sehr schmackhaftes Futter, frisst möglicherweise langsamer als üblich."
+            },
+            {
+                "value": 7.5,
+                "title": "Frisst mit kleinen Problemen",
+                "description": "Frisst etwas weniger als üblich oder zeigt eine Vorliebe für weicheres Futter."
+            },
+            {
+                "value": 10,
+                "title": "Frisst normal",
+                "description": "{{petName}} nimmt seine regulären Mahlzeiten ohne Zögern auf, einschließlich Trocken- und Nassfutter."
+            }
+        ],
+        "hydration": "Trinken",
+        "hydrationInfo": "Trinkt {{petName}} genug?",
+        "hydrationOptions": [
+            {
+                "value": 0,
+                "title": "Verweigert das Trinken",
+                "description": "Will kein Wasser trinken, zeigt mögliche Anzeichen von Dehydration wie Lethargie, trockene Zahnfleisch."
+            },
+            {
+                "value": 2.5,
+                "title": "Braucht Hilfe beim Trinken",
+                "description": "Zeigt Interesse an Wasser, könnte aber Ermutigung benötigen, wie zum Wasser gebracht zu werden oder sanftes Streicheln beim Trinken."
+            },
+            {
+                "value": 5,
+                "title": "Trinkt ein wenig",
+                "description": "Trinkt weniger als üblich, könnte benötigen, dass Wasser in der Nähe von Ruhebereichen platziert wird oder bevorzugt bestimmte Arten von Schüsseln oder Standorten."
+            },
+            {
+                "value": 7.5,
+                "title": "Trinkt mit Ermutigung",
+                "description": "Bevorzugt fließendes Wasser oder trinkt vielleicht nur, wenn frisches Wasser bereitgestellt wird, könnte durch Wasser mit ein wenig Geschmack mehr angelockt werden."
+            },
+            {
+                "value": 10,
+                "title": "Hydriert und gesund",
+                "description": "Trinkt regelmäßig Wasser aus Schüsseln oder Brunnen, zeigt keine Anzeichen von Dehydration."
+            }
+        ],
+        "hygiene": "Sauberkeit",
+        "hygieneInfo": "Ist {{petName}} sauber und bequem? Kann sich {{petName}} selbst sauber halten?",
+        "hygieneOptions": [
+            {
+                "value": 0,
+                "title": "Stark verwahrlost",
+                "description": "{{petName}} verschmutzt sich regelmäßig, benutzt das Katzenklo nicht richtig, das Fell kann verfilzt und schmutzig werden, was auf eine starke Verschlechterung hinweist."
+            },
+            {
+                "value": 2.5,
+                "title": "Braucht häufig Hilfe",
+                "description": "{{petName}} benötigt Hilfe beim Pflegen schwer erreichbarer Stellen, kann anfangen, die Fellpflege zu vernachlässigen, erhöhtes Risiko für Dermatitis oder Verfilzungen."
+            },
+            {
+                "value": 5,
+                "title": "Gelegentlich unordentlich",
+                "description": "Benötigt gelegentliche Hilfe bei der Pflege, besonders wenn arthritisch oder schwach, kann kleinere Unfälle haben."
+            },
+            {
+                "value": 7.5,
+                "title": "Generell sauber",
+                "description": "{{petName}} pflegt sich meist selbst, erreicht aber möglicherweise nicht alle Bereiche, könnte das Katzenklo meiden, wenn es nicht sauber ist, kommt aber im Allgemeinen gut zurecht."
+            },
+            {
+                "value": 10,
+                "title": "Immer sauber",
+                "description": "{{petName}} pflegt sich gut, das Fell bleibt sauber und elegant, benutzt das Katzenklo effektiv."
+            }
+        ],
+        "happiness": "Freude",
+        "happinessInfo": "Zeigt {{petName}} Freude und Interesse? Reagiert {{petName}} auf Dinge um ihn herum (Familie, Spielzeuge usw.)?",
+        "happinessOptions": [
+            {
+                "value": 0,
+                "title": "Stark deprimiert",
+                "description": "Zeigt kein Interesse an jeglicher Form von Interaktion, reagiert nicht auf Spielzeuge oder Familie, könnte sich verstecken oder übermäßig schlafen."
+            },
+            {
+                "value": 2.5,
+                "title": "Oft uninteressiert",
+                "description": "Interagiert oder spielt selten, zeigt wenig Interesse an der Umgebung, könnte sich von familiären Aktivitäten zurückziehen."
+            },
+            {
+                "value": 5,
+                "title": "Leicht interessiert",
+                "description": "Beteiligt sich gelegentlich am Spiel oder sucht Aufmerksamkeit, bevorzugt ruhigere Aktivitäten, könnte mehr Zeit mit Ausruhen verbringen."
+            },
+            {
+                "value": 7.5,
+                "title": "Generell glücklich",
+                "description": "Beteiligt sich noch an der Familie und könnte mit Spielzeugen spielen, könnte aber weniger aktiv sein oder leichte Rückzugszeichen zeigen."
+            },
+            {
+                "value": 10,
+                "title": "Völlig fröhlich",
+                "description": "{{petName}} zeigt gewohnte Neugier und Verspieltheit, sucht aktiv die Familie für Interaktion und spielt mit Lieblingsspielzeugen."
+            }
+        ],
+        "mobility": "Mobilität",
+        "mobilityInfo": "Kann {{petName}} ohne Hilfe aufstehen? Kann {{petName}} seine Lieblingsplätze erreichen?",
+        "mobilityOptions": [
+            {
+                "value": 0,
+                "title": "Immobilität",
+                "description": "{{petName}} benötigt Hilfe für jede Bewegung, kann eventuell das Katzenklo oder Futter ohne Hilfe nicht erreichen."
+            },
+            {
+                "value": 2.5,
+                "title": "Stark eingeschränkt",
+                "description": "Bewegung eingeschränkt, könnte Hilfe benötigen, um das Katzenklo oder Futterbereiche zu erreichen, meidet frühere Aktivitäten."
+            },
+            {
+                "value": 5,
+                "title": "Mäßig eingeschränkt",
+                "description": "{{petName}} zeigt einige Schwierigkeiten bei der Bewegung, könnte Treppen meiden oder nicht mehr springen, bewegt sich langsamer."
+            },
+            {
+                "value": 7.5,
+                "title": "Leicht eingeschränkt",
+                "description": "{{petName}} ist größtenteils unabhängig, könnte jedoch bei höheren Sprüngen zögern oder etwas Hilfe beim Klettern auf bevorzugte Plätze benötigen."
+            },
+            {
+                "value": 10,
+                "title": "Vollständig mobil",
+                "description": "{{petName}} bewegt sich mühelos durch das Haus, springt und klettert ohne zu zögern."
+            }
+        ]
+    }
+}

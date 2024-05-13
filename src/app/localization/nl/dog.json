@@ -1,0 +1,398 @@
+{
+    "tips": {
+        "hurt": [
+            {
+                "title": "Creëer een Comfortabele Rustplek",
+                "text": "Zorg dat je hond een rustig, gezellig plekje heeft om te rusten, weg van drukke plekken om ze te helpen ontspannen."
+            },
+            {
+                "title": "Overweeg Opties voor Pijnbeheersing",
+                "text": "Raadpleeg je dierenarts over opties voor pijnverlichting, inclusief medicijnen, supplementen of alternatieve therapieën."
+            },
+            {
+                "title": "Voorzichtige Behandeling",
+                "text": "Wees voorzichtig bij het aanraken of verplaatsen van je hond, vooral op plekken die ongemak lijken te veroorzaken."
+            },
+            {
+                "title": "Warme Kompres",
+                "text": "Voor bepaalde soorten ongemak kunnen warme kompressen pijn verzachten. Vraag je dierenarts of dit geschikt is voor de conditie van je hond."
+            },
+            {
+                "title": "Beperk Inspannende Activiteit",
+                "text": "Houd activiteiten rustig om pijn niet te verergeren, met een focus op zachte, korte interacties."
+            }
+        ],
+        "hunger": [
+            {
+                "title": "Verwarm het Voedsel Lichtjes of Voeg Kippenbouillon Toe",
+                "text": "Het verwarmen van voedsel kan de geur versterken, waardoor het aantrekkelijker wordt voor je hond. Een scheutje kippenbouillon kan ook de interesse in voedsel vergroten zonder hun zintuigen te overweldigen."
+            },
+            {
+                "title": "Verken Maaltijdfrequentie",
+                "text": "Ontdek wat het beste bij je hond past: één maaltijd per dag of kleinere, frequentere maaltijden. Het aanpassen van voedingstijden kan hun eetlust en welzijn verbeteren."
+            },
+            {
+                "title": "Experimenteer met Verschillende Voedingsmiddelen",
+                "text": "Het ontdekken van de voorkeuren van je hond kan cruciaal zijn. Probeer verschillende gezonde opties, inclusief natvoer, droogvoer of een mix om te zien wat ze verkiezen."
+            },
+            {
+                "title": "Zorg voor een Rustige, Comfortabele Eetplek",
+                "text": "Een kalme omgeving vrij van harde geluiden en veel verkeer kan je hond helpen te ontspannen en zich te concentreren op het eten."
+            },
+            {
+                "title": "Houd Vers Water Beschikbaar",
+                "text": "Hydratatie speelt een cruciale rol in de eetlust. Vers water aanbieden naast opties voor nat voedsel kan helpen bij het behouden van hydratatie en het stimuleren van eten."
+            },
+            {
+                "title": "Gebruik een Platte Schotel voor Makkelijkere Toegang tot Voedsel",
+                "text": "Sommige honden vinden kommen intimiderend of oncomfortabel om uit te eten. Een platte schotel kan voedsel toegankelijker en uitnodigender maken."
+            },
+            {
+                "title": "Bied Voedsel in Kleine Hoeveelheden aan op Regelmatige Tijdstippen",
+                "text": "Consistente, kleine porties kunnen helpen bij het beheren van de voedselinname van je hond zonder hen te overweldigen, waardoor maaltijden beheersbaarder worden."
+            },
+            {
+                "title": "Zorg Altijd voor Makkelijke Toegang tot Vers Water",
+                "text": "Uitdroging kan de eetlust beïnvloeden. Het is essentieel om ervoor te zorgen dat je hond constant toegang heeft tot water voor hun algehele gezondheid en om eetgewoonten te verbeteren."
+            }
+        ],
+        "hydration": [
+            {
+                "title": "Beschikbaarheid van Vers Water",
+                "text": "Heb altijd vers, schoon water beschikbaar en moedig het drinken aan door waterbakken op meerdere toegankelijke plekken te plaatsen."
+            },
+            {
+                "title": "Geef het Water Smaak",
+                "text": "Voeg een beetje smaak toe aan het water, zoals een kleine hoeveelheid kippenbouillon of tonijnsap, om het drinken te stimuleren (raadpleeg je dierenarts voor veilige opties)."
+            },
+            {
+                "title": "Integratie van Nat Voer",
+                "text": "Verhoog de vochtinname door nat voer in het dieet van je hond op te nemen, wat kan helpen met hydratatie."
+            },
+            {
+                "title": "IJsblokjes als Traktaties",
+                "text": "Bied ijsblokjes aan als een caloriearme traktatie – sommige honden genieten ervan om erop te likken of te kauwen."
+            },
+            {
+                "title": "Let op Uitdroging",
+                "text": "Leer de tekenen van uitdroging kennen (zoals droge tandvlees en lethargie) en raadpleeg je dierenarts als je deze symptomen opmerkt."
+            }
+        ],
+        "hygiene": [
+            {
+                "title": "Regelmatige Verzorgingssessies",
+                "text": "Blijf bij met regelmatige verzorging om je hond schoon te houden. Dit omvat borstelen, baden en het schoonmaken van eventueel bevuilde gebieden."
+            },
+            {
+                "title": "Huisdiervriendelijke Doekjes",
+                "text": "Gebruik veilige doekjes voor huisdieren voor snelle schoonmaakbeurten, vooral als je hond moeite heeft met het behouden van hun netheid."
+            },
+            {
+                "title": "Gebitsverzorging",
+                "text": "Onderhoud de mondhygiëne met geschikte tandenborstels en tandpasta voor honden om tandziekten te voorkomen en ze fris te laten voelen."
+            },
+            {
+                "title": "Assisteer bij Toiletbehoeften",
+                "text": "Voor honden die zichzelf niet kunnen schoonmaken na het toilet, reinig ze voorzichtig om ongemak of infecties te voorkomen."
+            },
+            {
+                "title": "Comfortabele Bedding",
+                "text": "Zorg dat de bedding schoon en droog is; verander het regelmatig om te voorkomen dat je hond in vuil of vocht ligt, wat kan leiden tot huidproblemen."
+            }
+        ],
+        "happiness": [
+            {
+                "title": "Identificeer Vreugdetriggers",
+                "text": "Let op activiteiten of speeltjes die eerder vreugde brachten aan je hond. Zelfs kleine interacties kunnen hun humeur verlichten."
+            },
+            {
+                "title": "Kwaliteitstijd Samen",
+                "text": "Breng meer tijd door met je hond, door zachte genegenheid en gezelschap aan te bieden om hun geest te verheffen."
+            },
+            {
+                "title": "Nieuwe Ervaringen",
+                "text": "Introduceer nieuwe, stressvrije activiteiten of omgevingen om hun interesse en betrokkenheid te stimuleren. Soms kan een verandering van omgeving helpen."
+            },
+            {
+                "title": "Socialisatie",
+                "text": "Als je hond geniet van het gezelschap van andere dieren, overweeg dan speelafspraken met bekende honden om positieve sociale interacties aan te moedigen."
+            },
+            {
+                "title": "Comfortartikelen",
+                "text": "Voorzie je hond van comfortartikelen, zoals een favoriete deken of speeltje, om een gevoel van veiligheid en geluk te bieden."
+            },
+            {
+                "title": "Muziektherapie",
+                "text": "Sommige honden vinden kalmte en comfort in zachte muziek. Het spelen van zachte deuntjes kan een kalmerende omgeving voor je hond creëren."
+            },
+            {
+                "title": "Raadpleeg een Dierenarts",
+                "text": "Aanhoudend laag geluk kan een teken zijn van onderliggende gezondheidsproblemen. Een dierenarts kan advies geven over het aanpakken van mogelijke medische oorzaken."
+            }
+        ],
+        "mobility": [
+            {
+                "title": "Begin met Korte, Zachte Wandelingen",
+                "text": "Korte, ontspannen wandelingen kunnen helpen de spiertonus en gewrichtsflexibiliteit te behouden zonder te veel belasting op je hond."
+            },
+            {
+                "title": "Gebruik Orthopedisch Beddengoed voor Extra Comfort",
+                "text": "Orthopedische bedden, zoals een traagschuimmatras, ondersteunen de gewrichten en kunnen pijn na rust voorkomen, waardoor beweging comfortabeler wordt."
+            },
+            {
+                "title": "Masseer Zachtjes de Poten van Je Hond",
+                "text": "Masseren kan de circulatie verbeteren en ongemak verminderen, waardoor het voor je hond makkelijker wordt om te bewegen."
+            },
+            {
+                "title": "Speel Zachtjes met Zachte Speeltjes",
+                "text": "Speeltjes die zachte spelletjes aanmoedigen kunnen helpen je hond actief te houden zonder risico op letsel of ongemak."
+            },
+            {
+                "title": "Raadpleeg een Dierenarts voor Specifieke Fysiotherapieoefeningen",
+                "text": "Een professional kan oefeningen aanbevelen die zijn afgestemd op de behoeften van je hond, waardoor mobiliteit en kracht worden bevorderd zonder schade te veroorzaken."
+            },
+            {
+                "title": "Creëer een Veilige, Toegankelijke Omgeving",
+                "text": "Zorg dat je huis hondvriendelijk is, met indien nodig hellingen of trappen, om je hond gemakkelijk te laten bewegen zonder te moeten springen of klimmen."
+            },
+            {
+                "title": "Let op Gewicht om Gewrichtsstress te Verminderen",
+                "text": "Je hond op een gezond gewicht houden kan de belasting op hun gewrichten aanzienlijk verminderen en beweging makkelijker maken."
+            },
+            {
+                "title": "Overweeg Mobiliteitshulpmiddelen:",
+                "text": "Voor honden met aanzienlijke mobiliteitsproblemen kunnen hulpmiddelen zoals harnassen of rolstoelen ondersteuning bieden, waardoor het mogelijk wordt voor hen om meer vrijheid en activiteit te genieten."
+            }
+        ],
+        "encouragement": [
+            {
+                "title": "Leg Bijzondere Momenten Vast",
+                "text": "Maak foto's van je hond om de herinnering aan jullie gedeelde vreugde te bewaren. Een foto kan een moment van geluk voor een leven lang vastleggen."
+            },
+            {
+                "title": "Vier met Nieuwe Speeltjes",
+                "text": "Introduceer nieuwe spelletjes of speeltjes op goede dagen, waardoor opwinding en variatie aan de speeltijd van je hond wordt toegevoegd."
+            },
+            {
+                "title": "Geniet van Extra Lange Knuffelsessies",
+                "text": "Benut goede dagen optimaal met verlengde knuffeltijd, waardoor je band wordt versterkt en comfort wordt geboden."
+            },
+            {
+                "title": "Maak een Pootschilderij",
+                "text": "Doe mee aan een leuk kunstproject door een pootschilderij met je hond te maken, wat zorgt voor een uniek en blijvend aandenken."
+            },
+            {
+                "title": "Documenteer Blije Dagen in een Dagboek",
+                "text": "Schrijf over de goede dagen van je hond in een dagboek, waarin je de vreugde en memorabele momenten die jullie delen detailleert."
+            },
+            {
+                "title": "Organiseer een Mini-Fotoshoot",
+                "text": "Kleed je hond in leuke outfits en richt thuis een fotoshoot in, waarbij je hun persoonlijkheid en jouw creativiteit vastlegt."
+            },
+            {
+                "title": "Verken Nieuwe Paden of Parken",
+                "text": "Ontdek nieuwe buitenruimtes met je hond, verrijkend hun omgeving en stimulerend hun zintuigen."
+            },
+            {
+                "title": "Organiseer een Speelafspraakje voor Honden",
+                "text": "Regel een ontmoeting voor je hond om te spelen met vrienden, waardoor socialisatie en gedeeld plezier worden aangemoedigd."
+            },
+            {
+                "title": "Eindig de Dag met een Voorleessessie",
+                "text": "Lees voor aan je hond, waardoor je stem hen kan kalmeren en ontspannen, en zo een vreedzaam einde aan een goede dag creëert."
+            },
+            {
+                "title": "Start een Doos met Blije Momenten",
+                "text": "Verzamel aandenkens aan de goede dagen van je hond, zoals speeltjes, foto's of kleine briefjes, in een speciale doos die jullie samen kunnen herbeleven."
+            },
+            {
+                "title": "Bereid een Speciale Maaltijd",
+                "text": "Kook een veilige maaltijd of traktatie voor je hond om een bijzonder goede dag te vieren, liefde tonend door hun favoriete smaken."
+            },
+            {
+                "title": "Bezoek een Hondvriendelijk Café of Winkel",
+                "text": "Deel een nieuwe ervaring met je hond door een plek te bezoeken waar ze welkom zijn om mee te doen aan het plezier."
+            },
+            {
+                "title": "Heb een Ontspannende Spa Dag",
+                "text": "Verwen je hond met een zachte bad, gevolgd door een verzorgingssessie om hen geliefd en verfrist te laten voelen."
+            }
+        ]
+    },
+    "assessments": {
+        "hurt": "Pijn",
+        "hurtInfo": "Is {{petName}} pijnvrij? Of kan de pijn van {{petName}} succesvol beheerd worden?",
+        "hurtOptions": [
+            {
+                "value": 0,
+                "title": "Ernstige Pijn",
+                "description": "{{petName}} toont duidelijke tekenen van pijn, zoals piepen of moeite met bewegen, en lijkt geen comfortabele positie te kunnen vinden."
+            },
+            {
+                "value": 2.5,
+                "title": "Matige Pijn",
+                "description": "Toont enig ongemak, vooral bij bewegen of ademhalen, kan aanraking in bepaalde gebieden vermijden."
+            },
+            {
+                "value": 5,
+                "title": "Lichte Pijn",
+                "description": "{{petName}} lijkt soms een beetje oncomfortabel maar kan nog steeds rusten en bewegen zonder al te veel moeite."
+            },
+            {
+                "value": 7.5,
+                "title": "Af en Toe Oncomfortabel",
+                "description": "Zelden tekenen van ongemak, kan meestal zonder problemen bewegen en rusten."
+            },
+            {
+                "value": 10,
+                "title": "Pijnvrij",
+                "description": "{{petName}} is comfortabel, beweegt gemakkelijk en toont geen tekenen van pijn."
+            }
+        ],
+        "hunger": "Eten",
+        "hungerInfo": "Eet {{petName}} genoeg?",
+        "hungerOptions": [
+            {
+                "value": 0,
+                "title": "Weigert te Eten",
+                "description": "{{petName}} eet niets, zelfs hun favoriete lekkernijen niet."
+            },
+            {
+                "value": 2.5,
+                "title": "Moeite met Eten",
+                "description": "Toont interesse in voedsel maar heeft moeite met eten zonder hulp."
+            },
+            {
+                "value": 5,
+                "title": "Eet met Aanmoediging",
+                "description": "Eet alleen als er aangemoedigd wordt of uit de hand gevoerd, maar niet gretig."
+            },
+            {
+                "value": 7.5,
+                "title": "Eet met Kleine Problemen",
+                "description": "Eet minder dan normaal of geeft de voorkeur aan zacht voedsel, maar redt zich over het algemeen zelf."
+            },
+            {
+                "value": 10,
+                "title": "Eet Normaal",
+                "description": "{{petName}} eet regelmatig zonder problemen."
+            }
+        ],
+        "hydration": "Drinken",
+        "hydrationInfo": "Drinkt {{petName}} genoeg?",
+        "hydrationOptions": [
+            {
+                "value": 0,
+                "title": "Weigert te Drinken",
+                "description": "Drinkt geen water, toont mogelijk tekenen van uitdroging zoals lethargie, droge mond en een droge neus."
+            },
+            {
+                "value": 2.5,
+                "title": "Heeft Hulp Nodig bij Drinken",
+                "description": "Toont interesse in water maar kan alleen drinken met hulp."
+            },
+            {
+                "value": 5,
+                "title": "Drinkt Een Beetje",
+                "description": "Drinkt zelf maar minder dan gebruikelijk, heeft misschien herinneringen nodig."
+            },
+            {
+                "value": 7.5,
+                "title": "Drinkt met Aanmoediging",
+                "description": "Drinkt voldoende, al is soms wat aansporing nodig of geeft de voorkeur aan bepaalde manieren van drinken."
+            },
+            {
+                "value": 10,
+                "title": "Gehydrateerd en Gezond",
+                "description": "Drinkt regelmatig zonder problemen, blijft goed gehydrateerd."
+            }
+        ],
+        "hygiene": "Hygiëne",
+        "hygieneInfo": "Is {{petName}} schoon en comfortabel? Kan {{petName}} zichzelf schoon houden?",
+        "hygieneOptions": [
+            {
+                "value": 0,
+                "title": "Ernstig Verwaarloosd",
+                "description": "{{petName}} is vaak vies, kan klitten in de vacht hebben, en bevuilt zichzelf regelmatig."
+            },
+            {
+                "value": 2.5,
+                "title": "Heeft Vaak Hulp Nodig",
+                "description": "Kan soms schoon blijven maar heeft vaak hulp nodig om niet in vuil te liggen of schoon te blijven."
+            },
+            {
+                "value": 5,
+                "title": "Af en Toe Rommelig",
+                "description": "{{petName}} is meestal schoon maar kan af en toe ongelukjes hebben of hulp nodig hebben bij de verzorging."
+            },
+            {
+                "value": 7.5,
+                "title": "Over het Algemeen Schoon",
+                "description": "Blijft schoon met minimale hulp, heeft misschien alleen hulp nodig bij moeilijk bereikbare plekken."
+            },
+            {
+                "value": 10,
+                "title": "Altijd Schoon",
+                "description": "{{petName}} beheert hun hygiëne goed, blijft schoon en bevuilt zichzelf niet."
+            }
+        ],
+        "happiness": "Vreugde",
+        "happinessInfo": "Laat {{petName}} vreugde en interesse zien? Reageert {{petName}} op dingen om hem heen (familie, speeltjes, etc)?",
+        "happinessOptions": [
+            {
+                "value": 0,
+                "title": "Ernstig Depressief",
+                "description": "Toont geen interesse in interactie, speelgoed, of activiteiten die eerst leuk waren."
+            },
+            {
+                "value": 2.5,
+                "title": "Vaak Ongeïnteresseerd",
+                "description": "Toont af en toe een glimp van hun oude zelf, maar is meestal ongeïnteresseerd in de omgeving of activiteiten."
+            },
+            {
+                "value": 5,
+                "title": "Matig Geïnteresseerd",
+                "description": "Toont interesse in interacties of speelgoed maar minder dan voorheen, geniet van zijn met familie maar kan snel moe worden."
+            },
+            {
+                "value": 7.5,
+                "title": "Over het Algemeen Vrolijk",
+                "description": "Gaat om met familie en speelgoed, toont tekenen van geluk, maar niet zo vaak of enthousiast als voorheen."
+            },
+            {
+                "value": 10,
+                "title": "Volledig Vreugdevol",
+                "description": "{{petName}} reageert, geniet van interactie, spelen, en deel uitmaken van de familieactiviteiten zoals altijd."
+            }
+        ],
+        "mobility": "Mobiliteit",
+        "mobilityInfo": "Kan {{petName}} opstaan zonder hulp? Heeft {{petName}} zin in een wandeling?",
+        "mobilityOptions": [
+            {
+                "value": 0,
+                "title": "Immobiel",
+                "description": "{{petName}} kan helemaal niet zelfstandig bewegen. Er is hulp nodig bij elke beweging. {{petName}} kan niet opstaan, lopen of van positie veranderen zonder hulp."
+            },
+            {
+                "value": 2.5,
+                "title": "Ernstig Beperkt",
+                "description": "{{petName}} kan nauwelijks bewegen en heeft veel hulp nodig om te staan, lopen of zich te herpositioneren. Ze kunnen misschien alleen zeer korte afstanden afleggen met ondersteuning."
+            },
+            {
+                "value": 5,
+                "title": "Matig Beperkt",
+                "description": "{{petName}} kan een beetje op eigen houtje bewegen maar heeft hulp of aanmoediging nodig voor langere afstanden of om op te staan vanuit een liggende positie."
+            },
+            {
+                "value": 7.5,
+                "title": "Licht Beperkt",
+                "description": "{{petName}} is grotendeels mobiel maar toont tekenen van moeilijkheden met sommige bewegingen, zoals trappen klimmen of op hogere oppervlakken springen."
+            },
+            {
+                "value": 10,
+                "title": "Volledig Mobiel",
+                "description": "{{petName}} beweegt vrij zonder enig teken van ongemak. Ze kunnen rennen, springen en spelen zoals ze altijd hebben gedaan, zonder aarzeling of moeite met enige beweging."
+            }
+        ]
+    }
+}

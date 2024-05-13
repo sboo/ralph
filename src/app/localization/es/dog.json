@@ -1,0 +1,398 @@
+{
+    "tips": {
+        "hurt": [
+            {
+                "title": "Crear un Área de Descanso Cómoda",
+                "text": "Asegúrate de que tu perro tenga un lugar tranquilo y acogedor para descansar, lejos de áreas con mucha actividad para ayudarle a relajarse."
+            },
+            {
+                "title": "Considerar Opciones para el Manejo del Dolor",
+                "text": "Consulta con tu veterinario sobre opciones para aliviar el dolor, incluyendo medicamentos, suplementos o terapias alternativas."
+            },
+            {
+                "title": "Manejo Suave",
+                "text": "Ten cuidado al tocar o mover a tu perro, especialmente en áreas que parecen causarle incomodidad."
+            },
+            {
+                "title": "Compresas Calientes",
+                "text": "Para ciertos tipos de molestias, las compresas calientes pueden aliviar el dolor. Pregunta a tu veterinario si esto es adecuado para la condición de tu perro."
+            },
+            {
+                "title": "Limitar la Actividad Extenuante",
+                "text": "Mantén las actividades de bajo impacto para evitar exacerbar el dolor, enfocándote en interacciones suaves y breves."
+            }
+        ],
+        "hunger": [
+            {
+                "title": "Calentar Ligeramente la Comida o Añadir Caldo de Pollo",
+                "text": "Calentar la comida puede realzar su aroma, haciéndola más atractiva para tu perro. Un poco de caldo de pollo también puede aumentar el interés en la comida sin sobrecargar sus sentidos."
+            },
+            {
+                "title": "Explorar la Frecuencia de las Comidas",
+                "text": "Descubre lo que mejor se adapta a tu perro: una comida al día o comidas más pequeñas y frecuentes. Adaptar los horarios de alimentación puede impulsar su apetito y bienestar."
+            },
+            {
+                "title": "Experimentar con Diferentes Alimentos",
+                "text": "Descubrir las preferencias de tu perro puede ser clave. Prueba varias opciones saludables, incluyendo comida húmeda, seca, o una mezcla para ver qué prefieren."
+            },
+            {
+                "title": "Asegurar un Espacio Tranquilo y Cómodo para Comer",
+                "text": "Un ambiente tranquilo, libre de ruidos fuertes y tráfico, puede ayudar a tu perro a relajarse y concentrarse en comer."
+            },
+            {
+                "title": "Mantener Agua Fresca Disponible",
+                "text": "La hidratación juega un papel crucial en el apetito. Ofrecer agua fresca junto con opciones de comida húmeda puede ayudar a mantener la hidratación y fomentar el consumo de alimento."
+            },
+            {
+                "title": "Usar un Plato Plano para Facilitar el Acceso a la Comida",
+                "text": "Algunos perros encuentran los tazones intimidantes o incómodos para comer. Un plato plano puede hacer la comida más accesible e invitante."
+            },
+            {
+                "title": "Ofrecer Comida en Pequeñas Cantidades a Intervalos Regulares",
+                "text": "Porciones consistentes y pequeñas pueden ayudar a manejar la ingesta de tu perro sin abrumarla, haciendo las comidas más manejables."
+            },
+            {
+                "title": "Asegurar Fácil Acceso a Agua Fresca en Todo Momento",
+                "text": "La deshidratación puede afectar el apetito. Asegurarse de que tu perro tenga acceso constante al agua es esencial para su salud general y puede mejorar sus hábitos alimenticios."
+            }
+        ],
+        "hydration": [
+            {
+                "title": "Disponibilidad de Agua Fresca",
+                "text": "Siempre ten agua fresca y limpia disponible y fomenta el consumo colocando tazones de agua en varios lugares accesibles."
+            },
+            {
+                "title": "Saborizar el Agua",
+                "text": "Añade un poco de sabor al agua, como una pequeña cantidad de caldo de pollo o jugo de atún, para incentivar el consumo (consulta a tu veterinario para opciones seguras)."
+            },
+            {
+                "title": "Integración de Comida Húmeda",
+                "text": "Aumenta la ingesta de humedad incorporando comida húmeda en la dieta de tu perro, lo cual puede ayudar con la hidratación."
+            },
+            {
+                "title": "Cubitos de Hielo como Golosinas",
+                "text": "Ofrece cubitos de hielo como una golosina baja en calorías; a algunos perros les gusta lamerlos o masticarlos."
+            },
+            {
+                "title": "Vigilar la Deshidratación",
+                "text": "Aprende los signos de deshidratación (como encías secas y letargo) y consulta a tu veterinario si notas estos síntomas."
+            }
+        ],
+        "hygiene": [
+            {
+                "title": "Sesiones Regulares de Aseo",
+                "text": "Mantén el aseo regular para ayudar a tu perro a estar limpio. Esto incluye cepillado, baños y limpiar cualquier área sucia."
+            },
+            {
+                "title": "Toallitas Apropiadas para Perros",
+                "text": "Utiliza toallitas seguras para perros para limpiezas rápidas, especialmente si tu perro tiene dificultades para mantener su limpieza."
+            },
+            {
+                "title": "Cuidado Dental",
+                "text": "Mantén la higiene oral con cepillos de dientes y pasta dental apropiados para perros para prevenir enfermedades dentales y mantenerlos con un aliento fresco."
+            },
+            {
+                "title": "Asistir con las Necesidades del Baño",
+                "text": "Para perros que no pueden limpiarse después de ir al baño, límpialas suavemente para prevenir molestias o infecciones."
+            },
+            {
+                "title": "Ropa de Cama Cómoda",
+                "text": "Asegúrate de que la ropa de cama esté limpia y seca; cámbiala regularmente para prevenir que tu perro repose en suciedad o humedad, lo que puede llevar a problemas de piel."
+            }
+        ],
+        "happiness": [
+            {
+                "title": "Identificar Gatillos de Alegría",
+                "text": "Presta atención a las actividades o juguetes que anteriormente han traído alegría a tu perro. Incluso pequeñas interacciones pueden mejorar su estado de ánimo."
+            },
+            {
+                "title": "Tiempo de Calidad Juntos",
+                "text": "Pasa más tiempo con tu perro, ofreciendo afecto suave y compañía para elevar su espíritu."
+            },
+            {
+                "title": "Nuevas Experiencias",
+                "text": "Introduce actividades o ambientes nuevos y de bajo estrés para estimular su interés y compromiso. A veces, un cambio de escenario puede ayudar."
+            },
+            {
+                "title": "Socialización",
+                "text": "Si a tu perro le gusta la compañía de otros animales, considera citas de juego con perros conocidas para fomentar interacciones sociales positivas."
+            },
+            {
+                "title": "Objetos de Confort",
+                "text": "Proporciona a tu perro objetos de confort, como una manta o juguete favorito, para ofrecerle un sentido de seguridad y felicidad."
+            },
+            {
+                "title": "Terapia Musical",
+                "text": "Algunos perros encuentran calma y confort en la música suave. Reproducir melodías suaves puede crear un ambiente relajante para tu perro."
+            },
+            {
+                "title": "Consulta a un Veterinario",
+                "text": "La baja felicidad persistente puede ser señal de problemas de salud subyacentes. Un veterinario puede ofrecer consejos sobre cómo abordar posibles causas médicas."
+            }
+        ],
+        "mobility": [
+            {
+                "title": "Comenzar con Paseos Cortos y Suaves",
+                "text": "Paseos breves y tranquilos pueden ayudar a mantener el tono muscular y la flexibilidad de las articulaciones sin ejercer demasiado esfuerzo en tu perro."
+            },
+            {
+                "title": "Usar Ropa de Cama Ortopédica para Mayor Comodidad",
+                "text": "Las camas ortopédicas, como un colchón de espuma viscoelástica, apoyan las articulaciones y pueden prevenir el dolor después de descansar, haciendo el movimiento más cómodo."
+            },
+            {
+                "title": "Masajear Suavemente las Patas de Tu Perro",
+                "text": "Masajear puede mejorar la circulación y reducir la molestia, facilitando el movimiento de tu perro."
+            },
+            {
+                "title": "Participar en Juego de Bajo Impacto con Juguetes Suaves",
+                "text": "Los juguetes que fomentan el juego suave pueden ayudar a mantener a tu perro activo sin arriesgar lesiones o incomodidad."
+            },
+            {
+                "title": "Consultar a un Veterinario para Ejercicios de Fisioterapia Específicos",
+                "text": "Un profesional puede recomendar ejercicios adaptados a las necesidades de tu perro, promoviendo la movilidad y la fuerza sin causar daño."
+            },
+            {
+                "title": "Crear un Entorno Seguro y Accesible",
+                "text": "Asegúrate de que tu hogar sea amigable para perros, con rampas o escalones si es necesario, para ayudar a tu perro a moverse fácilmente sin tener que saltar o escalar."
+            },
+            {
+                "title": "Monitorear el Peso para Reducir el Estrés en las Articulaciones",
+                "text": "Mantener a tu perro en un peso saludable puede reducir significativamente la tensión en sus articulaciones y facilitar el movimiento."
+            },
+            {
+                "title": "Considerar Ayudas para la Movilidad:",
+                "text": "Para perros con problemas significativos de movilidad, ayudas como arneses o sillas de ruedas pueden ofrecer soporte, haciéndolo posible para ellos disfrutar de más libertad y actividad."
+            }
+        ],
+        "encouragement": [
+            {
+                "title": "Capturar Momentos Especiales",
+                "text": "Toma fotos de tu perro para preservar la memoria de vuestra alegría compartida. Una imagen puede congelar un momento de felicidad para toda la vida."
+            },
+            {
+                "title": "Celebrar con Juguetes Nuevos",
+                "text": "Introduce juegos o juguetes nuevos en días buenos, añadiendo emoción y variedad al tiempo de juego de tu perro."
+            },
+            {
+                "title": "Disfrutar de Sesiones de Mimos Extra Largas",
+                "text": "Aprovecha los días buenos con tiempo de mimos extendido, fortaleciendo tu vínculo y proporcionando confort."
+            },
+            {
+                "title": "Crear una Pintura de Pata",
+                "text": "Participa en un proyecto de arte divertido creando una pintura de pata con tu perro, lo que resulta en un recuerdo único y duradero."
+            },
+            {
+                "title": "Documentar los Días Felices en un Diario",
+                "text": "Escribe sobre los días buenos de tu perro en un diario, detallando la alegría y los momentos memorables que compartes."
+            },
+            {
+                "title": "Organizar una Mini Sesión Fotográfica",
+                "text": "Viste a tu perro con atuendos divertidos y organiza una sesión fotográfica en casa, capturando su personalidad y tu creatividad."
+            },
+            {
+                "title": "Explorar Nuevos Senderos o Parques",
+                "text": "Descubre nuevos espacios al aire libre con tu perro, enriqueciendo su entorno y estimulando sus sentidos."
+            },
+            {
+                "title": "Organizar una Cita de Juego para Perros",
+                "text": "Organiza un encuentro para que tu perro se reúna y juegue con amigos, fomentando la socialización y el disfrute compartido."
+            },
+            {
+                "title": "Terminar el Día con una Sesión de Cuentos",
+                "text": "Lee a tu perro, permitiendo que tu voz la calme y relaje, creando un final pacífico para un día bueno."
+            },
+            {
+                "title": "Iniciar una Caja de Momentos Felices",
+                "text": "Recoge recuerdos de los días buenos de tu perro, como juguetes, fotos o pequeñas notas, en una caja especial que puedas revisar juntos."
+            },
+            {
+                "title": "Preparar una Comida Especial",
+                "text": "Cocina una comida o trata segura para perros para celebrar un día particularmente bueno, mostrando amor a través de sus sabores favoritos."
+            },
+            {
+                "title": "Visitar una Cafetería o Tienda Amigable para Perros",
+                "text": "Comparte una nueva experiencia con tu perro visitando un lugar donde sean bienvenidos a unirse a la diversión."
+            },
+            {
+                "title": "Tener un Día de Spa Relajante",
+                "text": "Mima a tu perro con un baño suave, seguido de una sesión de aseo para hacerlos sentir amados y renovados."
+            }
+        ]
+    },
+    "assessments": {
+        "hurt": "Dolor",
+        "hurtInfo": "¿{{petName}} está libre de dolor? ¿O se puede manejar el dolor de {{petName}} con éxito?",
+        "hurtOptions": [
+            {
+                "value": 0,
+                "title": "Dolor Severo",
+                "description": "{{petName}} muestra signos claros de dolor, como quejidos o dificultad para moverse, y parece no poder estar cómodo."
+            },
+            {
+                "value": 2.5,
+                "title": "Dolor Moderado",
+                "description": "Muestra algo de incomodidad, especialmente al moverse o respirar, podría evitar ser tocado en ciertas áreas."
+            },
+            {
+                "value": 5,
+                "title": "Dolor Leve",
+                "description": "{{petName}} parece ligeramente incómodo a veces pero aún puede descansar y moverse sin demasiados problemas."
+            },
+            {
+                "value": 7.5,
+                "title": "Molestias Ocasionales",
+                "description": "Signos raros de incomodidad, mayormente capaz de moverse y descansar sin problemas."
+            },
+            {
+                "value": 10,
+                "title": "Libre de Dolor",
+                "description": "{{petName}} está cómodo, se mueve fácilmente y no muestra signos de dolor."
+            }
+        ],
+        "hunger": "Alimentación",
+        "hungerInfo": "¿{{petName}} está comiendo suficiente?",
+        "hungerOptions": [
+            {
+                "value": 0,
+                "title": "Rechaza Comer",
+                "description": "{{petName}} no quiere comer nada, ni siquiera sus golosinas favoritas."
+            },
+            {
+                "value": 2.5,
+                "title": "Lucha para Comer",
+                "description": "Muestra interés en la comida pero tiene dificultades para comer sin asistencia."
+            },
+            {
+                "value": 5,
+                "title": "Come con Estímulo",
+                "description": "Solo come cuando se le anima o se le alimenta a mano, pero no con entusiasmo."
+            },
+            {
+                "value": 7.5,
+                "title": "Come con Pequeños Problemas",
+                "description": "Come menos de lo usual o prefiere comida blanda, pero generalmente se las arregla solo."
+            },
+            {
+                "value": 10,
+                "title": "Come Normalmente",
+                "description": "{{petName}} come regularmente sin ningún problema."
+            }
+        ],
+        "hydration": "Hidratación",
+        "hydrationInfo": "¿{{petName}} está bebiendo suficiente?",
+        "hydrationOptions": [
+            {
+                "value": 0,
+                "title": "Rechaza Beber",
+                "description": "No bebe agua, mostrando posibles signos de deshidratación como letargo, encías secas y nariz seca."
+            },
+            {
+                "value": 2.5,
+                "title": "Necesita Asistencia para Beber",
+                "description": "Muestra interés en el agua pero solo puede beber con ayuda."
+            },
+            {
+                "value": 5,
+                "title": "Bebe un Poco",
+                "description": "Bebe por su cuenta pero menos de lo usual, podría necesitar recordatorios."
+            },
+            {
+                "value": 7.5,
+                "title": "Bebe con Estímulo",
+                "description": "Bebe una cantidad suficiente, aunque podría necesitar algo de persuasión o preferir ciertas maneras de beber."
+            },
+            {
+                "value": 10,
+                "title": "Hidratado y Saludable",
+                "description": "Bebe regularmente sin ningún problema, manteniendo una buena hidratación."
+            }
+        ],
+        "hygiene": "Limpieza",
+        "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí mismo?",
+        "hygieneOptions": [
+            {
+                "value": 0,
+                "title": "Severamente Desaliñado",
+                "description": "{{petName}} está a menudo sucio, podría tener el pelo enmarañado y frecuentemente se ensucia a sí mismo."
+            },
+            {
+                "value": 2.5,
+                "title": "Necesita Ayuda Frecuente",
+                "description": "A veces puede mantenerse limpio pero a menudo necesita asistencia para no acostarse en sus desechos o mantenerse limpio."
+            },
+            {
+                "value": 5,
+                "title": "Ocasionalmente Desordenado",
+                "description": "{{petName}} está mayormente limpio pero puede tener accidentes ocasionales o necesitar ayuda con el aseo."
+            },
+            {
+                "value": 7.5,
+                "title": "Generalmente Limpio",
+                "description": "Se mantiene limpio con mínima asistencia, puede que solo necesite ayuda con lugares difíciles de alcanzar."
+            },
+            {
+                "value": 10,
+                "title": "Siempre Limpio",
+                "description": "{{petName}} gestiona bien su higiene, se mantiene limpio y no se ensucia a sí mismo."
+            }
+        ],
+        "happiness": "Alegría",
+        "happinessInfo": "¿{{petName}} expresa alegría e interés? ¿{{petName}} responde a las cosas que le rodean (familia, juguetes, etc)?",
+        "happinessOptions": [
+            {
+                "value": 0,
+                "title": "Severamente Deprimido",
+                "description": "No muestra interés en la interacción, juguetes o actividades que antes disfrutaba."
+            },
+            {
+                "value": 2.5,
+                "title": "A menudo Desinteresado",
+                "description": "Ocasionalmente muestra un atisbo de su antiguo yo, pero mayormente desinteresado en su entorno o actividades."
+            },
+            {
+                "value": 5,
+                "title": "Ligeramente Interesado",
+                "description": "Muestra interés en interacciones o juguetes pero menos que antes, disfruta estar con la familia pero puede cansarse fácilmente."
+            },
+            {
+                "value": 7.5,
+                "title": "Generalmente Feliz",
+                "description": "Interactúa con la familia y juguetes, muestra signos de felicidad, pero no tan frecuente o entusiastamente como antes."
+            },
+            {
+                "value": 10,
+                "title": "Completamente Alegre",
+                "description": "{{petName}} responde, disfruta de la interacción, el juego y ser parte de las actividades familiares como siempre."
+            }
+        ],
+        "mobility": "Movilidad",
+        "mobilityInfo": "¿Puede {{petName}} levantarse sin asistencia? ¿{{petName}} tiene ganas de salir a pasear?",
+        "mobilityOptions": [
+            {
+                "value": 0,
+                "title": "Inmóvil",
+                "description": "{{petName}} no puede moverse por sí mismo en absoluto. Necesita asistencia para cada movimiento y no puede levantarse, caminar o cambiar de posición sin ayuda."
+            },
+            {
+                "value": 2.5,
+                "title": "Severamente Limitado",
+                "description": "{{petName}} apenas puede moverse y necesita mucha ayuda para pararse, caminar o reposicionarse. Puede que solo maneje distancias muy cortas con apoyo."
+            },
+            {
+                "value": 5,
+                "title": "Moderadamente Limitado",
+                "description": "{{petName}} puede moverse un poco por sí mismo pero necesita asistencia o ánimo para distancias más largas o levantarse de una posición acostada."
+            },
+            {
+                "value": 7.5,
+                "title": "Ligeramente Limitado",
+                "description": "{{petName}} es mayormente móvil pero muestra signos de dificultad con algunos movimientos, como subir escaleras o saltar a superficies más altas."
+            },
+            {
+                "value": 10,
+                "title": "Completamente Móvil",
+                "description": "{{petName}} se mueve libremente sin ningún signo de incomodidad. Puede correr, saltar y jugar como siempre, sin mostrar hesitación o dificultad con ningún movimiento."
+            }
+        ]
+    }
+}

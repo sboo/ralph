@@ -7,6 +7,7 @@ import {Measurement} from '@/app/models/Measurement.ts';
 
 interface Props {
   petName: string;
+  petSpecies: string;
   date: Date;
   assessment?: Measurement | null;
   onCancel: () => void;
@@ -22,6 +23,7 @@ interface Props {
 
 const AssessmentItem: React.FC<Props> = ({
   petName,
+  petSpecies,
   date,
   onSubmit,
   onCancel,
@@ -68,71 +70,81 @@ const AssessmentItem: React.FC<Props> = ({
       <Text variant={'bodyLarge'} style={styles.intro}>
         {t('measurements:intro', {petName})}
       </Text>
-      <Text style={styles.label}>{t('measurements:hurt')}</Text>
-      <Text style={styles.info}>{t('measurements:hurtInfo', {petName})}</Text>
+      <Text style={styles.label}>{t(`${petSpecies}:assessments:hurt`)}</Text>
+      <Text style={styles.info}>
+        {t(`${petSpecies}:assessments:hurtInfo`, {petName})}
+      </Text>
       <RatingSlider
         onRatingChange={value => setHurt(value)}
         initialRating={hurt}
-        optionTexts={t('measurements:hurtOptions', {
+        optionTexts={t(`${petSpecies}:assessments:hurtOptions`, {
           returnObjects: true,
           petName,
         })}
       />
 
-      <Text style={styles.label}>{t('measurements:hunger')}</Text>
-      <Text style={styles.info}>{t('measurements:hungerInfo', {petName})}</Text>
+      <Text style={styles.label}>{t(`${petSpecies}:assessments:hunger`)}</Text>
+      <Text style={styles.info}>
+        {t(`${petSpecies}:assessments:hungerInfo`, {petName})}
+      </Text>
       <RatingSlider
         onRatingChange={value => setHunger(value)}
         initialRating={hunger}
-        optionTexts={t('measurements:hungerOptions', {
+        optionTexts={t(`${petSpecies}:assessments:hungerOptions`, {
           returnObjects: true,
           petName,
         })}
       />
-      <Text style={styles.label}>{t('measurements:hydration')}</Text>
+      <Text style={styles.label}>
+        {t(`${petSpecies}:assessments:hydration`)}
+      </Text>
       <Text style={styles.info}>
-        {t('measurements:hydrationInfo', {petName})}
+        {t(`${petSpecies}:assessments:hydrationInfo`, {petName})}
       </Text>
       <RatingSlider
         onRatingChange={value => setHydration(value)}
         initialRating={hydration}
-        optionTexts={t('measurements:hydrationOptions', {
+        optionTexts={t(`${petSpecies}:assessments:hydrationOptions`, {
           returnObjects: true,
           petName,
         })}
       />
-      <Text style={styles.label}>{t('measurements:hygiene')}</Text>
+      <Text style={styles.label}>{t(`${petSpecies}:assessments:hygiene`)}</Text>
       <Text style={styles.info}>
-        {t('measurements:hygieneInfo', {petName})}
+        {t(`${petSpecies}:assessments:hygieneInfo`, {petName})}
       </Text>
       <RatingSlider
         onRatingChange={value => setHygiene(value)}
         initialRating={hygiene}
-        optionTexts={t('measurements:hygieneOptions', {
+        optionTexts={t(`${petSpecies}:assessments:hygieneOptions`, {
           returnObjects: true,
           petName,
         })}
       />
-      <Text style={styles.label}>{t('measurements:happiness')}</Text>
+      <Text style={styles.label}>
+        {t(`${petSpecies}:assessments:happiness`)}
+      </Text>
       <Text style={styles.info}>
-        {t('measurements:happinessInfo', {petName})}
+        {t(`${petSpecies}:assessments:happinessInfo`, {petName})}
       </Text>
       <RatingSlider
         onRatingChange={value => setHappiness(value)}
         initialRating={happiness}
-        optionTexts={t('measurements:happinessOptions', {
+        optionTexts={t(`${petSpecies}:assessments:happinessOptions`, {
           returnObjects: true,
           petName,
         })}
       />
-      <Text style={styles.label}>{t('measurements:mobility')}</Text>
+      <Text style={styles.label}>
+        {t(`${petSpecies}:assessments:mobility`)}
+      </Text>
       <Text style={styles.info}>
-        {t('measurements:mobilityInfo', {petName})}
+        {t(`${petSpecies}:assessments:mobilityInfo`, {petName})}
       </Text>
       <RatingSlider
         onRatingChange={value => setMoboility(value)}
         initialRating={mobility}
-        optionTexts={t('measurements:mobilityOptions', {
+        optionTexts={t(`${petSpecies}:assessments:mobilityOptions`, {
           returnObjects: true,
           petName,
         })}
