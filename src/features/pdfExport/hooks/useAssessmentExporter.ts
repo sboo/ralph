@@ -106,37 +106,41 @@ const useAssessmentExporter = () => {
                     <div class="row">
                         <p class="item" style="background-color: ${getItemColor(
                           assessment.hurt,
-                        )}">${t('measurements:hurt')}:${assessment.hurt}</p>
+                        )}">${t(`${activePet?.species}:assessments:hurt`)}:${
+                  assessment.hurt
+                }</p>
 
                         <p class="item" style="background-color: ${getItemColor(
                           assessment.hydration,
-                        )}">${t('measurements:hydration')}:${
-                  assessment.hydration
-                }</p>
+                        )}">${t(
+                  `${activePet?.species}:assessments:hydration`,
+                )}:${assessment.hydration}</p>
 
                         <p class="item" style="background-color: ${getItemColor(
                           assessment.happiness,
-                        )}">${t('measurements:happiness')}:${
-                  assessment.happiness
-                }</p>
+                        )}">${t(
+                  `${activePet?.species}:assessments:happiness`,
+                )}:${assessment.happiness}</p>
                     </div>
 
                     <div class="row">
                         <p class="item" style="background-color: ${getItemColor(
-                          assessment.hurt,
-                        )}">${t('measurements:hunger')}:${assessment.hunger}</p>
+                          assessment.hunger,
+                        )}">${t(`${activePet?.species}:assessments:hunger`)}:${
+                  assessment.hunger
+                }</p>
 
                         <p class="item" style="background-color: ${getItemColor(
                           assessment.hygiene,
-                        )}">${t('measurements:hygiene')}:${
+                        )}">${t(`${activePet?.species}:assessments:hygiene`)}:${
                   assessment.hygiene
                 }</p>
 
                         <p class="item" style="background-color: ${getItemColor(
                           assessment.mobility,
-                        )}">${t('measurements:mobility')}:${
-                  assessment.mobility
-                }</p>
+                        )}">${t(
+                  `${activePet?.species}:assessments:mobility`,
+                )}:${assessment.mobility}</p>
                     </div>
                 </div>`;
               })
