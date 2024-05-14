@@ -102,6 +102,8 @@ const DebugScreen: React.FC = () => {
       <Text>Name: {activePet?.name}</Text>
       <Text>Species: {activePet?.species}</Text>
       <Text>isActive: {activePet?.isActive ? 'yes' : 'no'}</Text>
+      <Text>notificationsEnabled: {activePet?.notificationsEnabled ? 'yes' : 'no'}</Text>
+      <Text>pausedAt: {activePet?.pausedAt?.toISOString()}</Text>
       <Divider />
       <View style={{padding: 20}}>
         {activePet ? <Tips activePet={activePet} /> : null}

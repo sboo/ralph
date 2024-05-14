@@ -34,7 +34,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const [viewMode, setViewMode] = useState<'chart' | 'calendar'>('chart');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const debug = false;
+  const debug = true;
 
   useEffect(() => {
     const petIsSwitching = () => {

@@ -184,6 +184,14 @@ const Avatar: React.FC<AvatarProps> = ({
       !pet?.isActive ? (
         <Badge style={styles.notificationDot} size={10} />
       ) : null}
+      {mode === 'view' && pet?.pausedAt ? (
+        <BaseAvatar.Icon
+          size={size === 'big' ? 65 : 35}
+          style={styles.pauseAvatar}
+          icon="pause-circle-outline"
+          onTouchStart={onAvatarClick}
+        />
+      ) : null}
     </View>
   );
 };
@@ -201,11 +209,17 @@ const styles = StyleSheet.create({
     right: -5,
     bottom: -5,
   },
+  pauseAvatar: {
+    position: 'absolute',
+    opacity: 0.5,
+    top: 0,
+    left: 0,
+  },
   notificationDot: {
     position: 'absolute',
     right: -2,
     top: -2,
-  }
+  },
 });
 
 export default Avatar;

@@ -43,6 +43,9 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   const [petType, setPetType] = useState<string>(pet?.species ?? '');
   const [petName, setPetName] = useState<string>(pet?.name ?? '');
   const [avatar, setAvatar] = useState<string | undefined>(pet?.avatar);
+  const [assessmentsPaused, setAssessmentsPaused] = useState<boolean>(
+    (pet && pet?.pausedAt !== null) ?? false,
+  );
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
   const [timePickerOpen, setTimePickerOpen] = useState(false);
   const [reminderTime, setReminderTime] = useState(
@@ -68,13 +71,23 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   // Store pet name and type in storage
   const submitData = async () => {
     const id = pet?._id ?? new BSON.ObjectId();
-    const notificationsEnabled = await toggleReminders(id);
+    let notificationsEnabled = remindersEnabled;
+    // Disable reminders if assessments are paused
+    if (assessmentsPaused) {
+      setRemindersEnabled(false);
+      await cancelReminders(id);
+      notificationsEnabled = false;
+    } else {
+      // Enable reminders if they are not paused and permission granted
+      notificationsEnabled = await toggleReminders(id);
+    }
     onSubmit({
       id,
       name: petName,
       species: petType,
       notificationsEnabled,
       notificationsTime: dateObjectToTimeString(reminderTime),
+      isPaused: assessmentsPaused,
       avatar: avatar,
     });
   };
@@ -140,7 +153,6 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     }
   };
   const createTriggerNotification = async (petId: BSON.ObjectId) => {
-
     const channelGroupId = await notifee.createChannelGroup({
       id: 'reminders',
       name: i18next.t('measurements:reminders'),
@@ -190,18 +202,26 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     setRemindersEnabled(!remindersEnabled);
   };
 
-  // Toggle reminders
-  const toggleReminders = async (petId: BSON.ObjectId) => {
+  const cancelReminders = async (petId: BSON.ObjectId) => {
     await notifee.cancelAllNotifications([
       'eu.sboo.ralph.reminder',
       getNotificationId(petId),
     ]);
+  };
+
+  // Toggle reminders
+  const toggleReminders = async (petId: BSON.ObjectId) => {
+    await cancelReminders(petId);
     let enabled = remindersEnabled;
     if (enabled) {
       enabled = await enableReminders(petId);
       console.log('Notifications enabled', enabled);
     }
     return enabled;
+  };
+
+  const toggleAssessmentsPaused = () => {
+    setAssessmentsPaused(!assessmentsPaused);
   };
 
   return (
@@ -255,6 +275,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             {t('settings:enableNotificationsLabel')}
           </Text>
           <Switch
+            disabled={assessmentsPaused}
             value={remindersEnabled}
             onValueChange={toggleReminderSwitch}
           />
@@ -262,7 +283,10 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
         {remindersEnabled ? (
           <View style={styles.inputRow}>
             <Text variant="labelLarge">{t('settings:reminderTimeLabel')}</Text>
-            <Button mode={'outlined'} onPress={() => setTimePickerOpen(true)}>
+            <Button
+              mode={'outlined'}
+              onPress={() => setTimePickerOpen(true)}
+              disabled={assessmentsPaused}>
               {dateObjectToTimeString(reminderTime)}
             </Button>
             <DatePicker
@@ -281,6 +305,22 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             />
           </View>
         ) : null}
+        <View style={styles.inputRow}>
+          <View style={styles.inputLabel}>
+            <Text style={styles.inputLabel} variant="labelLarge">
+              {t('settings:pauseAssessmentsLabel')}
+            </Text>
+            <Text
+              style={{color: theme.colors.outline, ...styles.inputLabel}}
+              variant="bodySmall">
+              {t('settings:pauseAssessmentsLabelInfo')}
+            </Text>
+          </View>
+          <Switch
+            value={assessmentsPaused}
+            onValueChange={toggleAssessmentsPaused}
+          />
+        </View>
       </View>
       <View style={styles.buttons}>
         {pet && pets.length > 1 ? (

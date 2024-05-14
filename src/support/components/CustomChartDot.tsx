@@ -9,13 +9,22 @@ interface CustomDotProps {
   x: number;
   y: number;
   scores: (number | null)[];
+  paused?: boolean;
 }
-const CustomDot = ({value, index, x, y, scores}: CustomDotProps) => {
+const CustomDot = ({
+  value,
+  index,
+  x,
+  y,
+  scores,
+  paused = false,
+}: CustomDotProps) => {
   const theme = useTheme();
   const firstNonNullScoreIndex = scores.findIndex(score => score !== null);
 
   // Pulsate the last dot if it's null or the first null dot after the last non-null dot
   if (
+    !paused &&
     value === null &&
     ((firstNonNullScoreIndex >= 0 && index > firstNonNullScoreIndex) ||
       index === scores.length - 1)
