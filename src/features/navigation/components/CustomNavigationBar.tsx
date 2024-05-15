@@ -80,7 +80,11 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
 
   useEffect(() => {
     const fechProducts = async () => {
-      await getProducts({skus: ['eu.sboo.ralph.coffee']});
+      try {
+        await getProducts({skus: ['eu.sboo.ralph.coffee']});
+      } catch (error) {
+        console.log(error);
+      }
     };
     const getCoffeeButtonPuchasedStatus = async () => {
       return await AsyncStorage.getItem(STORAGE_KEYS.COFFEE_PURCHASED);

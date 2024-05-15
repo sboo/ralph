@@ -13,4 +13,5 @@ export class Pet extends Realm.Object {
   @index
   isActive: boolean = false;
   headerColor?: string;
+  pausedAt?: Date;
 }

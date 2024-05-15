@@ -70,6 +70,7 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+apply from: new File(["node", "--print", "require.resolve('@sentry/react-native/package.json')"].execute().text.trim(), "../sentry.gradle")
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -80,8 +81,8 @@ android {
         applicationId "eu.sboo.ralph"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 64
-        versionName "2.2.1"
+        versionCode 67
+        versionName "2.3.1"
         missingDimensionStrategy "store", "play"
         vectorDrawables.useSupportLibrary = true
     }

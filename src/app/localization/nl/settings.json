@@ -4,6 +4,8 @@
     "enableNotificationsLabel": "Herinneringsmeldingen inschakelen",
     "reminderTimeLabel": "Herinneringstijd",
     "petTypeInputLabel": "Jouw huisdier is een",
+    "pauseAssessmentsLabel": "Beoordelingen onderbreken",
+    "pauseAssessmentsLabelInfo": "Gebruik deze functie om beoordelingen en meldingen uit te schakelen, waardoor de voortgangsregistratie wordt gestopt.",
     "selectLanguageLabel": "Selecteer taal",
     "app_useful": "Vind je Ralph nuttig? Help ons meer mensen te bereiken door een review achter te laten!",
     "review_app": "Ralph beoordelen"

@@ -10,6 +10,7 @@ import {Pet} from '@/app/models/Pet';
 import usePet from '@/features/pets/hooks/usePet';
 import useTips, {Tip} from '@/features/tips/hooks/useTips';
 import Tips from '@/features/tips/components/Tips';
+import * as Sentry from '@sentry/react-native';
 
 const DebugScreen: React.FC = () => {
   const {
@@ -30,7 +31,11 @@ const DebugScreen: React.FC = () => {
   } = useIAP();
 
   const handlePurchase = async (sku: string) => {
-    await requestPurchase({skus: [sku]});
+    try {
+      await requestPurchase({skus: [sku]});
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -102,6 +107,8 @@ const DebugScreen: React.FC = () => {
       <Text>Name: {activePet?.name}</Text>
       <Text>Species: {activePet?.species}</Text>
       <Text>isActive: {activePet?.isActive ? 'yes' : 'no'}</Text>
+      <Text>notificationsEnabled: {activePet?.notificationsEnabled ? 'yes' : 'no'}</Text>
+      <Text>pausedAt: {activePet?.pausedAt?.toISOString()}</Text>
       <Divider />
       <View style={{padding: 20}}>
         {activePet ? <Tips activePet={activePet} /> : null}

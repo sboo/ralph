@@ -1,3 +1,4 @@
+import en from '@/app/localization/en';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
 import CustomDot from '@/support/components/CustomChartDot';
@@ -23,19 +24,28 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
   const {assessments} = useAssessments(activePet);
 
   const scores = useMemo(() => {
+    let endDate = new Date();
+    endDate.setHours(23, 59, 59, 999);
+    if (activePet?.pausedAt) {
+      endDate = (
+        assessments && assessments.length > 0
+          ? moment.min(
+              moment(assessments[assessments.length - 1].createdAt),
+              moment(endDate),
+            )
+          : moment(endDate)
+      ).toDate();
+    }
     // Get the date range for the last 7 days or since the first assessment
     const startDate = (
       assessments && assessments.length > 0
         ? moment.min(
             moment(assessments[0].createdAt),
-            moment().subtract(7, 'days'),
+            moment(endDate).subtract(7, 'days'),
           )
-        : moment().subtract(7, 'days')
+        : moment(endDate).subtract(7, 'days')
     ).toDate();
     startDate.setHours(0, 0, 0, 0);
-
-    const endDate = new Date();
-    endDate.setHours(23, 59, 59, 999);
     const dateRange = [];
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
@@ -52,7 +62,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
       date.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'}),
     );
     return {scoresWithDates, labels, dateRange};
-  }, [assessments]);
+  }, [activePet?.pausedAt, assessments]);
 
   useEffect(() => {
     const firstAssessmentDate =
@@ -146,6 +156,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
               x={x}
               y={y}
               scores={data.datasets[0].data as number[]}
+              paused={activePet?.pausedAt !== null}
             />
           )}
           bezier

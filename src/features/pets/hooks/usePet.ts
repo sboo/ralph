@@ -12,6 +12,8 @@ export interface PetData {
   notificationsEnabled?: boolean;
   notificationsTime?: string;
   headerColor?: string;
+  isPaused?: boolean;
+  pausedAt?: Date;
   delete?: boolean;
 }
 
@@ -77,6 +79,13 @@ const usePet = () => {
     realm.write(() => {
       const pet = realm.objectForPrimaryKey('Pet', petId);
       if (pet) {
+        if (!pet.pausedAt && updates.isPaused) {
+          const pausedAt = new Date();
+          pausedAt.setHours(0, 0, 0, 0);
+          pet.pausedAt = pausedAt;
+        } else if (pet.pausedAt && !updates.isPaused) {
+          pet.pausedAt = undefined;
+        }
         // Update the fields with the values provided in 'updates'
         Object.keys(updates).forEach(field => {
           if (field in pet) {
