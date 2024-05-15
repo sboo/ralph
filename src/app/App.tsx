@@ -38,6 +38,11 @@ import {useQuery, useRealm} from '@realm/react';
 import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
 import usePet from '@/features/pets/hooks/usePet';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://1dfcc8aa48a1de11a650379ba7e1cc79@o4507259307032576.ingest.de.sentry.io/4507259313913936',
+});
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 StatusBar.setBarStyle('light-content');

@@ -10,6 +10,7 @@ import {Pet} from '@/app/models/Pet';
 import usePet from '@/features/pets/hooks/usePet';
 import useTips, {Tip} from '@/features/tips/hooks/useTips';
 import Tips from '@/features/tips/components/Tips';
+import * as Sentry from '@sentry/react-native';
 
 const DebugScreen: React.FC = () => {
   const {
@@ -108,6 +109,13 @@ const DebugScreen: React.FC = () => {
       <View style={{padding: 20}}>
         {activePet ? <Tips activePet={activePet} /> : null}
       </View>
+      <Divider />
+      <Button
+        title="Send Test Error to Sentry!"
+        onPress={() => {
+          Sentry.captureException(new Error('First error'));
+        }}
+      />
     </>
   );
 };

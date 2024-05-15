@@ -1154,6 +1154,11 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
+  - RNSentry (5.22.2):
+    - hermes-engine
+    - React-Core
+    - React-hermes
+    - Sentry/HybridSDK (= 8.25.0)
   - RNShare (10.2.0):
     - React-Core
   - RNSVG (15.2.0):
@@ -1162,6 +1167,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - Sentry/HybridSDK (8.25.0)
   - SocketRocket (0.6.1)
   - TOCropViewController (2.7.0)
   - Yoga (1.14.0)
@@ -1253,6 +1259,7 @@ DEPENDENCIES:
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -1272,6 +1279,7 @@ SPEC REPOS:
     - fmt
     - libevent
     - OpenSSL-Universal
+    - Sentry
     - SocketRocket
     - TOCropViewController
 
@@ -1399,6 +1407,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@notifee/react-native"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNShare:
     :path: "../node_modules/react-native-share"
   RNSVG:
@@ -1482,9 +1492,11 @@ SPEC CHECKSUMS:
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNScreens: 134a7511b12b8eb440b87aac21e36a71295d6024
+  RNSentry: f6a5aee809d646763640130714d1fdfe69aac36b
   RNShare: 554a91f5cfbe4adac4cfe3654826ee8b299fe365
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
   RNVectorIcons: 96e8c5c45609932bb2f8347e1c709bcca0e95654
+  Sentry: cd86fc55628f5b7c572cabe66cc8f95a9d2f165a
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TOCropViewController: 27e5d2affdb065ce4cc814c0d9ecc522d846eba1
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
