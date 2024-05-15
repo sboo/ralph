@@ -94,6 +94,8 @@ const App: React.FC = () => {
         STORAGE_KEYS.COFFEE_PURCHASED,
         purchased ? 'true' : 'false',
       );
+    } catch (error) {
+      console.log(error);
     } finally {
       await AsyncStorage.setItem(STORAGE_KEYS.FRESH_INSTALL, 'false');
       event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);

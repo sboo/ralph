@@ -31,7 +31,11 @@ const DebugScreen: React.FC = () => {
   } = useIAP();
 
   const handlePurchase = async (sku: string) => {
-    await requestPurchase({skus: [sku]});
+    try {
+      await requestPurchase({skus: [sku]});
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -109,13 +113,6 @@ const DebugScreen: React.FC = () => {
       <View style={{padding: 20}}>
         {activePet ? <Tips activePet={activePet} /> : null}
       </View>
-      <Divider />
-      <Button
-        title="Send Test Error to Sentry!"
-        onPress={() => {
-          Sentry.captureException(new Error('First error'));
-        }}
-      />
     </>
   );
 };

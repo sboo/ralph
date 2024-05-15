@@ -173,7 +173,11 @@ const useAssessmentExporter = () => {
     const filePath = await createPDF();
     if (filePath) {
       // Share the PDF file
-      await Share.open({url: `file://${filePath}`});
+      try {
+        await Share.open({url: `file://${filePath}`});
+      } catch (error: any) {
+        console.log('Failed to share pdf', error.message);
+      }
     }
   };
 
