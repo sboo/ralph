@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ImagePicker, {Image} from 'react-native-image-crop-picker';
-import {Badge, Avatar as BaseAvatar} from 'react-native-paper';
+import {Badge, Avatar as BaseAvatar, useTheme} from 'react-native-paper';
 import {Platform, StyleSheet, View} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import {Pet} from '@/app/models/Pet';
@@ -21,6 +21,7 @@ const Avatar: React.FC<AvatarProps> = ({
   onAvatarSelected,
   onAvatarViewModeTouch,
 }) => {
+  const theme = useTheme();
   const [avatar, setAvatar] = useState<string>();
 
   const onAvatarClick = () => {
@@ -186,9 +187,10 @@ const Avatar: React.FC<AvatarProps> = ({
       ) : null}
       {mode === 'view' && pet?.pausedAt ? (
         <BaseAvatar.Icon
-          size={size === 'big' ? 65 : 35}
-          style={styles.pauseAvatar}
-          icon="pause-circle-outline"
+          size={size === 'big' ? 55 : 35}
+          color={theme.colors.outlineVariant}
+          style={size === 'big' ? styles.pauseAvatar : styles.pauseAvatarSmall}
+          icon={'pause-circle'}
           onTouchStart={onAvatarClick}
         />
       ) : null}
@@ -209,11 +211,17 @@ const styles = StyleSheet.create({
     right: -5,
     bottom: -5,
   },
-  pauseAvatar: {
+  pauseAvatarSmall: {
+    backgroundColor: 'transparent',
     position: 'absolute',
-    opacity: 0.5,
-    top: 0,
-    left: 0,
+    right: -15,
+    bottom: -15,
+  },
+  pauseAvatar: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    right: -20,
+    bottom: -20,
   },
   notificationDot: {
     position: 'absolute',

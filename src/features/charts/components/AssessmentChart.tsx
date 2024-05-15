@@ -36,8 +36,6 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
           : moment(endDate)
       ).toDate();
     }
-    console.log('-------------');
-    console.log('endDate', endDate);
     // Get the date range for the last 7 days or since the first assessment
     const startDate = (
       assessments && assessments.length > 0
@@ -48,7 +46,6 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
         : moment(endDate).subtract(7, 'days')
     ).toDate();
     startDate.setHours(0, 0, 0, 0);
-    console.log('startDate', startDate);
     const dateRange = [];
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
