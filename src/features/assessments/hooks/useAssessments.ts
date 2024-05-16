@@ -6,6 +6,7 @@ import * as RNFS from '@dr.pogodin/react-native-fs';
 
 import {useMemo} from 'react';
 import {Platform} from 'react-native';
+import { getImageFilename, getImagePath } from '@/support/helpers/ImageHelper';
 
 export interface AssessmentData {
   date: Date;
@@ -101,43 +102,37 @@ const useAssessments = (pet?: Pet) => {
     images: string[] = [],
     assessmentImages?: string[],
   ) => {
-    const newImages = images?.filter(
-      image => !assessmentImages?.includes(image),
+    const newImages = images.filter(
+      image => !assessmentImages?.includes(getImageFilename(image)),
     );
+
     const deletedImages = assessmentImages?.filter(
-      image => !images?.includes(image),
+      image => !images.includes(getImagePath(image, true)),
     );
+
     if (deletedImages) {
       await Promise.allSettled(
-        deletedImages?.map(async image => {
-          const exists = await RNFS.exists(image);
+        deletedImages.map(async image => {
+          const imagePath = getImagePath(image);
+          const exists = await RNFS.exists(imagePath);
           if (exists) {
-            await RNFS.unlink(image);
+            await RNFS.unlink(imagePath);
           }
         }),
       );
     }
+
     await Promise.allSettled(
       newImages.map(async image => {
-        const path = getImageFilePath(image);
+        const filename = `${Date.now()}_${image.split('/').pop()}`;
+        const path = getImagePath(filename);
         await RNFS.moveFile(image, path);
-        const idx = images?.findIndex(img => img === image);
+        const idx = images.findIndex(img => img === image);
         images[idx] = path;
       }),
     );
-    return images;
-  };
 
-  const getImageFilePath = (
-    imagePath: string,
-    addAndroidFilePrepend = false,
-  ) => {
-    const filename = `${Date.now()}_${imagePath.split('/').pop()}`;
-    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
-    if (Platform.OS === 'android' && addAndroidFilePrepend) {
-      return `file://${path}`;
-    }
-    return path;
+    return images.map(image => getImageFilename(image));
   };
 
   return {assessments, lastAssessments, addAssessment, editAssessment};

@@ -8,6 +8,7 @@ import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import {useMemo} from 'react';
+import {getImagePath} from '@/support/helpers/ImageHelper';
 
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
@@ -20,12 +21,9 @@ const useAssessmentExporter = () => {
     return `${color}AA`;
   };
 
-  const avatarPath = useMemo(() => {
-    return activePet?.avatar
-      ? (Platform.OS === 'android' ? 'file://' : '') +
-          `${RNFS.DocumentDirectoryPath}/${activePet?.avatar}`
-      : '';
-  }, [activePet?.avatar]);
+  const avatar = activePet?.avatar
+    ? `<img src="${getImagePath(activePet?.avatar, true)}" class="avatar" />`
+    : '';
 
   const getHtmlContent = () => {
     return `
@@ -114,7 +112,7 @@ const useAssessmentExporter = () => {
       <body>
         <div class="row">
           <h1>${activePet?.name}</h1>
-          <img src="${avatarPath}" class="avatar" />
+          ${avatar}
         </div>
           <div>
             ${assessments
@@ -132,13 +130,13 @@ const useAssessmentExporter = () => {
                 if (assessment.images) {
                   images = `<div class="imagerow">
                               ${assessment.images
-                                ?.map(image => {
-                                  const path =
-                                    (Platform.OS === 'android'
-                                      ? 'file://'
-                                      : '') + image;
-                                  return `<img src="${path}" style="width: 220px; height: 220px;" />`;
-                                })
+                                ?.map(
+                                  image =>
+                                    `<img src="${getImagePath(
+                                      image,
+                                      true,
+                                    )}" style="width: 220px; height: 220px;" />`,
+                                )
                                 .join('')}
                             </div>`;
                 }

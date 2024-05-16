@@ -49,9 +49,13 @@ const NotesModal: React.FC<Props> = ({
       height: 500,
       mediaType: 'photo',
       cropping: true,
-    }).then(image => {
-      setTempImages([...tempImages, image.path]);
-    });
+    })
+      .then(image => {
+        setTempImages([...tempImages, image.path]);
+      })
+      .catch(err => {
+        console.log('Error while picking image: ', err);
+      });
   };
 
   const removeImage = (index: number) => {

@@ -5,6 +5,7 @@ import {Platform, StyleSheet, View} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
+import { getImagePath } from '@/support/helpers/ImageHelper';
 
 interface AvatarProps {
   mode?: 'edit' | 'view';
@@ -48,20 +49,9 @@ const Avatar: React.FC<AvatarProps> = ({
         if (avatarFilename === undefined) {
           return;
         }
-        setAvatar(getAvatarPath(avatarFilename, true));
+        setAvatar(getImagePath(avatarFilename, true));
       });
     });
-  };
-
-  const getAvatarPath = (
-    filename: string,
-    addAndroidFilePrepend = false,
-  ): string => {
-    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
-    if (Platform.OS === 'android' && addAndroidFilePrepend) {
-      return `file://${path}`;
-    }
-    return path;
   };
 
   const deleteAvatar = async () => {
@@ -96,7 +86,7 @@ const Avatar: React.FC<AvatarProps> = ({
     // await deleteAvatar();
 
     const filename = `avatar_${Date.now()}.${extension}`;
-    const path = getAvatarPath(filename);
+    const path = getImagePath(filename);
 
     try {
       await RNFS.moveFile(image.path, path);
@@ -111,7 +101,7 @@ const Avatar: React.FC<AvatarProps> = ({
 
   useEffect(() => {
     if (pet?.avatar) {
-      setAvatar(getAvatarPath(pet.avatar, true));
+      setAvatar(getImagePath(pet.avatar, true));
     }
   }, [pet?.avatar]);
 

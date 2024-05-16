@@ -5,6 +5,7 @@ import {Button, Divider, Text} from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
 import {Measurement} from '@/app/models/Measurement.ts';
 import NotesModal from './NotesModal';
+import {getImageFilename, getImagePath} from '@/support/helpers/ImageHelper';
 
 interface Props {
   petName: string;
@@ -50,7 +51,10 @@ const AssessmentItem: React.FC<Props> = ({
   );
   const [notes, setNotes] = useState<string | undefined>(measurement?.notes);
   const [images, setImages] = useState<string[] | undefined>(
-    Array.from(measurement?.images ?? []),
+    Array.from(measurement?.images ?? []).map(image => {
+      console.log('image', image, getImagePath(image, true));
+      return getImagePath(image, true);
+}),
   );
 
   const scrollViewRef = useRef<ScrollView>();
