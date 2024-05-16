@@ -13,7 +13,7 @@ import notifee, {EventType} from '@notifee/react-native';
 
 export default function Main() {
   return (
-    <RealmProvider schema={schemas} schemaVersion={3} onMigration={onMigration}>
+    <RealmProvider schema={schemas} schemaVersion={6} onMigration={onMigration}>
       <App />
     </RealmProvider>
   );

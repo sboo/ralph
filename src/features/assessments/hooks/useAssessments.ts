@@ -2,8 +2,10 @@ import {Measurement} from '@/app/models/Measurement';
 import {Pet} from '@/app/models/Pet';
 import {useQuery, useRealm} from '@realm/react';
 import moment from 'moment';
+import * as RNFS from '@dr.pogodin/react-native-fs';
 
 import {useMemo} from 'react';
+import {Platform} from 'react-native';
 
 export interface AssessmentData {
   date: Date;
@@ -14,6 +16,7 @@ export interface AssessmentData {
   happiness: number;
   mobility: number;
   notes?: string;
+  images?: string[];
 }
 
 const useAssessments = (pet?: Pet) => {
@@ -47,10 +50,12 @@ const useAssessments = (pet?: Pet) => {
     );
   };
 
-  const addAssessment = (assessmentData: AssessmentData) => {
+  const addAssessment = async (assessmentData: AssessmentData) => {
     if (!pet) {
       return;
     }
+    const noteImages = await storeImages(assessmentData.images);
+
     realm.write(() => {
       const dateString = moment(assessmentData.date).format('YYYY-MM-DD');
       realm.create(Measurement, {
@@ -65,14 +70,20 @@ const useAssessments = (pet?: Pet) => {
         createdAt: assessmentData.date,
         petId: pet._id,
         notes: assessmentData.notes,
+        images: noteImages,
       });
     });
   };
 
-  const editAssessment = (
+  const editAssessment = async (
     assessment: Measurement,
     assessmentData: AssessmentData,
   ) => {
+    const noteImages = await storeImages(
+      assessmentData.images,
+      Array.from(assessment.images ?? []),
+    );
+
     realm.write(() => {
       assessment.score = calculateScore(assessmentData);
       assessment.hurt = assessmentData.hurt;
@@ -82,7 +93,58 @@ const useAssessments = (pet?: Pet) => {
       assessment.happiness = assessmentData.happiness;
       assessment.mobility = assessmentData.mobility;
       assessment.notes = assessmentData.notes;
+      assessment.images = noteImages;
     });
+  };
+
+  const storeImages = async (
+    images: string[] = [],
+    assessmentImages?: string[],
+  ) => {
+    console.log('images', images);
+    console.log('assessmentImages', assessmentImages);
+    const newImages = images?.filter(
+      image => !assessmentImages?.includes(image),
+    );
+    console.log('newImages', newImages);
+    const deletedImages = assessmentImages?.filter(
+      image => !images?.includes(image),
+    );
+    console.log('deletedImages', deletedImages);
+    if (deletedImages) {
+      await Promise.allSettled(
+        deletedImages?.map(async image => {
+          const exists = await RNFS.exists(image);
+          if (exists) {
+            await RNFS.unlink(image);
+          }
+        }),
+      );
+    }
+    await Promise.allSettled(
+      newImages.map(async image => {
+        const path = getImageFilePath(image);
+        await RNFS.moveFile(image, path);
+        const idx = images?.findIndex(img => img === image);
+        images[idx] = path;
+      }),
+    );
+
+    console.log('images', images);
+
+    return images;
+  };
+
+  const getImageFilePath = (
+    imagePath: string,
+    addAndroidFilePrepend = false,
+  ) => {
+    const filename = `${Date.now()}_${imagePath.split('/').pop()}`;
+    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+    if (Platform.OS === 'android' && addAndroidFilePrepend) {
+      return `file://${path}`;
+    }
+    return path;
   };
 
   return {assessments, lastAssessments, addAssessment, editAssessment};

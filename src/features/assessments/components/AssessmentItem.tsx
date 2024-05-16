@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {RefObject, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Divider, Text} from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
 import {Measurement} from '@/app/models/Measurement.ts';
@@ -20,6 +20,7 @@ interface Props {
     happiness: number,
     mobility: number,
     notes?: string,
+    images?: string[],
   ) => void;
 }
 
@@ -48,6 +49,11 @@ const AssessmentItem: React.FC<Props> = ({
     measurement?.mobility,
   );
   const [notes, setNotes] = useState<string | undefined>(measurement?.notes);
+  const [images, setImages] = useState<string[] | undefined>(
+    Array.from(measurement?.images ?? []),
+  );
+
+  const scrollViewRef = useRef<ScrollView>();
 
   const areMetricsFilled = !(
     hurt === undefined ||
@@ -58,9 +64,11 @@ const AssessmentItem: React.FC<Props> = ({
     mobility === undefined
   );
 
-  const addNotesFromModal = (text?: string) => {
+  const addNotesFromModal = (text?: string, noteImages?: string[]) => {
     setNotes(text);
+    setImages(noteImages);
     setModalVisible(false);
+    scrollViewRef.current?.scrollToEnd({animated: true});
   };
 
   const _onSubmit = () => {
@@ -68,11 +76,22 @@ const AssessmentItem: React.FC<Props> = ({
       return;
     }
 
-    onSubmit(hurt, hunger, hydration, hygiene, happiness, mobility, notes);
+    onSubmit(
+      hurt,
+      hunger,
+      hydration,
+      hygiene,
+      happiness,
+      mobility,
+      notes,
+      images,
+    );
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      ref={scrollViewRef as RefObject<ScrollView> | null}>
       <Text variant={'titleSmall'} style={styles.date}>
         {t('date')}: {date.toLocaleDateString()}
       </Text>
@@ -159,13 +178,17 @@ const AssessmentItem: React.FC<Props> = ({
         })}
       />
       <Divider style={styles.divider} />
-      <Text style={styles.label}>{t('measurements:notes')}</Text>
       <View style={styles.notesHolder}>
         {!notes ? null : (
           <Text style={styles.notesText} variant={'bodySmall'}>
             {notes}
           </Text>
         )}
+        <View style={styles.imagesHolder}>
+          {images?.map((image, index) => (
+            <Image key={index} source={{uri: image}} style={styles.image} />
+          ))}
+        </View>
         <Button
           onPress={() => setModalVisible(true)}
           icon={!notes ? 'note-plus' : 'note-edit'}
@@ -177,10 +200,12 @@ const AssessmentItem: React.FC<Props> = ({
       <NotesModal
         petName={petName}
         notes={notes}
+        images={images}
         modalVisible={modalVisible}
         onCancel={() => setModalVisible(false)}
         onEditNotes={addNotesFromModal}
       />
+      <Divider style={styles.divider} />
       <View style={styles.buttons}>
         <Button onPress={onCancel} mode={'outlined'} icon={'chevron-left'}>
           {t('buttons:back')}
@@ -231,15 +256,28 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   notesHolder: {
-    marginBottom: 40,
+    marginBottom: 20,
     display: 'flex',
     flexDirection: 'column',
   },
   notesText: {
-    padding: 20,
+    paddingHorizontal: 20,
   },
   notesButton: {
     alignSelf: 'center',
+  },
+  imagesHolder: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+  },
+  image: {
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
+    borderRadius: 5,
   },
 });
 

@@ -1,27 +1,60 @@
 import {t} from 'i18next';
-import React, {useEffect, useState} from 'react';
-import {Button, Modal, Portal, Text, TextInput} from 'react-native-paper';
-import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Button,
+  IconButton,
+  Modal,
+  Portal,
+  Text,
+  TextInput,
+} from 'react-native-paper';
+import {Image, StyleSheet, View} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 
 interface Props {
   petName: string;
   notes?: string;
+  images?: string[];
   modalVisible: boolean;
-  onEditNotes: (text?: string) => void;
+  onEditNotes: (text?: string, images?: string[]) => void;
   onCancel: () => void;
 }
 
 const NotesModal: React.FC<Props> = ({
   petName,
   notes,
+  images,
   modalVisible,
   onCancel,
   onEditNotes,
 }) => {
   const [tempNotes, setTempNotes] = useState<string | undefined>(notes);
+  const [tempImages, setTempImages] = useState<string[]>(images ?? []);
+
+  const handleCancel = () => {
+    setTempNotes(notes);
+    setTempImages(images ?? []);
+    onCancel();
+  };
 
   const handleEditNotes = () => {
-    onEditNotes(tempNotes);
+    onEditNotes(tempNotes, tempImages);
+  };
+
+  const openImagePicker = () => {
+    ImagePicker.openPicker({
+      width: 500,
+      height: 500,
+      mediaType: 'photo',
+      cropping: true,
+    }).then(image => {
+      setTempImages([...tempImages, image.path]);
+    });
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = tempImages.filter((_, i) => i !== index);
+    setTempImages(newImages);
   };
 
   return (
@@ -31,7 +64,7 @@ const NotesModal: React.FC<Props> = ({
         <Text style={styles.info}>
           {t('measurements:notesInfo', {petName})}:
         </Text>
-        <View style={{paddingHorizontal: 20, marginBottom: 20}}>
+        <View style={styles.formContainer}>
           <TextInput
             defaultValue={tempNotes}
             mode="outlined"
@@ -39,13 +72,37 @@ const NotesModal: React.FC<Props> = ({
             multiline
             style={styles.textInput}
           />
+          <View style={styles.imagesHolder}>
+            {tempImages.map((image, index) => (
+              <View style={styles.imageHolder} key={index}>
+                <Image source={{uri: image}} style={styles.image} />
+                <IconButton
+                  style={styles.deleteIcon}
+                  icon="minus-circle"
+                  size={20}
+                  mode={'contained'}
+                  iconColor={'#f00'}
+                  containerColor={'transparent'}
+                  onPress={() => removeImage(index)}
+                />
+              </View>
+            ))}
+            {tempImages.length < 4 ? (
+              <IconButton
+                icon="image-plus"
+                size={20}
+                style={styles.addImageButton}
+                onPress={openImagePicker}
+              />
+            ) : null}
+          </View>
         </View>
         <View style={styles.buttons}>
-          <Button onPress={onCancel} mode={'contained-tonal'}>
+          <Button onPress={handleCancel} mode={'contained-tonal'}>
             {t('buttons:cancel')}
           </Button>
           <Button onPress={handleEditNotes} mode={'contained'}>
-            {t('buttons:add')}
+            {t('buttons:save')}
           </Button>
         </View>
       </Modal>
@@ -70,8 +127,35 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     marginBottom: 10,
   },
+  formContainer: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
   textInput: {
     height: 120,
+  },
+  imagesHolder: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 20,
+  },
+  imageHolder: {
+    position: 'relative',
+  },
+  deleteIcon: {
+    position: 'absolute',
+    top: -25,
+    right: -25,
+  },
+  image: {
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
+    borderRadius: 5,
+  },
+  addImageButton: {
+    alignSelf: 'center',
   },
 });
 
