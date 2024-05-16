@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Text} from 'react-native-paper';
+import {Button, Divider, Text} from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
 import {Measurement} from '@/app/models/Measurement.ts';
+import NotesModal from './NotesModal';
 
 interface Props {
   petName: string;
@@ -18,6 +19,7 @@ interface Props {
     hygiene: number,
     happiness: number,
     mobility: number,
+    notes?: string,
   ) => void;
 }
 
@@ -30,6 +32,7 @@ const AssessmentItem: React.FC<Props> = ({
   assessment: measurement,
 }) => {
   const {t} = useTranslation();
+  const [modalVisible, setModalVisible] = useState(false);
   const [hurt, setHurt] = useState<number | undefined>(measurement?.hurt);
   const [hunger, setHunger] = useState<number | undefined>(measurement?.hunger);
   const [hydration, setHydration] = useState<number | undefined>(
@@ -44,6 +47,7 @@ const AssessmentItem: React.FC<Props> = ({
   const [mobility, setMoboility] = useState<number | undefined>(
     measurement?.mobility,
   );
+  const [notes, setNotes] = useState<string | undefined>(measurement?.notes);
 
   const areMetricsFilled = !(
     hurt === undefined ||
@@ -54,12 +58,17 @@ const AssessmentItem: React.FC<Props> = ({
     mobility === undefined
   );
 
+  const addNotesFromModal = (text?: string) => {
+    setNotes(text);
+    setModalVisible(false);
+  };
+
   const _onSubmit = () => {
     if (!areMetricsFilled) {
       return;
     }
 
-    onSubmit(hurt, hunger, hydration, hygiene, happiness, mobility);
+    onSubmit(hurt, hunger, hydration, hygiene, happiness, mobility, notes);
   };
 
   return (
@@ -149,11 +158,31 @@ const AssessmentItem: React.FC<Props> = ({
           petName,
         })}
       />
-      <View style={styles.buttons}>
+      <Divider style={styles.divider} />
+      <Text style={styles.label}>{t('measurements:notes')}</Text>
+      <View style={styles.notesHolder}>
+        {!notes ? null : (
+          <Text style={styles.notesText} variant={'bodySmall'}>
+            {notes}
+          </Text>
+        )}
         <Button
-          onPress={onCancel}
+          onPress={() => setModalVisible(true)}
+          icon={!notes ? 'note-plus' : 'note-edit'}
           mode={'contained-tonal'}
-          icon={'chevron-left'}>
+          style={styles.notesButton}>
+          {t('measurements:notes')}
+        </Button>
+      </View>
+      <NotesModal
+        petName={petName}
+        notes={notes}
+        modalVisible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onEditNotes={addNotesFromModal}
+      />
+      <View style={styles.buttons}>
+        <Button onPress={onCancel} mode={'outlined'} icon={'chevron-left'}>
           {t('buttons:back')}
         </Button>
         <Button
@@ -194,16 +223,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  input: {
-    height: 40,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5,
-  },
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  divider: {
+    marginBottom: 20,
+  },
+  notesHolder: {
+    marginBottom: 40,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  notesText: {
+    padding: 20,
+  },
+  notesButton: {
+    alignSelf: 'center',
   },
 });
 

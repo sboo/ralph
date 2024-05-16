@@ -29,6 +29,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
     hygiene: number,
     happiness: number,
     mobility: number,
+    notes?: string,
   ) => {
     addAssessment({
       date,
@@ -38,6 +39,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
       hygiene,
       happiness,
       mobility,
+      notes,
     });
     navigation.goBack();
   };

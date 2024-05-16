@@ -7,5 +7,7 @@
   "score": "Puntuación",
   "reminders": "Recordatorios",
   "notificationTitle": "Actualización Diaria de {{petName}}",
-  "notificationBody": "¿Cómo estuvo {{petName}} hoy? Toca aquí para registrar su día."
+  "notificationBody": "¿Cómo estuvo {{petName}} hoy? Toca aquí para registrar su día.",
+  "notes": "Notas",
+  "notesInfo": "Añada notas sobre el día de {{petName}}"
 }

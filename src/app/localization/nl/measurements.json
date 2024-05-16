@@ -7,5 +7,7 @@
   "score": "Score",
   "reminders": "Herinneringen",
   "notificationTitle": "Tijd voor de controle van {{petName}}",
-  "notificationBody": "Hoe was {{petName}} vandaag? Tik hier om hun dag vast te leggen."
+  "notificationBody": "Hoe was {{petName}} vandaag? Tik hier om hun dag vast te leggen.",
+  "notes": "Notities",
+  "notesInfo": "Voeg notities toe over de dag van {{petName}}"
 }

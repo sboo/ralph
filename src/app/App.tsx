@@ -1,5 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Platform, StatusBar, useColorScheme} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
 import {
   adaptNavigationTheme,
   MD3DarkTheme,
@@ -238,85 +244,95 @@ const App: React.FC = () => {
   let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer onStateChange={onNavigationStateChange}>
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            // eslint-disable-next-line react/no-unstable-nested-components
-            header: props => <CustomNavigationBar {...props} />,
-          }}>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              title: '',
-              headerStyle: {backgroundColor: getHeaderColor(theme)},
-            }}
-          />
-          <Stack.Screen
-            name="Welcome"
-            component={WelcomeScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{
-              title: t('settings'),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="EditPet"
-            component={EditPet}
-            options={{
-              title: t('edit_pet'),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="AddPet"
-            component={AddPet}
-            options={{
-              title: t('add_pet'),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="AddAssessment"
-            component={AddAssessment}
-            options={{
-              title: t('measurements:title', {
-                petName: activePet?.name,
-              }),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="EditAssessment"
-            component={EditAssessment}
-            options={{
-              title: t('measurements:title', {
-                petName: activePet?.name,
-              }),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen
-            name="AllAssessments"
-            component={AllAssessmentsScreen}
-            options={{
-              title: t('measurements:allAssessments'),
-              headerStyle: {backgroundColor: theme.colors.primaryContainer},
-            }}
-          />
-          <Stack.Screen name="AboutScreen" component={AboutScreen} />
-          <Stack.Screen name="DebugScreen" component={DebugScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <KeyboardAvoidingView
+      style={styles.keyboardViewContainer}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer onStateChange={onNavigationStateChange}>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              // eslint-disable-next-line react/no-unstable-nested-components
+              header: props => <CustomNavigationBar {...props} />,
+            }}>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                title: '',
+                headerStyle: {backgroundColor: getHeaderColor(theme)},
+              }}
+            />
+            <Stack.Screen
+              name="Welcome"
+              component={WelcomeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{
+                title: t('settings'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="EditPet"
+              component={EditPet}
+              options={{
+                title: t('edit_pet'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="AddPet"
+              component={AddPet}
+              options={{
+                title: t('add_pet'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="AddAssessment"
+              component={AddAssessment}
+              options={{
+                title: t('measurements:title', {
+                  petName: activePet?.name,
+                }),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="EditAssessment"
+              component={EditAssessment}
+              options={{
+                title: t('measurements:title', {
+                  petName: activePet?.name,
+                }),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen
+              name="AllAssessments"
+              component={AllAssessmentsScreen}
+              options={{
+                title: t('measurements:allAssessments'),
+                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+              }}
+            />
+            <Stack.Screen name="AboutScreen" component={AboutScreen} />
+            <Stack.Screen name="DebugScreen" component={DebugScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  keyboardViewContainer: {
+    flex: 1,
+  },
+});
 
 export default withIAPContext(App);

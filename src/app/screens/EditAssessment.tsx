@@ -32,6 +32,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
     hygiene: number,
     happiness: number,
     mobility: number,
+    notes?: string,
   ) => {
     if (assessment) {
       editAssessment(assessment, {
@@ -42,6 +43,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
         hygiene,
         happiness,
         mobility,
+        notes,
       });
     }
     navigation.goBack();

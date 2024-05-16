@@ -13,6 +13,7 @@ export interface AssessmentData {
   hygiene: number;
   happiness: number;
   mobility: number;
+  notes?: string;
 }
 
 const useAssessments = (pet?: Pet) => {
@@ -63,6 +64,7 @@ const useAssessments = (pet?: Pet) => {
         mobility: assessmentData.mobility,
         createdAt: assessmentData.date,
         petId: pet._id,
+        notes: assessmentData.notes,
       });
     });
   };
@@ -79,6 +81,7 @@ const useAssessments = (pet?: Pet) => {
       assessment.hygiene = assessmentData.hygiene;
       assessment.happiness = assessmentData.happiness;
       assessment.mobility = assessmentData.mobility;
+      assessment.notes = assessmentData.notes;
     });
   };
 
