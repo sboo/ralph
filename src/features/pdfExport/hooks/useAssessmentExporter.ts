@@ -118,7 +118,7 @@ const useAssessmentExporter = () => {
         </div>
           <div>
             ${assessments
-              ?.map((assessment, index) => {
+              ?.map(assessment => {
                 let notes = '';
                 if (assessment.notes) {
                   notes = `<div class="notesrow">

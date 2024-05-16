@@ -93,7 +93,7 @@ const useAssessments = (pet?: Pet) => {
       assessment.happiness = assessmentData.happiness;
       assessment.mobility = assessmentData.mobility;
       assessment.notes = assessmentData.notes;
-      assessment.images = noteImages;
+      assessment.images = noteImages as any; //this cast is necessary because Realm.List is not compatible with string[], but Realm will handle it
     });
   };
 
@@ -101,16 +101,12 @@ const useAssessments = (pet?: Pet) => {
     images: string[] = [],
     assessmentImages?: string[],
   ) => {
-    console.log('images', images);
-    console.log('assessmentImages', assessmentImages);
     const newImages = images?.filter(
       image => !assessmentImages?.includes(image),
     );
-    console.log('newImages', newImages);
     const deletedImages = assessmentImages?.filter(
       image => !images?.includes(image),
     );
-    console.log('deletedImages', deletedImages);
     if (deletedImages) {
       await Promise.allSettled(
         deletedImages?.map(async image => {
@@ -129,9 +125,6 @@ const useAssessments = (pet?: Pet) => {
         images[idx] = path;
       }),
     );
-
-    console.log('images', images);
-
     return images;
   };
 
