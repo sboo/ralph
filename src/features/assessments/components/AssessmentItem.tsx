@@ -1,6 +1,6 @@
 import React, {RefObject, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, Platform, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Divider, Text} from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
 import {Measurement} from '@/app/models/Measurement.ts';
@@ -185,9 +185,12 @@ const AssessmentItem: React.FC<Props> = ({
           </Text>
         )}
         <View style={styles.imagesHolder}>
-          {images?.map((image, index) => (
-            <Image key={index} source={{uri: image}} style={styles.image} />
-          ))}
+          {images?.map((image, index) => {
+            const path = (Platform.OS === 'android' ? 'file://' : '') + image;
+            return (
+              <Image key={index} source={{uri: path}} style={styles.image} />
+            );
+          })}
         </View>
         <Button
           onPress={() => setModalVisible(true)}

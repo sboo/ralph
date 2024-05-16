@@ -7,8 +7,9 @@ import {
   Portal,
   Text,
   TextInput,
+  useTheme,
 } from 'react-native-paper';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, Platform, StyleSheet, View} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 interface Props {
@@ -28,6 +29,7 @@ const NotesModal: React.FC<Props> = ({
   onCancel,
   onEditNotes,
 }) => {
+  const theme = useTheme();
   const [tempNotes, setTempNotes] = useState<string | undefined>(notes);
   const [tempImages, setTempImages] = useState<string[]>(images ?? []);
 
@@ -73,21 +75,24 @@ const NotesModal: React.FC<Props> = ({
             style={styles.textInput}
           />
           <View style={styles.imagesHolder}>
-            {tempImages.map((image, index) => (
-              <View style={styles.imageHolder} key={index}>
-                <Image source={{uri: image}} style={styles.image} />
-                <IconButton
-                  style={styles.deleteIcon}
-                  icon="minus-circle"
-                  size={20}
-                  mode={'contained'}
-                  iconColor={'#f00'}
-                  containerColor={'transparent'}
-                  onPress={() => removeImage(index)}
-                />
-              </View>
-            ))}
-            {tempImages.length < 4 ? (
+            {tempImages.map((image, index) => {
+              const path = (Platform.OS === 'android' ? 'file://' : '') + image;
+              return (
+                <View style={styles.imageHolder} key={index}>
+                  <Image source={{uri: path}} style={styles.image} />
+                  <IconButton
+                    style={styles.deleteIcon}
+                    icon="minus-circle"
+                    size={20}
+                    mode={'contained'}
+                    iconColor={theme.colors.error}
+                    containerColor={'transparent'}
+                    onPress={() => removeImage(index)}
+                  />
+                </View>
+              );
+            })}
+            {tempImages.length < 3 ? (
               <IconButton
                 icon="image-plus"
                 size={20}

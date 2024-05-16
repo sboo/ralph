@@ -6,6 +6,8 @@ import {getValueColor} from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
+import * as RNFS from '@dr.pogodin/react-native-fs';
+import {useMemo} from 'react';
 
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
@@ -17,6 +19,13 @@ const useAssessmentExporter = () => {
     const color = getValueColor(theme.colors.outline, score);
     return `${color}AA`;
   };
+
+  const avatarPath = useMemo(() => {
+    return activePet?.avatar
+      ? (Platform.OS === 'android' ? 'file://' : '') +
+          `${RNFS.DocumentDirectoryPath}/${activePet?.avatar}`
+      : '';
+  }, [activePet?.avatar]);
 
   const getHtmlContent = () => {
     return `
@@ -33,12 +42,18 @@ const useAssessmentExporter = () => {
                   color: #000000;
                   padding: 40px;
               }
-              h1 {
-                  text-align: center;
-                  font-family: "Inter", sans-serif;
-              }
+              h1, h2, h3, h4, h5, h6 {
+                font-family: "Inter", sans-serif;
+             }
+             .avatar {
+                width: 100px;
+                height: 100px;
+                border-radius: 50px;
+                margin-right: 20px;
+             }
               .assessment {
                   margin-top: 40px;
+                  page-break-inside: avoid;
               }
               p {
                   margin: 0;
@@ -49,6 +64,16 @@ const useAssessmentExporter = () => {
                   flex-direction: row;
                   flex-wrap: wrap;
                   justify-content: space-between;
+              }
+              .notesrow {
+                  margin-bottom: 10px;
+              }
+              .imagerow {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: 10px;
               }
               .date {
                   font-family: "Inter", sans-serif;
@@ -87,17 +112,37 @@ const useAssessmentExporter = () => {
           </style>
       </head>
       <body>
+        <div class="row">
           <h1>${activePet?.name}</h1>
+          <img src="${avatarPath}" class="avatar" />
+        </div>
           <div>
             ${assessments
               ?.map((assessment, index) => {
-                let pageBreak = '';
-                if ((index + 1) % 9 === 0) {
-                  pageBreak = '<div class="page-break-before"> </div>';
+                let notes = '';
+                if (assessment.notes) {
+                  notes = `<div class="notesrow">
+                            <h5>${t('measurements:notes')}</h5>
+                            <p>${assessment.notes
+                              .split(/\r?\n/)
+                              .join('<br />')}</p>
+                          </div>`;
+                }
+                let images = '';
+                if (assessment.images) {
+                  images = `<div class="imagerow">
+                              ${assessment.images
+                                ?.map(image => {
+                                  const path =
+                                    (Platform.OS === 'android'
+                                      ? 'file://'
+                                      : '') + image;
+                                  return `<img src="${path}" style="width: 220px; height: 220px;" />`;
+                                })
+                                .join('')}
+                            </div>`;
                 }
                 return `
-                ${pageBreak}
-                
                 <div class="assessment" key=${assessment._id.toHexString()}>
                     <div class="row">
                         <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
@@ -142,6 +187,8 @@ const useAssessmentExporter = () => {
                   `${activePet?.species}:assessments:mobility`,
                 )}:${assessment.mobility}</p>
                     </div>
+                    ${notes}
+                    ${images}
                 </div>`;
               })
               .join('')}
