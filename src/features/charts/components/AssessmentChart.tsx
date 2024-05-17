@@ -65,16 +65,27 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
   }, [activePet?.pausedAt, assessments]);
 
   useEffect(() => {
-    const firstAssessmentDate =
+    let endDate = moment().endOf('day');
+    if (activePet?.pausedAt) {
+      endDate =
+        assessments && assessments.length > 0
+          ? moment.min(
+              moment(assessments[assessments.length - 1].createdAt),
+              moment(endDate),
+            )
+          : moment(endDate);
+    }
+    // Get the date range for the last 7 days or since the first assessment
+    const startDate =
       assessments && assessments.length > 0
-        ? assessments[0].createdAt
-        : new Date();
-    const daysSinceFirstAssessment = moment().diff(
-      moment(firstAssessmentDate),
-      'days',
-    );
+        ? moment.min(
+            moment(assessments[0].createdAt),
+            moment(endDate).subtract(7, 'days'),
+          )
+        : moment(endDate).subtract(7, 'days');
+    const daysSinceFirstAssessment = endDate.diff(startDate, 'days');
     setChartWidthMultiplier(Math.max(1, daysSinceFirstAssessment / 9));
-  }, [assessments]);
+  }, [activePet?.pausedAt, assessments]);
 
   const {scoresWithDates, labels, dateRange} = scores;
   const data = useMemo(() => {
