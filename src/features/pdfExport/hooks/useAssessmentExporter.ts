@@ -6,9 +6,7 @@ import {getValueColor} from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
-import * as RNFS from '@dr.pogodin/react-native-fs';
-import {useMemo} from 'react';
-import {getImagePath} from '@/support/helpers/ImageHelper';
+import {getBase64Image, getImagePath} from '@/support/helpers/ImageHelper';
 
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
@@ -21,11 +19,28 @@ const useAssessmentExporter = () => {
     return `${color}AA`;
   };
 
-  const avatar = activePet?.avatar
-    ? `<img src="${getImagePath(activePet?.avatar, true)}" class="avatar" />`
-    : '';
+  const getAllAssessmentBase64ImagesList = async () => {
+    const images = assessments?.flatMap(assessment =>
+      Array.from(assessment.images),
+    );
+    console.log('All assessment images', images);
+    const base64Images: {[key: string]: string} = {};
+    await Promise.all(
+      images?.map(async image => {
+        const base64Image = await getBase64Image(image);
+        base64Images[image] = base64Image;
+      }) ?? [],
+    );
+    return base64Images;
+  };
 
-  const getHtmlContent = () => {
+  // console.log('All assessment images', getAllAssessmentBase64Images());
+
+  const getHtmlContent = async () => {
+    const base64Images = await getAllAssessmentBase64ImagesList();
+    const avatar = activePet?.avatar
+      ? `<img src="${await getBase64Image(activePet.avatar)}" class="avatar" />`
+      : '';
     return `
       <!DOCTYPE html>
       <html lang="en">
@@ -56,6 +71,7 @@ const useAssessmentExporter = () => {
               p {
                   margin: 0;
                   padding: 0;
+                  font-family: "Inter", sans-serif;
               }
               .row {
                   display: flex;
@@ -65,8 +81,10 @@ const useAssessmentExporter = () => {
               }
               .notesrow {
                   margin-bottom: 10px;
+                  font-family: "Inter", sans-serif;
               }
               .imagerow {
+                margin-top: 10px;
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -132,10 +150,7 @@ const useAssessmentExporter = () => {
                               ${assessment.images
                                 ?.map(
                                   image =>
-                                    `<img src="${getImagePath(
-                                      image,
-                                      true,
-                                    )}" style="width: 220px; height: 220px;" />`,
+                                    `<img src="${base64Images[image]}" style="width: 200px; height: 200px;" />`,
                                 )
                                 .join('')}
                             </div>`;
@@ -199,7 +214,7 @@ const useAssessmentExporter = () => {
   const createPDF = async (): Promise<string | null> => {
     try {
       let PDFOptions = {
-        html: getHtmlContent(),
+        html: await getHtmlContent(),
         fileName: 'assessments',
         directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
       };
