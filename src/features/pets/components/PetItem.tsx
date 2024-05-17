@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
@@ -53,6 +53,8 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   );
   const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
   const {pets} = usePet();
+
+  const petComplete = useMemo(() => petType && petName, [petType, petName]);
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -332,7 +334,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             {t('buttons:delete_pet')}
           </Button>
         ) : null}
-        <Button onPress={submitData} mode={'contained'}>
+        <Button disabled={!petComplete} onPress={submitData} mode={'contained'}>
           {buttonLabel ?? t('buttons:save')}
         </Button>
       </View>
