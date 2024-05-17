@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
   Dimensions,
@@ -34,6 +34,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const [viewMode, setViewMode] = useState<'chart' | 'calendar'>('chart');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [generatingPDF, setGeneratingPDF] = useState(false);
   const debug = false;
 
   useEffect(() => {
@@ -103,6 +104,12 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
   const toggleViewMode = () => {
     setViewMode(viewMode === 'chart' ? 'calendar' : 'chart');
   };
+
+  const shareAssessments = useCallback(async () => {
+    setGeneratingPDF(true);
+    await generateAndSharePDF();
+    setGeneratingPDF(false);
+  }, [generateAndSharePDF]);
 
   const width = Dimensions.get('window').width - 40;
   const height = (width / 16) * 7;
@@ -218,7 +225,8 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             style={styles.shareFab}
             icon={'share-variant'}
             mode={'flat'}
-            onPress={generateAndSharePDF}
+            loading={generatingPDF}
+            onPress={shareAssessments}
           />
         )}
       </LinearGradient>
