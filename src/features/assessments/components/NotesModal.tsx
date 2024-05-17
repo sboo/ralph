@@ -65,7 +65,12 @@ const NotesModal: React.FC<Props> = ({
 
   return (
     <Portal>
-      <Modal visible={modalVisible} contentContainerStyle={styles.modal}>
+      <Modal
+        visible={modalVisible}
+        contentContainerStyle={{
+          backgroundColor: theme.colors.surface,
+          ...styles.modal,
+        }}>
         <Text variant={'titleLarge'}>{t('measurements:notes')}</Text>
         <Text style={styles.info}>
           {t('measurements:notesInfo', {petName})}:
@@ -76,7 +81,10 @@ const NotesModal: React.FC<Props> = ({
             mode="outlined"
             onChangeText={text => setTempNotes(text)}
             multiline
-            style={styles.textInput}
+            style={{
+              backgroundColor: theme.colors.surfaceVariant,
+              ...styles.textInput,
+            }}
           />
           <View style={styles.imagesHolder}>
             {tempImages.map((image, index) => {
@@ -121,7 +129,6 @@ const NotesModal: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: 'white',
     padding: 20,
     margin: 20,
     borderRadius: 15,
