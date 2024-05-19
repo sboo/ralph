@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import ImagePicker, {Image} from 'react-native-image-crop-picker';
 import {Badge, Avatar as BaseAvatar, useTheme} from 'react-native-paper';
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
-import { getImagePath } from '@/support/helpers/ImageHelper';
+import {getImagePath} from '@/support/helpers/ImageHelper';
 
 interface AvatarProps {
   mode?: 'edit' | 'view';
@@ -42,16 +42,20 @@ const Avatar: React.FC<AvatarProps> = ({
       mediaType: 'photo',
       cropping: true,
       cropperCircleOverlay: true,
-    }).then(image => {
-      console.log(image);
-      storeAvatar(image).then(avatarFilename => {
-        console.log('Avatar path: ', avatarFilename);
-        if (avatarFilename === undefined) {
-          return;
-        }
-        setAvatar(getImagePath(avatarFilename, true));
+    })
+      .then(image => {
+        console.log(image);
+        storeAvatar(image).then(avatarFilename => {
+          console.log('Avatar path: ', avatarFilename);
+          if (avatarFilename === undefined) {
+            return;
+          }
+          setAvatar(getImagePath(avatarFilename, true));
+        });
+      })
+      .catch(err => {
+        console.log('Error while picking image: ', err);
       });
-    });
   };
 
   const deleteAvatar = async () => {
