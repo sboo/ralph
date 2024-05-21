@@ -1,11 +1,19 @@
-import React, {RefObject, useRef, useState} from 'react';
+import React, {RefObject, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, Platform, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Button, Divider, Text} from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
 import {Measurement} from '@/app/models/Measurement.ts';
 import NotesModal from './NotesModal';
-import {getImageFilename, getImagePath} from '@/support/helpers/ImageHelper';
+import {getImagePath} from '@/support/helpers/ImageHelper';
+import ImageView from 'react-native-image-viewing';
 
 interface Props {
   petName: string;
@@ -35,6 +43,8 @@ const AssessmentItem: React.FC<Props> = ({
 }) => {
   const {t} = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [clickedImage, setClickedImage] = useState<number>(0);
   const [hurt, setHurt] = useState<number | undefined>(measurement?.hurt);
   const [hunger, setHunger] = useState<number | undefined>(measurement?.hunger);
   const [hydration, setHydration] = useState<number | undefined>(
@@ -52,9 +62,8 @@ const AssessmentItem: React.FC<Props> = ({
   const [notes, setNotes] = useState<string | undefined>(measurement?.notes);
   const [images, setImages] = useState<string[] | undefined>(
     Array.from(measurement?.images ?? []).map(image => {
-      console.log('image', image, getImagePath(image, true));
       return getImagePath(image, true);
-}),
+    }),
   );
 
   const scrollViewRef = useRef<ScrollView>();
@@ -91,6 +100,17 @@ const AssessmentItem: React.FC<Props> = ({
       images,
     );
   };
+
+  const imagesList = useMemo(() => {
+    return images?.map(image => {
+      return {uri: image};
+    });
+  }, [images]);
+
+  const openImageViewer = (index: number) => {
+    setClickedImage(index);
+    setImageViewerVisible(true);
+  }
 
   return (
     <ScrollView
@@ -192,7 +212,11 @@ const AssessmentItem: React.FC<Props> = ({
           {images?.map((image, index) => {
             const path = (Platform.OS === 'android' ? 'file://' : '') + image;
             return (
-              <Image key={index} source={{uri: path}} style={styles.image} />
+              <TouchableOpacity
+                key={index}
+                onPress={() => openImageViewer(index)}>
+                <Image source={{uri: path}} style={styles.image} />
+              </TouchableOpacity>
             );
           })}
         </View>
@@ -204,6 +228,12 @@ const AssessmentItem: React.FC<Props> = ({
           {t('measurements:notes')}
         </Button>
       </View>
+      <ImageView
+        images={imagesList ?? []}
+        imageIndex={clickedImage}
+        visible={imageViewerVisible}
+        onRequestClose={() => setImageViewerVisible(false)}
+      />
       <NotesModal
         petName={petName}
         notes={notes}
