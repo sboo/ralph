@@ -317,12 +317,10 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
         {pet ? (
           <View style={styles.inputRow}>
             <View style={styles.inputLabel}>
-              <Text style={styles.inputLabel} variant="labelLarge">
+              <Text variant="labelLarge">
                 {t('settings:pauseAssessmentsLabel')}
               </Text>
-              <Text
-                style={{color: theme.colors.outline, ...styles.inputLabel}}
-                variant="bodySmall">
+              <Text style={{color: theme.colors.outline}} variant="bodySmall">
                 {t('settings:pauseAssessmentsLabelInfo')}
               </Text>
             </View>
