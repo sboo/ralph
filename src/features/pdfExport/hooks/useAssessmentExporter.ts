@@ -6,6 +6,7 @@ import {getValueColor} from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
+import {getBase64Image, getImagePath} from '@/support/helpers/ImageHelper';
 
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
@@ -18,7 +19,28 @@ const useAssessmentExporter = () => {
     return `${color}AA`;
   };
 
-  const getHtmlContent = () => {
+  const getAllAssessmentBase64ImagesList = async () => {
+    const images = assessments?.flatMap(assessment =>
+      Array.from(assessment.images),
+    );
+    console.log('All assessment images', images);
+    const base64Images: {[key: string]: string} = {};
+    await Promise.all(
+      images?.map(async image => {
+        const base64Image = await getBase64Image(image);
+        base64Images[image] = base64Image;
+      }) ?? [],
+    );
+    return base64Images;
+  };
+
+  // console.log('All assessment images', getAllAssessmentBase64Images());
+
+  const getHtmlContent = async () => {
+    const base64Images = await getAllAssessmentBase64ImagesList();
+    const avatar = activePet?.avatar
+      ? `<img src="${await getBase64Image(activePet.avatar)}" class="avatar" />`
+      : '';
     return `
       <!DOCTYPE html>
       <html lang="en">
@@ -33,22 +55,41 @@ const useAssessmentExporter = () => {
                   color: #000000;
                   padding: 40px;
               }
-              h1 {
-                  text-align: center;
-                  font-family: "Inter", sans-serif;
-              }
+              h1, h2, h3, h4, h5, h6 {
+                font-family: "Inter", sans-serif;
+             }
+             .avatar {
+                width: 100px;
+                height: 100px;
+                border-radius: 50px;
+                margin-right: 20px;
+             }
               .assessment {
                   margin-top: 40px;
+                  page-break-inside: avoid;
               }
               p {
                   margin: 0;
                   padding: 0;
+                  font-family: "Inter", sans-serif;
               }
               .row {
                   display: flex;
                   flex-direction: row;
                   flex-wrap: wrap;
                   justify-content: space-between;
+              }
+              .notesrow {
+                  margin-bottom: 10px;
+                  font-family: "Inter", sans-serif;
+              }
+              .imagerow {
+                margin-top: 10px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: 10px;
               }
               .date {
                   font-family: "Inter", sans-serif;
@@ -87,17 +128,34 @@ const useAssessmentExporter = () => {
           </style>
       </head>
       <body>
+        <div class="row">
           <h1>${activePet?.name}</h1>
+          ${avatar}
+        </div>
           <div>
             ${assessments
-              ?.map((assessment, index) => {
-                let pageBreak = '';
-                if ((index + 1) % 9 === 0) {
-                  pageBreak = '<div class="page-break-before"> </div>';
+              ?.map(assessment => {
+                let notes = '';
+                if (assessment.notes) {
+                  notes = `<div class="notesrow">
+                            <h5>${t('measurements:notes')}</h5>
+                            <p>${assessment.notes
+                              .split(/\r?\n/)
+                              .join('<br />')}</p>
+                          </div>`;
+                }
+                let images = '';
+                if (assessment.images) {
+                  images = `<div class="imagerow">
+                              ${assessment.images
+                                ?.map(
+                                  image =>
+                                    `<img src="${base64Images[image]}" style="width: 200px; height: 200px;" />`,
+                                )
+                                .join('')}
+                            </div>`;
                 }
                 return `
-                ${pageBreak}
-                
                 <div class="assessment" key=${assessment._id.toHexString()}>
                     <div class="row">
                         <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
@@ -142,6 +200,8 @@ const useAssessmentExporter = () => {
                   `${activePet?.species}:assessments:mobility`,
                 )}:${assessment.mobility}</p>
                     </div>
+                    ${notes}
+                    ${images}
                 </div>`;
               })
               .join('')}
@@ -154,7 +214,7 @@ const useAssessmentExporter = () => {
   const createPDF = async (): Promise<string | null> => {
     try {
       let PDFOptions = {
-        html: getHtmlContent(),
+        html: await getHtmlContent(),
         fileName: 'assessments',
         directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
       };

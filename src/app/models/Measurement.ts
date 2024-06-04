@@ -14,6 +14,8 @@ export class Measurement extends Realm.Object {
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   petId: BSON.ObjectId = new BSON.ObjectId();
+  notes?: string;
+  images: Realm.List<string> = new Realm.List<string>();
 
   static primaryKey = '_id';
 }

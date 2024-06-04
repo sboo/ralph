@@ -33,21 +33,20 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved}) => {
   return (
     <View style={styles.container}>
       <View style={styles.profileInput}>
-        <View style={styles.inputRow}>
+        <View style={styles.inputRowLanguage}>
           <Icon source={'earth'} size={30} />
-          <View style={styles.inputFlags}>
+          <View style={styles.inputLanguage}>
             {AVAILABLE_LANGUAGES.map(lang => (
-              <IconButton
+              <Button
                 key={lang.langCode}
-                // eslint-disable-next-line react/no-unstable-nested-components
-                icon={() => <CountryFlag isoCode={lang.isoCode} size={32} />}
+                icon={'chevron-right'}
+                contentStyle={{flexDirection: 'row-reverse'}}
                 onPress={() => {
                   i18next.changeLanguage(lang.langCode);
                 }}
-                accessibilityLabel={'lang'}
-                size={15}
-                mode={'contained'}
-              />
+                accessibilityLabel={'lang'}>
+                {lang.name}
+              </Button>
             ))}
           </View>
         </View>
@@ -104,9 +103,15 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
   },
-  inputFlags: {
+  inputRowLanguage: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
+  },
+  inputLanguage: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
   },

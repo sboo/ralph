@@ -22,15 +22,17 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
     return;
   }
 
-  const handleSubmit = (
+  const handleSubmit = async (
     hurt: number,
     hunger: number,
     hydration: number,
     hygiene: number,
     happiness: number,
     mobility: number,
+    notes?: string,
+    images?: string[],
   ) => {
-    addAssessment({
+    await addAssessment({
       date,
       hurt,
       hunger,
@@ -38,6 +40,8 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
       hygiene,
       happiness,
       mobility,
+      notes,
+      images,
     });
     navigation.goBack();
   };

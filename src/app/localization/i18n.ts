@@ -12,18 +12,22 @@ export const AVAILABLE_LANGUAGES = [
   {
     langCode: 'en',
     isoCode: 'gb',
+    name: 'English',
   },
   {
     langCode: 'es',
     isoCode: 'es',
+    name: 'Castellano',
   },
   {
     langCode: 'de',
     isoCode: 'de',
+    name: 'Deutsch',
   },
   {
     langCode: 'nl',
     isoCode: 'nl',
+    name: 'Nederlands',
   },
 ];
 

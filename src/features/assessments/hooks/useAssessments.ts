@@ -2,8 +2,11 @@ import {Measurement} from '@/app/models/Measurement';
 import {Pet} from '@/app/models/Pet';
 import {useQuery, useRealm} from '@realm/react';
 import moment from 'moment';
+import * as RNFS from '@dr.pogodin/react-native-fs';
 
 import {useMemo} from 'react';
+import {Platform} from 'react-native';
+import { getImageFilename, getImagePath } from '@/support/helpers/ImageHelper';
 
 export interface AssessmentData {
   date: Date;
@@ -13,6 +16,8 @@ export interface AssessmentData {
   hygiene: number;
   happiness: number;
   mobility: number;
+  notes?: string;
+  images?: string[];
 }
 
 const useAssessments = (pet?: Pet) => {
@@ -46,10 +51,12 @@ const useAssessments = (pet?: Pet) => {
     );
   };
 
-  const addAssessment = (assessmentData: AssessmentData) => {
+  const addAssessment = async (assessmentData: AssessmentData) => {
     if (!pet) {
       return;
     }
+    const noteImages = await storeImages(assessmentData.images);
+
     realm.write(() => {
       const dateString = moment(assessmentData.date).format('YYYY-MM-DD');
       realm.create(Measurement, {
@@ -63,14 +70,21 @@ const useAssessments = (pet?: Pet) => {
         mobility: assessmentData.mobility,
         createdAt: assessmentData.date,
         petId: pet._id,
+        notes: assessmentData.notes,
+        images: noteImages,
       });
     });
   };
 
-  const editAssessment = (
+  const editAssessment = async (
     assessment: Measurement,
     assessmentData: AssessmentData,
   ) => {
+    const noteImages = await storeImages(
+      assessmentData.images,
+      Array.from(assessment.images ?? []),
+    );
+
     realm.write(() => {
       assessment.score = calculateScore(assessmentData);
       assessment.hurt = assessmentData.hurt;
@@ -79,7 +93,46 @@ const useAssessments = (pet?: Pet) => {
       assessment.hygiene = assessmentData.hygiene;
       assessment.happiness = assessmentData.happiness;
       assessment.mobility = assessmentData.mobility;
+      assessment.notes = assessmentData.notes;
+      assessment.images = noteImages as any; //this cast is necessary because Realm.List is not compatible with string[], but Realm will handle it
     });
+  };
+
+  const storeImages = async (
+    images: string[] = [],
+    assessmentImages?: string[],
+  ) => {
+    const newImages = images.filter(
+      image => !assessmentImages?.includes(getImageFilename(image)),
+    );
+
+    const deletedImages = assessmentImages?.filter(
+      image => !images.includes(getImagePath(image, true)),
+    );
+
+    if (deletedImages) {
+      await Promise.allSettled(
+        deletedImages.map(async image => {
+          const imagePath = getImagePath(image);
+          const exists = await RNFS.exists(imagePath);
+          if (exists) {
+            await RNFS.unlink(imagePath);
+          }
+        }),
+      );
+    }
+
+    await Promise.allSettled(
+      newImages.map(async image => {
+        const filename = `${Date.now()}_${image.split('/').pop()}`;
+        const path = getImagePath(filename);
+        await RNFS.moveFile(image, path);
+        const idx = images.findIndex(img => img === image);
+        images[idx] = path;
+      }),
+    );
+
+    return images.map(image => getImageFilename(image));
   };
 
   return {assessments, lastAssessments, addAssessment, editAssessment};

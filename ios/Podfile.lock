@@ -1127,11 +1127,11 @@ PODS:
     - React-jsi (= 0.73.6)
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
-  - RealmJS (12.8.0):
+  - RealmJS (12.8.1):
     - React
   - RNCAsyncStorage (1.23.1):
     - React-Core
-  - RNDeviceInfo (10.13.2):
+  - RNDeviceInfo (10.14.0):
     - React-Core
   - RNIap (12.13.1):
     - React-Core
@@ -1159,9 +1159,9 @@ PODS:
     - React-Core
     - React-hermes
     - Sentry/HybridSDK (= 8.25.0)
-  - RNShare (10.2.0):
+  - RNShare (10.2.1):
     - React-Core
-  - RNSVG (15.2.0):
+  - RNSVG (15.3.0):
     - React-Core
   - RNVectorIcons (10.1.0):
     - glog
@@ -1485,16 +1485,16 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 9636eee762c699ca7c85751a359101797e4c8b3b
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
-  RealmJS: 3e6010ae878227830e947f40f996e13ccab4c8ba
+  RealmJS: 2c7fdb3991d7655fba5f88eb288f75eaf5cb9980
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
-  RNDeviceInfo: 42aadf1282ffa0a88dc38a504a7be145eb010dfa
+  RNDeviceInfo: 59344c19152c4b2b32283005f9737c5c64b42fba
   RNIap: c76f9a941a212d5f5ef2c04f608287b9f73ee1ad
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNScreens: 134a7511b12b8eb440b87aac21e36a71295d6024
   RNSentry: f6a5aee809d646763640130714d1fdfe69aac36b
-  RNShare: 554a91f5cfbe4adac4cfe3654826ee8b299fe365
-  RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
+  RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
+  RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   RNVectorIcons: 96e8c5c45609932bb2f8347e1c709bcca0e95654
   Sentry: cd86fc55628f5b7c572cabe66cc8f95a9d2f165a
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17

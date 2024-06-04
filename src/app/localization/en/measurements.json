@@ -7,5 +7,7 @@
   "score": "Score",
   "reminders": "Reminders",
   "notificationTitle": "Time for {{petName}}'s Check-Up",
-  "notificationBody": "How did {{petName}} do today? Tap here to record their day."
+  "notificationBody": "How did {{petName}} do today? Tap here to record their day.",
+  "notes": "Notes",
+  "notesInfo": "Add notes about {{petName}}'s day"
 }

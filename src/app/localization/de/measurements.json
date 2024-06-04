@@ -7,5 +7,7 @@
   "score": "Punktzahl",
   "reminders": "Erinnerungen",
   "notificationTitle": "Zeit für {{petName}}s Kontrolle",
-  "notificationBody": "Wie ging es {{petName}} heute? Tippe hier, um den Tag zu erfassen."
+  "notificationBody": "Wie ging es {{petName}} heute? Tippe hier, um den Tag zu erfassen.",
+  "notes": "Notizen",
+  "notesInfo": "Füge Notizen über den Tag von {{petName}} hinzu"
 }

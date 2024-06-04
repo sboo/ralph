@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
+import React, {useEffect, useMemo, useState} from 'react';
+import {
+  Alert,
+  Linking,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   Button,
   Dialog,
@@ -53,6 +60,8 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
   );
   const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
   const {pets} = usePet();
+
+  const petComplete = useMemo(() => petType && petName, [petType, petName]);
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -226,7 +235,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.profileInput}>
+      <ScrollView contentContainerStyle={styles.profileInput}>
         <View style={styles.inputRow}>
           <Text style={styles.inputLabel} variant="labelLarge">
             {t('settings:petTypeInputLabel')}
@@ -305,23 +314,23 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             />
           </View>
         ) : null}
-        <View style={styles.inputRow}>
-          <View style={styles.inputLabel}>
-            <Text style={styles.inputLabel} variant="labelLarge">
-              {t('settings:pauseAssessmentsLabel')}
-            </Text>
-            <Text
-              style={{color: theme.colors.outline, ...styles.inputLabel}}
-              variant="bodySmall">
-              {t('settings:pauseAssessmentsLabelInfo')}
-            </Text>
+        {pet ? (
+          <View style={styles.inputRow}>
+            <View style={styles.inputLabel}>
+              <Text variant="labelLarge">
+                {t('settings:pauseAssessmentsLabel')}
+              </Text>
+              <Text style={{color: theme.colors.outline}} variant="bodySmall">
+                {t('settings:pauseAssessmentsLabelInfo')}
+              </Text>
+            </View>
+            <Switch
+              value={assessmentsPaused}
+              onValueChange={toggleAssessmentsPaused}
+            />
           </View>
-          <Switch
-            value={assessmentsPaused}
-            onValueChange={toggleAssessmentsPaused}
-          />
-        </View>
-      </View>
+        ) : null}
+      </ScrollView>
       <View style={styles.buttons}>
         {pet && pets.length > 1 ? (
           <Button
@@ -332,7 +341,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             {t('buttons:delete_pet')}
           </Button>
         ) : null}
-        <Button onPress={submitData} mode={'contained'}>
+        <Button disabled={!petComplete} onPress={submitData} mode={'contained'}>
           {buttonLabel ?? t('buttons:save')}
         </Button>
       </View>
@@ -375,6 +384,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 20,
+    marginBottom: 30,
   },
   inputRow: {
     flexDirection: 'row',
@@ -406,7 +416,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center',
   },
   avatar: {

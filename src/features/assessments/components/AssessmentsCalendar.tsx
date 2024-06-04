@@ -40,6 +40,7 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
         acc[date] = {
           selected: true,
           selectedColor: getIconColor(assessment.score),
+          marked: !!assessment.notes,
         };
         return acc;
       }, {} as MarkedDates) ?? ({} as MarkedDates)

@@ -25,16 +25,18 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
     return;
   }
 
-  const handleSubmit = (
+  const handleSubmit = async (
     hurt: number,
     hunger: number,
     hydration: number,
     hygiene: number,
     happiness: number,
     mobility: number,
+    notes?: string,
+    images?: string[],
   ) => {
     if (assessment) {
-      editAssessment(assessment, {
+      await editAssessment(assessment, {
         date: assessment!.createdAt,
         hurt,
         hunger,
@@ -42,6 +44,8 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
         hygiene,
         happiness,
         mobility,
+        notes,
+        images,
       });
     }
     navigation.goBack();
