@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Linking, Platform, StyleSheet, View} from 'react-native';
-import {Button, Divider, Icon, IconButton, Text} from 'react-native-paper';
+import {Button, Divider, Icon, Switch, Text} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import {AVAILABLE_LANGUAGES} from '@/app/localization/i18n';
-import CountryFlag from 'react-native-country-flag';
 import i18next from 'i18next';
 import {ANDROID_APP_ID, IOS_APP_ID} from '@/support/constants';
+import { STORAGE_KEYS } from '@/app/store/storageKeys';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SettingsProps {
   onSettingsSaved: () => void;
@@ -13,6 +14,17 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({onSettingsSaved}) => {
   const {t} = useTranslation();
+
+  const [useRatingButtons, setUseRatingButtons] = React.useState(false);
+  
+
+  useEffect(() => {
+    const getUseRatingButtons = async () => {
+      const useRatingButtons = await AsyncStorage.getItem(STORAGE_KEYS.USE_RATING_BUTTONS);
+      setUseRatingButtons(useRatingButtons === 'true');
+    }
+    getUseRatingButtons();
+  }, []);
 
   const APP_STORE_LINK = `itms-apps://apps.apple.com/app/id${IOS_APP_ID}?action=write-review`;
   const PLAY_STORE_LINK = `market://details?id=${ANDROID_APP_ID}`;
@@ -27,6 +39,7 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved}) => {
   // Store pet name and type in storage
   const storeSettings = async () => {
     // Navigate to the next screen after successful storage
+    await AsyncStorage.setItem(STORAGE_KEYS.USE_RATING_BUTTONS, useRatingButtons.toString());
     onSettingsSaved();
   };
 
@@ -49,6 +62,16 @@ const Settings: React.FC<SettingsProps> = ({onSettingsSaved}) => {
               </Button>
             ))}
           </View>
+        </View>
+        <Divider style={styles.divider} bold={true} />
+        <View style={styles.inputRow}>
+          <Text style={styles.inputLabel} variant="labelLarge">
+            {t('settings:useRatingButtons')}
+          </Text>
+          <Switch
+            value={useRatingButtons}
+            onValueChange={setUseRatingButtons}
+          />
         </View>
         <Divider style={styles.divider} bold={true} />
         <View style={styles.inputRowReview}>
