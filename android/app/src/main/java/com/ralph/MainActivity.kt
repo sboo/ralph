@@ -9,6 +9,7 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate
 
 class MainActivity : ReactActivity() {
 
+  //react-native-screens override
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(null)
   }

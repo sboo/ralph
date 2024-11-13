@@ -3,7 +3,7 @@ PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
-  - dr-pogodin-react-native-fs (2.29.1):
+  - dr-pogodin-react-native-fs (2.28.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1530,9 +1530,9 @@ PODS:
     - React-utils (= 0.75.4)
   - RealmJS (12.14.0):
     - React
-  - RNCAsyncStorage (1.24.0):
+  - RNCAsyncStorage (2.0.0):
     - React-Core
-  - RNDeviceInfo (11.1.0):
+  - RNDeviceInfo (14.0.0):
     - React-Core
   - RNIap (12.15.7):
     - React-Core
@@ -1545,10 +1545,10 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController (~> 2.7.4)
-  - RNNotifee (7.9.0):
+  - RNNotifee (9.1.2):
     - React-Core
-    - RNNotifee/NotifeeCore (= 7.9.0)
-  - RNNotifee/NotifeeCore (7.9.0):
+    - RNNotifee/NotifeeCore (= 9.1.2)
+  - RNNotifee/NotifeeCore (9.1.2):
     - React-Core
   - RNScreens (3.35.0):
     - DoubleConversion
@@ -1595,8 +1595,27 @@ PODS:
     - ReactCommon/turbomodule/core
     - Sentry/HybridSDK (= 8.37.0)
     - Yoga
-  - RNShare (10.2.1):
+  - RNShare (11.0.4):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNSVG (15.8.0):
     - React-Core
   - RNVectorIcons (10.2.0):
@@ -1879,7 +1898,7 @@ SPEC CHECKSUMS:
   boost: 4cb898d0bf20404aab1850c656dcea009429d6c1
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
-  dr-pogodin-react-native-fs: 9fd01a11c4696cf799d61440b9dbc7128561c9ed
+  dr-pogodin-react-native-fs: ef867f73c2aac23312da36bd45cb120e8dd85972
   FBLazyVector: 430e10366de01d1e3d57374500b1b150fe482e6d
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
@@ -1944,14 +1963,14 @@ SPEC CHECKSUMS:
   ReactCodegen: 4bcb34e6b5ebf6eef5cee34f55aa39991ea1c1f1
   ReactCommon: 6a952e50c2a4b694731d7682aaa6c79bc156e4ad
   RealmJS: 054540707292206eadf069f110e79defb632a1b3
-  RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
-  RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
+  RNCAsyncStorage: d35c79ffba52c1013013e16b1fc295aec2feabb6
+  RNDeviceInfo: 6192a9c9167e256803e554038b22b3b2b40163dc
   RNIap: f3ca6e7597afccb2c1631de97d88f2e33b10dafd
   RNImageCropPicker: a536bb88eade8336e1d18fdeafa77dc893fbc42e
-  RNNotifee: 935f3ea8c134c88cbf8b13ea0c97c72c09ad2116
+  RNNotifee: bc20a5e3d581f629db988075944fdd944d363dfe
   RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
   RNSentry: ceccbafd1f85cf995092a86197cc445e0fc589ca
-  RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
+  RNShare: eaeb5e7dc1618d19db6234da1af91fc60dd6bc0f
   RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
   RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
   Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
