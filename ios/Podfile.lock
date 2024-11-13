@@ -1550,7 +1550,7 @@ PODS:
     - RNNotifee/NotifeeCore (= 9.1.2)
   - RNNotifee/NotifeeCore (9.1.2):
     - React-Core
-  - RNScreens (3.35.0):
+  - RNScreens (4.0.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1616,7 +1616,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSVG (15.8.0):
+  - RNSVG (15.9.0):
     - React-Core
   - RNVectorIcons (10.2.0):
     - DoubleConversion
@@ -1968,10 +1968,10 @@ SPEC CHECKSUMS:
   RNIap: f3ca6e7597afccb2c1631de97d88f2e33b10dafd
   RNImageCropPicker: a536bb88eade8336e1d18fdeafa77dc893fbc42e
   RNNotifee: bc20a5e3d581f629db988075944fdd944d363dfe
-  RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
+  RNScreens: de948b09c9a30f3ea52f9840dd6f8ce92b4e33d3
   RNSentry: ceccbafd1f85cf995092a86197cc445e0fc589ca
   RNShare: eaeb5e7dc1618d19db6234da1af91fc60dd6bc0f
-  RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
+  RNSVG: 3d2bdcaef51c8071880a9c0072fe324f4423a3ba
   RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
   Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
