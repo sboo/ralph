@@ -1,5 +1,5 @@
-import React, {RefObject, useMemo, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Image,
   Platform,
@@ -8,12 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Button, Divider, Text} from 'react-native-paper';
+import { Button, Divider, Text, SegmentedButtons } from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
-import {Measurement} from '@/app/models/Measurement.ts';
+import { Measurement } from '@/app/models/Measurement.ts';
 import NotesModal from './NotesModal';
-import {getImagePath} from '@/support/helpers/ImageHelper';
+import { getImagePath } from '@/support/helpers/ImageHelper';
 import ImageView from 'react-native-image-viewing';
+import RatingButtons from '@/support/components/RatingButtons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { STORAGE_KEYS } from '@/app/store/storageKeys';
 
 interface Props {
   petName: string;
@@ -41,7 +44,8 @@ const AssessmentItem: React.FC<Props> = ({
   onCancel,
   assessment: measurement,
 }) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+  const [useRatingButtons, setUseRatingButtons] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [clickedImage, setClickedImage] = useState<number>(0);
@@ -56,7 +60,7 @@ const AssessmentItem: React.FC<Props> = ({
   const [happiness, setHappiness] = useState<number | undefined>(
     measurement?.happiness,
   );
-  const [mobility, setMoboility] = useState<number | undefined>(
+  const [mobility, setMobility] = useState<number | undefined>(
     measurement?.mobility,
   );
   const [notes, setNotes] = useState<string | undefined>(measurement?.notes);
@@ -65,6 +69,14 @@ const AssessmentItem: React.FC<Props> = ({
       return getImagePath(image, true);
     }),
   );
+
+  useEffect(() => {
+    const getUseRatingButtons = async () => {
+      const useRatingButtons = await AsyncStorage.getItem(STORAGE_KEYS.USE_RATING_BUTTONS);
+      setUseRatingButtons(useRatingButtons === 'true');
+    }
+    getUseRatingButtons();
+  }, []);
 
   const scrollViewRef = useRef<ScrollView>();
 
@@ -81,7 +93,7 @@ const AssessmentItem: React.FC<Props> = ({
     setNotes(text);
     setImages(noteImages);
     setModalVisible(false);
-    scrollViewRef.current?.scrollToEnd({animated: true});
+    scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
   const _onSubmit = () => {
@@ -103,7 +115,7 @@ const AssessmentItem: React.FC<Props> = ({
 
   const imagesList = useMemo(() => {
     return images?.map(image => {
-      return {uri: image};
+      return { uri: image };
     });
   }, [images]);
 
@@ -120,87 +132,149 @@ const AssessmentItem: React.FC<Props> = ({
         {t('date')}: {date.toLocaleDateString()}
       </Text>
       <Text variant={'bodyLarge'} style={styles.intro}>
-        {t('measurements:intro', {petName})}
+        {t('measurements:intro', { petName })}
       </Text>
       <Text style={styles.label}>{t(`${petSpecies}:assessments:hurt`)}</Text>
       <Text style={styles.info}>
-        {t(`${petSpecies}:assessments:hurtInfo`, {petName})}
+        {t(`${petSpecies}:assessments:hurtInfo`, { petName })}
       </Text>
-      <RatingSlider
+      {useRatingButtons ? (<RatingButtons
         onRatingChange={value => setHurt(value)}
         initialRating={hurt}
         optionTexts={t(`${petSpecies}:assessments:hurtOptions`, {
           returnObjects: true,
           petName,
         })}
-      />
-
-      <Text style={styles.label}>{t(`${petSpecies}:assessments:hunger`)}</Text>
-      <Text style={styles.info}>
-        {t(`${petSpecies}:assessments:hungerInfo`, {petName})}
-      </Text>
-      <RatingSlider
-        onRatingChange={value => setHunger(value)}
-        initialRating={hunger}
-        optionTexts={t(`${petSpecies}:assessments:hungerOptions`, {
+      />) : (<RatingSlider
+        onRatingChange={value => setHurt(value)}
+        initialRating={hurt}
+        optionTexts={t(`${petSpecies}:assessments:hurtOptions`, {
           returnObjects: true,
           petName,
         })}
-      />
+      />)}
+
+      <Text style={styles.label}>{t(`${petSpecies}:assessments:hunger`)}</Text>
+      <Text style={styles.info}>
+        {t(`${petSpecies}:assessments:hungerInfo`, { petName })}
+      </Text>
+      {useRatingButtons ? (
+        <RatingButtons
+          onRatingChange={value => setHunger(value)}
+          initialRating={hunger}
+          optionTexts={t(`${petSpecies}:assessments:hungerOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      ) : (
+        <RatingSlider
+          onRatingChange={value => setHunger(value)}
+          initialRating={hunger}
+          optionTexts={t(`${petSpecies}:assessments:hungerOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      )}
       <Text style={styles.label}>
         {t(`${petSpecies}:assessments:hydration`)}
       </Text>
       <Text style={styles.info}>
-        {t(`${petSpecies}:assessments:hydrationInfo`, {petName})}
+        {t(`${petSpecies}:assessments:hydrationInfo`, { petName })}
       </Text>
-      <RatingSlider
-        onRatingChange={value => setHydration(value)}
-        initialRating={hydration}
-        optionTexts={t(`${petSpecies}:assessments:hydrationOptions`, {
-          returnObjects: true,
-          petName,
-        })}
-      />
+      {useRatingButtons ? (
+        <RatingButtons
+          onRatingChange={value => setHydration(value)}
+          initialRating={hydration}
+          optionTexts={t(`${petSpecies}:assessments:hydrationOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      ) : (
+        <RatingSlider
+          onRatingChange={value => setHydration(value)}
+          initialRating={hydration}
+          optionTexts={t(`${petSpecies}:assessments:hydrationOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      )}
       <Text style={styles.label}>{t(`${petSpecies}:assessments:hygiene`)}</Text>
       <Text style={styles.info}>
-        {t(`${petSpecies}:assessments:hygieneInfo`, {petName})}
+        {t(`${petSpecies}:assessments:hygieneInfo`, { petName })}
       </Text>
-      <RatingSlider
-        onRatingChange={value => setHygiene(value)}
-        initialRating={hygiene}
-        optionTexts={t(`${petSpecies}:assessments:hygieneOptions`, {
-          returnObjects: true,
-          petName,
-        })}
-      />
+      {useRatingButtons ? (
+        <RatingButtons
+          onRatingChange={value => setHygiene(value)}
+          initialRating={hygiene}
+          optionTexts={t(`${petSpecies}:assessments:hygieneOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      ) : (
+        <RatingSlider
+          onRatingChange={value => setHygiene(value)}
+          initialRating={hygiene}
+          optionTexts={t(`${petSpecies}:assessments:hygieneOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      )}
       <Text style={styles.label}>
         {t(`${petSpecies}:assessments:happiness`)}
       </Text>
       <Text style={styles.info}>
-        {t(`${petSpecies}:assessments:happinessInfo`, {petName})}
+        {t(`${petSpecies}:assessments:happinessInfo`, { petName })}
       </Text>
-      <RatingSlider
-        onRatingChange={value => setHappiness(value)}
-        initialRating={happiness}
-        optionTexts={t(`${petSpecies}:assessments:happinessOptions`, {
-          returnObjects: true,
-          petName,
-        })}
-      />
+      {useRatingButtons ? (
+        <RatingButtons
+          onRatingChange={value => setHappiness(value)}
+          initialRating={happiness}
+          optionTexts={t(`${petSpecies}:assessments:happinessOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      ) : (
+        <RatingSlider
+          onRatingChange={value => setHappiness(value)}
+          initialRating={happiness}
+          optionTexts={t(`${petSpecies}:assessments:happinessOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      )}
       <Text style={styles.label}>
         {t(`${petSpecies}:assessments:mobility`)}
       </Text>
       <Text style={styles.info}>
-        {t(`${petSpecies}:assessments:mobilityInfo`, {petName})}
+        {t(`${petSpecies}:assessments:mobilityInfo`, { petName })}
       </Text>
-      <RatingSlider
-        onRatingChange={value => setMoboility(value)}
-        initialRating={mobility}
-        optionTexts={t(`${petSpecies}:assessments:mobilityOptions`, {
-          returnObjects: true,
-          petName,
-        })}
-      />
+      {useRatingButtons ? (
+        <RatingButtons
+          onRatingChange={value => setMobility(value)}
+          initialRating={mobility}
+          optionTexts={t(`${petSpecies}:assessments:mobilityOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      ) : (
+        <RatingSlider
+          onRatingChange={value => setMobility(value)}
+          initialRating={mobility}
+          optionTexts={t(`${petSpecies}:assessments:mobilityOptions`, {
+        returnObjects: true,
+        petName,
+          })}
+        />
+      )}
       <Divider style={styles.divider} />
       <View style={styles.notesHolder}>
         {!notes ? null : (
@@ -215,7 +289,7 @@ const AssessmentItem: React.FC<Props> = ({
               <TouchableOpacity
                 key={index}
                 onPress={() => openImageViewer(index)}>
-                <Image source={{uri: path}} style={styles.image} />
+                <Image source={{ uri: path }} style={styles.image} />
               </TouchableOpacity>
             );
           })}

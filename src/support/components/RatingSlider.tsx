@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {Slider} from '@miblanchard/react-native-slider';
-import {StyleSheet, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Slider } from '@miblanchard/react-native-slider';
+import { StyleSheet, View } from 'react-native';
 import RatingSliderToolTip from './RatingSliderToolTip';
-import {useTheme} from 'react-native-paper';
-import {getValueColor} from '@/support/helpers/ColorHelper';
+import { useTheme } from 'react-native-paper';
+import { getValueColor } from '@/support/helpers/ColorHelper';
 
 interface Props {
   initialRating: number | undefined;
@@ -25,6 +25,9 @@ const RatingSlider: React.FC<Props> = ({
   const theme = useTheme();
   const [selectedRating, setSelectedRating] = useState<number | undefined>(
     initialRating,
+  );
+  const [sliderValue, setSliderValue] = useState<number | undefined>(
+    initialRating !== undefined ? initialRating / 2.5 : undefined,
   );
   const [sliding, setSliding] = useState(false);
   useEffect(() => {
@@ -67,14 +70,14 @@ const RatingSlider: React.FC<Props> = ({
     const rating = Math.round(selectedRating / 2.5) * 2.5;
     const emoticon = emoticons.find(v => v.value === rating);
     const texts = optionTexts.find(v => v.value === rating);
-    return {...texts, icon: emoticon?.icon};
+    return { ...texts, icon: emoticon?.icon };
   };
 
   const onSlidingComplete = (value: number[]) => {
     setSliding(false);
     const rating = Math.round(value[0] / 2.5) * 2.5;
     if (onRatingChange) {
-      onRatingChange(rating);
+      onRatingChange(value[0] * 2.5);
     }
   };
 
@@ -83,7 +86,8 @@ const RatingSlider: React.FC<Props> = ({
   };
 
   const onValueChange = (value: number[]) => {
-    setSelectedRating(value[0]);
+    setSliderValue(value[0]);
+    setSelectedRating(value[0] * 2.5);
   };
 
   // eslint-disable-next-line react/no-unstable-nested-components
@@ -106,12 +110,13 @@ const RatingSlider: React.FC<Props> = ({
     <View style={styles.container}>
       <Tooltip />
       <Slider
-        value={selectedRating !== undefined ? selectedRating : 5}
+        value={sliderValue !== undefined ? sliderValue : 2}
         onValueChange={value => onValueChange(value)}
         onSlidingStart={onSlidingStart}
         onSlidingComplete={value => onSlidingComplete(value)}
         minimumValue={0}
-        maximumValue={10}
+        maximumValue={4}
+        step={1}
         thumbTintColor={theme.colors.onSurface}
         minimumTrackTintColor={getValueColor(
           theme.colors.outline,

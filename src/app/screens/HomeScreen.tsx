@@ -129,60 +129,28 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <HomeHeader />
-        <SkeletonSimpler
-          loading={loading}
-          layout={
-            viewMode === 'chart'
-              ? [
-                  {
-                    width: width,
-                    height: 210,
-                    margin: 20,
-                    borderRadius: 15,
-                    marginBottom: 25,
-                    backgroundColor: theme.colors.surface,
-                  },
-                  {
-                    width: width,
-                    height: height + 45,
-                    margin: 20,
-                    borderRadius: 15,
-                    backgroundColor: theme.colors.surface,
-                  },
-                ]
-              : [
-                  {
-                    width: width,
-                    height: 335,
-                    margin: 20,
-                    borderRadius: 15,
-                    backgroundColor: theme.colors.surface,
-                  },
-                ]
-          }>
-          <ScrollView style={styles.bodyContainer}>
-            {viewMode === 'calendar' ? (
-              <AssessmentsCalendar onCalendarDayPress={onCalendarDayPress} />
-            ) : (
-              <>
-                <AssessmentChart onDataPointClick={addOrEditAssessment} />
-                {activePet && assessments && assessments.length > 0 ? (
-                  averageScore < 30 ? (
-                    <TalkToVetTip />
-                  ) : (
-                    <Tips
-                      assessment={lastAssessment!}
-                      activePet={activePet}
-                      numberOfTips={4}
-                    />
-                  )
+        <ScrollView style={styles.bodyContainer}>
+          {viewMode === 'calendar' ? (
+            <AssessmentsCalendar onCalendarDayPress={onCalendarDayPress} />
+          ) : (
+            <>
+              <AssessmentChart onDataPointClick={addOrEditAssessment} />
+              {activePet && assessments && assessments.length > 0 ? (
+                averageScore < 30 ? (
+                  <TalkToVetTip />
                 ) : (
-                  <GetStartedTip />
-                )}
-              </>
-            )}
-          </ScrollView>
-        </SkeletonSimpler>
+                  <Tips
+                    assessment={lastAssessment!}
+                    activePet={activePet}
+                    numberOfTips={4}
+                  />
+                )
+              ) : (
+                <GetStartedTip />
+              )}
+            </>
+          )}
+        </ScrollView>
         <View style={styles.fabHolder}>
           <FAB
             style={styles.fab}

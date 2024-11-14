@@ -8,5 +8,6 @@
     "pauseAssessmentsLabelInfo": "Verwenden Sie diese Funktion, um Bewertungen und Benachrichtigungen zu deaktivieren und das Fortschritts-Tracking zu stoppen.",
     "selectLanguageLabel": "Sprache auswählen",
     "app_useful": "Findest du Ralph nützlich? Hilf uns, mehr Menschen zu erreichen, indem du uns eine Bewertung hinterlässt!",
-    "review_app": "Ralph bewerten"
+    "review_app": "Ralph bewerten",
+    "useRatingButtons": "Verwende Buttons zur Bewertung anstelle von Schiebereglern"
 }

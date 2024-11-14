@@ -8,5 +8,6 @@
     "pauseAssessmentsLabelInfo": "Gebruik deze functie om beoordelingen en meldingen uit te schakelen, waardoor de voortgangsregistratie wordt gestopt.",
     "selectLanguageLabel": "Selecteer taal",
     "app_useful": "Vind je Ralph nuttig? Help ons meer mensen te bereiken door een review achter te laten!",
-    "review_app": "Ralph beoordelen"
+    "review_app": "Ralph beoordelen", 
+    "useRatingButtons": "Gebruik knoppen voor de beoordeling in plaats van schuifregelaars"
 }

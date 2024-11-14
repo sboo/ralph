@@ -43,7 +43,7 @@ const usePet = () => {
           newActivePet.isActive = true;
           newActivePet.showNotificationDot = false;
         } else {
-          console.error('No pet found with the given ID');
+          console.error('No pet found with the given ID (46)');
         }
       });
     },
@@ -57,7 +57,7 @@ const usePet = () => {
         if (pet && !pet.isActive) {
           pet.showNotificationDot = true;
         } else {
-          console.error('No pet found with the given ID');
+          console.error('No pet found with the given ID (60)');
         }
       });
     },
@@ -93,7 +93,7 @@ const usePet = () => {
           }
         });
       } else {
-        console.error('No pet found with the given ID');
+        console.error('No pet found with the given ID (96');
       }
     });
   };
@@ -124,7 +124,7 @@ const usePet = () => {
       if (pet) {
         realm.delete(pet);
       } else {
-        console.error('No pet found with the given ID');
+        console.error('No pet found with the given ID (127');
       }
     });
   };

@@ -28,8 +28,7 @@ const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <Settings
-          onSettingsSaved={() => navigation.navigate('Home')}
-          buttonLabel={t('buttons:save')}
+          onSettingsSaved={() => navigation.goBack()}
         />
       </LinearGradient>
       <Text style={styles.versionInfo} variant={'labelSmall'}>
