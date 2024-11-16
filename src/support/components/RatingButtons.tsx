@@ -4,6 +4,7 @@ import { StyleSheet, Touchable, TouchableWithoutFeedback, View } from 'react-nat
 import RatingSliderToolTip from './RatingSliderToolTip';
 import { useTheme } from 'react-native-paper';
 import { getValueColor } from '@/support/helpers/ColorHelper';
+import { getEmoticon, getTooltipContent, OptionText } from '../helpers/TooltipHelper';
 
 interface Props {
     initialRating: number | undefined;
@@ -11,11 +12,6 @@ interface Props {
     optionTexts: OptionText[];
 }
 
-interface OptionText {
-    value: number;
-    label: string;
-    description: string;
-}
 
 const RatingButtons: React.FC<Props> = ({
     initialRating,
@@ -33,44 +29,16 @@ const RatingButtons: React.FC<Props> = ({
         }
     }, [initialRating]);
 
-    const emoticons = [
-        {
-            value: 0,
-            icon: 'emoticon-sad-outline',
-        },
-        {
-            value: 2.5,
-            icon: 'emoticon-confused-outline',
-        },
-        {
-            value: 5,
-            icon: 'emoticon-neutral-outline',
-        },
-        {
-            value: 7.5,
-            icon: 'emoticon-happy-outline',
-        },
-        {
-            value: 10,
-            icon: 'emoticon-excited-outline',
-        },
-    ];
-
-    const getEmoticon = (value: number) => {
-        return emoticons.find(v => v.value === value);
-    }
-
     const getSelectedLabel = () => {
         if (selectedRating === undefined) {
             return {
-                label: '',
+                title: '',
                 description: '',
                 icon: 'emoticon-neutral-outline',
             };
         }
-        const rating = Math.round(selectedRating / 2.5) * 2.5;
-        const emoticon = getEmoticon(rating);
-        const texts = optionTexts.find(v => v.value === rating);
+        const emoticon = getEmoticon(selectedRating);
+        const texts = optionTexts.find(v => v.value === selectedRating);
         return { ...texts, icon: emoticon?.icon };
     };
 
@@ -80,7 +48,7 @@ const RatingButtons: React.FC<Props> = ({
     }
 
     const onValueChange = (value: number) => {
-        setSelectedRating(value);
+        // setSelectedRating(value);
         onRatingChange?.(value);
     };
 
@@ -89,13 +57,14 @@ const RatingButtons: React.FC<Props> = ({
         if (!pressed) {
             return null;
         }
+        const tooltipContent = getTooltipContent(selectedRating, optionTexts);
         return (
             <RatingSliderToolTip
                 color={getValueColor(
                     theme.colors.outline,
                     selectedRating !== undefined ? selectedRating : 5,
                 )}
-                {...getSelectedLabel()}
+                {...tooltipContent}
             />
         );
     };
