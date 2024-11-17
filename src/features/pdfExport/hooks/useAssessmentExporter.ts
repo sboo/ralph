@@ -36,8 +36,19 @@ const useAssessmentExporter = () => {
   const generateChartScript = () => {
     if (!assessments?.length) return '';
 
-    const dates = assessments.map(a => a.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'})).join("','");
-    const scores = assessments.map(a => a.score).join(',');
+    // Filter assessments to last 3 weeks
+    const threeWeeksAgo = new Date();
+    threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21); // 21 days = 3 weeks
+    
+    const recentAssessments = assessments
+      .filter(a => new Date(a.createdAt) >= threeWeeksAgo)
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+    // Get dates and scores for the chart
+    const dates = recentAssessments.map(a => 
+      a.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'})
+    ).join("','");
+    const scores = recentAssessments.map(a => a.score).join(',');
 
     return `
       <script>
@@ -91,70 +102,85 @@ const useAssessmentExporter = () => {
             ctx.fillText(value.toString(), padding.left - 5, y);
           }
 
-          // X-axis labels
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'top';
-          const step = width / (dates.length - 1);
-          dates.forEach((date, i) => {
-            const x = padding.left + i * step;
-            ctx.save();
-            ctx.translate(x, canvas.height - padding.bottom + 15);
-            ctx.rotate(Math.PI / 4);
-            ctx.fillText(date, 0, 0);
-            ctx.restore();
-          });
+          // Only draw the chart if we have data
+          if (dates.length > 0) {
+            // X-axis labels
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            const step = width / Math.max(dates.length - 1, 1); // Avoid division by zero if only one point
+            dates.forEach((date, i) => {
+              const x = padding.left + i * step;
+              ctx.save();
+              ctx.translate(x, canvas.height - padding.bottom + 15);
+              ctx.rotate(Math.PI / 4);
+              ctx.fillText(date, 0, 0);
+              ctx.restore();
+            });
 
-          // Draw curve
-          ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 2.5;
-          
-          const points = scores.map((score, i) => ({
-            x: padding.left + i * step,
-            y: padding.top + (height - (height * score) / 60)
-          }));
-          
-          if (points.length >= 2) {
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-            
-            for (let i = 0; i < points.length - 1; i++) {
-              const current = points[i];
-              const next = points[i + 1];
-              
-              const controlPoint1 = {
-                x: current.x + (next.x - points[Math.max(0, i - 1)].x) / 6,
-                y: current.y + (next.y - points[Math.max(0, i - 1)].y) / 6
-              };
-              
-              const controlPoint2 = {
-                x: next.x - (points[Math.min(points.length - 1, i + 2)].x - current.x) / 6,
-                y: next.y - (points[Math.min(points.length - 1, i + 2)].y - current.y) / 6
-              };
-              
-              ctx.bezierCurveTo(
-                controlPoint1.x, controlPoint1.y,
-                controlPoint2.x, controlPoint2.y,
-                next.x, next.y
-              );
-            }
-            ctx.stroke();
-          }
-                    
-          // Draw points
-          points.forEach(point => {
-            // White fill
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
-            ctx.fillStyle = '#ffffff';
-            ctx.fill();
-            
-            // Black border
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+            // Draw curve
             ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-          });
+            ctx.lineWidth = 2.5;
+            
+            const points = scores.map((score, i) => ({
+              x: padding.left + i * step,
+              y: padding.top + (height - (height * score) / 60)
+            }));
+            
+            if (points.length >= 2) {
+              ctx.beginPath();
+              ctx.moveTo(points[0].x, points[0].y);
+              
+              for (let i = 0; i < points.length - 1; i++) {
+                const current = points[i];
+                const next = points[i + 1];
+                
+                const controlPoint1 = {
+                  x: current.x + (next.x - points[Math.max(0, i - 1)].x) / 6,
+                  y: current.y + (next.y - points[Math.max(0, i - 1)].y) / 6
+                };
+                
+                const controlPoint2 = {
+                  x: next.x - (points[Math.min(points.length - 1, i + 2)].x - current.x) / 6,
+                  y: next.y - (points[Math.min(points.length - 1, i + 2)].y - current.y) / 6
+                };
+                
+                ctx.bezierCurveTo(
+                  controlPoint1.x, controlPoint1.y,
+                  controlPoint2.x, controlPoint2.y,
+                  next.x, next.y
+                );
+              }
+              ctx.stroke();
+            } else if (points.length === 1) {
+              // If we only have one point, draw it without a line
+              ctx.beginPath();
+              ctx.moveTo(points[0].x, points[0].y);
+              ctx.stroke();
+            }
+                      
+            // Draw points
+            points.forEach(point => {
+              // White fill
+              ctx.beginPath();
+              ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+              ctx.fillStyle = '#ffffff';
+              ctx.fill();
+              
+              // Black border
+              ctx.beginPath();
+              ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+              ctx.strokeStyle = '#000000';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+            });
+          } else {
+            // Draw "No data" message if no recent assessments
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#666666';
+            ctx.font = '14px Inter';
+            ctx.fillText('No assessments in the last 3 weeks', canvas.width / 2, canvas.height / 2);
+          }
         }
       </script>
     `;
