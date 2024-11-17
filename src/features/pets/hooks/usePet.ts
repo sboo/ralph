@@ -115,6 +115,12 @@ const usePet = () => {
       console.error('Cannot delete the only pet in the list');
       return;
     }
+
+    const anotherPet = realm.objects(Pet).filtered(`_id != $0`, petId)[0];
+    if(anotherPet) {
+      switchActivePet(anotherPet._id);
+    }
+
     realm.write(() => {
       const pet = realm.objectForPrimaryKey('Pet', petId);
       if (pet) {

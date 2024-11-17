@@ -9,5 +9,7 @@
   "notificationTitle": "Tijd voor de controle van {{petName}}",
   "notificationBody": "Hoe was {{petName}} vandaag? Tik hier om hun dag vast te leggen.",
   "notes": "Notities",
-  "notesInfo": "Voeg notities toe over de dag van {{petName}}"
+  "notesInfo": "Voeg notities toe over de dag van {{petName}}",
+  "showing_last_3_weeks_of_data": "Beoordelingen van de laatste 3 weken",
+  "no_assessments_in_last_3_weeks": "Geen beoordelingen in de laatste 3 weken"
 }
