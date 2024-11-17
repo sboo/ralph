@@ -189,13 +189,15 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
             onStateChange={({open}) => setIsFabOpen(open)}
           />
         ) : (
-          <FAB
-            style={styles.shareFab}
-            icon={'share-variant'}
-            mode={'flat'}
-            loading={generatingPDF}
-            onPress={shareAssessments}
-          />
+          assessments && assessments.length > 0 && (
+            <FAB
+              style={styles.shareFab}
+              icon={'share-variant'}
+              mode={'flat'}
+              loading={generatingPDF}
+              onPress={shareAssessments}
+            />
+          )
         )}
       </LinearGradient>
     </SafeAreaView>

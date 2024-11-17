@@ -36,19 +36,20 @@ const useAssessmentExporter = () => {
   const generateChartScript = () => {
     if (!assessments?.length) return '';
 
-    // Filter assessments to last 3 weeks
-    const threeWeeksAgo = new Date();
-    threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21); // 21 days = 3 weeks
-    
-    const recentAssessments = assessments
-      .filter(a => new Date(a.createdAt) >= threeWeeksAgo)
-      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-
-    // Get dates and scores for the chart
-    const dates = recentAssessments.map(a => 
-      a.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'})
-    ).join("','");
-    const scores = recentAssessments.map(a => a.score).join(',');
+     // Filter assessments to last 3 weeks
+     const threeWeeksAgo = new Date();
+     threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21);
+     
+     const recentAssessments = assessments
+       .filter(a => new Date(a.createdAt) >= threeWeeksAgo)
+       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+ 
+     const hasOlderData = assessments.some(a => new Date(a.createdAt) < threeWeeksAgo);
+ 
+     const dates = recentAssessments.map(a => 
+       a.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'})
+     ).join("','");
+     const scores = recentAssessments.map(a => a.score).join(',');
 
     return `
       <script>
@@ -58,12 +59,13 @@ const useAssessmentExporter = () => {
           
           const dates = ['${dates}'];
           const scores = [${scores}];
+          const hasOlderData = ${hasOlderData};
           
           const padding = {
             left: 30,
             right: 80,
             top: 40,
-            bottom: 40
+            bottom: ${hasOlderData ? '60' : '40'} // Increase bottom padding if we need to show the note
           };
           
           const width = canvas.width - (padding.left + padding.right);
@@ -178,8 +180,16 @@ const useAssessmentExporter = () => {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#666666';
-            ctx.font = '14px Inter';
-            ctx.fillText('No assessments in the last 3 weeks', canvas.width / 2, canvas.height / 2);
+            ctx.font = '14px sans-serif';
+            ctx.fillText('${t('measurements:no_assessments_in_last_3_weeks')}', canvas.width / 2, canvas.height / 2);
+          }
+
+          if (hasOlderData) {
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = '#666666';
+            ctx.font = 'italic 12px sans-serif'; 
+            ctx.fillText('${t('measurements:showing_last_3_weeks_of_data')}', canvas.width - padding.right, canvas.height);
           }
         }
       </script>
@@ -203,6 +213,12 @@ const useAssessmentExporter = () => {
           <title>${activePet?.name}</title>
           ${generateChartScript()}
           <style>
+            @font-face {
+              font-family: "Inter", sans-serif;
+              font-style: normal;
+              font-weight: 400;
+              src: local('Inter');
+            }
             @media print { * { -webkit-print-color-adjust: exact !important; } }
              body {
                   font-size: 16px;

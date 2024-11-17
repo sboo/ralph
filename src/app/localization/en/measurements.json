@@ -9,5 +9,8 @@
   "notificationTitle": "Time for {{petName}}'s Check-Up",
   "notificationBody": "How did {{petName}} do today? Tap here to record their day.",
   "notes": "Notes",
-  "notesInfo": "Add notes about {{petName}}'s day"
+  "notesInfo": "Add notes about {{petName}}'s day",
+  "showing_last_3_weeks_of_data": "Assessments of last 3 weeks",
+  "no_assessments_in_last_3_weeks": "No assessments in the last 3 weeks"
+
 }
