@@ -33,166 +33,126 @@ const useAssessmentExporter = () => {
     return base64Images;
   };
 
-  const generateChartScript = () => {
+  const generateChart = () => {
     if (!assessments?.length) return '';
 
-     // Filter assessments to last 3 weeks
-     const threeWeeksAgo = new Date();
-     threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21);
-     
-     const recentAssessments = assessments
-       .filter(a => new Date(a.createdAt) >= threeWeeksAgo)
-       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
- 
-     const hasOlderData = assessments.some(a => new Date(a.createdAt) < threeWeeksAgo);
- 
-     const dates = recentAssessments.map(a => 
-       a.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'})
-     ).join("','");
-     const scores = recentAssessments.map(a => a.score).join(',');
+    // Filter assessments to last 3 weeks
+    const threeWeeksAgo = new Date();
+    threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21);
+    
+    const recentAssessments = assessments
+      .filter(a => new Date(a.createdAt) >= threeWeeksAgo)
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+    const hasOlderData = assessments.some(a => new Date(a.createdAt) < threeWeeksAgo);
+
+    if (recentAssessments.length === 0) {
+      return `<div style="width: 780px; height: 400px; display: flex; align-items: center; justify-content: center; background-color: transparent; font-family: 'Inter', sans-serif;">
+        <span style="color: #666666; font-size: 14px;">${t('measurements:no_assessments_in_last_3_weeks')}</span>
+      </div>`;
+    }
+
+    const padding = {
+      left: 30,
+      right: 80,
+      top: 40,
+      bottom: hasOlderData ? 60 : 40
+    };
+
+    const width = 780;
+    const height = 400;
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+
+    // Create points for the bezier curve
+    const points = recentAssessments.map((assessment, index) => {
+      const x = padding.left + (index * (chartWidth / (recentAssessments.length - 1)));
+      const y = padding.top + (chartHeight - (chartHeight * assessment.score / 60));
+      return { x, y, score: assessment.score, date: assessment.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'}) };
+    });
+
+    // Generate path data for the bezier curve
+    let pathData = '';
+    if (points.length >= 2) {
+      pathData = `M ${points[0].x} ${points[0].y}`;
+      
+      for (let i = 0; i < points.length - 1; i++) {
+        const current = points[i];
+        const next = points[i + 1];
+        
+        const controlPoint1 = {
+          x: current.x + (next.x - points[Math.max(0, i - 1)].x) / 6,
+          y: current.y + (next.y - points[Math.max(0, i - 1)].y) / 6
+        };
+        
+        const controlPoint2 = {
+          x: next.x - (points[Math.min(points.length - 1, i + 2)].x - current.x) / 6,
+          y: next.y - (points[Math.min(points.length - 1, i + 2)].y - current.y) / 6
+        };
+        
+        pathData += ` C ${controlPoint1.x} ${controlPoint1.y}, ${controlPoint2.x} ${controlPoint2.y}, ${next.x} ${next.y}`;
+      }
+    }
 
     return `
-      <script>
-        function drawChart() {
-          const canvas = document.getElementById('assessmentChart');
-          const ctx = canvas.getContext('2d');
-          
-          const dates = ['${dates}'];
-          const scores = [${scores}];
-          const hasOlderData = ${hasOlderData};
-          
-          const padding = {
-            left: 30,
-            right: 80,
-            top: 40,
-            bottom: ${hasOlderData ? '60' : '40'} // Increase bottom padding if we need to show the note
-          };
-          
-          const width = canvas.width - (padding.left + padding.right);
-          const height = canvas.height - (padding.top + padding.bottom);
+      <svg width="${width}" height="${height}" style="background-color: transparent;">
+        <!-- Axes -->
+        <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${height - padding.bottom}" 
+              stroke="#666666" stroke-width="1" />
+        <line x1="${padding.left}" y1="${height - padding.bottom}" x2="${width - padding.right}" y2="${height - padding.bottom}" 
+              stroke="#666666" stroke-width="1" />
 
-          // Clear canvas
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        <!-- Threshold line -->
+        <line x1="${padding.left}" 
+              y1="${padding.top + (chartHeight - (chartHeight * 35 / 60))}" 
+              x2="${width - padding.right}" 
+              y2="${padding.top + (chartHeight - (chartHeight * 35 / 60))}"
+              stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,4" />
 
-          // Draw threshold line at 35
-          const thresholdY = padding.top + (height - (height * 35) / 60);
-          ctx.strokeStyle = '#9CA3AF';
-          ctx.lineWidth = 1;
-          ctx.setLineDash([4, 4]);
-          ctx.beginPath();
-          ctx.moveTo(padding.left, thresholdY);
-          ctx.lineTo(canvas.width - padding.right, thresholdY);
-          ctx.stroke();
-          ctx.setLineDash([]);
+        <!-- Y-axis labels -->
+        ${Array.from({length: 7}, (_, i) => i * 10).map(value => `
+          <text x="${padding.left - 5}" 
+                y="${padding.top + (chartHeight - (chartHeight * value / 60))}"
+                text-anchor="end" 
+                alignment-baseline="middle"
+                font-family="Inter, sans-serif"
+                font-size="12"
+                fill="#666666">${value}</text>
+        `).join('')}
 
-          // Draw axes
-          ctx.strokeStyle = '#666666';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(padding.left, padding.top);
-          ctx.lineTo(padding.left, canvas.height - padding.bottom);
-          ctx.lineTo(canvas.width - padding.right, canvas.height - padding.bottom);
-          ctx.stroke();
+        <!-- X-axis labels -->
+        ${points.map(point => `
+          <text x="${point.x}" 
+                y="${height - padding.bottom + 15}"
+                text-anchor="start"
+                transform="rotate(45, ${point.x}, ${height - padding.bottom + 15})"
+                font-family="Inter, sans-serif"
+                font-size="12"
+                fill="#666666">${point.date}</text>
+        `).join('')}
 
-          // Y-axis labels
-          ctx.textAlign = 'right';
-          ctx.textBaseline = 'middle';
-          ctx.fillStyle = '#666666';
-          for (let i = 0; i <= 6; i++) {
-            const value = i * 10;
-            const y = padding.top + (height - (height * value) / 60);
-            ctx.fillText(value.toString(), padding.left - 5, y);
-          }
+        <!-- Line -->
+        <path d="${pathData}"
+              fill="none"
+              stroke="#000000"
+              stroke-width="2.5" />
 
-          // Only draw the chart if we have data
-          if (dates.length > 0) {
-            // X-axis labels
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'top';
-            const step = width / Math.max(dates.length - 1, 1); // Avoid division by zero if only one point
-            dates.forEach((date, i) => {
-              const x = padding.left + i * step;
-              ctx.save();
-              ctx.translate(x, canvas.height - padding.bottom + 15);
-              ctx.rotate(Math.PI / 4);
-              ctx.fillText(date, 0, 0);
-              ctx.restore();
-            });
+        <!-- Points -->
+        ${points.map(point => `
+          <circle cx="${point.x}" cy="${point.y}" r="4"
+                  fill="white" stroke="#000000" stroke-width="2" />
+        `).join('')}
 
-            // Draw curve
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 2.5;
-            
-            const points = scores.map((score, i) => ({
-              x: padding.left + i * step,
-              y: padding.top + (height - (height * score) / 60)
-            }));
-            
-            if (points.length >= 2) {
-              ctx.beginPath();
-              ctx.moveTo(points[0].x, points[0].y);
-              
-              for (let i = 0; i < points.length - 1; i++) {
-                const current = points[i];
-                const next = points[i + 1];
-                
-                const controlPoint1 = {
-                  x: current.x + (next.x - points[Math.max(0, i - 1)].x) / 6,
-                  y: current.y + (next.y - points[Math.max(0, i - 1)].y) / 6
-                };
-                
-                const controlPoint2 = {
-                  x: next.x - (points[Math.min(points.length - 1, i + 2)].x - current.x) / 6,
-                  y: next.y - (points[Math.min(points.length - 1, i + 2)].y - current.y) / 6
-                };
-                
-                ctx.bezierCurveTo(
-                  controlPoint1.x, controlPoint1.y,
-                  controlPoint2.x, controlPoint2.y,
-                  next.x, next.y
-                );
-              }
-              ctx.stroke();
-            } else if (points.length === 1) {
-              // If we only have one point, draw it without a line
-              ctx.beginPath();
-              ctx.moveTo(points[0].x, points[0].y);
-              ctx.stroke();
-            }
-                      
-            // Draw points
-            points.forEach(point => {
-              // White fill
-              ctx.beginPath();
-              ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
-              ctx.fillStyle = '#ffffff';
-              ctx.fill();
-              
-              // Black border
-              ctx.beginPath();
-              ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
-              ctx.strokeStyle = '#000000';
-              ctx.lineWidth = 2;
-              ctx.stroke();
-            });
-          } else {
-            // Draw "No data" message if no recent assessments
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillStyle = '#666666';
-            ctx.font = '14px sans-serif';
-            ctx.fillText('${t('measurements:no_assessments_in_last_3_weeks')}', canvas.width / 2, canvas.height / 2);
-          }
-
-          if (hasOlderData) {
-            ctx.textAlign = 'right';
-            ctx.textBaseline = 'bottom';
-            ctx.fillStyle = '#666666';
-            ctx.font = 'italic 12px sans-serif'; 
-            ctx.fillText('${t('measurements:showing_last_3_weeks_of_data')}', canvas.width - padding.right, canvas.height);
-          }
-        }
-      </script>
+        ${hasOlderData ? `
+          <text x="${width - padding.right}" 
+                y="${height}"
+                text-anchor="end"
+                font-family="Inter, sans-serif"
+                font-style="italic"
+                font-size="12"
+                fill="#666666">${t('measurements:showing_last_3_weeks_of_data')}</text>
+        ` : ''}
+      </svg>
     `;
   };
 
@@ -211,7 +171,6 @@ const useAssessmentExporter = () => {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>${activePet?.name}</title>
-          ${generateChartScript()}
           <style>
             @font-face {
               font-family: "Inter", sans-serif;
@@ -258,6 +217,7 @@ const useAssessmentExporter = () => {
                   margin: 20px 0;
                   padding: 0 40px 40px 40px;
                   page-break-inside: avoid;
+                  background-color: transparent;
               }
               p {
                   margin: 0;
@@ -312,19 +272,18 @@ const useAssessmentExporter = () => {
               }
           </style>
       </head>
-      <body onload="drawChart()">
+      <body>
         <div class="top-section">
-        <div class="header-section">
-          <div class="row">
-            <h1>${activePet?.name}</h1>
-            ${avatar}
+          <div class="header-section">
+            <div class="row">
+              <h1>${activePet?.name}</h1>
+              ${avatar}
+            </div>
           </div>
-        </div>
           <div class="chart-container">
-            <canvas id="assessmentChart" width="780" height="400"></canvas>
+            ${generateChart()}
           </div>
         </div>
-
         <div class="content-section">
           <div>
             ${assessments
