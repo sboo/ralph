@@ -66,7 +66,11 @@ const useAssessmentExporter = () => {
 
     // Create points for the bezier curve
     const points = recentAssessments.map((assessment, index) => {
-      const x = padding.left + (index * (chartWidth / (recentAssessments.length - 1)));
+      // If there's only one point, position it in the center
+      const x = recentAssessments.length === 1 
+        ? padding.left + (chartWidth / 2)  // Center point
+        : padding.left + (index * (chartWidth / (recentAssessments.length - 1))); // Normal spacing
+      
       const y = padding.top + (chartHeight - (chartHeight * assessment.score / 60));
       return { x, y, score: assessment.score, date: assessment.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'}) };
     });
@@ -131,11 +135,13 @@ const useAssessmentExporter = () => {
                 fill="#666666">${point.date}</text>
         `).join('')}
 
-        <!-- Line -->
-        <path d="${pathData}"
-              fill="none"
-              stroke="#000000"
-              stroke-width="2.5" />
+        <!-- Line (only if more than one point) -->
+        ${points.length > 1 ? `
+          <path d="${pathData}"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2.5" />
+        ` : ''}
 
         <!-- Points -->
         ${points.map(point => `
