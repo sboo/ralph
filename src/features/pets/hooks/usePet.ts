@@ -3,12 +3,14 @@ import {useQuery, useRealm} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
 import {MD3Theme, useTheme} from 'react-native-paper';
+import { AssessmentFrequency } from '@/features/assessments/enums';
 
 export interface PetData {
   id?: BSON.ObjectId;
   species?: string;
   name?: string;
   avatar?: string;
+  assessmentFrequency?: AssessmentFrequency;
   notificationsEnabled?: boolean;
   notificationsTime?: string;
   headerColor?: string;
