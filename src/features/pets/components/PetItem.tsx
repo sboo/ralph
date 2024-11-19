@@ -189,7 +189,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
       timestamp: validTimestamp,
-      repeatFrequency: RepeatFrequency.DAILY,
+      repeatFrequency: assessmentFrequency == 'WEEKLY' ? RepeatFrequency.WEEKLY : RepeatFrequency.DAILY,
     };
 
     await notifee.createTriggerNotification(
@@ -288,13 +288,13 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
 
         <View style={styles.inputRow}>
           <Text style={styles.inputLabel} variant="labelLarge">
-            {t('settings:changeAssessmentFrequency')}
+            {t('settings:reminderFrequency')}
           </Text>
         
         <View style={styles.inputRowRadioButtonContainer}>
           <View style={styles.inputRowRadioButton}>
           <Text style={styles.inputLabel} variant="labelSmall">
-            {t('settings:assessmentFrequencyDaily')}
+            {t('settings:daily')}
           </Text>
           <RadioButton
             value={'DAILY'}
@@ -304,7 +304,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
               </View>
               <View style={styles.inputRowRadioButton}>
           <Text style={styles.inputLabel} variant="labelSmall">
-            {t('settings:assessmentFrequencyWeekly')}
+            {t('settings:weekly')}
           </Text>
               <RadioButton
             value={'WEEKLY'}
