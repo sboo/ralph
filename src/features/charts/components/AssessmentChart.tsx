@@ -200,15 +200,11 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
               scores={data.datasets[0].data as number[]}
               paused={activePet?.pausedAt !== null}
               dotType={dotTypes[index]}
+              onDotPress={(index, value) => {onDataPointClick && onDataPointClick(dateRange[index])}}
 
             />
           )}
           bezier
-          onDataPointClick={({ index }) => {
-            if (onDataPointClick) {
-              onDataPointClick(dateRange[index]);
-            }
-          }}
         />
       </ScrollView>
     </View>
