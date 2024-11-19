@@ -3,11 +3,11 @@ import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
 import CustomDot from '@/support/components/CustomChartDot';
 import moment from 'moment';
-import React, {RefObject, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
-import {LineChart} from 'react-native-chart-kit';
-import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
-import {Icon, useTheme} from 'react-native-paper';
+import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
+import { Icon, useTheme } from 'react-native-paper';
 
 interface AssessmentChartProps {
   onDataPointClick?: (date: Date) => void;
@@ -20,8 +20,8 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
   const chartScrollViewRef = useRef<ScrollView>();
 
   const theme = useTheme();
-  const {activePet} = usePet();
-  const {assessments} = useAssessments(activePet);
+  const { activePet } = usePet();
+  const { assessments } = useAssessments(activePet);
 
   const scores = useMemo(() => {
     let endDate = new Date();
@@ -30,38 +30,70 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
       endDate = (
         assessments && assessments.length > 0
           ? moment.min(
-              moment(assessments[assessments.length - 1].createdAt),
-              moment(endDate),
-            )
+            moment(assessments[assessments.length - 1].createdAt),
+            moment(endDate),
+          )
           : moment(endDate)
       ).toDate();
     }
-    // Get the date range for the last 7 days or since the first assessment
     const startDate = (
       assessments && assessments.length > 0
         ? moment.min(
-            moment(assessments[0].createdAt),
-            moment(endDate).subtract(7, 'days'),
-          )
+          moment(assessments[0].createdAt),
+          moment(endDate).subtract(7, 'days'),
+        )
         : moment(endDate).subtract(7, 'days')
     ).toDate();
     startDate.setHours(0, 0, 0, 0);
-    const dateRange = [];
+
+    const dateRange: Date[] = [];
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
       dateRange.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
     }
-    const scoresWithDates = dateRange.map(date => {
+
+    const scoresWithMetadata = dateRange.map((date, index, arr) => {
       const assessment = assessments?.find(
         m => m.date === moment(date).format('YYYY-MM-DD'),
       );
-      return assessment ? assessment.score : null;
+      
+      if (assessment) {
+        return { score: assessment.score, dotType: 'actual' };
+      } else if (index === 0) {
+        return { score: null, dotType: 'empty' };
+      } else if (index === arr.length - 1) {
+        // Last dot - copy the value but mark as empty
+        for (let i = index - 1; i >= 0; i--) {
+          const prevAssessment = assessments?.find(
+            m => m.date === moment(dateRange[i]).format('YYYY-MM-DD'),
+          );
+          if (prevAssessment) {
+            return { score: prevAssessment.score, dotType: 'empty' };
+          }
+        }
+        return { score: null, dotType: 'empty' };
+      } else {
+        // All other dots - normal fill behavior
+        for (let i = index - 1; i >= 0; i--) {
+          const prevAssessment = assessments?.find(
+            m => m.date === moment(dateRange[i]).format('YYYY-MM-DD'),
+          );
+          if (prevAssessment) {
+            return { score: prevAssessment.score, dotType: 'filler' };
+          }
+        }
+        return { score: null, dotType: 'empty' };
+      }
     });
+
+    const scoresWithDates = scoresWithMetadata.map(item => item.score);
+    const dotTypes = scoresWithMetadata.map(item => item.dotType);
+
     const labels = dateRange.map(date =>
-      date.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'}),
+      date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }),
     );
-    return {scoresWithDates, labels, dateRange};
+    return { scoresWithDates, labels, dateRange, dotTypes };
   }, [activePet?.pausedAt, assessments]);
 
   useEffect(() => {
@@ -70,24 +102,23 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
       endDate =
         assessments && assessments.length > 0
           ? moment.min(
-              moment(assessments[assessments.length - 1].createdAt),
-              moment(endDate),
-            )
+            moment(assessments[assessments.length - 1].createdAt),
+            moment(endDate),
+          )
           : moment(endDate);
     }
-    // Get the date range for the last 7 days or since the first assessment
     const startDate =
       assessments && assessments.length > 0
         ? moment.min(
-            moment(assessments[0].createdAt),
-            moment(endDate).subtract(7, 'days'),
-          )
+          moment(assessments[0].createdAt),
+          moment(endDate).subtract(7, 'days'),
+        )
         : moment(endDate).subtract(7, 'days');
     const daysSinceFirstAssessment = endDate.diff(startDate, 'days');
     setChartWidthMultiplier(Math.max(1, daysSinceFirstAssessment / 9));
   }, [activePet?.pausedAt, assessments]);
 
-  const {scoresWithDates, labels, dateRange} = scores;
+  const {scoresWithDates, labels, dateRange, dotTypes} = scores;
   const data = useMemo(() => {
     return {
       labels: labels,
@@ -128,7 +159,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
         horizontal={true}
         ref={chartScrollViewRef as RefObject<ScrollView> | null}
         onContentSizeChange={() =>
-          chartScrollViewRef.current?.scrollToEnd({animated: false})
+          chartScrollViewRef.current?.scrollToEnd({ animated: false })
         }>
         <LineChart
           style={styles.chart}
@@ -150,16 +181,16 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
             backgroundGradientTo: theme.colors.primaryContainer,
             backgroundGradientFromOpacity: 0,
             backgroundGradientToOpacity: 0,
-            decimalPlaces: 0, // optional, defaults to 2dp
+            decimalPlaces: 0,
             color: () => theme.colors.onPrimaryContainer,
             labelColor: () => theme.colors.onPrimaryContainer,
             propsForDots: {
-              r: '6',
+              r: '2',
               strokeWidth: '2',
               stroke: '#fff',
             },
           }}
-          renderDotContent={({x, y, index, indexData}): any => (
+          renderDotContent={({ x, y, index, indexData }): any => (
             <CustomDot
               key={index}
               value={indexData}
@@ -168,10 +199,12 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({
               y={y}
               scores={data.datasets[0].data as number[]}
               paused={activePet?.pausedAt !== null}
+              dotType={dotTypes[index]}
+
             />
           )}
           bezier
-          onDataPointClick={({index}) => {
+          onDataPointClick={({ index }) => {
             if (onDataPointClick) {
               onDataPointClick(dateRange[index]);
             }

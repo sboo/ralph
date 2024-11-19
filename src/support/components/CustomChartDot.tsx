@@ -10,6 +10,7 @@ interface CustomDotProps {
   y: number;
   scores: (number | null)[];
   paused?: boolean;
+  dotType?: string;
 }
 const CustomDot = ({
   value,
@@ -17,6 +18,7 @@ const CustomDot = ({
   x,
   y,
   scores,
+  dotType,
   paused = false,
 }: CustomDotProps) => {
   const theme = useTheme();
@@ -25,7 +27,7 @@ const CustomDot = ({
   // Pulsate the last dot if it's null or the first null dot after the last non-null dot
   if (
     !paused &&
-    value === null &&
+    (value === null || dotType === 'empty' )&&
     ((firstNonNullScoreIndex >= 0 && index > firstNonNullScoreIndex) ||
       index === scores.length - 1)
   ) {
@@ -39,14 +41,36 @@ const CustomDot = ({
       />
     );
   }
+  const dotSize = dotType === 'filler' ? 3 : 5;
+  const strokeWidth = dotType === 'filler' ? 4 : 5;
+
   return (
-    <Circle
-      key={index}
-      cx={x}
-      cy={y}
-      r={4}
-      fill={theme.colors.onSecondaryContainer}
-    />
+    <>
+      {/* White border circle */}
+      <Circle
+        key={`${index}-border`}
+        cx={x}
+        cy={y}
+        r={dotSize + strokeWidth/2}
+        fill={
+          dotType === 'filler'
+            ? theme.colors.onSecondaryContainer
+            : "white"
+        }
+      />
+      {/* Inner colored circle */}
+      <Circle
+        key={index}
+        cx={x}
+        cy={y}
+        r={dotSize}
+        fill={
+          dotType === 'filler'
+            ? "white"
+            : theme.colors.onSecondaryContainer
+        }
+      />
+    </>
   );
 };
 
