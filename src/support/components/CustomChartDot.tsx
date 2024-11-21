@@ -1,7 +1,7 @@
-import React from 'react';
-import {Circle, G} from 'react-native-svg';
-import {useTheme} from 'react-native-paper';
-import {TouchableWithoutFeedback} from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { Circle, G } from 'react-native-svg';
+import { useTheme } from 'react-native-paper';
+import { TouchableWithoutFeedback } from 'react-native';
 import PulsatingCircle from '@/support/components/PulsatingCircle.tsx';
 
 interface CustomDotProps {
@@ -14,7 +14,9 @@ interface CustomDotProps {
   onDotPress?: (index: number, value: number) => void;
 }
 
-const CustomDot = ({
+const TOUCH_TARGET_RADIUS = 20;
+
+const CustomDot: React.FC<CustomDotProps> = ({
   value,
   index,
   x,
@@ -22,68 +24,73 @@ const CustomDot = ({
   dotType,
   paused = false,
   onDotPress,
-}: CustomDotProps) => {
+}) => {
   const theme = useTheme();
-  
-  const handlePress = () => {
-    if (onDotPress) {
-      onDotPress(index, value);
-    }
-  };
 
-  // Pulsate the last dot if it's null or the first null dot after the last non-null dot
-  if (
-    !paused &&
-    (value === null || dotType === 'empty')
-  ) {
-    return (
-      <TouchableWithoutFeedback onPress={handlePress}>
-        <G>
-          <PulsatingCircle
-            key={index}
-            color={theme.colors.error}
-            size={10}
-            x={x}
-            y={y}
-          />
-        </G>
-      </TouchableWithoutFeedback>
-    );
-  }
+  const handlePress = useCallback(() => {
+    onDotPress?.(index, value);
+  }, [onDotPress, index, value]);
 
-  const dotSize = dotType === 'filler' ? 3 : 5;
-  const strokeWidth = dotType === 'filler' ? 4 : 5;
+  const dotConfig = useMemo(() => ({
+    size: dotType === 'filler' ? 3 : 6,
+    strokeWidth: dotType === 'filler' ? 4 : 6,
+    fillColor: dotType === 'filler' ? "white" : theme.colors.onSecondaryContainer,
+    borderColor: dotType === 'filler' ? theme.colors.onSecondaryContainer : "white"
+  }), [dotType, theme.colors.onSecondaryContainer]);
+
+  const shouldPulsate = !paused && (value === null || dotType === 'empty');
+
+  const renderPulsatingDot = () => (
+    <G>
+      <Circle
+        cx={x}
+        cy={y}
+        r={TOUCH_TARGET_RADIUS}
+        fill="transparent"
+      />
+      <PulsatingCircle
+        key={index}
+        color={theme.colors.error}
+        size={10}
+        x={x}
+        y={y}
+        paused={paused}
+      />
+    </G>
+  );
+
+  const renderStaticDot = () => (
+    <G>
+      <Circle
+        cx={x}
+        cy={y}
+        r={TOUCH_TARGET_RADIUS}
+        fill="transparent"
+      />
+      {/* White border circle */}
+      <Circle
+        key={`${index}-border`}
+        cx={x}
+        cy={y}
+        r={dotConfig.size + dotConfig.strokeWidth / 2}
+        fill={dotConfig.borderColor}
+      />
+      {/* Inner colored circle */}
+      <Circle
+        key={index}
+        cx={x}
+        cy={y}
+        r={dotConfig.size}
+        fill={dotConfig.fillColor}
+      />
+    </G>
+  );
 
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
-      <G>
-        {/* White border circle */}
-        <Circle
-          key={`${index}-border`}
-          cx={x}
-          cy={y}
-          r={dotSize + strokeWidth/2}
-          fill={
-            dotType === 'filler'
-              ? theme.colors.onSecondaryContainer
-              : "white"
-          }
-        />
-        {/* Inner colored circle */}
-        <Circle
-          key={index}
-          cx={x}
-          cy={y}
-          r={dotSize}
-          fill={
-            dotType === 'filler'
-              ? "white"
-              : theme.colors.onSecondaryContainer
-          }
-        />
-      </G>
+      {shouldPulsate ? renderPulsatingDot() : renderStaticDot()}
     </TouchableWithoutFeedback>
   );
 };
 
-export default CustomDot;
+export default React.memo(CustomDot);

@@ -24,7 +24,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
       ? (assessments?.[assessments.length - 1]?.createdAt || new Date())
       : new Date();
     const start = assessments?.[0]?.createdAt || moment(end).subtract(7, 'days').toDate();
-    
+
     return {
       startDate: moment.min(moment(start), moment(end).subtract(7, 'days')).startOf('day').toDate(),
       endDate: moment(end).endOf('day').toDate()
@@ -52,32 +52,44 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
       const dateKey = moment(date).format('YYYY-MM-DD');
       const assessment = assessmentMap.get(dateKey);
 
+      // If there are no assessments at all, handle differently
+      if (assessments?.length === 0) {
+        // Only mark the last point as empty, all others as filler with a default score
+        if (index === arr.length - 1) {
+          return { score: null, dotType: 'empty' };
+        }
+        return { score: 0, dotType: 'filler' }; // Use a default score of 30 or any other default value
+      }
+
       if (assessment) {
         return { score: assessment.score, dotType: 'actual' };
       }
 
-      if (index === 0) return { score: null, dotType: 'empty' };
-      if (index === arr.length - 1) {
-        // Find last valid score
-        for (let i = index - 1; i >= 0; i--) {
-          const prevDate = moment(dateRange[i]).format('YYYY-MM-DD');
-          const prevAssessment = assessmentMap.get(prevDate);
-          if (prevAssessment) {
-            return { score: prevAssessment.score, dotType: 'empty' };
+      // Find the first assessment date
+      let firstAssessmentIndex = -1;
+      dateRange.forEach((date, index) => {
+        if (firstAssessmentIndex === -1) {
+          const dateKey = moment(date).format('YYYY-MM-DD');
+          if (assessmentMap.has(dateKey)) {
+            firstAssessmentIndex = index;
           }
         }
-        return { score: null, dotType: 'empty' };
-      }
+      });
+
+      const isLastScore = index === arr.length - 1;
 
       // Find previous valid score
       for (let i = index - 1; i >= 0; i--) {
         const prevDate = moment(dateRange[i]).format('YYYY-MM-DD');
         const prevAssessment = assessmentMap.get(prevDate);
         if (prevAssessment) {
-          return { score: prevAssessment.score, dotType: 'filler' };
-        }
+          return { score: prevAssessment.score, dotType: isLastScore ? 'empty' : 'filler' };
+        } 
       }
-      return { score: null, dotType: 'empty' };
+      if (firstAssessmentIndex === -1 || index < firstAssessmentIndex) {
+        return { score: 0, dotType: 'filler' };
+      }
+      return { score: 0, dotType: 'empty' };
     });
 
     return {
@@ -153,7 +165,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
         style={styles.chartScrollView}
         horizontal
         ref={chartScrollViewRef as RefObject<ScrollView>}
-        onContentSizeChange={() => 
+        onContentSizeChange={() =>
           chartScrollViewRef.current?.scrollToEnd({ animated: false })
         }
       >
