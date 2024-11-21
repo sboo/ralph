@@ -130,7 +130,6 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
       index={index}
       x={x}
       y={y}
-      scores={data.datasets[0].data}
       paused={Boolean(activePet?.pausedAt)}
       dotType={dotTypes[index]}
       onDotPress={(idx, value) => onDataPointClick?.(dateRange[idx])}

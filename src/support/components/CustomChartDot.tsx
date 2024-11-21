@@ -9,7 +9,6 @@ interface CustomDotProps {
   index: number;
   x: number;
   y: number;
-  scores: (number | null)[];
   paused?: boolean;
   dotType?: string;
   onDotPress?: (index: number, value: number) => void;
@@ -20,14 +19,12 @@ const CustomDot = ({
   index,
   x,
   y,
-  scores,
   dotType,
   paused = false,
   onDotPress,
 }: CustomDotProps) => {
   const theme = useTheme();
-  const firstNonNullScoreIndex = scores.findIndex(score => score !== null);
-
+  
   const handlePress = () => {
     if (onDotPress) {
       onDotPress(index, value);
@@ -37,9 +34,7 @@ const CustomDot = ({
   // Pulsate the last dot if it's null or the first null dot after the last non-null dot
   if (
     !paused &&
-    (value === null || dotType === 'empty') &&
-    ((firstNonNullScoreIndex >= 0 && index > firstNonNullScoreIndex) ||
-      index === scores.length - 1)
+    (value === null || dotType === 'empty')
   ) {
     return (
       <TouchableWithoutFeedback onPress={handlePress}>
