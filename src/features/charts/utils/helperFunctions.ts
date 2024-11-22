@@ -7,7 +7,8 @@ import moment from "moment";
 export const calculateDateRange = (
   assessments: Results<Measurement> | null,
   pet: Pet | undefined,
-  isWeekly: boolean
+  isWeekly: boolean,
+  maxDays: number
 ): ChartDateRange => {
   const end = pet?.pausedAt
     ? (assessments?.[assessments.length - 1]?.createdAt || new Date())
@@ -15,15 +16,15 @@ export const calculateDateRange = (
 
   let start;
   if (isWeekly) {
-    const sevenWeeksAgo = moment(end).subtract(CHART_CONSTANTS.WEEKS_TO_SHOW, 'weeks').startOf('isoWeek');
+    const maxDaysAgo = moment(end).subtract(maxDays, 'days').startOf('isoWeek');
     const firstAssessment = assessments?.[0]?.createdAt;
 
     start = firstAssessment
-      ? moment.min(moment(firstAssessment).startOf('isoWeek'), sevenWeeksAgo).toDate()
-      : sevenWeeksAgo.toDate();
+      ? moment.min(moment(firstAssessment).startOf('isoWeek'), maxDaysAgo).toDate()
+      : maxDaysAgo.toDate();
   } else {
-    start = assessments?.[0]?.createdAt || moment(end).subtract(CHART_CONSTANTS.DAYS_TO_SHOW, 'days').toDate();
-    start = moment.min(moment(start), moment(end).subtract(CHART_CONSTANTS.DAYS_TO_SHOW, 'days')).toDate();
+    start = assessments?.[0]?.createdAt || moment(end).subtract(maxDays, 'days').toDate();
+    start = moment.min(moment(start), moment(end).subtract(maxDays, 'days')).toDate();
   }
 
   return {

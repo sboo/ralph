@@ -7,12 +7,18 @@ import Share from 'react-native-share';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import {getBase64Image} from '@/support/helpers/ImageHelper';
+import { calculateDateRange, generateDateRange, processWeeklyScores, processDailyScores } from '@/features/charts/utils/helperFunctions';
+import { useMemo } from 'react';
+import { CHART_CONSTANTS, ProcessedChartData } from '@/features/charts/types';
+import moment from 'moment';
+
 
 const useAssessmentExporter = () => {
   const {t} = useTranslation();
   const theme = useTheme();
   const {activePet, getHeaderColor} = usePet();
   const {assessments} = useAssessments(activePet);
+  const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
 
   const getItemColor = (score: number) => {
     const color = getValueColor(theme.colors.outline, score);
@@ -36,21 +42,39 @@ const useAssessmentExporter = () => {
   const generateChart = () => {
     if (!assessments?.length) return '';
 
-    // Filter assessments to last 3 weeks
-    const threeWeeksAgo = new Date();
-    threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21);
-    
-    const recentAssessments = assessments
-      .filter(a => new Date(a.createdAt) >= threeWeeksAgo)
-      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    const maxDays = isWeekly ? 70 : 21;
+    const { startDate, endDate } = calculateDateRange(assessments, activePet, isWeekly, maxDays);
+    const dateRange = generateDateRange(startDate, endDate, isWeekly);
 
-    const hasOlderData = assessments.some(a => new Date(a.createdAt) < threeWeeksAgo);
+    const { scores, labels, dotTypes, metadata }: ProcessedChartData = ((dateRange, assessments, isWeekly) => {
+      const scoreData = isWeekly
+        ? processWeeklyScores(dateRange, assessments)
+        : processDailyScores(dateRange, assessments);
+  
+      return {
+        scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
+        dotTypes: scoreData.map(item => item.dotType),
+        metadata: scoreData,
+        labels: dateRange.map(date =>
+          isWeekly
+            ? `W${moment(date).isoWeek()}`
+            : date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })
+        ),
+      };
+    })(dateRange, assessments, isWeekly);
 
-    if (recentAssessments.length === 0) {
+
+    // Filter assessments to last 3 or 10 weeks, depending on mode
+
+    const hasOlderData = assessments.some(a => new Date(a.createdAt) < startDate);
+
+    if (scores.length === 0) {
       return `<div style="width: 780px; height: 400px; display: flex; align-items: center; justify-content: center; background-color: transparent; font-family: 'Inter', sans-serif;">
         <span style="color: #666666; font-size: 14px;">${t('measurements:no_assessments_in_last_3_weeks')}</span>
       </div>`;
     }
+
+    console.log('scores', scores);
 
     const padding = {
       left: 30,
@@ -65,14 +89,14 @@ const useAssessmentExporter = () => {
     const chartHeight = height - padding.top - padding.bottom;
 
     // Create points for the bezier curve
-    const points = recentAssessments.map((assessment, index) => {
+    const points = scores.map((score, index) => {
       // If there's only one point, position it in the center
-      const x = recentAssessments.length === 1 
+      const x = scores.length === 1 
         ? padding.left + (chartWidth / 2)  // Center point
-        : padding.left + (index * (chartWidth / (recentAssessments.length - 1))); // Normal spacing
+        : padding.left + (index * (chartWidth / (scores.length - 1))); // Normal spacing
       
-      const y = padding.top + (chartHeight - (chartHeight * assessment.score / 60));
-      return { x, y, score: assessment.score, date: assessment.createdAt.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'}) };
+      const y = padding.top + (chartHeight - (chartHeight * score / 60));
+      return { x, y, score: score, date: labels[index] };
     });
 
     // Generate path data for the bezier curve
@@ -108,9 +132,9 @@ const useAssessmentExporter = () => {
 
         <!-- Threshold line -->
         <line x1="${padding.left}" 
-              y1="${padding.top + (chartHeight - (chartHeight * 35 / 60))}" 
+              y1="${padding.top + (chartHeight - (chartHeight * 30 / 60))}" 
               x2="${width - padding.right}" 
-              y2="${padding.top + (chartHeight - (chartHeight * 35 / 60))}"
+              y2="${padding.top + (chartHeight - (chartHeight * 30 / 60))}"
               stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,4" />
 
         <!-- Y-axis labels -->

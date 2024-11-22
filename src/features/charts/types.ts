@@ -16,7 +16,7 @@ export interface ChartDateRange {
 }
 
 export interface ProcessedChartData {
-    scoresWithDates: number[];
+    scores: number[];
     labels: string[];
     dotTypes: DotType[];
     metadata: ScoreMetadata[];

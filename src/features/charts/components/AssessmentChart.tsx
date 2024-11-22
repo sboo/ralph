@@ -21,9 +21,11 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
   const windowWidth = Dimensions.get('window').width;
 
+  
+  const maxDays = isWeekly ? CHART_CONSTANTS.WEEKS_TO_SHOW * 7 : CHART_CONSTANTS.DAYS_TO_SHOW;
   const { startDate, endDate } = useMemo(
-    () => calculateDateRange(assessments, activePet, isWeekly),
-    [activePet?.pausedAt, assessments, isWeekly]
+    () => calculateDateRange(assessments, activePet, isWeekly, maxDays),
+    [activePet?.pausedAt, assessments, isWeekly, maxDays]
   );
 
   const dateRange = useMemo(
@@ -31,13 +33,13 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
     [startDate, endDate, isWeekly]
   );
 
-  const { scoresWithDates, labels, dotTypes, metadata }: ProcessedChartData = useMemo(() => {
+  const { scores, labels, dotTypes, metadata }: ProcessedChartData = useMemo(() => {
     const scoreData = isWeekly
       ? processWeeklyScores(dateRange, assessments)
       : processDailyScores(dateRange, assessments);
 
     return {
-      scoresWithDates: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
+      scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
       dotTypes: scoreData.map(item => item.dotType),
       metadata: scoreData,
       labels: dateRange.map(date =>
@@ -96,9 +98,9 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
     () => ({
       labels,
       datasets: [
-        { data: scoresWithDates },
+        { data: scores },
         {
-          data: Array(scoresWithDates.length).fill(CHART_CONSTANTS.NEUTRAL_SCORE),
+          data: Array(scores.length).fill(CHART_CONSTANTS.NEUTRAL_SCORE),
           withDots: false,
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         },
@@ -106,7 +108,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
         { data: [CHART_CONSTANTS.MAX_SCORE], withDots: false },
       ],
     }),
-    [labels, scoresWithDates]
+    [labels, scores]
   );
 
   const renderDotContent = useCallback(
