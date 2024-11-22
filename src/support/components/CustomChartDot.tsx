@@ -31,10 +31,22 @@ const CustomDot: React.FC<CustomDotProps> = ({
     onDotPress?.(index, value);
   }, [onDotPress, index, value]);
 
+  const getDotColor = (type: string | undefined) => {
+    switch (type) {
+      case 'filler':
+        return 'white';
+      case 'average':
+        return 'red';
+      default:
+        return theme.colors.onSecondaryContainer;
+    }
+  };
+
+
   const dotConfig = useMemo(() => ({
     size: dotType === 'filler' ? 3 : 6,
     strokeWidth: dotType === 'filler' ? 4 : 6,
-    fillColor: dotType === 'filler' ? "white" : theme.colors.onSecondaryContainer,
+    fillColor: getDotColor(dotType),
     borderColor: dotType === 'filler' ? theme.colors.onSecondaryContainer : "white"
   }), [dotType, theme.colors.onSecondaryContainer]);
 
