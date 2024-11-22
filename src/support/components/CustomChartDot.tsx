@@ -36,7 +36,6 @@ const CustomDot: React.FC<CustomDotProps> = ({
       case 'filler':
         return 'white';
       case 'average':
-        return 'red';
       default:
         return theme.colors.onSecondaryContainer;
     }

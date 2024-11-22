@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useMemo, useRef } from 'react';
+import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Icon, useTheme } from 'react-native-paper';
@@ -6,13 +6,14 @@ import moment from 'moment';
 import CustomDot from '@/support/components/CustomChartDot';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
-import { Results } from 'realm';
-import { Measurement } from '@/app/models/Measurement';
-import { AssessmentChartProps, CHART_CONSTANTS, ChartDateRange, DotType, EMOTIONS, ProcessedChartData, ScoreMetadata } from '../types';
+import { AssessmentChartProps, CHART_CONSTANTS, ChartDateRange, DotType, EMOTIONS, ProcessedChartData } from '../types';
 import { calculateDateRange, generateDateRange, processWeeklyScores, processDailyScores } from '../utils/helperFunctions';
+import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
 
 
 const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) => {
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const chartScrollViewRef = useRef<ScrollView>();
   const theme = useTheme();
   const { activePet } = usePet();
@@ -30,7 +31,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
     [startDate, endDate, isWeekly]
   );
 
-  const { scoresWithDates, labels, dotTypes }: ProcessedChartData = useMemo(() => {
+  const { scoresWithDates, labels, dotTypes, metadata }: ProcessedChartData = useMemo(() => {
     const scoreData = isWeekly
       ? processWeeklyScores(dateRange, assessments)
       : processDailyScores(dateRange, assessments);
@@ -38,6 +39,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
     return {
       scoresWithDates: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
       dotTypes: scoreData.map(item => item.dotType),
+      metadata: scoreData,
       labels: dateRange.map(date =>
         isWeekly
           ? `W${moment(date).isoWeek()}`
@@ -45,6 +47,24 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
       ),
     };
   }, [dateRange, assessments, isWeekly]);
+
+  const handleDotPress = useCallback((index: number) => {
+
+    if (!metadata[index]) return;
+
+    const scoreData = metadata[index];
+
+    if (!scoreData.assessmentDates?.length) return;
+
+    if (scoreData.assessmentDates.length === 1) {
+      // For single assessments, directly call onDataPointClick with the actual date
+      onDataPointClick?.(scoreData.assessmentDates[0]);
+    } else {
+      // For averages, show the dialog
+      setSelectedDates(scoreData.assessmentDates);
+      setDialogVisible(true);
+    }
+  }, [isWeekly, metadata, onDataPointClick]);
 
   const chartWidth = useMemo(() => {
     const diff = moment(endDate).diff(startDate, isWeekly ? 'weeks' : 'days');
@@ -99,13 +119,14 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
         y={y}
         paused={Boolean(activePet?.pausedAt)}
         dotType={dotTypes[index]}
-        onDotPress={(idx, value) => onDataPointClick?.(dateRange[idx])}
+        onDotPress={() => handleDotPress(index)}
       />
     ),
-    [dotTypes, activePet?.pausedAt, dateRange, onDataPointClick]
+    [dotTypes, activePet?.pausedAt, handleDotPress]
   );
 
   return (
+    <>
     <View style={[styles.chartContainer, { backgroundColor: theme.colors.primaryContainer }]}>
       <View style={styles.chartLabels}>
         {Object.values(EMOTIONS).map(({ icon, color }) => (
@@ -137,6 +158,13 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
         />
       </ScrollView>
     </View>
+    <WeeklyAssessmentDialog
+        visible={dialogVisible}
+        onDismiss={() => setDialogVisible(false)}
+        dates={selectedDates}
+        onDateSelect={onDataPointClick || (() => {})}
+      />
+    </>
   );
 };
 
