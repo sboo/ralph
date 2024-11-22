@@ -1,23 +1,20 @@
-import {useTheme} from 'react-native-paper';
-import {useTranslation} from 'react-i18next';
-import {Platform} from 'react-native';
+import { useTheme } from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {getValueColor} from '@/support/helpers/ColorHelper';
+import { getValueColor } from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
-import {getBase64Image} from '@/support/helpers/ImageHelper';
-import { calculateDateRange, generateDateRange, processWeeklyScores, processDailyScores } from '@/features/charts/utils/helperFunctions';
-import { useMemo } from 'react';
-import { CHART_CONSTANTS, ProcessedChartData } from '@/features/charts/types';
-import moment from 'moment';
-
+import { getBase64Image } from '@/support/helpers/ImageHelper';
+import { calculateDateRange, generateDateRange, generateChartData } from '@/features/charts/utils/helperFunctions';
+import { DotType } from '@/features/charts/types';
 
 const useAssessmentExporter = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
-  const {activePet, getHeaderColor} = usePet();
-  const {assessments} = useAssessments(activePet);
+  const { activePet, getHeaderColor } = usePet();
+  const { assessments } = useAssessments(activePet);
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
 
   const getItemColor = (score: number) => {
@@ -29,7 +26,7 @@ const useAssessmentExporter = () => {
     const images = assessments?.flatMap(assessment =>
       Array.from(assessment.images),
     );
-    const base64Images: {[key: string]: string} = {};
+    const base64Images: { [key: string]: string } = {};
     await Promise.all(
       images?.map(async image => {
         const base64Image = await getBase64Image(image);
@@ -43,28 +40,10 @@ const useAssessmentExporter = () => {
     if (!assessments?.length) return '';
 
     const maxDays = isWeekly ? 70 : 21;
-    const { startDate, endDate } = calculateDateRange(assessments, activePet, isWeekly, maxDays);
+    const { startDate, endDate } = calculateDateRange(assessments, activePet, isWeekly, maxDays, false);
     const dateRange = generateDateRange(startDate, endDate, isWeekly);
 
-    const { scores, labels, dotTypes, metadata }: ProcessedChartData = ((dateRange, assessments, isWeekly) => {
-      const scoreData = isWeekly
-        ? processWeeklyScores(dateRange, assessments)
-        : processDailyScores(dateRange, assessments);
-  
-      return {
-        scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
-        dotTypes: scoreData.map(item => item.dotType),
-        metadata: scoreData,
-        labels: dateRange.map(date =>
-          isWeekly
-            ? `W${moment(date).isoWeek()}`
-            : date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })
-        ),
-      };
-    })(dateRange, assessments, isWeekly);
-
-
-    // Filter assessments to last 3 or 10 weeks, depending on mode
+    const { scores, labels, dotTypes, metadata } = generateChartData(dateRange, assessments, isWeekly);
 
     const hasOlderData = assessments.some(a => new Date(a.createdAt) < startDate);
 
@@ -90,37 +69,60 @@ const useAssessmentExporter = () => {
 
     // Create points for the bezier curve
     const points = scores.map((score, index) => {
-      // If there's only one point, position it in the center
-      const x = scores.length === 1 
-        ? padding.left + (chartWidth / 2)  // Center point
-        : padding.left + (index * (chartWidth / (scores.length - 1))); // Normal spacing
-      
+      const x = scores.length === 1
+        ? padding.left + (chartWidth / 2)
+        : padding.left + (index * (chartWidth / (scores.length - 1)));
       const y = padding.top + (chartHeight - (chartHeight * score / 60));
-      return { x, y, score: score, date: labels[index] };
+      return { 
+        x, 
+        y, 
+        score: score, 
+        date: labels[index],
+        dotType: dotTypes[index]
+      };
     });
 
     // Generate path data for the bezier curve
     let pathData = '';
     if (points.length >= 2) {
       pathData = `M ${points[0].x} ${points[0].y}`;
-      
+
       for (let i = 0; i < points.length - 1; i++) {
         const current = points[i];
         const next = points[i + 1];
-        
+
         const controlPoint1 = {
           x: current.x + (next.x - points[Math.max(0, i - 1)].x) / 6,
           y: current.y + (next.y - points[Math.max(0, i - 1)].y) / 6
         };
-        
+
         const controlPoint2 = {
           x: next.x - (points[Math.min(points.length - 1, i + 2)].x - current.x) / 6,
           y: next.y - (points[Math.min(points.length - 1, i + 2)].y - current.y) / 6
         };
-        
+
         pathData += ` C ${controlPoint1.x} ${controlPoint1.y}, ${controlPoint2.x} ${controlPoint2.y}, ${next.x} ${next.y}`;
       }
     }
+
+    // Helper function to generate point styles based on dotType
+    const getPointStyle = (dotType: DotType) => {
+      if (dotType === 'filler') {
+        return {
+          fill: 'white',
+          stroke: '#000000',
+          radius: 4,
+          strokeWidth: 2
+        };
+      } else {
+        return {
+          fill: '#000000',
+          stroke: 'white',
+          radius: 8,
+          strokeWidth: 2
+        };
+      }
+    };
 
     return `
       <svg width="${width}" height="${height}" style="background-color: transparent;">
@@ -138,7 +140,7 @@ const useAssessmentExporter = () => {
               stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,4" />
 
         <!-- Y-axis labels -->
-        ${Array.from({length: 7}, (_, i) => i * 10).map(value => `
+        ${Array.from({ length: 7 }, (_, i) => i * 10).map(value => `
           <text x="${padding.left - 5}" 
                 y="${padding.top + (chartHeight - (chartHeight * value / 60))}"
                 text-anchor="end" 
@@ -167,11 +169,14 @@ const useAssessmentExporter = () => {
                 stroke-width="2.5" />
         ` : ''}
 
-        <!-- Points -->
-        ${points.map(point => `
-          <circle cx="${point.x}" cy="${point.y}" r="4"
-                  fill="white" stroke="#000000" stroke-width="2" />
-        `).join('')}
+        <!-- Points with different styles based on dotType -->
+        ${points.map(point => {
+          const style = getPointStyle(point.dotType);
+          return `
+            <circle cx="${point.x}" cy="${point.y}" r="${style.radius}"
+                    fill="${style.fill}" stroke="${style.stroke}" stroke-width="${style.strokeWidth}" />
+          `;
+        }).join('')}
 
         ${hasOlderData ? `
           <text x="${width - padding.right}" 
@@ -317,26 +322,26 @@ const useAssessmentExporter = () => {
         <div class="content-section">
           <div>
             ${assessments
-              ?.map(assessment => {
-                let notes = '';
-                if (assessment.notes) {
-                  notes = `<div class="notesrow">
+        ?.map(assessment => {
+          let notes = '';
+          if (assessment.notes) {
+            notes = `<div class="notesrow">
                             <h5>${t('measurements:notes')}</h5>
                             <p>${assessment.notes.split(/\r?\n/).join('<br />')}</p>
                           </div>`;
-                }
-                let images = '';
-                if (assessment.images) {
-                  images = `<div class="imagerow">
+          }
+          let images = '';
+          if (assessment.images) {
+            images = `<div class="imagerow">
                               ${assessment.images
-                                ?.map(
-                                  image =>
-                                    `<img src="${base64Images[image]}" style="width: 200px; height: 200px;" />`,
-                                )
-                                .join('')}
+                ?.map(
+                  image =>
+                    `<img src="${base64Images[image]}" style="width: 200px; height: 200px;" />`,
+                )
+                .join('')}
                             </div>`;
-                }
-                return `
+          }
+          return `
                 <div class="assessment" key=${assessment._id.toHexString()}>
                     <div class="row">
                         <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
@@ -344,48 +349,42 @@ const useAssessmentExporter = () => {
                     </div>
                     <div class="row">
                         <p class="item" style="background-color: ${getItemColor(
-                          assessment.hurt,
-                        )}">${t(`${activePet?.species}:assessments:hurt`)}:${
-                  assessment.hurt
-                }</p>
+            assessment.hurt,
+          )}">${t(`${activePet?.species}:assessments:hurt`)}:${assessment.hurt
+            }</p>
 
                         <p class="item" style="background-color: ${getItemColor(
-                          assessment.hydration,
-                        )}">${t(`${activePet?.species}:assessments:hydration`)}:${
-                  assessment.hydration
-                }</p>
+              assessment.hydration,
+            )}">${t(`${activePet?.species}:assessments:hydration`)}:${assessment.hydration
+            }</p>
 
                         <p class="item" style="background-color: ${getItemColor(
-                          assessment.happiness,
-                        )}">${t(`${activePet?.species}:assessments:happiness`)}:${
-                  assessment.happiness
-                }</p>
+              assessment.happiness,
+            )}">${t(`${activePet?.species}:assessments:happiness`)}:${assessment.happiness
+            }</p>
                     </div>
 
                     <div class="row">
                         <p class="item" style="background-color: ${getItemColor(
-                          assessment.hunger,
-                        )}">${t(`${activePet?.species}:assessments:hunger`)}:${
-                  assessment.hunger
-                }</p>
+              assessment.hunger,
+            )}">${t(`${activePet?.species}:assessments:hunger`)}:${assessment.hunger
+            }</p>
 
                         <p class="item" style="background-color: ${getItemColor(
-                          assessment.hygiene,
-                        )}">${t(`${activePet?.species}:assessments:hygiene`)}:${
-                  assessment.hygiene
-                }</p>
+              assessment.hygiene,
+            )}">${t(`${activePet?.species}:assessments:hygiene`)}:${assessment.hygiene
+            }</p>
 
                         <p class="item" style="background-color: ${getItemColor(
-                          assessment.mobility,
-                        )}">${t(`${activePet?.species}:assessments:mobility`)}:${
-                  assessment.mobility
-                }</p>
+              assessment.mobility,
+            )}">${t(`${activePet?.species}:assessments:mobility`)}:${assessment.mobility
+            }</p>
                     </div>
                     ${notes}
                     ${images}
                 </div>`;
-              })
-              .join('')}
+        })
+        .join('')}
           </div>
         </div>
       </body>
@@ -415,14 +414,14 @@ const useAssessmentExporter = () => {
     const filePath = await createPDF();
     if (filePath) {
       try {
-        await Share.open({url: `file://${filePath}`});
+        await Share.open({ url: `file://${filePath}` });
       } catch (error: any) {
         console.log('Failed to share pdf', error.message);
       }
     }
   };
 
-  return {generateAndSharePDF};
+  return { generateAndSharePDF };
 };
 
 export default useAssessmentExporter;

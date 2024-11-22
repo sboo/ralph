@@ -1,35 +1,63 @@
 import { Measurement } from "@/app/models/Measurement";
 import { Pet } from "@/app/models/Pet";
 import { Results } from "realm";
-import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, DotType } from "../types";
+import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, DotType, ProcessedChartData } from "../types";
 import moment from "moment";
 
 export const calculateDateRange = (
   assessments: Results<Measurement> | null,
   pet: Pet | undefined,
   isWeekly: boolean,
-  maxDays: number
+  maxDays: number,
+  padding: boolean = true
 ): ChartDateRange => {
-  const end = pet?.pausedAt
-    ? (assessments?.[assessments.length - 1]?.createdAt || new Date())
-    : new Date();
+  if (!assessments?.length) {
+    const end = pet?.pausedAt ? pet.pausedAt : new Date();
+    const start = moment(end).subtract(maxDays, 'days');
+    
+    if(isWeekly) {
+      return {
+        startDate: moment(start).startOf('isoWeek').toDate(),
+        endDate: moment(end).startOf('isoWeek').toDate(),
+      };
+    }
+    return {
+      startDate: moment(start).startOf('day').toDate(),
+      endDate: moment(end).endOf('day').toDate(),
+    };
+  }
+
+  const lastAssessmentDate = assessments[assessments.length - 1].createdAt;
+  const end = pet?.pausedAt ? lastAssessmentDate : new Date();
+  const firstAssessmentDate = assessments[0].createdAt;
 
   let start;
   if (isWeekly) {
-    const maxDaysAgo = moment(end).subtract(maxDays, 'days').startOf('isoWeek');
-    const firstAssessment = assessments?.[0]?.createdAt;
-
-    start = firstAssessment
-      ? moment.min(moment(firstAssessment).startOf('isoWeek'), maxDaysAgo).toDate()
-      : maxDaysAgo.toDate();
+    if (padding) {
+      const maxDaysAgo = moment(end).subtract(maxDays, 'days').startOf('isoWeek');
+      start = moment.min(moment(firstAssessmentDate).startOf('isoWeek'), maxDaysAgo).toDate();
+    } else {
+      start = moment(firstAssessmentDate).startOf('isoWeek').toDate();
+    }
   } else {
-    start = assessments?.[0]?.createdAt || moment(end).subtract(maxDays, 'days').toDate();
-    start = moment.min(moment(start), moment(end).subtract(maxDays, 'days')).toDate();
+    if (padding) {
+      const maxDaysAgo = moment(end).subtract(maxDays, 'days');
+      start = moment.min(moment(firstAssessmentDate), maxDaysAgo).toDate();
+    } else {
+      start = firstAssessmentDate;
+    }
   }
+
+  // When padding is false, ensure end date aligns with the last assessment's day/week
+  const finalEnd = padding 
+    ? end 
+    : isWeekly 
+      ? moment(lastAssessmentDate).endOf('isoWeek').toDate()
+      : lastAssessmentDate;
 
   return {
     startDate: moment(start).startOf('day').toDate(),
-    endDate: moment(end).endOf('day').toDate(),
+    endDate: moment(finalEnd).endOf('day').toDate(),
   };
 };
 
@@ -150,3 +178,20 @@ export const processWeeklyScores = (
     return result;
   });
 };
+
+export const generateChartData = (dateRange: Date[], assessments: Results<Measurement> | null, isWeekly: boolean): ProcessedChartData => {
+  const scoreData = isWeekly
+    ? processWeeklyScores(dateRange, assessments)
+    : processDailyScores(dateRange, assessments);
+
+  return {
+    scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
+    dotTypes: scoreData.map(item => item.dotType),
+    metadata: scoreData,
+    labels: dateRange.map(date =>
+      isWeekly
+        ? `W${moment(date).isoWeek()}`
+        : date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })
+    ),
+  };
+}

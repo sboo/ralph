@@ -6,8 +6,8 @@ import moment from 'moment';
 import CustomDot from '@/support/components/CustomChartDot';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
-import { AssessmentChartProps, CHART_CONSTANTS, ChartDateRange, DotType, EMOTIONS, ProcessedChartData } from '../types';
-import { calculateDateRange, generateDateRange, processWeeklyScores, processDailyScores } from '../utils/helperFunctions';
+import { AssessmentChartProps, CHART_CONSTANTS, EMOTIONS } from '../types';
+import { calculateDateRange, generateDateRange, generateChartData } from '../utils/helperFunctions';
 import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
 
 
@@ -28,27 +28,18 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
     [activePet?.pausedAt, assessments, isWeekly, maxDays]
   );
 
+  console.log('startDate', startDate);
+  console.log('endDate', endDate);
+
   const dateRange = useMemo(
     () => generateDateRange(startDate, endDate, isWeekly),
     [startDate, endDate, isWeekly]
   );
 
-  const { scores, labels, dotTypes, metadata }: ProcessedChartData = useMemo(() => {
-    const scoreData = isWeekly
-      ? processWeeklyScores(dateRange, assessments)
-      : processDailyScores(dateRange, assessments);
-
-    return {
-      scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
-      dotTypes: scoreData.map(item => item.dotType),
-      metadata: scoreData,
-      labels: dateRange.map(date =>
-        isWeekly
-          ? `W${moment(date).isoWeek()}`
-          : date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })
-      ),
-    };
-  }, [dateRange, assessments, isWeekly]);
+  const { scores, labels, dotTypes, metadata } = useMemo (
+    () => generateChartData(dateRange, assessments, isWeekly),
+    [dateRange, assessments, isWeekly]
+  );
 
   const handleDotPress = useCallback((index: number) => {
 
