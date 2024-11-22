@@ -28,9 +28,6 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
     [activePet?.pausedAt, assessments, isWeekly, maxDays]
   );
 
-  console.log('startDate', startDate);
-  console.log('endDate', endDate);
-
   const dateRange = useMemo(
     () => generateDateRange(startDate, endDate, isWeekly),
     [startDate, endDate, isWeekly]

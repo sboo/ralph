@@ -1,9 +1,19 @@
+import moment from "moment";
 import { Measurement } from "@/app/models/Measurement";
 import { Pet } from "@/app/models/Pet";
 import { Results } from "realm";
-import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, DotType, ProcessedChartData } from "../types";
-import moment from "moment";
+import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, ProcessedChartData } from "../types";
 
+/**
+ * Calculates the date range for a chart based on the provided assessments, pet status, and other parameters.
+ *
+ * @param {Results<Measurement> | null} assessments - The list of assessments or null if there are none.
+ * @param {Pet | undefined} pet - The pet object which may contain a paused date.
+ * @param {boolean} isWeekly - Determines if the date range should be calculated on a weekly basis.
+ * @param {number} maxDays - The maximum number of days to include in the date range.
+ * @param {boolean} padding - Whether to pad the date range to the start and end of the week/day. Defaults to true.
+ * @returns {ChartDateRange} - An object containing the start and end dates of the calculated date range.
+ */
 export const calculateDateRange = (
   assessments: Results<Measurement> | null,
   pet: Pet | undefined,
@@ -11,56 +21,50 @@ export const calculateDateRange = (
   maxDays: number,
   padding: boolean = true
 ): ChartDateRange => {
-  if (!assessments?.length) {
-    const end = pet?.pausedAt ? pet.pausedAt : new Date();
-    const start = moment(end).subtract(maxDays, 'days');
-    
-    if(isWeekly) {
-      return {
-        startDate: moment(start).startOf('isoWeek').toDate(),
-        endDate: moment(end).startOf('isoWeek').toDate(),
-      };
-    }
-    return {
-      startDate: moment(start).startOf('day').toDate(),
-      endDate: moment(end).endOf('day').toDate(),
-    };
-  }
+  const today = new Date();
+  const pausedDate = pet?.pausedAt || today;
+  const hasAssessments = assessments && assessments.length > 0;
 
-  const lastAssessmentDate = assessments[assessments.length - 1].createdAt;
-  const end = pet?.pausedAt ? lastAssessmentDate : new Date();
-  const firstAssessmentDate = assessments[0].createdAt;
-
-  let start;
-  if (isWeekly) {
-    if (padding) {
-      const maxDaysAgo = moment(end).subtract(maxDays, 'days').startOf('isoWeek');
-      start = moment.min(moment(firstAssessmentDate).startOf('isoWeek'), maxDaysAgo).toDate();
-    } else {
-      start = moment(firstAssessmentDate).startOf('isoWeek').toDate();
-    }
+  let end;
+  if (hasAssessments && !pet?.pausedAt) {
+    end = today;
+  } else if (hasAssessments) {
+    end = assessments[assessments.length - 1].createdAt;
   } else {
-    if (padding) {
-      const maxDaysAgo = moment(end).subtract(maxDays, 'days');
-      start = moment.min(moment(firstAssessmentDate), maxDaysAgo).toDate();
-    } else {
-      start = firstAssessmentDate;
-    }
+    end = pausedDate;
   }
 
-  // When padding is false, ensure end date aligns with the last assessment's day/week
-  const finalEnd = padding 
-    ? end 
-    : isWeekly 
-      ? moment(lastAssessmentDate).endOf('isoWeek').toDate()
-      : lastAssessmentDate;
+  const firstAssessmentDate = hasAssessments ? assessments[0].createdAt : null;
+
+  // Determine start date based on available data
+  const maxDaysAgo = moment(end).subtract(maxDays, 'days');
+  let start = firstAssessmentDate 
+    ? (padding 
+        ? moment.min(moment(firstAssessmentDate), maxDaysAgo)
+        : moment(firstAssessmentDate)
+      ).startOf(isWeekly ? 'isoWeek' : 'day').toDate()
+    : maxDaysAgo.startOf(isWeekly ? 'isoWeek' : 'day').toDate();
+
+  const finalEnd = hasAssessments && !padding
+    ? moment(assessments[assessments.length - 1].createdAt)
+        .endOf(isWeekly ? 'isoWeek' : 'day').toDate()
+    : moment(end).endOf(isWeekly ? 'isoWeek' : 'day').toDate();
 
   return {
-    startDate: moment(start).startOf('day').toDate(),
-    endDate: moment(finalEnd).endOf('day').toDate(),
+    startDate: start,
+    endDate: finalEnd,
   };
 };
 
+/**
+ * Generates an array of dates between the specified start and end dates.
+ * If `isWeekly` is true, only dates that are Mondays (start of the ISO week) are included.
+ * 
+ * @param {Date} startDate - The start date of the range.
+ * @param {Date} endDate - The end date of the range.
+ * @param {boolean} isWeekly - If true, only include dates that are Mondays.
+ * @returns {Date[]} An array of dates between the start and end dates.
+ */
 export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: boolean): Date[] => {
   const range: Date[] = [];
   let currentDate = new Date(startDate);
@@ -74,111 +78,166 @@ export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: bool
   return range;
 };
 
+/**
+ * Processes daily scores for a given date range and assessments.
+ *
+ * @param {Date[]} dateRange - An array of dates representing the range to process.
+ * @param {Results<Measurement> | null} assessments - An array of assessment results or null if no assessments are available.
+ * @returns {ScoreMetadata[]} An array of score metadata objects for each date in the date range.
+ *
+ * Each score metadata object contains:
+ * - `score`: The score for the date. If there is no assessment for the date, it defaults to `CHART_CONSTANTS.DEFAULT_SCORE`.
+ * - `dotType`: The type of dot to display on the chart. It can be 'actual', 'filler', or 'empty'.
+ * - `assessmentDates`: An array containing the date for which the score is calculated.
+ *
+ * If no assessments are available, the function maps the date range to default scores.
+ * If assessments are available, it creates a map for quick lookup of assessments by date.
+ * It then processes the date range to determine the score and dot type for each date.
+ */
 export const processDailyScores = (
   dateRange: Date[],
   assessments: Results<Measurement> | null
 ): ScoreMetadata[] => {
   if (!assessments?.length) {
-    return dateRange.map((date, index, arr) => ({
-      score: index === arr.length - 1 ? null : CHART_CONSTANTS.DEFAULT_SCORE,
-      dotType: index === arr.length - 1 ? 'empty' : 'filler',
-      assessmentDates: [date]
+    return dateRange.map((date, index) => ({
+      score: index === dateRange.length - 1 ? null : CHART_CONSTANTS.DEFAULT_SCORE,
+      dotType: index === dateRange.length - 1 ? 'empty' : 'filler',
+      assessmentDates: [date],
     }));
   }
 
+  // Create a map for quick lookup of assessments by date
   const assessmentMap = new Map(
     assessments.map(a => [moment(a.date).format('YYYY-MM-DD'), a])
   );
 
-  // Find the first assessment date index
+  // Find the first assessment index in the dateRange
   const firstAssessmentIndex = dateRange.findIndex(date =>
     assessmentMap.has(moment(date).format('YYYY-MM-DD'))
   );
 
-  return dateRange.map((date, index, arr) => {
+  // Process the date range
+  return dateRange.map((date, index) => {
     const dateKey = moment(date).format('YYYY-MM-DD');
     const assessment = assessmentMap.get(dateKey);
 
     if (assessment) {
-      return { score: assessment.score, dotType: 'actual', assessmentDates: [date] };
+      // If there's an assessment for this date, use its score
+      return {
+        score: assessment.score,
+        dotType: 'actual',
+        assessmentDates: [date],
+      };
     }
 
-    const isLastScore = index === arr.length - 1;
+    // Handle dates without assessments
+    const isLastDate = index === dateRange.length - 1;
 
-    // If before first assessment, use default score with filler
-    if (firstAssessmentIndex === -1 || index < firstAssessmentIndex) {
-      return { score: CHART_CONSTANTS.DEFAULT_SCORE, dotType: 'filler', assessmentDates: [date] };
+    if (index < firstAssessmentIndex || firstAssessmentIndex === -1) {
+      // Before the first assessment, return default score
+      return {
+        score: CHART_CONSTANTS.DEFAULT_SCORE,
+        dotType: 'filler',
+        assessmentDates: [date],
+      };
     }
 
     // Find the most recent previous assessment
-    for (let i = index - 1; i >= 0; i--) {
-      const prevDate = moment(dateRange[i]).format('YYYY-MM-DD');
-      const prevAssessment = assessmentMap.get(prevDate);
-      if (prevAssessment) {
-        return {
-          score: prevAssessment.score,
-          dotType: isLastScore ? 'empty' : 'filler',
-          assessmentDates: [date]
-        };
-      }
-    }
+    const previousAssessment = dateRange
+      .slice(0, index)
+      .reverse()
+      .map(prevDate => assessmentMap.get(moment(prevDate).format('YYYY-MM-DD')))
+      .find(prev => !!prev);
 
     return {
-      score: CHART_CONSTANTS.DEFAULT_SCORE,
-      dotType: isLastScore ? 'empty' : 'filler',
-      assessmentDates: [date]
+      score: previousAssessment?.score || CHART_CONSTANTS.DEFAULT_SCORE,
+      dotType: isLastDate ? 'empty' : 'filler',
+      assessmentDates: [date],
     };
   });
 };
 
+
+/**
+ * Processes weekly scores based on a given date range and assessments.
+ *
+ * @param {Date[]} dateRange - An array of dates representing the start of each week.
+ * @param {Results<Measurement> | null} assessments - An array of assessment results or null.
+ * @returns {ScoreMetadata[]} An array of score metadata for each week in the date range.
+ *
+ * The function calculates the score for each week in the date range. If there are no assessments
+ * for a week, it uses the previous week's score or a default score. If there are assessments,
+ * it calculates the average score for the week. The function also determines the type of dot
+ * to display on the chart based on the number of assessments.
+ *
+ * Each element in the returned array contains:
+ * - `score`: The calculated score for the week.
+ * - `dotType`: The type of dot to display ('actual', 'average', 'filler', or 'empty').
+ * - `assessmentDates`: An array of dates when assessments were created, sorted in ascending order.
+ */
 export const processWeeklyScores = (
   dateRange: Date[],
   assessments: Results<Measurement> | null
 ): ScoreMetadata[] => {
-
+  // Default score for weeks with no assessments
   let previousWeekScore: number = CHART_CONSTANTS.DEFAULT_SCORE;
 
-  return dateRange.map((monday, index, arr) => {
-    if (!assessments?.length) {
-      return index === arr.length - 1
-        ? { score: null, dotType: 'empty' as DotType, assessmentDates: [monday] }
-        : { score: CHART_CONSTANTS.DEFAULT_SCORE, dotType: 'filler' as DotType, assessmentDates: [monday] };
-    }
+  if (!assessments?.length) {
+    // No assessments, map the entire date range to default or empty scores
+    return dateRange.map((monday, index) => ({
+      score: index === dateRange.length - 1 ? null : CHART_CONSTANTS.DEFAULT_SCORE,
+      dotType: index === dateRange.length - 1 ? 'empty' : 'filler',
+      assessmentDates: [monday],
+    }));
+  }
 
+  return dateRange.map(monday => {
     const weekStart = moment(monday).startOf('isoWeek');
     const weekEnd = moment(monday).endOf('isoWeek');
+
+    // Filter assessments falling within the current week
     const weekAssessments = assessments.filter(a =>
       moment(a.date).isBetween(weekStart, weekEnd, 'day', '[]')
     );
 
     if (!weekAssessments.length) {
+      // If no assessments, use the previous week's score
       const isLastWeek = moment(monday).isSame(moment(), 'week');
       return {
-        score: previousWeekScore ?? CHART_CONSTANTS.DEFAULT_SCORE,
-        dotType: isLastWeek ? 'empty' as DotType : 'filler' as DotType, 
-        assessmentDates: [monday]
+        score: previousWeekScore,
+        dotType: isLastWeek ? 'empty' : 'filler',
+        assessmentDates: [monday],
       };
     }
 
-    const result = weekAssessments.length === 1
-      ? {
-        score: weekAssessments[0].score,
-        dotType: 'actual' as DotType,
-        assessmentDates: [weekAssessments[0].date]
-      }
-      : {
-        score: Math.round(
-          weekAssessments.reduce((sum, a) => sum + a.score, 0) / weekAssessments.length
-        ),
-        dotType: 'average' as DotType,
-        assessmentDates: weekAssessments.map(a => a.createdAt).sort((a, b) => a.getTime() - b.getTime())
-      };
+    // Process week with assessments
+    const score =
+      weekAssessments.length === 1
+        ? weekAssessments[0].score
+        : Math.round(
+            weekAssessments.reduce((sum, a) => sum + a.score, 0) / weekAssessments.length
+          );
 
-    previousWeekScore = result.score;
-    return result;
+    const dotType = weekAssessments.length === 1 ? 'actual' : 'average';
+
+    previousWeekScore = score; // Update the previous week's score
+
+    return {
+      score,
+      dotType,
+      assessmentDates: weekAssessments.map(a => a.createdAt).sort((a, b) => a.getTime() - b.getTime()),
+    };
   });
 };
 
+/**
+ * Generates chart data based on the provided date range and assessments.
+ *
+ * @param dateRange - An array of Date objects representing the range of dates for the chart.
+ * @param assessments - The assessment results, which can be either a Results<Measurement> object or null.
+ * @param isWeekly - A boolean indicating whether the chart data should be processed weekly or daily.
+ * @returns An object containing processed chart data, including scores, dot types, metadata, and labels.
+ */
 export const generateChartData = (dateRange: Date[], assessments: Results<Measurement> | null, isWeekly: boolean): ProcessedChartData => {
   const scoreData = isWeekly
     ? processWeeklyScores(dateRange, assessments)
