@@ -111,7 +111,6 @@ const App: React.FC = () => {
   const fixPetData = useCallback(async () => {
     // Fix pet data for existing installs
     if (realm.schemaVersion > 0 && petsToFix.length > 0) {
-      console.log('fixPetData');
       const petData = await getPetData();
       petsToFix.forEach((pet, idx) => {
         realm.write(() => {

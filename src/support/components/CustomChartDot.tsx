@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Circle, G } from 'react-native-svg';
 import { useTheme } from 'react-native-paper';
-import { TouchableWithoutFeedback } from 'react-native';
 import PulsatingCircle from '@/support/components/PulsatingCircle.tsx';
 
 interface CustomDotProps {
@@ -11,10 +10,8 @@ interface CustomDotProps {
   y: number;
   paused?: boolean;
   dotType?: string;
-  onDotPress?: (index: number, value: number) => void;
+  onPress?: () => void;  // Add onPress prop
 }
-
-const TOUCH_TARGET_RADIUS = 20;
 
 const CustomDot: React.FC<CustomDotProps> = ({
   value,
@@ -23,13 +20,9 @@ const CustomDot: React.FC<CustomDotProps> = ({
   y,
   dotType,
   paused = false,
-  onDotPress,
+  onPress,  // Destructure onPress prop
 }) => {
   const theme = useTheme();
-
-  const handlePress = useCallback(() => {
-    onDotPress?.(index, value);
-  }, [onDotPress, index, value]);
 
   const getDotColor = (type: string | undefined) => {
     switch (type) {
@@ -41,7 +34,6 @@ const CustomDot: React.FC<CustomDotProps> = ({
     }
   };
 
-
   const dotConfig = useMemo(() => ({
     size: dotType === 'filler' ? 3 : 6,
     strokeWidth: dotType === 'filler' ? 4 : 6,
@@ -52,13 +44,7 @@ const CustomDot: React.FC<CustomDotProps> = ({
   const shouldPulsate = !paused && (value === null || dotType === 'empty');
 
   const renderPulsatingDot = () => (
-    <G>
-      <Circle
-        cx={x}
-        cy={y}
-        r={TOUCH_TARGET_RADIUS}
-        fill="transparent"
-      />
+    <G onPress={onPress} pointerEvents="none">
       <PulsatingCircle
         key={index}
         color={theme.colors.error}
@@ -71,13 +57,7 @@ const CustomDot: React.FC<CustomDotProps> = ({
   );
 
   const renderStaticDot = () => (
-    <G>
-      <Circle
-        cx={x}
-        cy={y}
-        r={TOUCH_TARGET_RADIUS}
-        fill="transparent"
-      />
+    <G onPress={onPress}>
       {/* White border circle */}
       <Circle
         key={`${index}-border`}
@@ -98,9 +78,9 @@ const CustomDot: React.FC<CustomDotProps> = ({
   );
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <>
       {shouldPulsate ? renderPulsatingDot() : renderStaticDot()}
-    </TouchableWithoutFeedback>
+    </>
   );
 };
 

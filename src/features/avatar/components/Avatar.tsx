@@ -44,9 +44,7 @@ const Avatar: React.FC<AvatarProps> = ({
       cropperCircleOverlay: true,
     })
       .then(image => {
-        console.log(image);
         storeAvatar(image).then(avatarFilename => {
-          console.log('Avatar path: ', avatarFilename);
           if (avatarFilename === undefined) {
             return;
           }
@@ -62,9 +60,7 @@ const Avatar: React.FC<AvatarProps> = ({
     if (avatar === undefined) {
       return;
     }
-    console.log('Avatar path: ', avatar);
     const exists = await RNFS.exists(avatar);
-    console.log('Avatar exists: ', exists);
     if (exists) {
       await RNFS.unlink(avatar);
     }

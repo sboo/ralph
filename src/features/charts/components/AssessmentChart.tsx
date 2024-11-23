@@ -74,9 +74,9 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
       color: () => theme.colors.onPrimaryContainer,
       labelColor: () => theme.colors.onPrimaryContainer,
       propsForDots: {
-        r: '2',
-        strokeWidth: '2',
-        stroke: '#fff',
+        r: '6',
+        strokeWidth: '25',
+        stroke: 'transparent',
       },
     }),
     [theme.colors]
@@ -109,7 +109,8 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
         y={y}
         paused={Boolean(activePet?.pausedAt)}
         dotType={dotTypes[index]}
-        onDotPress={() => handleDotPress(index)}
+        onPress={() => handleDotPress(index)}  // Add this line
+
       />
     ),
     [dotTypes, activePet?.pausedAt, handleDotPress]
@@ -145,6 +146,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
           chartConfig={chartConfig}
           renderDotContent={renderDotContent}
           bezier
+          onDataPointClick={(data) => handleDotPress(data.index)}
         />
       </ScrollView>
     </View>

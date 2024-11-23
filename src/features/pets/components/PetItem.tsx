@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Linking,
@@ -13,12 +13,13 @@ import {
   IconButton,
   Portal,
   RadioButton,
+  SegmentedButtons,
   Switch,
   Text,
   TextInput,
   useTheme,
 } from 'react-native-paper';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import notifee, {
   AuthorizationStatus,
   RepeatFrequency,
@@ -33,11 +34,12 @@ import {
   dateObjectToTimeString,
   timeToDateObject,
 } from '@/support/helpers/DateTimeHelpers';
-import {Pet} from '@/app/models/Pet';
-import usePet, {PetData} from '../hooks/usePet';
-import {BSON} from 'realm';
+import { Pet } from '@/app/models/Pet';
+import usePet, { PetData } from '../hooks/usePet';
+import { BSON } from 'realm';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { AssessmentFrequency } from '@/app/models/Pet';
+import { SegmentedButton } from '@/support/components/SegmentedButtons/SegmentedButtonItem';
 
 interface Props {
   pet?: Pet;
@@ -45,10 +47,10 @@ interface Props {
   onSubmit: (data: PetData) => void;
 }
 
-const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
-  const {t} = useTranslation();
+const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
-  const {getNotificationId} = useNotifications();
+  const { getNotificationId } = useNotifications();
   const [petType, setPetType] = useState<string>(pet?.species ?? '');
   const [petName, setPetName] = useState<string>(pet?.name ?? '');
   const [avatar, setAvatar] = useState<string | undefined>(pet?.avatar);
@@ -62,11 +64,9 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     timeToDateObject(pet?.notificationsTime ?? '20:00'),
   );
   const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
-  const {pets} = usePet();
+  const { pets } = usePet();
 
   const petComplete = useMemo(() => petType && petName, [petType, petName]);
-
-  console.log(pet);
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -116,7 +116,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
       'eu.sboo.ralph.reminder',
       notificationId,
     ]);
-    onSubmit({delete: true});
+    onSubmit({ delete: true });
   };
 
   const checkPermissions = async () => {
@@ -124,7 +124,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
       const settings = await notifee.requestPermission();
       return Boolean(
         settings.authorizationStatus === AuthorizationStatus.AUTHORIZED ||
-          settings.authorizationStatus === AuthorizationStatus.PROVISIONAL,
+        settings.authorizationStatus === AuthorizationStatus.PROVISIONAL,
       );
     }
     const settings =
@@ -153,8 +153,8 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
       'Enable Notifications',
       'To receive notifications opt in from your Settings.',
       [
-        {text: t('buttons:cancel')},
-        {text: t('buttons:settings'), onPress: openPermissionSettings},
+        { text: t('buttons:cancel') },
+        { text: t('buttons:settings'), onPress: openPermissionSettings },
       ],
     );
     return false;
@@ -230,7 +230,6 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
     let enabled = remindersEnabled;
     if (enabled) {
       enabled = await enableReminders(petId);
-      console.log('Notifications enabled', enabled);
     }
     return enabled;
   };
@@ -241,26 +240,31 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.profileInput}>
-        <View style={styles.inputRow}>
-          <Text style={styles.inputLabel} variant="labelLarge">
-            {t('settings:petTypeInputLabel')}
-          </Text>
-          <View style={styles.inputRowPet}>
-            <IconButton
-              selected={petType === 'dog'}
-              mode="contained"
-              icon="dog"
-              accessibilityLabel={t('buttons:dog')}
-              size={32}
-              onPress={() => setPetType('dog')}
-            />
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}
+        showsVerticalScrollIndicator={true}
+      >
+        <View style={styles.inputContainer}>
+          <View style={styles.inputRow}>
+            <Text style={styles.inputLabel} variant="labelLarge">
+              {t('settings:petTypeInputLabel')}
+            </Text>
+            <View style={styles.inputRowPet}>
+              <IconButton
+                selected={petType === 'dog'}
+                mode="contained"
+                icon="dog"
+                accessibilityLabel={t('buttons:dog')}
+                size={30}
+                onPress={() => setPetType('dog')}
+              />
             <IconButton
               selected={petType === 'cat'}
               mode="contained"
               icon="cat"
               accessibilityLabel={t('buttons:cat')}
-              size={32}
+              size={30}
               onPress={() => setPetType('cat')}
             />
             <IconButton
@@ -268,14 +272,14 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
               mode="contained"
               icon="google-downasaur"
               accessibilityLabel={t('buttons:other')}
-              size={32}
+              size={30}
               onPress={() => setPetType('other')}
             />
           </View>
         </View>
         <TextInput
           label={t('settings:petNameInputLabel')}
-          style={{backgroundColor: theme.colors.surface, ...styles.textInput}}
+          style={{ backgroundColor: theme.colors.surface, ...styles.textInput }}
           value={petName}
           onChangeText={(text: string) => setPetName(text)}
         />
@@ -286,35 +290,6 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
           <Avatar mode={'edit'} pet={pet} onAvatarSelected={setAvatar} />
         </View>
 
-        <View style={styles.inputRow}>
-          <Text style={styles.inputLabel} variant="labelLarge">
-            {t('settings:reminderFrequency')}
-          </Text>
-        
-        <View style={styles.inputRowRadioButtonContainer}>
-          <View style={styles.inputRowRadioButton}>
-          <Text style={styles.inputLabel} variant="labelSmall">
-            {t('settings:daily')}
-          </Text>
-          <RadioButton
-            value={'DAILY'}
-            status={assessmentFrequency === 'DAILY' ? 'checked' : 'unchecked'}
-            onPress={() => setAssessmentFrequency('DAILY')}
-              />
-              </View>
-              <View style={styles.inputRowRadioButton}>
-          <Text style={styles.inputLabel} variant="labelSmall">
-            {t('settings:weekly')}
-          </Text>
-              <RadioButton
-            value={'WEEKLY'}
-            status={assessmentFrequency === 'WEEKLY' ? 'checked' : 'unchecked'}
-            onPress={() => setAssessmentFrequency('WEEKLY')}
-              />
-              </View>
-          </View>
-        </View>
-        
         <View style={styles.inputRow}>
           <Text style={styles.inputLabel} variant="labelLarge">
             {t('settings:enableNotificationsLabel')}
@@ -350,13 +325,14 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             />
           </View>
         ) : null}
+
         {pet ? (
           <View style={styles.inputRow}>
             <View style={styles.inputLabel}>
               <Text variant="labelLarge">
                 {t('settings:pauseAssessmentsLabel')}
               </Text>
-              <Text style={{color: theme.colors.outline}} variant="bodySmall">
+              <Text style={{ color: theme.colors.outline }} variant="bodySmall">
                 {t('settings:pauseAssessmentsLabelInfo')}
               </Text>
             </View>
@@ -366,6 +342,38 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
             />
           </View>
         ) : null}
+        <View style={styles.inputRow}>
+          <View>
+            <Text variant="labelLarge">
+              {t('settings:assessmentFrequency')}
+            </Text>
+            <Text style={{ color: theme.colors.outline }} variant="bodySmall">
+              {t('settings:assessmentFrequencyLabelInfo')}
+            </Text>
+
+            <View style={styles.inputSegmentedButtons}>
+              <SegmentedButtons
+                value={assessmentFrequency}
+                onValueChange={(value) => setAssessmentFrequency(value as AssessmentFrequency)}
+                density='medium'
+                theme={{ colors: { secondaryContainer: theme.colors.primary, onSecondaryContainer: theme.colors.onPrimary } }}
+                buttons={[
+                  {
+                    label: t('settings:daily'),
+                    value: 'DAILY',
+                    labelStyle: { fontSize: 11 },
+                  },
+                  {
+                    label: t('settings:weekly'),
+                    value: 'WEEKLY',
+                    labelStyle: { fontSize: 11 },
+                  },
+                ]}
+              />
+            </View>
+          </View>
+        </View>
+        </View>
       </ScrollView>
       <View style={styles.buttons}>
         {pet && pets.length > 1 ? (
@@ -391,7 +399,7 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
           </Dialog.Title>
           <Dialog.Content>
             <Text style={styles.dialogText} variant="bodyMedium">
-              {t('delete_pet_text', {petName})}
+              {t('delete_pet_text', { petName })}
             </Text>
           </Dialog.Content>
           <Dialog.Actions>
@@ -411,60 +419,49 @@ const Settings: React.FC<Props> = ({pet, buttonLabel, onSubmit}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
+    paddingHorizontal: 20,
   },
-  profileInput: {
+  scrollView: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20,
-    marginBottom: 30,
+  },
+  scrollViewContent: {
+    paddingVertical: 20,
+  },
+  inputContainer: {
+    gap: 30,
   },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'stretch',
     justifyContent: 'space-between',
-    height: 50,
-  },
-  inputRowRadioButtonContainer: {
-    flexDirection: 'column',
-  },
-  inputRowRadioButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-    borderBottomColor: 'red',
-    borderWidth: 1,
+    width: '100%',
   },
   inputRowPet: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'stretch',
     justifyContent: 'flex-end',
   },
   inputFlags: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'stretch',
     justifyContent: 'flex-end',
   },
   inputLabel: {
     flexShrink: 1,
     marginRight: 10,
   },
+  inputSegmentedButtons: { 
+    marginTop: 20
+  },
   textInput: {
-    alignSelf: 'stretch',
+    width: '100%',
   },
   buttons: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 10,
-    alignItems: 'center',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.1)',
   },
   avatar: {
     backgroundColor: '#ffffff',
@@ -476,5 +473,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
 
 export default Settings;

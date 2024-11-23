@@ -53,8 +53,6 @@ const useAssessmentExporter = () => {
       </div>`;
     }
 
-    console.log('scores', scores);
-
     const padding = {
       left: 30,
       right: 80,

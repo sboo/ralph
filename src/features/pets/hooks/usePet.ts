@@ -29,7 +29,6 @@ const usePet = () => {
 
   const switchActivePet = useCallback(
     (newActivePetId: BSON.ObjectId) => {
-      console.log('switchActivePet', newActivePetId);
       realm.write(() => {
         // Find the currently active pet and deactivate it
         const currentActivePets = realm

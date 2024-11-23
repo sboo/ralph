@@ -9,5 +9,9 @@
     "selectLanguageLabel": "Sprache auswählen",
     "app_useful": "Findest du Ralph nützlich? Hilf uns, mehr Menschen zu erreichen, indem du uns eine Bewertung hinterlässt!",
     "review_app": "Ralph bewerten",
-    "useRatingButtons": "Verwende Buttons zur Bewertung anstelle von Schiebereglern"
+    "useRatingButtons": "Verwende Buttons zur Bewertung anstelle von Schiebereglern",
+    "assessmentFrequency": "Bewertungshäufigkeit",
+    "assessmentFrequencyLabelInfo": "Wähl aus, wie oft du die Lebensqualität deines Haustiers bewerten möchtest.",
+    "daily": "Täglich",
+    "weekly": "Wöchentlich"
 }
