@@ -41,7 +41,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         <Text variant="titleLarge" style={styles.welcomeText}>
           {t('welcome_text')}
         </Text>
-        <PetItem onSubmit={onSubmit} />
+        <PetItem onSubmit={onSubmit} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
       </LinearGradient>
     </SafeAreaView>
   );
