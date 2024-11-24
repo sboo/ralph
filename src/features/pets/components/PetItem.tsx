@@ -32,6 +32,7 @@ import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
 import {
   dateObjectToTimeString,
+  getValidReminderTimestamp,
   timeToDateObject,
 } from '@/support/helpers/DateTimeHelpers';
 import { Pet } from '@/app/models/Pet';
@@ -45,9 +46,10 @@ interface Props {
   pet?: Pet;
   buttonLabel?: string;
   onSubmit: (data: PetData) => void;
+  isWelcomeScreen?: boolean;
 }
 
-const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit }) => {
+const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen = false }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { getNotificationId } = useNotifications();
@@ -166,7 +168,8 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit }) => {
     } else {
       await notifee.openNotificationSettings();
     }
-  };
+  };  
+
   const createTriggerNotification = async (petId: BSON.ObjectId) => {
     const channelGroupId = await notifee.createChannelGroup({
       id: 'reminders',
@@ -179,16 +182,14 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit }) => {
       name: petName,
     });
 
-    const timestamp = reminderTime.getTime();
-    const validTimestamp =
-      moment(timestamp).seconds(0).valueOf() > moment().valueOf()
-        ? moment(timestamp).seconds(0).valueOf()
-        : moment(timestamp).add(1, 'days').seconds(0).valueOf();
+
+    const reminderTimestamp = getValidReminderTimestamp(reminderTime, assessmentFrequency);
+    console.log('reminderTime', moment(reminderTimestamp).format('YYYY-MM-DD HH:mm'));
 
     // Create a time-based trigger
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: validTimestamp,
+      timestamp: reminderTimestamp,
       repeatFrequency: assessmentFrequency == 'WEEKLY' ? RepeatFrequency.WEEKLY : RepeatFrequency.DAILY,
     };
 
@@ -240,11 +241,16 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={true}
       >
+        {isWelcomeScreen ? (
+          <Text variant="titleLarge" style={styles.welcomeText}>
+            {t('welcome_text')}
+          </Text>
+        ) : null}
         <View style={styles.inputContainer}>
           <View style={styles.inputRow}>
             <Text style={styles.inputLabel} variant="labelLarge">
@@ -259,120 +265,120 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit }) => {
                 size={30}
                 onPress={() => setPetType('dog')}
               />
-            <IconButton
-              selected={petType === 'cat'}
-              mode="contained"
-              icon="cat"
-              accessibilityLabel={t('buttons:cat')}
-              size={30}
-              onPress={() => setPetType('cat')}
-            />
-            <IconButton
-              selected={petType === 'other'}
-              mode="contained"
-              icon="google-downasaur"
-              accessibilityLabel={t('buttons:other')}
-              size={30}
-              onPress={() => setPetType('other')}
-            />
-          </View>
-        </View>
-        <TextInput
-          label={t('settings:petNameInputLabel')}
-          style={{ backgroundColor: theme.colors.surface, ...styles.textInput }}
-          value={petName}
-          onChangeText={(text: string) => setPetName(text)}
-        />
-        <View style={styles.inputRow}>
-          <Text style={styles.inputLabel} variant="labelLarge">
-            {t('settings:avatarInputLabel')}
-          </Text>
-          <Avatar mode={'edit'} pet={pet} onAvatarSelected={setAvatar} />
-        </View>
-
-        <View style={styles.inputRow}>
-          <Text style={styles.inputLabel} variant="labelLarge">
-            {t('settings:enableNotificationsLabel')}
-          </Text>
-          <Switch
-            disabled={assessmentsPaused}
-            value={remindersEnabled}
-            onValueChange={toggleReminderSwitch}
-          />
-        </View>
-        {remindersEnabled ? (
-          <View style={styles.inputRow}>
-            <Text variant="labelLarge">{t('settings:reminderTimeLabel')}</Text>
-            <Button
-              mode={'outlined'}
-              onPress={() => setTimePickerOpen(true)}
-              disabled={assessmentsPaused}>
-              {dateObjectToTimeString(reminderTime)}
-            </Button>
-            <DatePicker
-              modal
-              mode={'time'}
-              minuteInterval={15}
-              open={timePickerOpen}
-              date={reminderTime}
-              onConfirm={date => {
-                setTimePickerOpen(false);
-                setReminderTime(date);
-              }}
-              onCancel={() => {
-                setTimePickerOpen(false);
-              }}
-            />
-          </View>
-        ) : null}
-
-        {pet ? (
-          <View style={styles.inputRow}>
-            <View style={styles.inputLabel}>
-              <Text variant="labelLarge">
-                {t('settings:pauseAssessmentsLabel')}
-              </Text>
-              <Text style={{ color: theme.colors.outline }} variant="bodySmall">
-                {t('settings:pauseAssessmentsLabelInfo')}
-              </Text>
-            </View>
-            <Switch
-              value={assessmentsPaused}
-              onValueChange={toggleAssessmentsPaused}
-            />
-          </View>
-        ) : null}
-        <View style={styles.inputRow}>
-          <View>
-            <Text variant="labelLarge">
-              {t('settings:assessmentFrequency')}
-            </Text>
-            <Text style={{ color: theme.colors.outline }} variant="bodySmall">
-              {t('settings:assessmentFrequencyLabelInfo')}
-            </Text>
-
-            <View style={styles.inputSegmentedButtons}>
-              <SegmentedButtons
-                value={assessmentFrequency}
-                onValueChange={(value) => setAssessmentFrequency(value as AssessmentFrequency)}
-                density='medium'
-                theme={{ colors: { secondaryContainer: theme.colors.primary, onSecondaryContainer: theme.colors.onPrimary } }}
-                buttons={[
-                  {
-                    label: t('settings:daily'),
-                    value: 'DAILY',
-                    labelStyle: { fontSize: 11 },
-                  },
-                  {
-                    label: t('settings:weekly'),
-                    value: 'WEEKLY',
-                    labelStyle: { fontSize: 11 },
-                  },
-                ]}
+              <IconButton
+                selected={petType === 'cat'}
+                mode="contained"
+                icon="cat"
+                accessibilityLabel={t('buttons:cat')}
+                size={30}
+                onPress={() => setPetType('cat')}
+              />
+              <IconButton
+                selected={petType === 'other'}
+                mode="contained"
+                icon="google-downasaur"
+                accessibilityLabel={t('buttons:other')}
+                size={30}
+                onPress={() => setPetType('other')}
               />
             </View>
           </View>
-        </View>
+          <TextInput
+            label={t('settings:petNameInputLabel')}
+            style={{ backgroundColor: theme.colors.surface, ...styles.textInput }}
+            value={petName}
+            onChangeText={(text: string) => setPetName(text)}
+          />
+          <View style={styles.inputRow}>
+            <Text style={styles.inputLabel} variant="labelLarge">
+              {t('settings:avatarInputLabel')}
+            </Text>
+            <Avatar mode={'edit'} pet={pet} onAvatarSelected={setAvatar} />
+          </View>
+
+          <View style={styles.inputRow}>
+            <Text style={styles.inputLabel} variant="labelLarge">
+              {t('settings:enableNotificationsLabel')}
+            </Text>
+            <Switch
+              disabled={assessmentsPaused}
+              value={remindersEnabled}
+              onValueChange={toggleReminderSwitch}
+            />
+          </View>
+          {remindersEnabled ? (
+            <View style={styles.inputRow}>
+              <Text variant="labelLarge">{t('settings:reminderTimeLabel')}</Text>
+              <Button
+                mode={'outlined'}
+                onPress={() => setTimePickerOpen(true)}
+                disabled={assessmentsPaused}>
+                {reminderTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
+              </Button>
+              <DatePicker
+                modal
+                mode={'time'}
+                minuteInterval={15}
+                open={timePickerOpen}
+                date={reminderTime}
+                onConfirm={date => {
+                  setTimePickerOpen(false);
+                  setReminderTime(date);
+                }}
+                onCancel={() => {
+                  setTimePickerOpen(false);
+                }}
+              />
+            </View>
+          ) : null}
+
+          {pet ? (
+            <View style={styles.inputRow}>
+              <View style={styles.inputLabel}>
+                <Text variant="labelLarge">
+                  {t('settings:pauseAssessmentsLabel')}
+                </Text>
+                <Text style={{ color: theme.colors.outline }} variant="bodySmall">
+                  {t('settings:pauseAssessmentsLabelInfo')}
+                </Text>
+              </View>
+              <Switch
+                value={assessmentsPaused}
+                onValueChange={toggleAssessmentsPaused}
+              />
+            </View>
+          ) : null}
+          <View style={styles.inputRow}>
+            <View>
+              <Text variant="labelLarge">
+                {t('settings:assessmentFrequency')}
+              </Text>
+              <Text style={{ color: theme.colors.outline }} variant="bodySmall">
+                {t('settings:assessmentFrequencyLabelInfo')}
+              </Text>
+
+              <View style={styles.inputSegmentedButtons}>
+                <SegmentedButtons
+                  value={assessmentFrequency}
+                  onValueChange={(value) => setAssessmentFrequency(value as AssessmentFrequency)}
+                  density='medium'
+                  theme={{ colors: { secondaryContainer: theme.colors.primary, onSecondaryContainer: theme.colors.onPrimary } }}
+                  buttons={[
+                    {
+                      label: t('settings:daily'),
+                      value: 'DAILY',
+                      labelStyle: { fontSize: 11 },
+                    },
+                    {
+                      label: t('settings:weekly'),
+                      value: 'WEEKLY',
+                      labelStyle: { fontSize: 11 },
+                    },
+                  ]}
+                />
+              </View>
+            </View>
+          </View>
         </View>
       </ScrollView>
       <View style={styles.buttons}>
@@ -421,6 +427,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
+  welcomeText: {
+    marginBottom: 20,
+  },
   scrollView: {
     flex: 1,
   },
@@ -450,7 +459,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     marginRight: 10,
   },
-  inputSegmentedButtons: { 
+  inputSegmentedButtons: {
     marginTop: 20
   },
   textInput: {

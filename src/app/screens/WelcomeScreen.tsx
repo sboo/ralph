@@ -38,12 +38,12 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <Text variant="displayMedium">{t('welcome')}</Text>
+       
         <PetItem onSubmit={onSubmit} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
       </LinearGradient>
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
