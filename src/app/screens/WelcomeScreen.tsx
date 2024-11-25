@@ -38,9 +38,6 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <Text variant="displayMedium">{t('welcome')}</Text>
-        <Text variant="titleLarge" style={styles.welcomeText}>
-          {t('welcome_text')}
-        </Text>
         <PetItem onSubmit={onSubmit} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
       </LinearGradient>
     </SafeAreaView>
@@ -57,9 +54,6 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-  },
-  welcomeText: {
-    marginVertical: 20,
   },
 });
 
