@@ -5,6 +5,7 @@ import language from '../language.json';
 import settings from './settings.json';
 import tips from './tips.json';
 import calendar from './calendar.json';
+import welcome from './welcome.json';
 import dog from './dog.json';
 import cat from './cat.json';
 import other from './other.json';
@@ -17,6 +18,7 @@ export default {
   settings,
   tips,
   calendar,
+  welcome,
   dog,
   cat,
   other,

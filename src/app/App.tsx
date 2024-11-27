@@ -19,6 +19,7 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
+import OnboardingScreen from './screens/OnboardingScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddAssessment from './screens/AddAssessment';
@@ -210,6 +211,7 @@ const App: React.FC = () => {
       const activeRoute = state.routes[state.index];
       switch (activeRoute.name) {
         case 'Home':
+        case 'Welcome':
           StatusBar.setBarStyle('light-content');
           break;
         default:
@@ -265,6 +267,11 @@ const App: React.FC = () => {
             <Stack.Screen
               name="Welcome"
               component={WelcomeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Onboarding"
+              component={OnboardingScreen}
               options={{headerShown: false}}
             />
             <Stack.Screen

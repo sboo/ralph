@@ -2,6 +2,7 @@ import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Welcome: undefined;
+  Onboarding: undefined;
   Settings: undefined;
   Home: undefined;
   AddPet: undefined;
@@ -16,6 +17,11 @@ export type RootStackParamList = {
 export type WelcomeScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'Welcome'
+>;
+
+export type OnboardingScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Onboarding'
 >;
 
 export type SettingsScreenNavigationProps = NativeStackScreenProps<
