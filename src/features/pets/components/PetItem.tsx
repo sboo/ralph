@@ -12,7 +12,6 @@ import {
   Dialog,
   IconButton,
   Portal,
-  RadioButton,
   SegmentedButtons,
   Switch,
   Text,
@@ -40,7 +39,6 @@ import usePet, { PetData } from '../hooks/usePet';
 import { BSON } from 'realm';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { AssessmentFrequency } from '@/app/models/Pet';
-import { SegmentedButton } from '@/support/components/SegmentedButtons/SegmentedButtonItem';
 
 interface Props {
   pet?: Pet;
