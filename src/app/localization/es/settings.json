@@ -13,5 +13,6 @@
     "assessmentFrequency": "Frecuencia de evaluación",
     "assessmentFrequencyLabelInfo": "Elige cada cuánto quieres evaluar la calidad de vida de tu mascota.",
     "daily": "Diario",
-    "weekly": "Semanal"
+    "weekly": "Semanal",
+    "appearance": "Apariencia"
 }

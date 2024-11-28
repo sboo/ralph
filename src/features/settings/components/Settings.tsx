@@ -42,10 +42,12 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
     await changeAppearance(newTheme);
   };
 
-  // Store pet name and type in storage
-  const storeSettings = async () => {
-    // Navigate to the next screen after successful storage
-    await AsyncStorage.setItem(STORAGE_KEYS.USE_RATING_BUTTONS, useRatingButtons.toString());
+  const handleRatingButtonsChange = async(value: boolean) => {
+    setUseRatingButtons(value);
+    await AsyncStorage.setItem(STORAGE_KEYS.USE_RATING_BUTTONS, value.toString());
+  }
+
+  const onDone = async () => {
     onSettingsSaved();
   };
 
@@ -89,7 +91,7 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
           </Text>
           <Switch
             value={useRatingButtons}
-            onValueChange={setUseRatingButtons}
+            onValueChange={handleRatingButtonsChange}
           />
         </View>
      
@@ -103,8 +105,8 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button onPress={storeSettings} mode={'contained'}>
-          {t('buttons:save')}
+        <Button onPress={onDone} mode={'contained'}>
+          {t('buttons:done')}
         </Button>
       </View>
     </View>
