@@ -126,7 +126,7 @@
             }
         ],
         "happiness": "Freude",
-        "happinessInfo": "Zeigt {{petName}} Freude und Interesse? Reagiert {{petName}} auf seine Umgebung (Familie, Spielzeug usw.)?",
+        "happinessInfo": "Zeigt {{petName}} Freude und Interesse? Reagiert {{petName}} auf Dinge in der Umgebung (Familie, Spielzeuge usw.)?",
         "happinessOptions": [
             {
                 "value": 0,
