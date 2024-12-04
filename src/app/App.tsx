@@ -19,6 +19,7 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
+import OnboardingScreen from './screens/OnboardingScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddAssessment from './screens/AddAssessment';
@@ -45,6 +46,7 @@ import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
 import usePet from '@/features/pets/hooks/usePet';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import * as Sentry from '@sentry/react-native';
+import { useAppearance } from './themes/hooks/useAppearance';
 
 Sentry.init({
   dsn: 'https://1dfcc8aa48a1de11a650379ba7e1cc79@o4507259307032576.ingest.de.sentry.io/4507259313913936',
@@ -73,8 +75,31 @@ const App: React.FC = () => {
     onForegroundNotification,
     getPetIdFromNotificationId,
   } = useNotifications();
-
+  const systemColorScheme = useColorScheme();
   const {activePet, getHeaderColor, enableNotifcationDot} = usePet();
+
+  const {LightTheme, DarkTheme} = adaptNavigationTheme({
+    reactNavigationLight: NavigationDefaultTheme,
+    reactNavigationDark: NavigationDarkTheme,
+  });
+
+  const CustomLightTheme = {
+    ...MD3LightTheme,
+    colors: defaultColors, // Copy it from the color codes scheme and then use it here
+  };
+
+  const CustomDarkTheme = {
+    ...MD3DarkTheme,
+    colors: darkColors, // Copy it from the color codes scheme and then use it here
+  };
+
+  const CombinedDefaultTheme = merge(LightTheme, CustomLightTheme);
+  const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
+
+  const { effectiveAppearance } = useAppearance();
+  const theme = effectiveAppearance === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
+
+
 
   const petsToFix = useQuery(
     Pet,
@@ -111,7 +136,6 @@ const App: React.FC = () => {
   const fixPetData = useCallback(async () => {
     // Fix pet data for existing installs
     if (realm.schemaVersion > 0 && petsToFix.length > 0) {
-      console.log('fixPetData');
       const petData = await getPetData();
       petsToFix.forEach((pet, idx) => {
         realm.write(() => {
@@ -211,6 +235,7 @@ const App: React.FC = () => {
       const activeRoute = state.routes[state.index];
       switch (activeRoute.name) {
         case 'Home':
+        case 'Welcome':
           StatusBar.setBarStyle('light-content');
           break;
         default:
@@ -220,28 +245,6 @@ const App: React.FC = () => {
     },
     [],
   );
-
-  const {LightTheme, DarkTheme} = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
-  });
-
-  const CustomLightTheme = {
-    ...MD3LightTheme,
-    colors: defaultColors, // Copy it from the color codes scheme and then use it here
-  };
-
-  const CustomDarkTheme = {
-    ...MD3DarkTheme,
-    colors: darkColors, // Copy it from the color codes scheme and then use it here
-  };
-
-  const CombinedDefaultTheme = merge(LightTheme, CustomLightTheme);
-  const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
-
-  const colorScheme = useColorScheme();
-
-  let theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
     <KeyboardAvoidingView
@@ -266,6 +269,11 @@ const App: React.FC = () => {
             <Stack.Screen
               name="Welcome"
               component={WelcomeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Onboarding"
+              component={OnboardingScreen}
               options={{headerShown: false}}
             />
             <Stack.Screen

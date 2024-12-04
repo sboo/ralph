@@ -337,7 +337,7 @@
             }
         ],
         "happiness": "Vreugde",
-        "happinessInfo": "Uit {{petName}} vreugde en interesse? Reageert {{petName}} op dingen om hem heen (familie, speelgoed, etc.)?",
+        "happinessInfo": "Uit {{petName}} vreugde en interesse? Reageert {{petName}} op dingen in de omgeving (familie, speelgoed, etc.)?",
         "happinessOptions": [
             {
                 "value": 0,

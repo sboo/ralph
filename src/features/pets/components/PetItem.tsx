@@ -12,6 +12,7 @@ import {
   Dialog,
   IconButton,
   Portal,
+  SegmentedButtons,
   Switch,
   Text,
   TextInput,
@@ -30,12 +31,14 @@ import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
 import {
   dateObjectToTimeString,
+  getValidReminderTimestamp,
   timeToDateObject,
 } from '@/support/helpers/DateTimeHelpers';
 import { Pet } from '@/app/models/Pet';
 import usePet, { PetData } from '../hooks/usePet';
 import { BSON } from 'realm';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
+import { AssessmentFrequency } from '@/app/models/Pet';
 
 interface Props {
   pet?: Pet;
@@ -51,6 +54,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
   const [petType, setPetType] = useState<string>(pet?.species ?? '');
   const [petName, setPetName] = useState<string>(pet?.name ?? '');
   const [avatar, setAvatar] = useState<string | undefined>(pet?.avatar);
+  const [assessmentFrequency, setAssessmentFrequency] = useState<AssessmentFrequency>(pet?.assessmentFrequency as AssessmentFrequency ?? 'DAILY');
   const [assessmentsPaused, setAssessmentsPaused] = useState<boolean>(
     (pet && pet?.pausedAt !== null) ?? false,
   );
@@ -99,6 +103,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
       notificationsTime: dateObjectToTimeString(reminderTime),
       isPaused: assessmentsPaused,
       avatar: avatar,
+      assessmentFrequency: assessmentFrequency,
     });
   };
 
@@ -161,7 +166,8 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
     } else {
       await notifee.openNotificationSettings();
     }
-  };
+  };  
+
   const createTriggerNotification = async (petId: BSON.ObjectId) => {
     const channelGroupId = await notifee.createChannelGroup({
       id: 'reminders',
@@ -174,17 +180,15 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
       name: petName,
     });
 
-    const timestamp = reminderTime.getTime();
-    const validTimestamp =
-      moment(timestamp).seconds(0).valueOf() > moment().valueOf()
-        ? moment(timestamp).seconds(0).valueOf()
-        : moment(timestamp).add(1, 'days').seconds(0).valueOf();
+
+    const reminderTimestamp = getValidReminderTimestamp(reminderTime, assessmentFrequency);
+    console.log('reminderTime', moment(reminderTimestamp).format('YYYY-MM-DD HH:mm'));
 
     // Create a time-based trigger
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: validTimestamp,
-      repeatFrequency: RepeatFrequency.DAILY,
+      timestamp: reminderTimestamp,
+      repeatFrequency: assessmentFrequency == 'WEEKLY' ? RepeatFrequency.WEEKLY : RepeatFrequency.DAILY,
     };
 
     await notifee.createTriggerNotification(
@@ -307,7 +311,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
                 mode={'outlined'}
                 onPress={() => setTimePickerOpen(true)}
                 disabled={assessmentsPaused}>
-                {dateObjectToTimeString(reminderTime)}
+                {reminderTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
               </Button>
               <DatePicker
                 modal
@@ -342,6 +346,37 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
               />
             </View>
           ) : null}
+          <View style={styles.inputRow}>
+            <View>
+              <Text variant="labelLarge">
+                {t('settings:assessmentFrequency')}
+              </Text>
+              <Text style={{ color: theme.colors.outline }} variant="bodySmall">
+                {t('settings:assessmentFrequencyLabelInfo')}
+              </Text>
+
+              <View style={styles.inputSegmentedButtons}>
+                <SegmentedButtons
+                  value={assessmentFrequency}
+                  onValueChange={(value) => setAssessmentFrequency(value as AssessmentFrequency)}
+                  density='medium'
+                  theme={{ colors: { secondaryContainer: theme.colors.primary, onSecondaryContainer: theme.colors.onPrimary } }}
+                  buttons={[
+                    {
+                      label: t('settings:daily'),
+                      value: 'DAILY',
+                      labelStyle: { fontSize: 11 },
+                    },
+                    {
+                      label: t('settings:weekly'),
+                      value: 'WEEKLY',
+                      labelStyle: { fontSize: 11 },
+                    },
+                  ]}
+                />
+              </View>
+            </View>
+          </View>
         </View>
       </ScrollView>
       <View style={styles.buttons}>

@@ -1,203 +1,166 @@
-import en from '@/app/localization/en';
+import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+import { Icon, useTheme } from 'react-native-paper';
+import moment from 'moment';
+import CustomDot from '@/support/components/CustomChartDot';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
 import usePet from '@/features/pets/hooks/usePet';
-import CustomDot from '@/support/components/CustomChartDot';
-import moment from 'moment';
-import React, {RefObject, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
-import {LineChart} from 'react-native-chart-kit';
-import {LineChartData} from 'react-native-chart-kit/dist/line-chart/LineChart';
-import {Icon, useTheme} from 'react-native-paper';
+import { AssessmentChartProps, CHART_CONSTANTS, EMOTIONS } from '../types';
+import { calculateDateRange, generateDateRange, generateChartData } from '../utils/helperFunctions';
+import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
 
-interface AssessmentChartProps {
-  onDataPointClick?: (date: Date) => void;
-}
 
-const AssessmentChart: React.FC<AssessmentChartProps> = ({
-  onDataPointClick,
-}) => {
-  const [chartWidthMultiplier, setChartWidthMultiplier] = useState(1);
+const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) => {
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const chartScrollViewRef = useRef<ScrollView>();
-
   const theme = useTheme();
-  const {activePet} = usePet();
-  const {assessments} = useAssessments(activePet);
+  const { activePet } = usePet();
+  const { assessments } = useAssessments(activePet);
+  const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
+  const windowWidth = Dimensions.get('window').width;
 
-  const scores = useMemo(() => {
-    let endDate = new Date();
-    endDate.setHours(23, 59, 59, 999);
-    if (activePet?.pausedAt) {
-      endDate = (
-        assessments && assessments.length > 0
-          ? moment.min(
-              moment(assessments[assessments.length - 1].createdAt),
-              moment(endDate),
-            )
-          : moment(endDate)
-      ).toDate();
-    }
-    // Get the date range for the last 7 days or since the first assessment
-    const startDate = (
-      assessments && assessments.length > 0
-        ? moment.min(
-            moment(assessments[0].createdAt),
-            moment(endDate).subtract(7, 'days'),
-          )
-        : moment(endDate).subtract(7, 'days')
-    ).toDate();
-    startDate.setHours(0, 0, 0, 0);
-    const dateRange = [];
-    let currentDate = new Date(startDate);
-    while (currentDate <= endDate) {
-      dateRange.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-    const scoresWithDates = dateRange.map(date => {
-      const assessment = assessments?.find(
-        m => m.date === moment(date).format('YYYY-MM-DD'),
-      );
-      return assessment ? assessment.score : null;
-    });
-    const labels = dateRange.map(date =>
-      date.toLocaleDateString(undefined, {month: 'numeric', day: 'numeric'}),
-    );
-    return {scoresWithDates, labels, dateRange};
-  }, [activePet?.pausedAt, assessments]);
+  
+  const maxDays = isWeekly ? CHART_CONSTANTS.WEEKS_TO_SHOW * 7 : CHART_CONSTANTS.DAYS_TO_SHOW;
+  const { startDate, endDate } = useMemo(
+    () => calculateDateRange(assessments, activePet, isWeekly, maxDays),
+    [activePet?.pausedAt, assessments, isWeekly, maxDays]
+  );
 
-  useEffect(() => {
-    let endDate = moment().endOf('day');
-    if (activePet?.pausedAt) {
-      endDate =
-        assessments && assessments.length > 0
-          ? moment.min(
-              moment(assessments[assessments.length - 1].createdAt),
-              moment(endDate),
-            )
-          : moment(endDate);
-    }
-    // Get the date range for the last 7 days or since the first assessment
-    const startDate =
-      assessments && assessments.length > 0
-        ? moment.min(
-            moment(assessments[0].createdAt),
-            moment(endDate).subtract(7, 'days'),
-          )
-        : moment(endDate).subtract(7, 'days');
-    const daysSinceFirstAssessment = endDate.diff(startDate, 'days');
-    setChartWidthMultiplier(Math.max(1, daysSinceFirstAssessment / 9));
-  }, [activePet?.pausedAt, assessments]);
+  const dateRange = useMemo(
+    () => generateDateRange(startDate, endDate, isWeekly),
+    [startDate, endDate, isWeekly]
+  );
 
-  const {scoresWithDates, labels, dateRange} = scores;
-  const data = useMemo(() => {
-    return {
-      labels: labels,
+  const { scores, labels, dotTypes, metadata } = useMemo (
+    () => generateChartData(dateRange, assessments, isWeekly),
+    [dateRange, assessments, isWeekly]
+  );
+
+  const handleDotPress = useCallback((index: number) => {
+
+    if (!metadata[index]) return;
+
+    const scoreData = metadata[index];
+
+    if (!scoreData.assessmentDates?.length) return;
+
+    if (scoreData.assessmentDates.length === 1) {
+      // For single assessments, directly call onDataPointClick with the actual date
+      onDataPointClick?.(scoreData.assessmentDates[0]);
+    } else {
+      // For averages, show the dialog
+      setSelectedDates(scoreData.assessmentDates);
+      setDialogVisible(true);
+    }
+  }, [isWeekly, metadata, onDataPointClick]);
+
+  const chartWidth = useMemo(() => {
+    const diff = moment(endDate).diff(startDate, isWeekly ? 'weeks' : 'days');
+    const multiplier = Math.max(1, diff / 9);
+    return windowWidth * multiplier - 40;
+  }, [windowWidth, isWeekly, startDate, endDate]);
+
+  const chartConfig = useMemo(
+    () => ({
+      fillShadowGradientToOpacity: 0,
+      fillShadowGradientFromOpacity: 0,
+      backgroundGradientFrom: theme.colors.primaryContainer,
+      backgroundGradientTo: theme.colors.primaryContainer,
+      backgroundGradientFromOpacity: 0,
+      backgroundGradientToOpacity: 0,
+      decimalPlaces: 0,
+      color: () => theme.colors.onPrimaryContainer,
+      labelColor: () => theme.colors.onPrimaryContainer,
+      propsForDots: {
+        r: '6',
+        strokeWidth: '25',
+        stroke: 'transparent',
+      },
+    }),
+    [theme.colors]
+  );
+
+  const chartData = useMemo(
+    () => ({
+      labels,
       datasets: [
+        { data: scores },
         {
-          data: scoresWithDates,
-        },
-        {
-          data: Array(scoresWithDates.length).fill(30),
+          data: Array(scores.length).fill(CHART_CONSTANTS.NEUTRAL_SCORE),
           withDots: false,
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         },
-        {
-          data: [0],
-          withDots: false,
-        },
-        {
-          data: [60],
-          withDots: false,
-        },
+        { data: [CHART_CONSTANTS.DEFAULT_SCORE], withDots: false },
+        { data: [CHART_CONSTANTS.MAX_SCORE], withDots: false },
       ],
-    };
-  }, [labels, scoresWithDates]);
+    }),
+    [labels, scores]
+  );
+
+  const renderDotContent = useCallback(
+    ({ x, y, index, indexData }: { x: number; y: number; index: number; indexData: number }) => (
+      <CustomDot
+        key={index}
+        value={indexData}
+        index={index}
+        x={x}
+        y={y}
+        paused={Boolean(activePet?.pausedAt)}
+        dotType={dotTypes[index]}
+        onPress={() => handleDotPress(index)}  // Add this line
+
+      />
+    ),
+    [dotTypes, activePet?.pausedAt, handleDotPress]
+  );
 
   return (
-    <View
-      style={{
-        backgroundColor: theme.colors.primaryContainer,
-        ...styles.chartContainer,
-      }}>
+    <>
+    <View style={[styles.chartContainer, { backgroundColor: theme.colors.primaryContainer }]}>
       <View style={styles.chartLabels}>
-        <Icon size={20} source={'emoticon-excited-outline'} color="#4CAF50" />
-        <Icon size={20} source={'emoticon-neutral-outline'} color="#F49503" />
-        <Icon size={20} source={'emoticon-sad-outline'} color="#F44336" />
+        {Object.values(EMOTIONS).map(({ icon, color }) => (
+          <Icon key={icon} size={20} source={icon} color={color} />
+        ))}
       </View>
       <ScrollView
         style={styles.chartScrollView}
-        horizontal={true}
-        ref={chartScrollViewRef as RefObject<ScrollView> | null}
-        onContentSizeChange={() =>
-          chartScrollViewRef.current?.scrollToEnd({animated: false})
-        }>
+        horizontal
+        ref={chartScrollViewRef as RefObject<ScrollView>}
+        onContentSizeChange={() => chartScrollViewRef.current?.scrollToEnd({ animated: false })}
+      >
         <LineChart
           style={styles.chart}
-          data={data as LineChartData}
-          width={Dimensions.get('window').width * chartWidthMultiplier - 40}
+          data={chartData}
+          width={chartWidth}
           height={200}
           yAxisLabel=""
           yAxisSuffix=""
-          fromZero={true}
+          fromZero
           withInnerLines={false}
           withOuterLines={false}
           withHorizontalLabels={false}
           verticalLabelRotation={-45}
           xLabelsOffset={10}
-          chartConfig={{
-            fillShadowGradientToOpacity: 0,
-            fillShadowGradientFromOpacity: 0,
-            backgroundGradientFrom: theme.colors.primaryContainer,
-            backgroundGradientTo: theme.colors.primaryContainer,
-            backgroundGradientFromOpacity: 0,
-            backgroundGradientToOpacity: 0,
-            decimalPlaces: 0, // optional, defaults to 2dp
-            color: () => theme.colors.onPrimaryContainer,
-            labelColor: () => theme.colors.onPrimaryContainer,
-            propsForDots: {
-              r: '6',
-              strokeWidth: '2',
-              stroke: '#fff',
-            },
-          }}
-          renderDotContent={({x, y, index, indexData}): any => (
-            <CustomDot
-              key={index}
-              value={indexData}
-              index={index}
-              x={x}
-              y={y}
-              scores={data.datasets[0].data as number[]}
-              paused={activePet?.pausedAt !== null}
-            />
-          )}
+          chartConfig={chartConfig}
+          renderDotContent={renderDotContent}
           bezier
-          onDataPointClick={({index}) => {
-            if (onDataPointClick) {
-              onDataPointClick(dateRange[index]);
-            }
-          }}
+          onDataPointClick={(data) => handleDotPress(data.index)}
         />
       </ScrollView>
     </View>
+    <WeeklyAssessmentDialog
+        visible={dialogVisible}
+        onDismiss={() => setDialogVisible(false)}
+        dates={selectedDates}
+        onDateSelect={onDataPointClick || (() => {})}
+      />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  gradient: {
-    flex: 1,
-  },
-  bodyContainer: {
-    flex: 1,
-    padding: 20,
-  },
-  chartTitle: {
-    fontSize: 18,
-    marginVertical: 15,
-    paddingHorizontal: 20,
-  },
   chartContainer: {
     flexDirection: 'row',
     borderRadius: 16,
@@ -216,16 +179,6 @@ const styles = StyleSheet.create({
     left: 15,
     position: 'absolute',
   },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  introduction: {
-    marginTop: 45,
-    borderRadius: 15,
-    marginBottom: 100,
-  },
 });
 
-export default AssessmentChart;
+export default React.memo(AssessmentChart);

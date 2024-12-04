@@ -97,7 +97,7 @@
             }
         ],
         "hygiene": "Cleanliness",
-        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
+        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to stay clean?",
         "hygieneOptions": [
             {
                 "value": 0,

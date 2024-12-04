@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
   SafeAreaView,
@@ -7,9 +7,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {FAB, useTheme} from 'react-native-paper';
-import {HomeScreenNavigationProps} from '@/features/navigation/types.tsx';
-import {SkeletonSimpler} from 'react-native-skeleton-simpler';
+import { FAB, useTheme } from 'react-native-paper';
+import { HomeScreenNavigationProps } from '@/features/navigation/types.tsx';
 import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
@@ -20,17 +19,17 @@ import TalkToVetTip from '@/features/tips/components/TalkToVetTip';
 import GetStartedTip from '@/features/tips/components/GetStartedTip';
 import usePet from '@/features/pets/hooks/usePet';
 import useAssessments from '@/features/assessments/hooks/useAssessments';
-import {EVENT_NAMES, event} from '@/features/events';
-import {DateData} from 'react-native-calendars';
+import { EVENT_NAMES, event } from '@/features/events';
+import { DateData } from 'react-native-calendars';
 import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
 
-const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
-  const {t} = useTranslation();
+const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const [averageScore, setAverageScore] = useState(60);
   const theme = useTheme();
-  const {activePet} = usePet();
-  const {generateAndSharePDF} = useAssessmentExporter();
-  const {assessments, lastAssessments} = useAssessments(activePet);
+  const { activePet } = usePet();
+  const { generateAndSharePDF } = useAssessmentExporter();
+  const { assessments, lastAssessments } = useAssessments(activePet);
   const [viewMode, setViewMode] = useState<'chart' | 'calendar'>('chart');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -58,7 +57,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
     if (!activePet) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Welcome'}],
+        routes: [{ name: 'Welcome' }],
       });
     }
   }, [activePet, navigation]);
@@ -186,7 +185,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({navigation}) => {
                 onPress: () => navigation.navigate('DebugScreen'),
               },
             ]}
-            onStateChange={({open}) => setIsFabOpen(open)}
+            onStateChange={({ open }) => setIsFabOpen(open)}
           />
         ) : (
           assessments && assessments.length > 0 && (

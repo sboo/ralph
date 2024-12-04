@@ -1,6 +1,6 @@
-import React from 'react';
-import {Circle} from 'react-native-svg';
-import {useTheme} from 'react-native-paper';
+import React, { useMemo } from 'react';
+import { Circle, G } from 'react-native-svg';
+import { useTheme } from 'react-native-paper';
 import PulsatingCircle from '@/support/components/PulsatingCircle.tsx';
 
 interface CustomDotProps {
@@ -8,46 +8,80 @@ interface CustomDotProps {
   index: number;
   x: number;
   y: number;
-  scores: (number | null)[];
   paused?: boolean;
+  dotType?: string;
+  onPress?: () => void;  // Add onPress prop
 }
-const CustomDot = ({
+
+const CustomDot: React.FC<CustomDotProps> = ({
   value,
   index,
   x,
   y,
-  scores,
+  dotType,
   paused = false,
-}: CustomDotProps) => {
+  onPress,  // Destructure onPress prop
+}) => {
   const theme = useTheme();
-  const firstNonNullScoreIndex = scores.findIndex(score => score !== null);
 
-  // Pulsate the last dot if it's null or the first null dot after the last non-null dot
-  if (
-    !paused &&
-    value === null &&
-    ((firstNonNullScoreIndex >= 0 && index > firstNonNullScoreIndex) ||
-      index === scores.length - 1)
-  ) {
-    return (
+  const getDotColor = (type: string | undefined) => {
+    switch (type) {
+      case 'filler':
+        return 'white';
+      case 'average':
+      default:
+        return theme.colors.onSecondaryContainer;
+    }
+  };
+
+  const dotConfig = useMemo(() => ({
+    size: dotType === 'filler' ? 3 : 6,
+    strokeWidth: dotType === 'filler' ? 4 : 6,
+    fillColor: getDotColor(dotType),
+    borderColor: dotType === 'filler' ? theme.colors.onSecondaryContainer : "white"
+  }), [dotType, theme.colors.onSecondaryContainer]);
+
+  const shouldPulsate = !paused && (value === null || dotType === 'empty');
+
+  const renderPulsatingDot = () => (
+    <G onPress={onPress} pointerEvents="none">
       <PulsatingCircle
         key={index}
         color={theme.colors.error}
         size={10}
         x={x}
         y={y}
+        paused={paused}
       />
-    );
-  }
+    </G>
+  );
+
+  const renderStaticDot = () => (
+    <G onPress={onPress}>
+      {/* White border circle */}
+      <Circle
+        key={`${index}-border`}
+        cx={x}
+        cy={y}
+        r={dotConfig.size + dotConfig.strokeWidth / 2}
+        fill={dotConfig.borderColor}
+      />
+      {/* Inner colored circle */}
+      <Circle
+        key={index}
+        cx={x}
+        cy={y}
+        r={dotConfig.size}
+        fill={dotConfig.fillColor}
+      />
+    </G>
+  );
+
   return (
-    <Circle
-      key={index}
-      cx={x}
-      cy={y}
-      r={4}
-      fill={theme.colors.onSecondaryContainer}
-    />
+    <>
+      {shouldPulsate ? renderPulsatingDot() : renderStaticDot()}
+    </>
   );
 };
 
-export default CustomDot;
+export default React.memo(CustomDot);

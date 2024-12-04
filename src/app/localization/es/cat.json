@@ -308,7 +308,7 @@
             }
         ],
         "hygiene": "Limpieza",
-        "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí mismo?",
+        "hygieneInfo": "¿Está {{petName}} limpio y cómodo? ¿Puede {{petName}} mantenerse limpio por sí solo/a?",
         "hygieneOptions": [
             {
                 "value": 0,

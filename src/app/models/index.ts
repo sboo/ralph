@@ -35,4 +35,13 @@ export const onMigration = (oldRealm: Realm, newRealm: Realm) => {
       newObject.petId = pet._id;
     }
   }
+
+  if (oldRealm.schemaVersion < 7) {
+    const newObjectsV7: Realm.Results<Pet> =
+      newRealm.objects(Pet);
+    for (const objectIndex in newObjectsV7) {
+      const newObject = newObjectsV7[objectIndex];
+      newObject.assessmentFrequency = 'DAILY';
+    }
+  }
 };

@@ -1,4 +1,42 @@
+import { AssessmentFrequency } from '@/app/models/Pet';
 import moment from 'moment';
+
+export const getValidReminderTimestamp = (
+  reminderTime: Date, 
+  assessmentFrequency: AssessmentFrequency
+): number => {
+  const isWeekly = assessmentFrequency === 'WEEKLY';
+  const now = moment();
+  const reminderMoment = moment(reminderTime).seconds(0); // Normalize seconds to 0
+
+  if (isWeekly) {
+    // For weekly reminders
+    const isReminderInPast = reminderMoment.isBefore(now);
+    const isTodayMonday = now.day() === 1;
+
+    if (isReminderInPast || !isTodayMonday) {
+      // Calculate days until next Monday
+      const daysUntilNextMonday = (8 - now.day()) % 7 || 7;
+      return reminderMoment
+        .add(daysUntilNextMonday, 'days') // Adjust to next Monday
+        .hours(reminderTime.getHours())
+        .minutes(reminderTime.getMinutes())
+        .valueOf();
+    }
+    return reminderMoment.valueOf();
+  } else {
+    // For non-weekly reminders
+    if (reminderMoment.isBefore(now)) {
+      // Move to the next day if the time has passed
+      return reminderMoment
+        .add(1, 'days')
+        .hours(reminderTime.getHours())
+        .minutes(reminderTime.getMinutes())
+        .valueOf();
+    }
+    return reminderMoment.valueOf();
+  }
+};
 
 export const timeToDateObject = (timeString: string) => {
   // Use the current date but set the time according to the input string

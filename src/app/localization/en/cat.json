@@ -308,7 +308,7 @@
             }
         ],
         "hygiene": "Cleanliness",
-        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to keep himself clean?",
+        "hygieneInfo": "Is {{petName}} clean and comfortable? Is {{petName}} able to stay clean?",
         "hygieneOptions": [
             {
                 "value": 0,
@@ -337,7 +337,7 @@
             }
         ],
         "happiness": "Joy",
-        "happinessInfo": "Does {{petName}} express joy and interest? Is {{petName}} responsive to things around him (family, toys, etc)?",
+        "happinessInfo": "Does {{petName}} express joy and interest? Does {{petName}} respond to their surroundings (family, toys, etc)?",
         "happinessOptions": [
             {
                 "value": 0,

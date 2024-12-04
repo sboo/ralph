@@ -1,5 +1,7 @@
 import Realm, {BSON, index} from 'realm';
 
+export type AssessmentFrequency = 'DAILY' | 'WEEKLY';
+
 export class Pet extends Realm.Object {
   _id: BSON.ObjectId = new BSON.ObjectId();
   static primaryKey = '_id';
@@ -12,6 +14,7 @@ export class Pet extends Realm.Object {
   showNotificationDot: boolean = false;
   @index
   isActive: boolean = false;
+  assessmentFrequency: string = 'DAILY';
   headerColor?: string;
   pausedAt?: Date;
 }

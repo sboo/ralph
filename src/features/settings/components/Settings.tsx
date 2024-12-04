@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Linking, Platform, StyleSheet, View } from 'react-native';
-import { Button, Divider, Icon, Switch, Text } from 'react-native-paper';
+import { Button, Divider, Icon, IconButton, Switch, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { AVAILABLE_LANGUAGES } from '@/app/localization/i18n';
 import i18next from 'i18next';
 import { ANDROID_APP_ID, IOS_APP_ID } from '@/support/constants';
 import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Appearance, useAppearance } from '@/app/themes/hooks/useAppearance';
 
 interface SettingsProps {
   onSettingsSaved: () => void;
@@ -15,7 +16,7 @@ interface SettingsProps {
 const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
   const { t } = useTranslation();
 
-  const [useRatingButtons, setUseRatingButtons] = React.useState(false);
+  const [useRatingButtons, setUseRatingButtons] = useState(false);
 
   useEffect(() => {
     const getUseRatingButtons = async () => {
@@ -35,16 +36,37 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
 
   const openReviewInStore = () => Linking.openURL(STORE_LINK!);
 
-  // Store pet name and type in storage
-  const storeSettings = async () => {
-    // Navigate to the next screen after successful storage
-    await AsyncStorage.setItem(STORAGE_KEYS.USE_RATING_BUTTONS, useRatingButtons.toString());
+  const { appearance, changeAppearance } = useAppearance();
+  
+  const handleThemeChange = async (newTheme: Appearance) => {
+    await changeAppearance(newTheme);
+  };
+
+  const handleRatingButtonsChange = async(value: boolean) => {
+    setUseRatingButtons(value);
+    await AsyncStorage.setItem(STORAGE_KEYS.USE_RATING_BUTTONS, value.toString());
+  }
+
+  const onDone = async () => {
     onSettingsSaved();
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.profileInput}>
+        <View style={styles.inputRow}>
+          <Text style={styles.inputLabel} variant="labelLarge">
+            {t('settings:appearance')}
+          </Text>
+          <View>
+            <View style={styles.inputColorMode}>
+              <IconButton selected={appearance === 'light'} mode={'contained'} icon={'white-balance-sunny'} onPress={() => { handleThemeChange('light') }} />
+              <IconButton selected={appearance === 'dark'} mode={'contained'} icon={'weather-night'} onPress={() => { handleThemeChange('dark') }} />
+              <IconButton selected={appearance === 'system'} mode={'contained'} icon={'theme-light-dark'} onPress={() => { handleThemeChange('system') }} />
+            </View>
+          </View>
+        </View>
+        <Divider style={styles.divider} bold={true} />
         <View style={styles.inputRowLanguage}>
           <Icon source={'earth'} size={30} />
           <View style={styles.inputLanguage}>
@@ -69,9 +91,11 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
           </Text>
           <Switch
             value={useRatingButtons}
-            onValueChange={setUseRatingButtons}
+            onValueChange={handleRatingButtonsChange}
           />
         </View>
+     
+        
         <Divider style={styles.divider} bold={true} />
         <View style={styles.inputRowReview}>
           <Text>{t('settings:app_useful')}</Text>
@@ -81,8 +105,8 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button onPress={storeSettings} mode={'contained'}>
-          {t('buttons:save')}
+        <Button onPress={onDone} mode={'contained'}>
+          {t('buttons:done')}
         </Button>
       </View>
     </View>
@@ -119,7 +143,7 @@ const styles = StyleSheet.create({
     gap: 15,
     justifyContent: 'space-between',
   },
-  inputRowPet: {
+  inputColorMode: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'stretch',

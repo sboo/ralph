@@ -9,5 +9,10 @@
     "pauseAssessmentsLabelInfo": "Use this feature to disable assessments and notifications, halting progress tracking.",
     "app_useful": "Do you find Ralph useful? Help us reach more people by leaving us a review!",
     "review_app": "Review Ralph",
-    "useRatingButtons": "Use assessment buttons instead of sliders"
+    "useRatingButtons": "Use assessment buttons instead of sliders",
+    "assessmentFrequency": "Assessment frequency",
+    "assessmentFrequencyLabelInfo": "Choose how often you want to assess your pet's quality of life.",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "appearance": "Appearance"
 }
