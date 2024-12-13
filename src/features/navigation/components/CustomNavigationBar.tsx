@@ -1,5 +1,4 @@
 import {
-  ActivityIndicator,
   Appbar,
   Button,
   Dialog,
@@ -9,15 +8,16 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import {getHeaderTitle} from '@react-navigation/elements';
-import React, {useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {NativeStackHeaderProps} from '@react-navigation/native-stack';
-import {requestPurchase, useIAP} from 'react-native-iap';
+import { getHeaderTitle } from '@react-navigation/elements';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { requestPurchase, useIAP } from 'react-native-iap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import {Linking, Platform, StyleSheet} from 'react-native';
-import {event, EVENT_NAMES} from '@/features/events';
+import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
+import { Linking, Platform, StyleSheet } from 'react-native';
+import { event, EVENT_NAMES } from '@/features/events';
+import SupportDialog from './SupportDialog';
 
 interface CoffeeButtonProps {
   coffeePurchased: string | null;
@@ -58,7 +58,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   back,
 }) => {
   const theme = useTheme();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const title = getHeaderTitle(options, route.name);
   const [coffeePurchased, setCoffeePurchased] = React.useState<string | null>(
     'false',
@@ -68,8 +68,6 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   const [menuVisible, setMenuVisible] = React.useState(false);
   const [awaitingInAppPurchase, setAwaitingInAppPurchase] =
     React.useState(false);
-  const {getProducts} = useIAP();
-
   const onCoffeeButtonPress = async () => {
     if (coffeePurchased === 'true') {
       setThankYouVisible(true);
@@ -79,13 +77,6 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   };
 
   useEffect(() => {
-    const fechProducts = async () => {
-      try {
-        await getProducts({skus: ['eu.sboo.ralph.coffee']});
-      } catch (error) {
-        console.log(error);
-      }
-    };
     const getCoffeeButtonPuchasedStatus = async () => {
       return await AsyncStorage.getItem(STORAGE_KEYS.COFFEE_PURCHASED);
     };
@@ -101,18 +92,12 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
       });
     };
 
-    try {
-      fechProducts();
-    } catch (error) {
-      console.log(error);
-    }
-
     event.on(EVENT_NAMES.COFFEE_PURCHASED, onCoffeePurchased);
 
     return () => {
       event.off(EVENT_NAMES.COFFEE_PURCHASED, onCoffeePurchased);
     };
-  }, [getProducts]);
+  }, []);
 
   const openMenu = () => setMenuVisible(true);
 
@@ -120,10 +105,15 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
 
   const handlePurchase = async () => {
     setAwaitingInAppPurchase(true);
-    if (Platform.OS === 'ios') {
-      await requestPurchase({sku: 'eu.sboo.ralph.coffee'});
-    } else if (Platform.OS === 'android') {
-      await requestPurchase({skus: ['eu.sboo.ralph.coffee']});
+    try {
+      if (Platform.OS === 'ios') {
+        await requestPurchase({ sku: 'eu.sboo.ralph.coffee' });
+      } else if (Platform.OS === 'android') {
+        await requestPurchase({ skus: ['eu.sboo.ralph.coffee'] });
+      }
+    } catch (error) {
+      console.log(error);
+      setAwaitingInAppPurchase(false);
     }
   };
 
@@ -203,31 +193,13 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
             </Button>
           </Dialog.Actions>
         </Dialog>
-        <Dialog
+        
+        <SupportDialog
           visible={buyCoffeeVisible}
-          onDismiss={() => setBuyCoffeeVisible(false)}>
-          <Dialog.Icon icon="coffee" />
-          <Dialog.Title style={styles.dialogTitle}>
-            {t('support_me')}
-          </Dialog.Title>
-          <Dialog.Content>
-            <Text style={styles.dialogText} variant="bodyMedium">
-              {t('support_me_text')}
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            {awaitingInAppPurchase ? (
-              <ActivityIndicator animating={true} />
-            ) : (
-              <>
-                <Button onPress={() => setBuyCoffeeVisible(false)}>
-                  {t('buttons:cancel')}
-                </Button>
-                <Button onPress={handlePurchase}>{t('buttons:yes')}</Button>
-              </>
-            )}
-          </Dialog.Actions>
-        </Dialog>
+          onDismiss={() => setBuyCoffeeVisible(false)}
+          onSupport={handlePurchase}
+          loading={awaitingInAppPurchase}
+        />
       </Portal>
     </Appbar.Header>
   );
