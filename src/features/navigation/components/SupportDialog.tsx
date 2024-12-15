@@ -12,7 +12,7 @@ interface SupportDialogProps {
 }
 
 const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSupport, loading }) => {
-  const [selectedValue, setSelectedValue] = useState('eu.sboo.ralph.coffee');
+  const [selectedValue, setSelectedValue] = useState<string>('');
   const theme = useTheme();
   const { t } = useTranslation();
   const { products, getProducts } = useIAP();
@@ -41,8 +41,7 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
    
 
     try {
-      fechProducts();
-      console.log('products', products);
+      fechProducts().then(() => console.log('products: ', products));
     } catch (error) {
       console.log(error);
     }
@@ -55,23 +54,14 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
 
   return (
     <Dialog visible={visible} onDismiss={onDismiss}>
-      <Dialog.Icon icon='heart' />
+      <Dialog.Icon icon='hand-heart' />
       <Dialog.Title style={styles.dialogTitle}> {t('support_me')}</Dialog.Title>
       <Dialog.Content>
         <Text style={styles.dialogText} variant="bodyMedium">
         {t('support_me_text')}
         </Text>
         
-        <View style={styles.sliderContainer}>
-          {/* <input
-            type="range"
-            min="1"
-            max="4"
-            value={selectedValue}
-            onChange={(e) => setSelectedValue(parseInt(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-          /> */}
-          
+        <View style={styles.sliderContainer}>          
           <View style={styles.markersContainer}>
             {supportOptions.map((option, index) => (
               <View 
@@ -84,6 +74,7 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
                 <IconButton
                   size={24}
                   icon={option.icon}
+                  mode='contained'
                   selected={selectedValue === option.sku}
                     onPress={() => setSelectedValue(option.sku)}
                 />
@@ -104,7 +95,7 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
         ) : (
           <>
             <Button onPress={onDismiss}>Cancel</Button>
-            <Button onPress={handleSupport}>Support</Button>
+            <Button disabled={selectedValue === ''} onPress={handleSupport}>Support</Button>
           </>
         )}
       </Dialog.Actions>

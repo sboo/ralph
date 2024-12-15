@@ -101,33 +101,48 @@ const App: React.FC = () => {
 
 
 
-  const petsToFix = useQuery(
-    Pet,
-    collection => {
+  const petsToFix = useQuery({
+    type: Pet,
+    query: collection => {
       return collection.filtered('name = $0', PET_REQUIRES_MIGRATION);
     },
-    [],
-  );
+  });
 
   const isFreshInstall = useCallback(async () => {
     const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
     return freshInstall !== 'false';
   }, []);
 
+  const VALID_PRODUCT_IDS = [
+    'eu.sboo.ralph.coffee',
+    'eu.sboo.ralph.sandwich',
+    'eu.sboo.ralph.lunch',
+    'eu.sboo.ralph.croissant'
+  ];
+
   const restorePurchases = useCallback(async () => {
     let purchased = false;
+  
     try {
+      // Get purchase history
       await getPurchaseHistory();
-      purchased =
-        purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
-        -1;
+  
+      // Check if user has any valid purchases
+      purchased = purchaseHistory.some(purchase => 
+        VALID_PRODUCT_IDS.includes(purchase.productId)
+      );
+  
+      // Save purchase status
       await AsyncStorage.setItem(
         STORAGE_KEYS.COFFEE_PURCHASED,
-        purchased ? 'true' : 'false',
+        String(purchased)
       );
+  
     } catch (error) {
       console.log(error);
+  
     } finally {
+      // Mark as not a fresh install and emit purchase status
       await AsyncStorage.setItem(STORAGE_KEYS.FRESH_INSTALL, 'false');
       event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);
     }

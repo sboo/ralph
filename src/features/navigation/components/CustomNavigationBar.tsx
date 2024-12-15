@@ -12,7 +12,7 @@ import { getHeaderTitle } from '@react-navigation/elements';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { requestPurchase, useIAP } from 'react-native-iap';
+import { PurchaseError, requestPurchase } from 'react-native-iap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
 import { Linking, Platform, StyleSheet } from 'react-native';
@@ -42,7 +42,7 @@ const CoffeeButton: React.FC<CoffeeButtonProps> = ({
   // if (coffeePurchased === 'false') {
   return (
     <Appbar.Action
-      icon="coffee"
+      icon="hand-heart"
       color={theme.colors.onPrimary}
       onPress={onPress}
     />
@@ -103,16 +103,20 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
 
   const closeMenu = () => setMenuVisible(false);
 
-  const handlePurchase = async () => {
+  const handlePurchase = async (sku: string) => {
     setAwaitingInAppPurchase(true);
     try {
       if (Platform.OS === 'ios') {
-        await requestPurchase({ sku: 'eu.sboo.ralph.coffee' });
+        await requestPurchase({ sku });
       } else if (Platform.OS === 'android') {
-        await requestPurchase({ skus: ['eu.sboo.ralph.coffee'] });
+        await requestPurchase({ skus: [sku] });
       }
     } catch (error) {
-      console.log(error);
+      if (error instanceof PurchaseError) {
+        console.error(`[${error.code}]: ${error.message}`, error);
+      } else {
+        console.error('handleBuyProduct', error);
+      }
       setAwaitingInAppPurchase(false);
     }
   };
