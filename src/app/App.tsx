@@ -22,7 +22,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTranslation} from 'react-i18next';
-import {useIAP, withIAPContext} from 'react-native-iap';
+import {getProducts, initConnection, useIAP, withIAPContext} from 'react-native-iap';
 import {useQuery, useRealm} from '@realm/react';
 import * as Sentry from '@sentry/react-native';
 import merge from 'deepmerge';
@@ -123,13 +123,18 @@ const App: React.FC = () => {
   // Callback functions
   const checkPurchases = useCallback(async () => {
     try {
-      console.log('Checking purchases...');  // Added for debugging
+      // First ensure IAP connection is initialized
+      const isConnected = await initConnection();
+      console.log('IAP connection status:', isConnected);
+
+      // Get products first to ensure store connection
+      const products = await getProducts({ skus: VALID_PRODUCT_IDS });
+      console.log('Available products:', products.length);
+
+      // Then get purchase history
       await getPurchaseHistory();
       
-      console.log('purchaseHistory:', purchaseHistory);  // Added for debugging
-
-       // Check for valid active purchases
-       const validPurchases = purchaseHistory.filter(purchase => {
+      const validPurchases = purchaseHistory.filter(purchase => {
         const isValidProduct = VALID_PRODUCT_IDS.includes(purchase.productId);
         const isNotRefunded = !purchase.transactionReceipt?.includes('refund') && 
                             !purchase.transactionReceipt?.includes('revoked');
@@ -137,15 +142,31 @@ const App: React.FC = () => {
       });
 
       const hasActivePurchase = validPurchases.length > 0;
-
-      // Save purchase status
       await AsyncStorage.setItem(
         STORAGE_KEYS.COFFEE_PURCHASED,
         String(hasActivePurchase)
       );
+      
       event.emit(EVENT_NAMES.COFFEE_PURCHASED, hasActivePurchase);
-    } catch (error) {
-      console.log('Error checking purchases:', error);
+    } catch (error: any) {
+      // Handle specific error cases
+      if (error.code === 'E_NOT_PREPARED') {
+        console.log('IAP not prepared, retrying connection...');
+        try {
+          await initConnection();
+          await checkPurchases(); // Retry after initialization
+        } catch (retryError) {
+          console.log('Retry failed:', retryError);
+        }
+      } else if (error.code === 'E_USER_CANCELLED') {
+        console.log('User cancelled the purchase check');
+      } else {
+        console.log('Error checking purchases:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+        });
+      }
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
@@ -188,25 +209,25 @@ const App: React.FC = () => {
   }, []); // Empty dependency array since this should only run once
 
   // Separate AppState subscription effect
-  useEffect(() => {
-    let lastAppState = AppState.currentState;
+  // useEffect(() => {
+  //   let lastAppState = AppState.currentState;
     
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      // Only check purchases when coming from background to active
-      if (
-        lastAppState.match(/inactive|background/) && 
-        nextAppState === 'active'
-      ) {
-        console.log('App came to foreground, checking purchases');
-        checkPurchases();
-      }
-      lastAppState = nextAppState;
-    });
+  //   const subscription = AppState.addEventListener('change', nextAppState => {
+  //     // Only check purchases when coming from background to active
+  //     if (
+  //       lastAppState.match(/inactive|background/) && 
+  //       nextAppState === 'active'
+  //     ) {
+  //       console.log('App came to foreground, checking purchases');
+  //       checkPurchases();
+  //     }
+  //     lastAppState = nextAppState;
+  //   });
 
-    return () => {
-      subscription.remove();
-    };
-  }, [checkPurchases]);
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, [checkPurchases]);
 
   useEffect(() => {
     fixPetData();
