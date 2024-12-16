@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   AppState,
   KeyboardAvoidingView,
@@ -19,26 +19,26 @@ import {
   NavigationContainer,
   NavigationState,
 } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useTranslation} from 'react-i18next';
-import {getProducts, initConnection, useIAP, withIAPContext} from 'react-native-iap';
-import {useQuery, useRealm} from '@realm/react';
+import { useTranslation } from 'react-i18next';
+import { getAvailablePurchases, getProducts, initConnection, useIAP, withIAPContext } from 'react-native-iap';
+import { useQuery, useRealm } from '@realm/react';
 import * as Sentry from '@sentry/react-native';
 import merge from 'deepmerge';
 
 // Local imports
-import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import {event, EVENT_NAMES} from '@/features/events';
-import {Pet} from '@/app/models/Pet';
-import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
-import {RootStackParamList} from '@/features/navigation/types.tsx';
+import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
+import { event, EVENT_NAMES } from '@/features/events';
+import { Pet } from '@/app/models/Pet';
+import { PET_REQUIRES_MIGRATION, getPetData } from '@/app/store/helper';
+import { RootStackParamList } from '@/features/navigation/types.tsx';
 import defaultColors from '@/app/themes/lightTheme.json';
 import darkColors from '@/app/themes/darkTheme.json';
 import CustomNavigationBar from '@/features/navigation/components/CustomNavigationBar.tsx';
 import usePet from '@/features/pets/hooks/usePet';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
-import {useAppearance} from './themes/hooks/useAppearance';
+import { useAppearance } from './themes/hooks/useAppearance';
 
 // Screen imports
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -73,7 +73,7 @@ if (Platform.OS === 'android') {
 
 const App: React.FC = () => {
   // Hooks
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const realm = useRealm();
   const {
     purchaseHistory,
@@ -87,15 +87,15 @@ const App: React.FC = () => {
     onForegroundNotification,
     getPetIdFromNotificationId,
   } = useNotifications();
-  const {activePet, getHeaderColor, enableNotifcationDot} = usePet();
-  const {effectiveAppearance} = useAppearance();
+  const { activePet, getHeaderColor, enableNotifcationDot } = usePet();
+  const { effectiveAppearance } = useAppearance();
 
   // State
-  const [handledInitialNotificationId, setHandledInitialNotificationId] = 
+  const [handledInitialNotificationId, setHandledInitialNotificationId] =
     useState<string | undefined>();
 
   // Theme setup
-  const {LightTheme, DarkTheme} = adaptNavigationTheme({
+  const { LightTheme, DarkTheme } = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
   });
@@ -129,24 +129,22 @@ const App: React.FC = () => {
 
       // Get products first to ensure store connection
       const products = await getProducts({ skus: VALID_PRODUCT_IDS });
-      console.log('Available products:', products.length);
+      console.log('Available products:', products);
 
-      // Then get purchase history
-      await getPurchaseHistory();
-      
-      const validPurchases = purchaseHistory.filter(purchase => {
-        const isValidProduct = VALID_PRODUCT_IDS.includes(purchase.productId);
-        const isNotRefunded = !purchase.transactionReceipt?.includes('refund') && 
-                            !purchase.transactionReceipt?.includes('revoked');
-        return isValidProduct && isNotRefunded;
-      });
+      // Get all active purchases
+      const purchases = await getAvailablePurchases();
+      console.log('Available purchases:', purchases);
+
+      const validPurchases = purchases.filter(purchase =>
+        VALID_PRODUCT_IDS.includes(purchase.productId)
+      );
 
       const hasActivePurchase = validPurchases.length > 0;
       await AsyncStorage.setItem(
         STORAGE_KEYS.COFFEE_PURCHASED,
         String(hasActivePurchase)
       );
-      
+
       event.emit(EVENT_NAMES.COFFEE_PURCHASED, hasActivePurchase);
     } catch (error: any) {
       // Handle specific error cases
@@ -193,7 +191,7 @@ const App: React.FC = () => {
   const onNavigationStateChange = useCallback(
     (state: NavigationState | undefined) => {
       if (!state) return;
-      
+
       const activeRoute = state.routes[state.index];
       const isHomeOrWelcome = ['Home', 'Welcome'].includes(activeRoute.name);
       StatusBar.setBarStyle(isHomeOrWelcome ? 'light-content' : 'dark-content');
@@ -211,7 +209,7 @@ const App: React.FC = () => {
   // Separate AppState subscription effect
   // useEffect(() => {
   //   let lastAppState = AppState.currentState;
-    
+
   //   const subscription = AppState.addEventListener('change', nextAppState => {
   //     // Only check purchases when coming from background to active
   //     if (
@@ -272,12 +270,12 @@ const App: React.FC = () => {
       AsyncStorage.setItem(STORAGE_KEYS.COFFEE_PURCHASED, 'true')
         .then(() => {
           event.emit(EVENT_NAMES.COFFEE_PURCHASED, 'true');
-          return finishTransaction({purchase: currentPurchase, isConsumable: false});
+          return finishTransaction({ purchase: currentPurchase, isConsumable: false });
         });
     }
   }, [currentPurchase, finishTransaction]);
 
-    // Render
+  // Render
   return (
     <KeyboardAvoidingView
       style={styles.keyboardViewContainer}
@@ -294,25 +292,25 @@ const App: React.FC = () => {
               component={HomeScreen}
               options={{
                 title: '',
-                headerStyle: {backgroundColor: getHeaderColor(theme)},
+                headerStyle: { backgroundColor: getHeaderColor(theme) },
               }}
             />
             <Stack.Screen
               name="Welcome"
               component={WelcomeScreen}
-              options={{headerShown: false}}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Onboarding"
               component={OnboardingScreen}
-              options={{headerShown: false}}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Settings"
               component={SettingsScreen}
               options={{
                 title: t('settings'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -320,7 +318,7 @@ const App: React.FC = () => {
               component={EditPet}
               options={{
                 title: t('edit_pet'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -328,7 +326,7 @@ const App: React.FC = () => {
               component={AddPet}
               options={{
                 title: t('add_pet'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -338,7 +336,7 @@ const App: React.FC = () => {
                 title: t('measurements:title', {
                   petName: activePet?.name,
                 }),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -348,7 +346,7 @@ const App: React.FC = () => {
                 title: t('measurements:title', {
                   petName: activePet?.name,
                 }),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -356,12 +354,12 @@ const App: React.FC = () => {
               component={AllAssessmentsScreen}
               options={{
                 title: t('measurements:allAssessments'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen name="AboutScreen" component={AboutScreen} />
             <Stack.Screen name="DebugScreen" component={DebugScreen} />
-            </Stack.Navigator>
+          </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
     </KeyboardAvoidingView>
