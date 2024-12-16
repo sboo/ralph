@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { useIAP } from 'react-native-iap';
@@ -25,9 +25,9 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
     { icon: 'noodles', label: 'Lunch', sku: 'eu.sboo.ralph.lunch' }
   ];
 
-  const getPrice = (sku: string) => {
+  const getPrice = useCallback((sku: string) => {
     return products.find((product) => product.productId === sku)?.localizedPrice ?? 0;
-  };
+  }, [products]);
 
   useEffect(() => {
     const fechProducts = async () => {
@@ -39,9 +39,8 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
     };
    
    
-
     try {
-      fechProducts().then(() => console.log('products: ', products));
+      fechProducts();
     } catch (error) {
       console.log(error);
     }

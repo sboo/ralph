@@ -80,15 +80,25 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     const getCoffeeButtonPuchasedStatus = async () => {
       return await AsyncStorage.getItem(STORAGE_KEYS.COFFEE_PURCHASED);
     };
+
+    // Get initial status
     getCoffeeButtonPuchasedStatus().then(purchased => {
       setCoffeePurchased(purchased);
     });
 
-    const onCoffeePurchased = () => {
+    const onCoffeePurchased = (purchased: boolean | string) => {
       setBuyCoffeeVisible(false);
       setAwaitingInAppPurchase(false);
-      getCoffeeButtonPuchasedStatus().then(purchased => {
-        setCoffeePurchased(purchased);
+
+      // Only show thank you dialog if we were awaiting a purchase
+      if (awaitingInAppPurchase && (purchased === true || purchased === 'true')) {
+        setTimeout(() => {
+          setThankYouVisible(true);
+        }, 500);
+      }
+
+      getCoffeeButtonPuchasedStatus().then(status => {
+        setCoffeePurchased(status);
       });
     };
 
@@ -97,7 +107,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     return () => {
       event.off(EVENT_NAMES.COFFEE_PURCHASED, onCoffeePurchased);
     };
-  }, []);
+  }, [awaitingInAppPurchase]); // Add awaitingInAppPurchase to dependencies
 
   const openMenu = () => setMenuVisible(true);
 
@@ -197,7 +207,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
             </Button>
           </Dialog.Actions>
         </Dialog>
-        
+
         <SupportDialog
           visible={buyCoffeeVisible}
           onDismiss={() => setBuyCoffeeVisible(false)}
