@@ -1,5 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
+  AppState,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -16,8 +17,30 @@ import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
   NavigationContainer,
+  NavigationState,
 } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
+import { getAvailablePurchases, getProducts, initConnection, useIAP, withIAPContext } from 'react-native-iap';
+import { useQuery, useRealm } from '@realm/react';
+import * as Sentry from '@sentry/react-native';
+import merge from 'deepmerge';
+
+// Local imports
+import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
+import { event, EVENT_NAMES } from '@/features/events';
+import { Pet } from '@/app/models/Pet';
+import { PET_REQUIRES_MIGRATION, getPetData } from '@/app/store/helper';
+import { RootStackParamList } from '@/features/navigation/types.tsx';
+import defaultColors from '@/app/themes/lightTheme.json';
+import darkColors from '@/app/themes/darkTheme.json';
+import CustomNavigationBar from '@/features/navigation/components/CustomNavigationBar.tsx';
+import usePet from '@/features/pets/hooks/usePet';
+import useNotifications from '@/features/notifications/hooks/useNotifications';
+import { useAppearance } from './themes/hooks/useAppearance';
+
+// Screen imports
 import WelcomeScreen from './screens/WelcomeScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -29,30 +52,19 @@ import EditPet from './screens/EditPet';
 import DebugScreen from './screens/DebugScreen';
 import AboutScreen from './screens/AboutScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
-import {RootStackParamList} from '@/features/navigation/types.tsx';
-import defaultColors from '@/app/themes/lightTheme.json';
-import darkColors from '@/app/themes/darkTheme.json';
-import merge from 'deepmerge';
-import CustomNavigationBar from '@/features/navigation/components/CustomNavigationBar.tsx';
-import {useTranslation} from 'react-i18next';
-import {useIAP, withIAPContext} from 'react-native-iap';
-import {STORAGE_KEYS} from '@/app/store/storageKeys.ts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {event, EVENT_NAMES} from '@/features/events';
-import type {NavigationState} from '@react-navigation/routers';
-import {Pet} from '@/app/models/Pet';
-import {useQuery, useRealm} from '@realm/react';
-import {PET_REQUIRES_MIGRATION, getPetData} from '@/app/store/helper';
-import usePet from '@/features/pets/hooks/usePet';
-import useNotifications from '@/features/notifications/hooks/useNotifications';
-import * as Sentry from '@sentry/react-native';
-import { useAppearance } from './themes/hooks/useAppearance';
 
-Sentry.init({
-  dsn: 'https://1dfcc8aa48a1de11a650379ba7e1cc79@o4507259307032576.ingest.de.sentry.io/4507259313913936',
-});
+// Constants
+const VALID_PRODUCT_IDS = [
+  'eu.sboo.ralph.coffee',
+  'eu.sboo.ralph.sandwich',
+  'eu.sboo.ralph.lunch',
+  'eu.sboo.ralph.croissant',
+];
 
+// Initialize Stack Navigator
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// Initialize StatusBar
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('rgba(0,0,0,0)');
@@ -60,7 +72,9 @@ if (Platform.OS === 'android') {
 }
 
 const App: React.FC = () => {
-  const {t} = useTranslation();
+  // Hooks
+  const { t } = useTranslation();
+  const realm = useRealm();
   const {
     purchaseHistory,
     currentPurchase,
@@ -68,73 +82,93 @@ const App: React.FC = () => {
     finishTransaction,
     getPurchaseHistory,
   } = useIAP();
-
-  const realm = useRealm();
   const {
     getInitialNotification,
     onForegroundNotification,
     getPetIdFromNotificationId,
   } = useNotifications();
-  const systemColorScheme = useColorScheme();
-  const {activePet, getHeaderColor, enableNotifcationDot} = usePet();
+  const { activePet, getHeaderColor, enableNotifcationDot } = usePet();
+  const { effectiveAppearance } = useAppearance();
 
-  const {LightTheme, DarkTheme} = adaptNavigationTheme({
+  // State
+  const [handledInitialNotificationId, setHandledInitialNotificationId] =
+    useState<string | undefined>();
+
+  // Theme setup
+  const { LightTheme, DarkTheme } = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
   });
 
   const CustomLightTheme = {
     ...MD3LightTheme,
-    colors: defaultColors, // Copy it from the color codes scheme and then use it here
+    colors: defaultColors,
   };
 
   const CustomDarkTheme = {
     ...MD3DarkTheme,
-    colors: darkColors, // Copy it from the color codes scheme and then use it here
+    colors: darkColors,
   };
 
   const CombinedDefaultTheme = merge(LightTheme, CustomLightTheme);
   const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
-
-  const { effectiveAppearance } = useAppearance();
   const theme = effectiveAppearance === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
 
+  // Database queries
+  const petsToFix = useQuery({
+    type: Pet,
+    query: collection => collection.filtered('name = $0', PET_REQUIRES_MIGRATION),
+  });
 
-
-  const petsToFix = useQuery(
-    Pet,
-    collection => {
-      return collection.filtered('name = $0', PET_REQUIRES_MIGRATION);
-    },
-    [],
-  );
-
-  const isFreshInstall = useCallback(async () => {
-    const freshInstall = await AsyncStorage.getItem(STORAGE_KEYS.FRESH_INSTALL);
-    return freshInstall !== 'false';
-  }, []);
-
-  const restorePurchases = useCallback(async () => {
-    let purchased = false;
+  // Callback functions
+  const checkPurchases = useCallback(async () => {
     try {
-      await getPurchaseHistory();
-      purchased =
-        purchaseHistory.findIndex(p => p.productId === 'eu.sboo.ralph.coffee') >
-        -1;
+      // First ensure IAP connection is initialized
+      const isConnected = await initConnection();
+      console.log('IAP connection status:', isConnected);
+
+      // Get products first to ensure store connection
+      const products = await getProducts({ skus: VALID_PRODUCT_IDS });
+      console.log('Available products:', products);
+
+      // Get all active purchases
+      const purchases = await getAvailablePurchases();
+      console.log('Available purchases:', purchases);
+
+      const validPurchases = purchases.filter(purchase =>
+        VALID_PRODUCT_IDS.includes(purchase.productId)
+      );
+
+      const hasActivePurchase = validPurchases.length > 0;
       await AsyncStorage.setItem(
         STORAGE_KEYS.COFFEE_PURCHASED,
-        purchased ? 'true' : 'false',
+        String(hasActivePurchase)
       );
-    } catch (error) {
-      console.log(error);
-    } finally {
-      await AsyncStorage.setItem(STORAGE_KEYS.FRESH_INSTALL, 'false');
-      event.emit(EVENT_NAMES.COFFEE_PURCHASED, purchased);
+
+      event.emit(EVENT_NAMES.COFFEE_PURCHASED, hasActivePurchase);
+    } catch (error: any) {
+      // Handle specific error cases
+      if (error.code === 'E_NOT_PREPARED') {
+        console.log('IAP not prepared, retrying connection...');
+        try {
+          await initConnection();
+          await checkPurchases(); // Retry after initialization
+        } catch (retryError) {
+          console.log('Retry failed:', retryError);
+        }
+      } else if (error.code === 'E_USER_CANCELLED') {
+        console.log('User cancelled the purchase check');
+      } else {
+        console.log('Error checking purchases:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+        });
+      }
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
   const fixPetData = useCallback(async () => {
-    // Fix pet data for existing installs
     if (realm.schemaVersion > 0 && petsToFix.length > 0) {
       const petData = await getPetData();
       petsToFix.forEach((pet, idx) => {
@@ -154,33 +188,53 @@ const App: React.FC = () => {
     }
   }, [petsToFix, realm]);
 
-  // Check if fresh install and restore purchases
-  useEffect(() => {
-    const initApp = async () => {
-      console.log('initApp');
-      const isFresh = await isFreshInstall();
-      console.log('isFresh', isFresh);
-      if (isFresh) {
-        restorePurchases();
-      }
-      fixPetData();
-    };
-    initApp();
-  }, [isFreshInstall, restorePurchases, fixPetData]);
+  const onNavigationStateChange = useCallback(
+    (state: NavigationState | undefined) => {
+      if (!state) return;
 
-  const [handledInitialNotificationId, setHandledInitialNotificationId] =
-    useState<string | undefined>();
-  // Handle notifications
+      const activeRoute = state.routes[state.index];
+      const isHomeOrWelcome = ['Home', 'Welcome'].includes(activeRoute.name);
+      StatusBar.setBarStyle(isHomeOrWelcome ? 'light-content' : 'dark-content');
+    },
+    [],
+  );
+
+  // Effects
+  // Separate initial check effect
+  useEffect(() => {
+    console.log('Running initial purchase check');
+    checkPurchases();
+  }, []); // Empty dependency array since this should only run once
+
+  // Separate AppState subscription effect
+  // useEffect(() => {
+  //   let lastAppState = AppState.currentState;
+
+  //   const subscription = AppState.addEventListener('change', nextAppState => {
+  //     // Only check purchases when coming from background to active
+  //     if (
+  //       lastAppState.match(/inactive|background/) && 
+  //       nextAppState === 'active'
+  //     ) {
+  //       console.log('App came to foreground, checking purchases');
+  //       checkPurchases();
+  //     }
+  //     lastAppState = nextAppState;
+  //   });
+
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, [checkPurchases]);
+
+  useEffect(() => {
+    fixPetData();
+  }, [fixPetData]);
+
   useEffect(() => {
     const consumeInitialNotification = async () => {
       const initialNotification = await getInitialNotification();
-      if (
-        initialNotification?.notification.id !== handledInitialNotificationId
-      ) {
-        console.log(
-          'initialNotification',
-          initialNotification?.notification.id,
-        );
+      if (initialNotification?.notification.id !== handledInitialNotificationId) {
         if (initialNotification?.notification.id) {
           const petId = getPetIdFromNotificationId(
             initialNotification.notification.id,
@@ -203,7 +257,6 @@ const App: React.FC = () => {
     handledInitialNotificationId,
   ]);
 
-  // Log purchase error
   useEffect(() => {
     if (currentPurchaseError) {
       console.warn('currentPurchaseError', currentPurchaseError);
@@ -211,41 +264,18 @@ const App: React.FC = () => {
     }
   }, [currentPurchaseError]);
 
-  // Handle purchase
   useEffect(() => {
-    const setCoffeePurchased = async () => {
-      await AsyncStorage.setItem(STORAGE_KEYS.COFFEE_PURCHASED, 'true');
-      event.emit(EVENT_NAMES.COFFEE_PURCHASED, 'true');
-    };
-
     const receipt = currentPurchase?.transactionReceipt;
     if (receipt) {
-      setCoffeePurchased().then(() => {
-        finishTransaction({purchase: currentPurchase, isConsumable: false});
-      });
+      AsyncStorage.setItem(STORAGE_KEYS.COFFEE_PURCHASED, 'true')
+        .then(() => {
+          event.emit(EVENT_NAMES.COFFEE_PURCHASED, 'true');
+          return finishTransaction({ purchase: currentPurchase, isConsumable: false });
+        });
     }
   }, [currentPurchase, finishTransaction]);
 
-  // Change status bar color based on route
-  const onNavigationStateChange = useCallback(
-    (state: NavigationState | undefined) => {
-      if (!state) {
-        return;
-      }
-      const activeRoute = state.routes[state.index];
-      switch (activeRoute.name) {
-        case 'Home':
-        case 'Welcome':
-          StatusBar.setBarStyle('light-content');
-          break;
-        default:
-          StatusBar.setBarStyle('dark-content');
-          break;
-      }
-    },
-    [],
-  );
-
+  // Render
   return (
     <KeyboardAvoidingView
       style={styles.keyboardViewContainer}
@@ -255,7 +285,6 @@ const App: React.FC = () => {
           <Stack.Navigator
             initialRouteName="Home"
             screenOptions={{
-              // eslint-disable-next-line react/no-unstable-nested-components
               header: props => <CustomNavigationBar {...props} />,
             }}>
             <Stack.Screen
@@ -263,25 +292,25 @@ const App: React.FC = () => {
               component={HomeScreen}
               options={{
                 title: '',
-                headerStyle: {backgroundColor: getHeaderColor(theme)},
+                headerStyle: { backgroundColor: getHeaderColor(theme) },
               }}
             />
             <Stack.Screen
               name="Welcome"
               component={WelcomeScreen}
-              options={{headerShown: false}}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Onboarding"
               component={OnboardingScreen}
-              options={{headerShown: false}}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Settings"
               component={SettingsScreen}
               options={{
                 title: t('settings'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -289,7 +318,7 @@ const App: React.FC = () => {
               component={EditPet}
               options={{
                 title: t('edit_pet'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -297,7 +326,7 @@ const App: React.FC = () => {
               component={AddPet}
               options={{
                 title: t('add_pet'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -307,7 +336,7 @@ const App: React.FC = () => {
                 title: t('measurements:title', {
                   petName: activePet?.name,
                 }),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -317,7 +346,7 @@ const App: React.FC = () => {
                 title: t('measurements:title', {
                   petName: activePet?.name,
                 }),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen
@@ -325,7 +354,7 @@ const App: React.FC = () => {
               component={AllAssessmentsScreen}
               options={{
                 title: t('measurements:allAssessments'),
-                headerStyle: {backgroundColor: theme.colors.primaryContainer},
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
             <Stack.Screen name="AboutScreen" component={AboutScreen} />
