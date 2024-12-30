@@ -28,6 +28,8 @@ const CustomDot: React.FC<CustomDotProps> = ({
     switch (type) {
       case 'filler':
         return 'white';
+      case 'empty':
+        return theme.colors.error;
       case 'average':
       default:
         return theme.colors.onSecondaryContainer;
