@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Avatar, Button, IconButton, Text, useTheme } from 'react-native-paper';
 import { WelcomeScreenNavigationProps } from '@/features/navigation/types.tsx';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +46,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
 
   const isLastIndex = useMemo(() => currentIndex === data.length - 1, [currentIndex]);
   const isFirstIndex = useMemo(() => currentIndex === 0, [currentIndex]);
+  const topMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
 
   return (
     <SafeAreaView
@@ -53,7 +54,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         backgroundColor: theme.colors.primary,
         ...styles.container,
       }}>
-      <Text variant="headlineLarge" style={{ ...styles.title, color: theme.colors.onPrimary }}>{title}</Text>
+      <Text variant="headlineLarge" style={{ ...styles.title, color: theme.colors.onPrimary, marginTop: topMargin }}>{title}</Text>
       <SwiperFlatList
         ref={swiper}
         style={styles.swiper}
@@ -87,7 +88,6 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
   },
   gradient: {
     flex: 1,
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
   title: {
     height: 100,
     fontWeight: 'bold',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+
   },
   swiper: {
     position: 'relative',

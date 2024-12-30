@@ -50,7 +50,6 @@ import EditAssessment from './screens/EditAssessment';
 import AddPet from './screens/AddPet';
 import EditPet from './screens/EditPet';
 import DebugScreen from './screens/DebugScreen';
-import AboutScreen from './screens/AboutScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
 
 // Constants
@@ -357,7 +356,6 @@ const App: React.FC = () => {
                 headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
-            <Stack.Screen name="AboutScreen" component={AboutScreen} />
             <Stack.Screen name="DebugScreen" component={DebugScreen} />
           </Stack.Navigator>
         </NavigationContainer>

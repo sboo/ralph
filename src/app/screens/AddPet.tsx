@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    paddingHorizontal: 20,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
   },

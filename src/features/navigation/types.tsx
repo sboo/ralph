@@ -10,7 +10,6 @@ export type RootStackParamList = {
   AddAssessment: {timestamp: number};
   EditAssessment: {assessmentId: string};
   AllAssessments: undefined;
-  AboutScreen: undefined;
   DebugScreen: undefined;
 };
 

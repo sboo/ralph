@@ -17,6 +17,7 @@ import ImageView from 'react-native-image-viewing';
 import RatingButtons from '@/support/components/RatingButtons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '@/app/store/storageKeys';
+import { OptionText } from '@/support/helpers/TooltipHelper';
 
 interface Props {
   petName: string;
@@ -144,14 +145,14 @@ const AssessmentItem: React.FC<Props> = ({
         optionTexts={t(`${petSpecies}:assessments:hurtOptions`, {
           returnObjects: true,
           petName,
-        })}
+        }) as OptionText[]}
       />) : (<RatingSlider
         onRatingChange={value => setHurt(value)}
         initialRating={hurt}
         optionTexts={t(`${petSpecies}:assessments:hurtOptions`, {
           returnObjects: true,
           petName,
-        })}
+        }) as OptionText[]}
       />)}
 
       <Text style={styles.label}>{t(`${petSpecies}:assessments:hunger`)}</Text>
@@ -163,18 +164,18 @@ const AssessmentItem: React.FC<Props> = ({
           onRatingChange={value => setHunger(value)}
           initialRating={hunger}
           optionTexts={t(`${petSpecies}:assessments:hungerOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       ) : (
         <RatingSlider
           onRatingChange={value => setHunger(value)}
           initialRating={hunger}
           optionTexts={t(`${petSpecies}:assessments:hungerOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       )}
       <Text style={styles.label}>
@@ -188,18 +189,18 @@ const AssessmentItem: React.FC<Props> = ({
           onRatingChange={value => setHydration(value)}
           initialRating={hydration}
           optionTexts={t(`${petSpecies}:assessments:hydrationOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       ) : (
         <RatingSlider
           onRatingChange={value => setHydration(value)}
           initialRating={hydration}
           optionTexts={t(`${petSpecies}:assessments:hydrationOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       )}
       <Text style={styles.label}>{t(`${petSpecies}:assessments:hygiene`)}</Text>
@@ -211,18 +212,18 @@ const AssessmentItem: React.FC<Props> = ({
           onRatingChange={value => setHygiene(value)}
           initialRating={hygiene}
           optionTexts={t(`${petSpecies}:assessments:hygieneOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       ) : (
         <RatingSlider
           onRatingChange={value => setHygiene(value)}
           initialRating={hygiene}
           optionTexts={t(`${petSpecies}:assessments:hygieneOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       )}
       <Text style={styles.label}>
@@ -236,18 +237,18 @@ const AssessmentItem: React.FC<Props> = ({
           onRatingChange={value => setHappiness(value)}
           initialRating={happiness}
           optionTexts={t(`${petSpecies}:assessments:happinessOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       ) : (
         <RatingSlider
           onRatingChange={value => setHappiness(value)}
           initialRating={happiness}
           optionTexts={t(`${petSpecies}:assessments:happinessOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       )}
       <Text style={styles.label}>
@@ -261,18 +262,18 @@ const AssessmentItem: React.FC<Props> = ({
           onRatingChange={value => setMobility(value)}
           initialRating={mobility}
           optionTexts={t(`${petSpecies}:assessments:mobilityOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       ) : (
         <RatingSlider
           onRatingChange={value => setMobility(value)}
           initialRating={mobility}
           optionTexts={t(`${petSpecies}:assessments:mobilityOptions`, {
-        returnObjects: true,
-        petName,
-          })}
+            returnObjects: true,
+            petName,
+          }) as OptionText[]}
         />
       )}
       <Divider style={styles.divider} />
@@ -333,7 +334,9 @@ const AssessmentItem: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    padding: 20,
+  },
   date: {
     marginBottom: 20,
   },

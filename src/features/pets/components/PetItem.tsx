@@ -67,6 +67,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
   const { pets } = usePet();
 
   const petComplete = useMemo(() => petType && petName, [petType, petName]);
+    const welcomeTextTopMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -245,7 +246,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
         showsVerticalScrollIndicator={true}
       >
         {isWelcomeScreen ? (
-          <Text variant="titleLarge" style={styles.welcomeText}>
+          <Text variant="titleLarge" style={{...styles.welcomeText, marginTop: welcomeTextTopMargin}}>
             {t('welcome_text')}
           </Text>
         ) : null}
@@ -423,10 +424,11 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
   },
   welcomeText: {
     marginBottom: 20,
+    marginTop: 40,
   },
   scrollView: {
     flex: 1,
