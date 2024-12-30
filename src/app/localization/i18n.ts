@@ -1,6 +1,6 @@
 
 import i18next from 'i18next';
-import RNLanguageDetector from '@os-team/i18next-react-native-language-detector';
+import RNLanguageDetector from './LanguageDetector';
 import en from './en';
 import es from './es';
 import de from './de';
@@ -46,7 +46,7 @@ const resources = {
 const defaultNS = 'common';
 
 i18next.use(RNLanguageDetector).use(initReactI18next).init({
-  compatibilityJSON: 'v3',
+  compatibilityJSON: 'v4',
   debug: true,
   fallbackLng: 'en',
   defaultNS,
