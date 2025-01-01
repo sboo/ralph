@@ -14,5 +14,14 @@
     "assessmentFrequencyLabelInfo": "Choose how often you want to assess your pet's quality of life.",
     "daily": "Daily",
     "weekly": "Weekly",
-    "appearance": "Appearance"
+    "appearance": "Appearance",
+    "on": "On",
+    "off": "Off",
+    "assessments": "Assessments",
+    "assessmentsDescription": "The app will assess your pet's quality of life by answering a few questions.",
+    "notifications": "Reminders",
+    "notificationsDescription": "The app can remind you to assess your pet's quality of life.",
+    "tracking": "Tracking",
+    "trackingDescription": "The app will track your pet's quality of life over time.",
+    "paused": "Paused"
 }

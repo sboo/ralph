@@ -29,7 +29,7 @@ const AddPet: React.FC<AddPetScreenNavigationProps> = ({navigation}) => {
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <PetItem onSubmit={onSubmit} />
+        <PetItem onSubmit={onSubmit} navigation={navigation} />
       </LinearGradient>
     </SafeAreaView>
   );

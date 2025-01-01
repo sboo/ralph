@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  AppState,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
   StyleSheet,
-  useColorScheme,
 } from 'react-native';
 import {
   adaptNavigationTheme,
@@ -24,7 +22,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { getAvailablePurchases, getProducts, initConnection, useIAP, withIAPContext } from 'react-native-iap';
 import { useQuery, useRealm } from '@realm/react';
-import * as Sentry from '@sentry/react-native';
 import merge from 'deepmerge';
 
 // Local imports
@@ -49,6 +46,8 @@ import AddAssessment from './screens/AddAssessment';
 import EditAssessment from './screens/EditAssessment';
 import AddPet from './screens/AddPet';
 import EditPet from './screens/EditPet';
+import AssessmentSettings from './screens/AssessmentSettings';
+import NotificationSettings from './screens/NotificationSettings';
 import DebugScreen from './screens/DebugScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
 
@@ -325,6 +324,22 @@ const App: React.FC = () => {
               component={AddPet}
               options={{
                 title: t('add_pet'),
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
+              }}
+            />
+            <Stack.Screen
+              name="AssessmentSettings"
+              component={AssessmentSettings}
+              options={{
+                title: t('settings:assessments'),
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
+              }}
+            />
+            <Stack.Screen
+              name="NotificationSettings"
+              component={NotificationSettings}
+              options={{
+                title: t('settings:notifications'),
                 headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />

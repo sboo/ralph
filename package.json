@@ -31,6 +31,7 @@
     "react-native-country-flag": "^2.0.2",
     "react-native-date-picker": "^5.0.4",
     "react-native-device-info": "^14.0.0",
+    "react-native-device-time-format": "^2.4.0",
     "react-native-get-random-values": "^1.10.0",
     "react-native-html-to-pdf": "^0.12.0",
     "react-native-iap": "^12.13.0",

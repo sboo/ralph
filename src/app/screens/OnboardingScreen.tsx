@@ -37,7 +37,7 @@ const OnboardingScreen: React.FC<OnboardingScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
        
-        <PetItem onSubmit={onSubmit} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
+        <PetItem onSubmit={onSubmit} navigation={navigation} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
       </LinearGradient>
     </SafeAreaView>
   );
