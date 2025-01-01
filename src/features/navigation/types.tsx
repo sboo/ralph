@@ -7,10 +7,11 @@ export type RootStackParamList = {
   Home: undefined;
   AddPet: undefined;
   EditPet: undefined;
+  AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean};
+  NotificationSettings: {notificationsEnabled: boolean; notificationTime: string};
   AddAssessment: {timestamp: number};
   EditAssessment: {assessmentId: string};
   AllAssessments: undefined;
-  AboutScreen: undefined;
   DebugScreen: undefined;
 };
 
@@ -43,6 +44,15 @@ export type EditPetScreenNavigationProps = NativeStackScreenProps<
   'EditPet'
 >;
 
+export type AssessmentSettingsScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'AssessmentSettings'
+>;
+
+export type NotificationSettingsScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'NotificationSettings'
+>;
 export type AddAssessmentScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'AddAssessment'

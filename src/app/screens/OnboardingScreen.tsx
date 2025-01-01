@@ -37,7 +37,7 @@ const OnboardingScreen: React.FC<OnboardingScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
        
-        <PetItem onSubmit={onSubmit} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
+        <PetItem onSubmit={onSubmit} navigation={navigation} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
       </LinearGradient>
     </SafeAreaView>
   );
@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 60,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
   },

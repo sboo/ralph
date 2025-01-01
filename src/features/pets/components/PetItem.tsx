@@ -11,9 +11,8 @@ import {
   Button,
   Dialog,
   IconButton,
+  List,
   Portal,
-  SegmentedButtons,
-  Switch,
   Text,
   TextInput,
   useTheme,
@@ -28,7 +27,6 @@ import notifee, {
 import Avatar from '@/features/avatar/components/Avatar';
 import i18next from 'i18next';
 import moment from 'moment';
-import DatePicker from 'react-native-date-picker';
 import {
   dateObjectToTimeString,
   getValidReminderTimestamp,
@@ -39,15 +37,19 @@ import usePet, { PetData } from '../hooks/usePet';
 import { BSON } from 'realm';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { AssessmentFrequency } from '@/app/models/Pet';
+import { event, EVENT_NAMES } from '@/features/events';
+import { is24HourFormat } from 'react-native-device-time-format'
+
 
 interface Props {
   pet?: Pet;
   buttonLabel?: string;
   onSubmit: (data: PetData) => void;
   isWelcomeScreen?: boolean;
+  navigation: any;
 }
 
-const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen = false }) => {
+const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isWelcomeScreen = false }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { getNotificationId } = useNotifications();
@@ -59,14 +61,65 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
     (pet && pet?.pausedAt !== null) ?? false,
   );
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
-  const [timePickerOpen, setTimePickerOpen] = useState(false);
   const [reminderTime, setReminderTime] = useState(
     timeToDateObject(pet?.notificationsTime ?? '20:00'),
   );
+  const [hour12, setHour12] = useState<boolean>(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
   const { pets } = usePet();
 
   const petComplete = useMemo(() => petType && petName, [petType, petName]);
+  const welcomeTextTopMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
+
+   useEffect(() => {
+    const getTimeFormat = async () => {
+      return await is24HourFormat();
+    }
+    getTimeFormat().then((value) => {
+      setHour12(!value);
+    });
+
+  },[]);
+
+  useEffect(() => {
+    const handleAssessmentFrequency = (assessmentFrequency: AssessmentFrequency) => {
+      setAssessmentFrequency(assessmentFrequency)
+    }
+    event.on(EVENT_NAMES.ASSESSMENT_FREQUENCY_CHANGED, handleAssessmentFrequency);
+    return () => {
+      event.off(EVENT_NAMES.ASSESSMENT_FREQUENCY_CHANGED, handleAssessmentFrequency);
+    }
+  }, [setAssessmentFrequency]);
+
+  useEffect(() => {
+    const handleAssemmentPaused = (paused: boolean) => {
+      setAssessmentsPaused(paused)
+    }
+    event.on(EVENT_NAMES.ASSESSMENT_PAUSED, handleAssemmentPaused);
+    return () => {
+      event.off(EVENT_NAMES.ASSESSMENT_PAUSED, handleAssemmentPaused);
+    }
+  }, [setAssessmentsPaused]);
+
+  useEffect(() => {
+    const handleRemindersToggled = (remindersEnabled: boolean) => {
+      setRemindersEnabled(remindersEnabled)
+    }
+    event.on(EVENT_NAMES.REMINDERS_TOGGLED, handleRemindersToggled);
+    return () => {
+      event.off(EVENT_NAMES.REMINDERS_TOGGLED, handleRemindersToggled);
+    }
+  }, [setRemindersEnabled]);
+
+  useEffect(() => {
+    const handleReminderTime = (reminderTime: Date) => {
+      setReminderTime(reminderTime)
+    }
+    event.on(EVENT_NAMES.REMINDER_TIME_CHANGED, handleReminderTime);
+    return () => {
+      event.off(EVENT_NAMES.REMINDER_TIME_CHANGED, handleReminderTime);
+    }
+  }, [setReminderTime]);
 
   // Load reminders enabled from storage
   useEffect(() => {
@@ -166,7 +219,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
     } else {
       await notifee.openNotificationSettings();
     }
-  };  
+  };
 
   const createTriggerNotification = async (petId: BSON.ObjectId) => {
     const channelGroupId = await notifee.createChannelGroup({
@@ -212,10 +265,6 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
     );
   };
 
-  const toggleReminderSwitch = async () => {
-    setRemindersEnabled(!remindersEnabled);
-  };
-
   const cancelReminders = async (petId: BSON.ObjectId) => {
     await notifee.cancelAllNotifications([
       'eu.sboo.ralph.reminder',
@@ -233,10 +282,6 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
     return enabled;
   };
 
-  const toggleAssessmentsPaused = () => {
-    setAssessmentsPaused(!assessmentsPaused);
-  };
-
   return (
     <View style={styles.container}>
       <ScrollView
@@ -245,7 +290,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
         showsVerticalScrollIndicator={true}
       >
         {isWelcomeScreen ? (
-          <Text variant="titleLarge" style={styles.welcomeText}>
+          <Text variant="titleLarge" style={{ ...styles.welcomeText, marginTop: welcomeTextTopMargin }}>
             {t('welcome_text')}
           </Text>
         ) : null}
@@ -294,89 +339,45 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
             <Avatar mode={'edit'} pet={pet} onAvatarSelected={setAvatar} />
           </View>
 
-          <View style={styles.inputRow}>
-            <Text style={styles.inputLabel} variant="labelLarge">
-              {t('settings:enableNotificationsLabel')}
-            </Text>
-            <Switch
-              disabled={assessmentsPaused}
-              value={remindersEnabled}
-              onValueChange={toggleReminderSwitch}
+          {/* Navigation Links */}
+          <List.Section>
+            <List.Item
+              title={t('settings:assessments')}
+              left={props => <List.Icon {...props} icon="clipboard-check-outline" />}
+              right={props => <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text variant='bodySmall'>{
+                  assessmentsPaused ? t('settings:paused') :
+                    assessmentFrequency == 'DAILY' ? t('settings:daily') : t('settings:weekly')
+                }</Text>
+                <List.Icon {...props} icon="chevron-right" />
+              </View>
+              }
+              onPress={() => navigation.navigate('AssessmentSettings', {
+                assessmentFrequency,
+                assessmentsPaused,
+                isExistingPet: pet ? true : false
+              })}
             />
-          </View>
-          {remindersEnabled ? (
-            <View style={styles.inputRow}>
-              <Text variant="labelLarge">{t('settings:reminderTimeLabel')}</Text>
-              <Button
-                mode={'outlined'}
-                onPress={() => setTimePickerOpen(true)}
-                disabled={assessmentsPaused}>
-                {reminderTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
-              </Button>
-              <DatePicker
-                modal
-                mode={'time'}
-                minuteInterval={15}
-                open={timePickerOpen}
-                date={reminderTime}
-                onConfirm={date => {
-                  setTimePickerOpen(false);
-                  setReminderTime(date);
-                }}
-                onCancel={() => {
-                  setTimePickerOpen(false);
-                }}
-              />
-            </View>
-          ) : null}
-
-          {pet ? (
-            <View style={styles.inputRow}>
-              <View style={styles.inputLabel}>
-                <Text variant="labelLarge">
-                  {t('settings:pauseAssessmentsLabel')}
-                </Text>
-                <Text style={{ color: theme.colors.outline }} variant="bodySmall">
-                  {t('settings:pauseAssessmentsLabelInfo')}
-                </Text>
+            <List.Item
+              title={t('settings:notifications')}
+              left={props => <List.Icon {...props} icon="bell" />}
+              right={props => <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text variant='bodySmall'>{!remindersEnabled ? t('settings:off') : reminderTime.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: hour12
+                })}</Text>
+                <List.Icon {...props} icon="chevron-right" />
               </View>
-              <Switch
-                value={assessmentsPaused}
-                onValueChange={toggleAssessmentsPaused}
-              />
-            </View>
-          ) : null}
-          <View style={styles.inputRow}>
-            <View>
-              <Text variant="labelLarge">
-                {t('settings:assessmentFrequency')}
-              </Text>
-              <Text style={{ color: theme.colors.outline }} variant="bodySmall">
-                {t('settings:assessmentFrequencyLabelInfo')}
-              </Text>
+              }
+              onPress={() => navigation.navigate('NotificationSettings', {
+                notificationsEnabled: remindersEnabled,
+                notificationTime: dateObjectToTimeString(reminderTime)
+              })}
+            />
+            
 
-              <View style={styles.inputSegmentedButtons}>
-                <SegmentedButtons
-                  value={assessmentFrequency}
-                  onValueChange={(value) => setAssessmentFrequency(value as AssessmentFrequency)}
-                  density='medium'
-                  theme={{ colors: { secondaryContainer: theme.colors.primary, onSecondaryContainer: theme.colors.onPrimary } }}
-                  buttons={[
-                    {
-                      label: t('settings:daily'),
-                      value: 'DAILY',
-                      labelStyle: { fontSize: 11 },
-                    },
-                    {
-                      label: t('settings:weekly'),
-                      value: 'WEEKLY',
-                      labelStyle: { fontSize: 11 },
-                    },
-                  ]}
-                />
-              </View>
-            </View>
-          </View>
+          </List.Section>
         </View>
       </ScrollView>
       <View style={styles.buttons}>
@@ -420,6 +421,11 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, isWelcomeScreen
   );
 };
 
+
+
+// Notification Settings Screen
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -427,6 +433,7 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     marginBottom: 20,
+    marginTop: 40,
   },
   scrollView: {
     flex: 1,
@@ -442,26 +449,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
+    paddingHorizontal: 20,
   },
   inputRowPet: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-  },
-  inputFlags: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+
   },
   inputLabel: {
     flexShrink: 1,
     marginRight: 10,
   },
-  inputSegmentedButtons: {
-    marginTop: 20
-  },
   textInput: {
-    width: '100%',
+    marginHorizontal: 20,
   },
   buttons: {
     flexDirection: 'row',

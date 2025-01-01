@@ -28,6 +28,8 @@ const CustomDot: React.FC<CustomDotProps> = ({
     switch (type) {
       case 'filler':
         return 'white';
+      case 'empty':
+        return theme.colors.error;
       case 'average':
       default:
         return theme.colors.onSecondaryContainer;
@@ -44,7 +46,7 @@ const CustomDot: React.FC<CustomDotProps> = ({
   const shouldPulsate = !paused && (value === null || dotType === 'empty');
 
   const renderPulsatingDot = () => (
-    <G onPress={onPress} pointerEvents="none">
+    <G onPressIn={onPress}>
       <PulsatingCircle
         key={index}
         color={theme.colors.error}
@@ -57,7 +59,7 @@ const CustomDot: React.FC<CustomDotProps> = ({
   );
 
   const renderStaticDot = () => (
-    <G onPress={onPress}>
+    <G onPressIn={onPress}>
       {/* White border circle */}
       <Circle
         key={`${index}-border`}

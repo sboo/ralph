@@ -1,5 +1,6 @@
-import React, {useEffect, useRef} from 'react';
-import {Animated, StyleSheet} from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import Svg, { Circle } from 'react-native-svg';
+import { Animated, Easing } from 'react-native';
 
 interface PulsatingCircleProps {
   color?: string;
@@ -9,56 +10,69 @@ interface PulsatingCircleProps {
   paused?: boolean;
 }
 
-const PulsatingCircle = ({
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
+const PulsatingCircle: React.FC<PulsatingCircleProps> = ({
   color = 'red',
   size = 10,
   x,
   y,
   paused,
-}: PulsatingCircleProps) => {
-  const pulseAnim = useRef(new Animated.Value(1)).current; // Initial scale
+}) => {
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (!paused) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, {
-            toValue: 2,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-          Animated.timing(pulseAnim, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-        ]),
-      ).start();
-    } else {
-      pulseAnim.setValue(1.5);
+    if (paused) {
+      animatedValue.stopAnimation();
+      return;
     }
-  }, [pulseAnim, paused]);
+
+    const animate = () => {
+      Animated.sequence([
+        // Quick expansion
+        Animated.timing(animatedValue, {
+          toValue: 1,
+          duration: 200,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+     
+        // Return to normal
+        Animated.timing(animatedValue, {
+          toValue: 0,
+          duration: 600,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        // Add a pause between beats
+        setTimeout(animate, 500);
+      });
+    };
+
+    animate();
+
+    return () => {
+      animatedValue.stopAnimation();
+    };
+  }, [paused, animatedValue]);
+
+  const radius = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [size / 2, size],
+  });
+
+
 
   return (
-    <Animated.View
-      style={{
-        top: y - size / 2,
-        left: x - size / 2,
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-        backgroundColor: color,
-        transform: [{scale: pulseAnim}],
-        ...styles.container,
-      }}
+    <AnimatedCircle
+      cx={x}
+      cy={y}
+      r={radius}
+      fill={color}
+      
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-  },
-});
 
 export default PulsatingCircle;

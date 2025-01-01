@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js b/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js
+index 1ac4227..7b8db57 100644
+--- a/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js
++++ b/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js
+@@ -94,7 +94,7 @@ var LineChart = /** @class */ (function (_super) {
+                     };
+                     output.push(<Circle key={Math.random()} cx={cx} cy={cy} fill={typeof getDotColor === "function"
+                         ? getDotColor(x, i)
+-                        : _this.getColor(dataset, 0.9)} onPress={onPress} {..._this.getPropsForDots(x, i)}/>, <Circle key={Math.random()} cx={cx} cy={cy} r="14" fill="#fff" fillOpacity={0} onPress={onPress}/>, renderDotContent({ x: cx, y: cy, index: i, indexData: x }));
++                        : _this.getColor(dataset, 0.9)} onPressIn={onPress} {..._this.getPropsForDots(x, i)}/>, <Circle key={Math.random()} cx={cx} cy={cy} r="14" fill="#fff" fillOpacity={0} onPressIn={onPress}/>, renderDotContent({ x: cx, y: cy, index: i, indexData: x }));
+                 });
+             });
+             return output;

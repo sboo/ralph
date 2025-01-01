@@ -39,7 +39,7 @@ const EditPet: React.FC<EditPetScreenNavigationProps> = ({navigation}) => {
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <PetItem pet={activePet} onSubmit={onSubmit} />
+        <PetItem pet={activePet} onSubmit={onSubmit} navigation={navigation} />
       </LinearGradient>
     </SafeAreaView>
   );
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    paddingHorizontal: 20,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
   },
