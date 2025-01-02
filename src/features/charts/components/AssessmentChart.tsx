@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   chartContainer: {
     flexDirection: 'row',
     borderRadius: 16,
-    paddingHorizontal: 15,
+    paddingLeft: 15,
   },
   chartScrollView: {
     marginLeft: 50,
