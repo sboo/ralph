@@ -14,5 +14,11 @@
     "assessmentFrequencyLabelInfo": "Elige cada cuánto quieres evaluar la calidad de vida de tu mascota.",
     "daily": "Diario",
     "weekly": "Semanal",
-    "appearance": "Apariencia"
+    "appearance": "Apariencia",
+    "off": "Apagado",
+    "assessments": "Evaluaciones",
+    "assessmentsDescription": "La app te ayuda a evaluar la calidad de vida de tu mascota respondiendo unas preguntas.",
+    "notifications": "Recordatorios",
+    "notificationsDescription": "La app puede recordarte evaluar la calidad de vida de tu mascota.",
+    "paused": "Suspendido"
 }

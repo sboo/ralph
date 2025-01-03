@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, Divider, Text, SegmentedButtons } from 'react-native-paper';
+import { Button, Divider, Text } from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
 import { Measurement } from '@/app/models/Measurement.ts';
 import NotesModal from './NotesModal';
@@ -24,6 +24,7 @@ interface Props {
   petSpecies: string;
   date: Date;
   assessment?: Measurement | null;
+  scrollToNotes?: boolean;
   onCancel: () => void;
   onSubmit: (
     hurt: number,
@@ -44,8 +45,10 @@ const AssessmentItem: React.FC<Props> = ({
   onSubmit,
   onCancel,
   assessment: measurement,
+  scrollToNotes
 }) => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(true);
   const [useRatingButtons, setUseRatingButtons] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
@@ -76,7 +79,7 @@ const AssessmentItem: React.FC<Props> = ({
       const useRatingButtons = await AsyncStorage.getItem(STORAGE_KEYS.USE_RATING_BUTTONS);
       setUseRatingButtons(useRatingButtons === 'true');
     }
-    getUseRatingButtons();
+    getUseRatingButtons().then(() => setLoading(false));
   }, []);
 
   const scrollViewRef = useRef<ScrollView>();
@@ -123,6 +126,21 @@ const AssessmentItem: React.FC<Props> = ({
   const openImageViewer = (index: number) => {
     setClickedImage(index);
     setImageViewerVisible(true);
+  }
+
+  useEffect(() => {
+    if(!loading && scrollToNotes) {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }
+  }, [loading, scrollToNotes]);
+
+  if(loading) {
+    return null;
+    // (
+    //   <View style={styles.loadingContainer}>
+    //     <ActivityIndicator size="large" />
+    //   </View>
+    // );
   }
 
   return (
@@ -278,8 +296,11 @@ const AssessmentItem: React.FC<Props> = ({
       )}
       <Divider style={styles.divider} />
       <View style={styles.notesHolder}>
+      <Text style={styles.label}>
+        {t('measurements:notes')}
+      </Text>
         {!notes ? null : (
-          <Text style={styles.notesText} variant={'bodySmall'}>
+          <Text style={styles.notesText} variant={'bodyMedium'}>
             {notes}
           </Text>
         )}
@@ -300,7 +321,7 @@ const AssessmentItem: React.FC<Props> = ({
           icon={!notes ? 'note-plus' : 'note-edit'}
           mode={'contained-tonal'}
           style={styles.notesButton}>
-          {t('measurements:notes')}
+          {!notes ? t('measurements:add_note') : t('measurements:edit_note')}
         </Button>
       </View>
       <ImageView
@@ -334,6 +355,12 @@ const AssessmentItem: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 400,
+  },
   container: {
     padding: 20,
   },
@@ -375,7 +402,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   notesText: {
-    paddingHorizontal: 20,
+    marginBottom: 10,
   },
   notesButton: {
     alignSelf: 'center',
@@ -384,7 +411,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     gap: 10,
-    paddingHorizontal: 20,
     marginVertical: 10,
   },
   image: {

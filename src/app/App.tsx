@@ -48,6 +48,7 @@ import AddPet from './screens/AddPet';
 import EditPet from './screens/EditPet';
 import AssessmentSettings from './screens/AssessmentSettings';
 import NotificationSettings from './screens/NotificationSettings';
+import AllNotesScreen from './screens/AllNotesScreen';
 import DebugScreen from './screens/DebugScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
 
@@ -360,6 +361,14 @@ const App: React.FC = () => {
                 title: t('measurements:title', {
                   petName: activePet?.name,
                 }),
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
+              }}
+            />
+            <Stack.Screen
+              name="AllNotes"
+              component={AllNotesScreen}
+              options={{
+                title: t('measurements:notes'),
                 headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />

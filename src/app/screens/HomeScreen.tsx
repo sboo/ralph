@@ -165,6 +165,13 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
             onPress={toggleViewMode}
             variant={viewMode === 'calendar' ? 'secondary' : 'surface'}
           />
+          <FAB
+            style={styles.fab}
+            icon={'note-outline'}
+            mode={'flat'}
+            onPress={() => navigation.navigate('AllNotes')}
+            variant={'surface'}
+          />
         </View>
         {debug ? (
           <FAB.Group

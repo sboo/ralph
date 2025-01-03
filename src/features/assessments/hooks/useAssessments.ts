@@ -7,6 +7,7 @@ import * as RNFS from '@dr.pogodin/react-native-fs';
 import {useMemo} from 'react';
 import {Platform} from 'react-native';
 import { getImageFilename, getImagePath } from '@/support/helpers/ImageHelper';
+import { t, use } from 'i18next';
 
 export interface AssessmentData {
   date: Date;
@@ -29,6 +30,16 @@ const useAssessments = (pet?: Pet) => {
       return null;
     }
     return _assessments.filtered('petId = $0', pet._id).sorted('createdAt');
+  }, [_assessments, pet]);
+
+  const assessmentsWithNotes = useMemo(() => {
+    if (!pet) {
+      return null;
+    }
+    return _assessments
+    .filtered('petId = $0', pet._id)
+    .filtered('notes != null')
+    .sorted('createdAt', true);
   }, [_assessments, pet]);
 
   const lastAssessments = useMemo(() => {
@@ -135,7 +146,7 @@ const useAssessments = (pet?: Pet) => {
     return images.map(image => getImageFilename(image));
   };
 
-  return {assessments, lastAssessments, addAssessment, editAssessment};
+  return {assessments, lastAssessments, assessmentsWithNotes, addAssessment, editAssessment};
 };
 
 export default useAssessments;

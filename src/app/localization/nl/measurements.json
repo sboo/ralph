@@ -11,5 +11,7 @@
   "notes": "Notities",
   "notesInfo": "Voeg notities toe over de dag van {{petName}}",
   "showing_last_3_weeks_of_data": "Beoordelingen van de laatste 3 weken",
-  "no_assessments_in_last_3_weeks": "Geen beoordelingen in de laatste 3 weken"
+  "no_assessments_in_last_3_weeks": "Geen beoordelingen in de laatste 3 weken",
+  "add_note": "Notitie toevoegen",
+  "edit_note": "Notitie bewerken"
 }

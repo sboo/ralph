@@ -56,19 +56,21 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
             <List.Item
               disabled={_assessmentsPaused}
               title={t('settings:daily')}
+              style={styles.listItemRadio}
               titleStyle={{color: _assessmentsPaused ? theme.colors.onSurfaceDisabled: ''}}
               onPress={() => handleAssessmentFrequency('DAILY')}
-              right={() => _assessmentFrequency === 'DAILY' && (
-                <List.Icon icon="check" color={_assessmentsPaused ? theme.colors.onSurfaceDisabled: ''} />
+              right={() => (
+                <List.Icon icon="check" color={_assessmentsPaused ? theme.colors.onSurfaceDisabled : (_assessmentFrequency === 'DAILY'? '' : 'transparent')} />
               )}
             />
             <List.Item
               disabled={_assessmentsPaused}
               title={t('settings:weekly')}
+              style={styles.listItemRadio}
               titleStyle={{color: _assessmentsPaused ? theme.colors.onSurfaceDisabled: ''}}
               onPress={() => handleAssessmentFrequency('WEEKLY')}
-              right={() => _assessmentFrequency === 'WEEKLY' && (
-                <List.Icon icon="check" color={_assessmentsPaused ? theme.colors.onSurfaceDisabled: ''} />
+              right={() => (
+                <List.Icon icon="check" color={_assessmentsPaused ? theme.colors.onSurfaceDisabled : (_assessmentFrequency === 'WEEKLY'? '' : 'transparent')} />
               )}
             />
           </List.Section>
@@ -116,6 +118,9 @@ const styles = StyleSheet.create({
   },
   cardText: {
     textAlign: 'center',
+  },
+  listItemRadio: {
+    // height: 60,
   }
 });
 

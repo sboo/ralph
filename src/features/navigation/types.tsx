@@ -10,7 +10,8 @@ export type RootStackParamList = {
   AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean};
   NotificationSettings: {notificationsEnabled: boolean; notificationTime: string};
   AddAssessment: {timestamp: number};
-  EditAssessment: {assessmentId: string};
+  EditAssessment: {assessmentId: string, scrollToNotes?: boolean};
+  AllNotes: undefined;
   AllAssessments: undefined;
   DebugScreen: undefined;
 };
@@ -61,6 +62,11 @@ export type AddAssessmentScreenNavigationProps = NativeStackScreenProps<
 export type EditAssessmentScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'EditAssessment'
+>;
+
+export type AllNotesNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'AllNotes'
 >;
 
 export type AllAssessmentsScreenNavigationProps = NativeStackScreenProps<

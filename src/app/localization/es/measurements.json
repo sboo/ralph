@@ -11,5 +11,7 @@
   "notes": "Notas",
   "notesInfo": "Añada notas sobre el día de {{petName}}",
   "showing_last_3_weeks_of_data": "Evaluaciones de las últimas 3 semanas",
-  "no_assessments_in_last_3_weeks": "Sin evaluaciones en las últimas 3 semanas"
+  "no_assessments_in_last_3_weeks": "Sin evaluaciones en las últimas 3 semanas",
+  "add_note": "Añadir Nota",
+  "edit_note": "Editar Nota"
 }
