@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   tip: {
     marginTop: 45,
     borderRadius: 15,
-    marginBottom: 100,
   },
   swiper: {
     // justifyContent: 'center',

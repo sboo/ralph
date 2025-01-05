@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Dimensions,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -22,15 +22,20 @@ import useAssessments from '@/features/assessments/hooks/useAssessments';
 import { EVENT_NAMES, event } from '@/features/events';
 import { DateData } from 'react-native-calendars';
 import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
+import AllNotes from '@/features/assessments/components/AllNotes';
+import { BlurView } from '@react-native-community/blur';
+import DeviceInfo from 'react-native-device-info';
+import { useAppearance } from '../themes/hooks/useAppearance';
 
 const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const [averageScore, setAverageScore] = useState(60);
   const theme = useTheme();
+  const { effectiveAppearance } = useAppearance();
   const { activePet } = usePet();
   const { generateAndSharePDF } = useAssessmentExporter();
   const { assessments, lastAssessments } = useAssessments(activePet);
-  const [viewMode, setViewMode] = useState<'chart' | 'calendar'>('chart');
+  const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>('chart');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
@@ -100,9 +105,12 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
     addOrEditAssessment(new Date(dateData.dateString));
   };
 
-  const toggleViewMode = () => {
-    setViewMode(viewMode === 'chart' ? 'calendar' : 'chart');
-  };
+  const onNotePress = (assessmentId: string) => {
+    navigation.navigate('EditAssessment', {
+      assessmentId,
+      scrollToNotes: true,
+    });
+  }
 
   const shareAssessments = useCallback(async () => {
     setGeneratingPDF(true);
@@ -110,8 +118,63 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
     setGeneratingPDF(false);
   }, [generateAndSharePDF]);
 
-  const width = Dimensions.get('window').width - 40;
-  const height = (width / 16) * 7;
+  const renderContent = () => {
+    switch (viewMode) {
+      case 'calendar':
+        return (
+          <AssessmentsCalendar onCalendarDayPress={onCalendarDayPress} />
+        );
+      case 'notes':
+        return (
+          <>
+            <AllNotes onNotePress={onNotePress} />
+          </>
+        );
+      case 'chart':
+        return (
+          <>
+            <AssessmentChart onDataPointClick={addOrEditAssessment} />
+            {activePet && assessments && assessments.length > 0 ? (
+              averageScore < 30 ? (
+                <TalkToVetTip />
+              ) : (
+                <Tips
+                  assessment={lastAssessment!}
+                  activePet={activePet}
+                  numberOfTips={4}
+                />
+              )
+            ) : (
+              <GetStartedTip />
+            )}
+          </>
+        )
+    }
+  }
+
+  const hasNotch = DeviceInfo.hasNotch();
+  
+  const renderFooterBackground = () => {
+    if (Platform.OS === 'ios') {
+      return (
+        <BlurView
+          style={hasNotch ? styles.footerBlurBackgroundNotch : styles.footerBlurBackground}  
+          blurType={effectiveAppearance === 'dark' ? 'dark' : 'light'} 
+        ></BlurView>
+      )
+    } else {
+      return (
+        <LinearGradient
+          colors={[
+            'transparent',
+            theme.colors.primaryContainer,
+          ]}
+          locations={[0, 0.75]}
+          style={styles.footerGradientBackground}
+        />
+      )
+    }
+  }
 
   return (
     <SafeAreaView
@@ -120,57 +183,45 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
         ...styles.container,
       }}>
       <LinearGradient
-        colors={[
+        colors={viewMode == 'notes' ? [
+          theme.colors.primaryContainer,
+          theme.colors.primaryContainer,
+          theme.colors.primaryContainer
+        ] : [
           theme.colors.primaryContainer,
           theme.colors.background,
           theme.colors.primaryContainer,
         ]}
-        locations={[0, 0.75, 1]}
+        locations={[0, 0.35, 1]}
         style={styles.gradient}>
         <HomeHeader />
         <ScrollView style={styles.bodyContainer}>
-          {viewMode === 'calendar' ? (
-            <AssessmentsCalendar onCalendarDayPress={onCalendarDayPress} />
-          ) : (
-            <>
-              <AssessmentChart onDataPointClick={addOrEditAssessment} />
-              {activePet && assessments && assessments.length > 0 ? (
-                averageScore < 30 ? (
-                  <TalkToVetTip />
-                ) : (
-                  <Tips
-                    assessment={lastAssessment!}
-                    activePet={activePet}
-                    numberOfTips={4}
-                  />
-                )
-              ) : (
-                <GetStartedTip />
-              )}
-            </>
-          )}
+          <View style={styles.bodyContentHolder}>
+            {renderContent()}
+          </View>
         </ScrollView>
+        {renderFooterBackground()}
         <View style={styles.fabHolder}>
           <FAB
             style={styles.fab}
             icon={'chart-bell-curve-cumulative'}
             mode={'flat'}
-            onPress={toggleViewMode}
+            onPress={() => setViewMode('chart')}
             variant={viewMode === 'chart' ? 'secondary' : 'surface'}
           />
           <FAB
             style={styles.fab}
             icon={'calendar-month-outline'}
             mode={'flat'}
-            onPress={toggleViewMode}
+            onPress={() => setViewMode('calendar')}
             variant={viewMode === 'calendar' ? 'secondary' : 'surface'}
           />
           <FAB
             style={styles.fab}
             icon={'note-outline'}
             mode={'flat'}
-            onPress={() => navigation.navigate('AllNotes')}
-            variant={'surface'}
+            onPress={() => setViewMode('notes')}
+            variant={viewMode === 'notes' ? 'secondary' : 'surface'}
           />
         </View>
         {debug ? (
@@ -202,13 +253,15 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
               mode={'flat'}
               loading={generatingPDF}
               onPress={shareAssessments}
+              variant='surface'
             />
           )
         )}
       </LinearGradient>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -220,54 +273,52 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flex: 1,
     padding: 20,
+    paddingBottom: 100,
   },
-  chartTitle: {
-    fontSize: 18,
-    marginVertical: 15,
-    paddingHorizontal: 20,
+  bodyContentHolder: {
+    paddingBottom: 100
   },
-  chartContainer: {
-    flexDirection: 'row',
-    borderRadius: 16,
-    paddingHorizontal: 15,
-  },
-  chartScrollView: {
-    marginLeft: 50,
-    paddingBottom: 10,
-  },
-  chart: {
-    paddingRight: 10,
-  },
-  chartLabels: {
-    justifyContent: 'space-around',
-    height: 195,
-    left: 15,
+  footerBlurBackgroundNotch: {
     position: 'absolute',
+    left: 15, 
+    right: 15, 
+    bottom: 5, 
+    height: 75, 
+    borderRadius: 20,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  footerBlurBackground: {
+    position: 'absolute',
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    height: 80, 
+    width: '100%',
   },
-  introduction: {
-    marginTop: 45,
-    borderRadius: 15,
-    marginBottom: 100,
+  footerGradientBackground: {
+    position: 'absolute',
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    height: 80, 
+    width: '100%',
   },
   fabHolder: {
     position: 'absolute',
-    margin: 16,
+    marginLeft: 25,
+    marginBottom: 15,
     left: 0,
     bottom: 0,
     display: 'flex',
     flexDirection: 'row',
+    gap: 10
   },
   fab: {
-    margin: 8,
+    
   },
   shareFab: {
     position: 'absolute',
-    margin: 16,
+    marginRight: 25,
+    marginBottom: 15,
     right: 0,
     bottom: 0,
   },

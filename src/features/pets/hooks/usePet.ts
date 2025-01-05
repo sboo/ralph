@@ -3,7 +3,7 @@ import {useQuery, useRealm} from '@realm/react';
 import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
 import {MD3Theme, useTheme} from 'react-native-paper';
-import { AssessmentFrequency } from '@/features/assessments/enums';
+import { AssessmentFrequency } from '@/app/models/Pet';
 
 export interface PetData {
   id?: BSON.ObjectId;
