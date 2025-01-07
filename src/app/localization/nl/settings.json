@@ -14,5 +14,11 @@
     "assessmentFrequencyLabelInfo": "Kies hoe vaak je de levenskwaliteit van je huisdier wilt beoordelen.",
     "daily": "Dagelijks",
     "weekly": "Wekelijks",
-    "appearance": "Weergave"
+    "appearance": "Weergave",
+    "off": "Uit",
+    "assessments": "Beoordelingen",
+    "assessmentsDescription": "De app helpt je om de levenskwaliteit van je huisdier te beoordelen door een paar vragen te beantwoorden.",
+    "notifications": "Herinneringen",
+    "notificationsDescription": "De app kan je eraan herinneren om de levenskwaliteit van je huisdier te checken.",
+    "paused": "Gepauzeerd"
 }

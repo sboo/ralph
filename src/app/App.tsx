@@ -48,6 +48,7 @@ import AddPet from './screens/AddPet';
 import EditPet from './screens/EditPet';
 import AssessmentSettings from './screens/AssessmentSettings';
 import NotificationSettings from './screens/NotificationSettings';
+import AllNotesScreen from './screens/AllNotesScreen';
 import DebugScreen from './screens/DebugScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
 
@@ -123,15 +124,12 @@ const App: React.FC = () => {
     try {
       // First ensure IAP connection is initialized
       const isConnected = await initConnection();
-      console.log('IAP connection status:', isConnected);
 
       // Get products first to ensure store connection
       const products = await getProducts({ skus: VALID_PRODUCT_IDS });
-      console.log('Available products:', products);
 
       // Get all active purchases
       const purchases = await getAvailablePurchases();
-      console.log('Available purchases:', purchases);
 
       const validPurchases = purchases.filter(purchase =>
         VALID_PRODUCT_IDS.includes(purchase.productId)
@@ -200,30 +198,8 @@ const App: React.FC = () => {
   // Effects
   // Separate initial check effect
   useEffect(() => {
-    console.log('Running initial purchase check');
     checkPurchases();
-  }, []); // Empty dependency array since this should only run once
-
-  // Separate AppState subscription effect
-  // useEffect(() => {
-  //   let lastAppState = AppState.currentState;
-
-  //   const subscription = AppState.addEventListener('change', nextAppState => {
-  //     // Only check purchases when coming from background to active
-  //     if (
-  //       lastAppState.match(/inactive|background/) && 
-  //       nextAppState === 'active'
-  //     ) {
-  //       console.log('App came to foreground, checking purchases');
-  //       checkPurchases();
-  //     }
-  //     lastAppState = nextAppState;
-  //   });
-
-  //   return () => {
-  //     subscription.remove();
-  //   };
-  // }, [checkPurchases]);
+  }, []);
 
   useEffect(() => {
     fixPetData();
@@ -360,6 +336,14 @@ const App: React.FC = () => {
                 title: t('measurements:title', {
                   petName: activePet?.name,
                 }),
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
+              }}
+            />
+            <Stack.Screen
+              name="AllNotes"
+              component={AllNotesScreen}
+              options={{
+                title: t('measurements:notes'),
                 headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />

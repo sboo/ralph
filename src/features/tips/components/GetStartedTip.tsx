@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   introduction: {
     marginTop: 45,
     borderRadius: 15,
-    marginBottom: 100,
   },
 });
 

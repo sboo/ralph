@@ -1,6 +1,7 @@
-import { Portal, Dialog, Text, List } from "react-native-paper";
+import { Portal, Dialog, Text, List, Button } from "react-native-paper";
 import { WeeklyDialogProps } from "../types";
 import { StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
 
 const WeeklyAssessmentDialog: React.FC<WeeklyDialogProps> = ({
     visible,
@@ -8,6 +9,9 @@ const WeeklyAssessmentDialog: React.FC<WeeklyDialogProps> = ({
     dates,
     onDateSelect,
 }) => {
+
+    const { t } = useTranslation();
+
     return (
         <Portal>
             <Dialog visible={visible} onDismiss={onDismiss}>
@@ -33,6 +37,9 @@ const WeeklyAssessmentDialog: React.FC<WeeklyDialogProps> = ({
 
                     ))}
                 </Dialog.Content>
+                <Dialog.Actions>
+                <Button onPress={onDismiss}>{t('buttons:cancel')}</Button>
+                </Dialog.Actions>
             </Dialog>
         </Portal>
     );

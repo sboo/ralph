@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js b/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js
-index 1ac4227..7b8db57 100644
+index 1ac4227..11bf9ab 100644
 --- a/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js
 +++ b/node_modules/react-native-chart-kit/dist/line-chart/LineChart.js
 @@ -94,7 +94,7 @@ var LineChart = /** @class */ (function (_super) {
@@ -11,3 +11,16 @@ index 1ac4227..7b8db57 100644
                  });
              });
              return output;
+@@ -290,9 +290,10 @@ var LineChart = /** @class */ (function (_super) {
+             return output;
+         };
+         _this.getXMaxValues = function (data) {
+-            return data.reduce(function (acc, cur) {
++            const xmax = data.reduce((acc, cur) => {
+                 return cur.data.length > acc ? cur.data.length : acc;
+-            }, 0);
++              }, 0);
++              return Math.max(1, xmax - 0.5);
+         };
+         _this.getBezierLinePoints = function (dataset, _a) {
+             var width = _a.width, height = _a.height, paddingRight = _a.paddingRight, paddingTop = _a.paddingTop, data = _a.data;

@@ -15,6 +15,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
   navigation,
 }) => {
   const _id = BSON.ObjectId.createFromHexString(route.params.assessmentId);
+  const scrollToNotes = route.params.scrollToNotes;
   const assessment = useObject(Measurement, _id);
   const theme = useTheme();
   const {activePet} = usePet();
@@ -72,6 +73,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
           assessment={assessment}
           onCancel={() => navigation.goBack()}
           onSubmit={handleSubmit}
+          scrollToNotes={scrollToNotes}
         />
       </LinearGradient>
     </SafeAreaView>

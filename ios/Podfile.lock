@@ -1265,6 +1265,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-blur (4.4.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-date-picker (5.0.8):
     - DoubleConversion
     - glog
@@ -1648,6 +1669,8 @@ PODS:
     - Yoga
   - RNDeviceInfo (14.0.2):
     - React-Core
+  - RNDeviceTimeFormat (2.0.0):
+    - React-Core
   - RNIap (12.16.0):
     - RCT-Folly
     - RCTRequired
@@ -1974,6 +1997,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
+  - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-html-to-pdf (from `../node_modules/react-native-html-to-pdf`)
@@ -2008,6 +2032,7 @@ DEPENDENCIES:
   - RealmJS (from `../node_modules/realm`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNDeviceTimeFormat (from `../node_modules/react-native-device-time-format`)
   - RNIap (from `../node_modules/react-native-iap`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -2102,6 +2127,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
+  react-native-blur:
+    :path: "../node_modules/@react-native-community/blur"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
   react-native-get-random-values:
@@ -2170,6 +2197,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNDeviceTimeFormat:
+    :path: "../node_modules/react-native-device-time-format"
   RNIap:
     :path: "../node_modules/react-native-iap"
   RNImageCropPicker:
@@ -2231,6 +2260,7 @@ SPEC CHECKSUMS:
   React-logger: 697873f06b8ba436e3cddf28018ab4741e8071b6
   React-Mapbuffer: c174e11bdea12dce07df8669d6c0dc97eb0c7706
   React-microtasksnativemodule: 8a80099ad7391f4e13a48b12796d96680f120dc6
+  react-native-blur: 28b0a731ed804bed3e88757c2414305896e6b47e
   react-native-date-picker: 543274fea228bdf7427a917d19b71f8f6eca7a72
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-html-to-pdf: 4c5c6e26819fe202971061594058877aa9b25265
@@ -2265,6 +2295,7 @@ SPEC CHECKSUMS:
   RealmJS: 054540707292206eadf069f110e79defb632a1b3
   RNCAsyncStorage: fe98f1b459a87b80f12207da80c50b3a3abb6081
   RNDeviceInfo: 3f2e5fcca3637f75c6d30ba287293c2f97206781
+  RNDeviceTimeFormat: a66bbc4c86e0e683c006b90095687c7bb351c983
   RNIap: 2c3c65e445757dde21e566faa13984786d23fab1
   RNImageCropPicker: 8e39c01f205e00d739c31e682f068aac315587bf
   RNLocalize: c28a383fb73b1480d1117c3ca4402113e1772366

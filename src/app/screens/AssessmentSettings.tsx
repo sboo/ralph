@@ -10,7 +10,7 @@ import { event, EVENT_NAMES } from '@/features/events';
 const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({ route }) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { assessmentFrequency, assessmentsPaused, isExistingPet } = route.params;
+  const { assessmentFrequency, assessmentsPaused } = route.params;
   const [_assessmentFrequency, _setAssessmentFrequency] = useState(assessmentFrequency);
   const [_assessmentsPaused, _setAssessmentsPaused] = useState(assessmentsPaused);
 
@@ -40,12 +40,12 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
         style={styles.gradient}>
         <ScrollView style={styles.scrollView}>
 
-          <Card mode="contained" style={{backgroundColor: theme.colors.surface, ...styles.card}}>
+          <Card mode="contained" style={{ backgroundColor: theme.colors.surface, ...styles.card }}>
             <Card.Content style={styles.cardContent}>
-              <Avatar.Icon  icon="clipboard-check-outline" size={50} style={{ backgroundColor: theme.colors.tertiary}} />
+              <Avatar.Icon icon="clipboard-check-outline" size={50} style={{ backgroundColor: theme.colors.tertiary }} />
               <Text variant='headlineMedium'>{t('settings:assessments')}</Text>
               <Text style={styles.cardText}>{t('settings:assessmentsDescription')}</Text>
-              </Card.Content>
+            </Card.Content>
           </Card>
 
           <List.Section>
@@ -56,36 +56,37 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
             <List.Item
               disabled={_assessmentsPaused}
               title={t('settings:daily')}
-              titleStyle={{color: _assessmentsPaused ? theme.colors.onSurfaceDisabled: ''}}
+              style={styles.listItemRadio}
+              titleStyle={{ color: _assessmentsPaused ? theme.colors.onSurfaceDisabled : '' }}
               onPress={() => handleAssessmentFrequency('DAILY')}
-              right={() => _assessmentFrequency === 'DAILY' && (
-                <List.Icon icon="check" color={_assessmentsPaused ? theme.colors.onSurfaceDisabled: ''} />
+              right={() => (
+                <List.Icon icon="check" color={_assessmentFrequency === 'DAILY' ? (_assessmentsPaused ? theme.colors.onSurfaceDisabled : '') : 'transparent'} />
               )}
             />
             <List.Item
               disabled={_assessmentsPaused}
               title={t('settings:weekly')}
-              titleStyle={{color: _assessmentsPaused ? theme.colors.onSurfaceDisabled: ''}}
+              style={styles.listItemRadio}
+              titleStyle={{ color: _assessmentsPaused ? theme.colors.onSurfaceDisabled : '' }}
               onPress={() => handleAssessmentFrequency('WEEKLY')}
-              right={() => _assessmentFrequency === 'WEEKLY' && (
-                <List.Icon icon="check" color={_assessmentsPaused ? theme.colors.onSurfaceDisabled: ''} />
+              right={() => (
+                <List.Icon icon="check" color={_assessmentFrequency === 'WEEKLY' ? (_assessmentsPaused ? theme.colors.onSurfaceDisabled : '') : 'transparent'} />
               )}
             />
           </List.Section>
-          {isExistingPet ? (
-            <List.Section>
-              <List.Item
-                title={t('settings:pauseAssessmentsLabel')}
-                description={t('settings:pauseAssessmentsLabelInfo')}
-                right={() => (
-                  <Switch
-                    value={_assessmentsPaused}
-                    onValueChange={handleAssemmentPaused}
-                  />
-                )}
-              />
-            </List.Section>
-          ) : null}
+          <List.Section>
+            <List.Item
+              title={t('settings:pauseAssessmentsLabel')}
+              description={t('settings:pauseAssessmentsLabelInfo')}
+              descriptionNumberOfLines={3}
+              right={() => (
+                <Switch
+                  value={_assessmentsPaused}
+                  onValueChange={handleAssemmentPaused}
+                />
+              )}
+            />
+          </List.Section>
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>
@@ -108,14 +109,17 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: 20,
   },
-  cardContent:{
-    flexDirection: 'column', 
-    gap: 10, 
+  cardContent: {
+    flexDirection: 'column',
+    gap: 10,
     alignItems: 'center',
     margin: 20,
   },
   cardText: {
     textAlign: 'center',
+  },
+  listItemRadio: {
+    // height: 60,
   }
 });
 

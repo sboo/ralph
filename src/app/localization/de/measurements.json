@@ -11,5 +11,8 @@
   "notes": "Notizen",
   "notesInfo": "Füge Notizen über den Tag von {{petName}} hinzu",
   "showing_last_3_weeks_of_data": "Bewertungen der letzten 3 Wochen",
-  "no_assessments_in_last_3_weeks": "Keine Bewertungen in den letzten 3 Wochen"
+  "no_assessments_in_last_3_weeks": "Keine Bewertungen in den letzten 3 Wochen",
+  "add_note": "Notiz hinzufügen",
+  "edit_note": "Notiz bearbeiten",
+  "no_notes": "Du kannst Notizen zu deinen Bewertungen hinzufügen. Hier findest du sie alle in einer Liste."
 }

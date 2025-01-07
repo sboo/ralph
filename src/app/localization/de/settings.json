@@ -14,5 +14,11 @@
     "assessmentFrequencyLabelInfo": "Wähl aus, wie oft du die Lebensqualität deines Haustiers bewerten möchtest.",
     "daily": "Täglich",
     "weekly": "Wöchentlich",
-    "appearance": "Erscheinungsbild"
+    "appearance": "Erscheinungsbild",
+    "off": "Aus",
+    "assessments": "Bewertungen",
+    "assessmentsDescription": "Die App hilft dir, die Lebensqualität deines Haustiers einzuschätzen, indem du ein paar Fragen beantwortest.",
+    "notifications": "Erinnerungen",
+    "notificationsDescription": "Die App kann dich daran erinnern, die Lebensqualität deines Haustiers zu überprüfen.",
+    "paused": "Pausiert"
 }
