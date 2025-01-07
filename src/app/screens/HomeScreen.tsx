@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Animated,
+  LayoutChangeEvent,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -39,6 +41,10 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+  const [scrollViewHeight, setScrollViewHeight] = useState(0);
+  const [fadeAnim] = useState(new Animated.Value(0));
+
   const debug = false;
 
   useEffect(() => {
@@ -66,6 +72,14 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
       });
     }
   }, [activePet, navigation]);
+
+  const handleContentSizeChange = (width: number, height: number) => {
+    setContentHeight(height);
+  };
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    setScrollViewHeight(event.nativeEvent.layout.height);
+  };
 
   const lastAssessment =
     assessments && assessments.length > 0
@@ -152,15 +166,44 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
     }
   }
 
+
+  // Create fade in/out animation functions
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const fadeOut = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  useEffect(() => {
+    if (contentHeight < scrollViewHeight - 90) {
+      fadeOut();
+    } else {
+      fadeIn();
+    }
+  }, [contentHeight, scrollViewHeight]);
+
+
   const hasNotch = DeviceInfo.hasNotch();
-  
+
   const renderFooterBackground = () => {
     if (Platform.OS === 'ios') {
       return (
-        <BlurView
-          style={hasNotch ? styles.footerBlurBackgroundNotch : styles.footerBlurBackground}  
-          blurType={effectiveAppearance === 'dark' ? 'dark' : 'light'} 
-        ></BlurView>
+        <Animated.View style={{ opacity: fadeAnim }}>
+          <BlurView
+            style={hasNotch ? styles.footerBlurBackgroundNotch : styles.footerBlurBackground}
+            blurType={effectiveAppearance === 'dark' ? 'dark' : 'light'}
+          ></BlurView>
+        </Animated.View>
       )
     } else {
       return (
@@ -195,7 +238,11 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
         locations={[0, 0.35, 1]}
         style={styles.gradient}>
         <HomeHeader />
-        <ScrollView style={styles.bodyContainer}>
+        <ScrollView
+          style={styles.bodyContainer}
+          onContentSizeChange={handleContentSizeChange}
+          onLayout={handleLayout}
+        >
           <View style={styles.bodyContentHolder}>
             {renderContent()}
           </View>
@@ -280,26 +327,26 @@ const styles = StyleSheet.create({
   },
   footerBlurBackgroundNotch: {
     position: 'absolute',
-    left: 15, 
-    right: 15, 
-    bottom: 5, 
-    height: 75, 
+    left: 15,
+    right: 15,
+    bottom: 5,
+    height: 75,
     borderRadius: 20,
   },
   footerBlurBackground: {
     position: 'absolute',
-    left: 0, 
-    right: 0, 
-    bottom: 0, 
-    height: 80, 
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 80,
     width: '100%',
   },
   footerGradientBackground: {
     position: 'absolute',
-    left: 0, 
-    right: 0, 
-    bottom: 0, 
-    height: 80, 
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 80,
     width: '100%',
   },
   fabHolder: {
@@ -313,7 +360,7 @@ const styles = StyleSheet.create({
     gap: 10
   },
   fab: {
-    
+
   },
   shareFab: {
     position: 'absolute',
