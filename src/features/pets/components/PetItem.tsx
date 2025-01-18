@@ -39,6 +39,7 @@ import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { AssessmentFrequency } from '@/app/models/Pet';
 import { event, EVENT_NAMES } from '@/features/events';
 import { is24HourFormat } from 'react-native-device-time-format'
+import { CustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
 
 
 interface Props {
@@ -60,6 +61,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   const [assessmentsPaused, setAssessmentsPaused] = useState<boolean>(
     (pet && pet?.pausedAt !== null) ?? false,
   );
+  const [customTrackingSettings, setCustomTrackingSettings] = useState<CustomTrackingSettings>({});
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
   const [reminderTime, setReminderTime] = useState(
     timeToDateObject(pet?.notificationsTime ?? '20:00'),
@@ -356,6 +358,20 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
                 assessmentFrequency,
                 assessmentsPaused,
                 isExistingPet: pet ? true : false
+              })}
+            />
+            <List.Item
+              title={t('settings:customTracking')}
+              left={props => <List.Icon {...props} icon="clipboard-plus-outline" />}
+              right={props => <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text variant='bodySmall'>{
+                  customTrackingSettings?.customTrackingEnabled ? t('settings:on') : t('settings:off')
+                }</Text>
+                <List.Icon {...props} icon="chevron-right" />
+              </View>
+              }
+              onPress={() => navigation.navigate('CustomTrackingSettings', {
+                customTrackingSettings
               })}
             />
             <List.Item

@@ -21,5 +21,13 @@
     "assessmentsDescription": "The app helps you to assess your pet's quality of life by answering a few questions.",
     "notifications": "Reminders",
     "notificationsDescription": "The app can remind you to assess your pet's quality of life.",
-    "paused": "Suspended"
+    "paused": "Suspended",
+    "customTracking": "Custom tracking",
+    "customTrackingEnabledLabel": "Custom tracking enabled",
+    "customTrackingDescription": "The app assesses your pet's quality of life based on the following aspects:\n\nPain, eating, drinking, cleanliness, joy and mobility.\n\n If you wish you can track another aspect of your pet's well-being by enabling custom tracking.",
+    "customTrackingNameInfo": "Describe the custom issue you want to track. Give it a name and a short description:",
+    "customTrackingNameInputLabel": "Name",
+    "customTrackingDescriptionInputLabel": "Short description",
+    "customTrackingLabelDescription": "Give each of the 5 levels a name:",
+    "customTrackingLabelInputLabel": "Short name"
 }

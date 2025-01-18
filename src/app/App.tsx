@@ -48,6 +48,7 @@ import AddPet from './screens/AddPet';
 import EditPet from './screens/EditPet';
 import AssessmentSettings from './screens/AssessmentSettings';
 import NotificationSettings from './screens/NotificationSettings';
+import CustomTrackingSettingsScreen from './screens/CustomTrackingSettingsScreen';
 import AllNotesScreen from './screens/AllNotesScreen';
 import DebugScreen from './screens/DebugScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
@@ -316,6 +317,14 @@ const App: React.FC = () => {
               component={NotificationSettings}
               options={{
                 title: t('settings:notifications'),
+                headerStyle: { backgroundColor: theme.colors.primaryContainer },
+              }}
+            />
+            <Stack.Screen
+              name="CustomTrackingSettings"
+              component={CustomTrackingSettingsScreen}
+              options={{
+                title: t('settings:customTracking'),
                 headerStyle: { backgroundColor: theme.colors.primaryContainer },
               }}
             />
