@@ -15,7 +15,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
 
   const theme = useTheme();
   const {activePet} = usePet();
-  const {addAssessment} = useAssessments(activePet);
+  const {addAssessment, customTrackingSettings} = useAssessments(activePet);
 
   if (!activePet) {
     navigation.goBack();
@@ -29,6 +29,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
     hygiene: number,
     happiness: number,
     mobility: number,
+    customValue?: number,
     notes?: string,
     images?: string[],
   ) => {
@@ -40,6 +41,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
       hygiene,
       happiness,
       mobility,
+      customValue,
       notes,
       images,
     });
@@ -64,6 +66,7 @@ const AddAssessment: React.FC<AddAssessmentScreenNavigationProps> = ({
           date={date}
           petName={activePet.name}
           petSpecies={activePet.species}
+          customTracking={customTrackingSettings}
           onCancel={() => navigation.goBack()}
           onSubmit={handleSubmit}
         />

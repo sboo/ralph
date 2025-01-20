@@ -8,6 +8,7 @@ import {useMemo} from 'react';
 import {Platform} from 'react-native';
 import { getImageFilename, getImagePath } from '@/support/helpers/ImageHelper';
 import { t, use } from 'i18next';
+import { emptyCustomTrackingSettings } from '../helpers/customTracking';
 
 export interface AssessmentData {
   date: Date;
@@ -17,6 +18,7 @@ export interface AssessmentData {
   hygiene: number;
   happiness: number;
   mobility: number;
+  customValue?: number,
   notes?: string;
   images?: string[];
 }
@@ -51,8 +53,16 @@ const useAssessments = (pet?: Pet) => {
       .sorted('createdAt', true);
   }, [_assessments, pet]);
 
+  const customTrackingSettings = useMemo(() => {
+    if(pet?.customTrackingSettings) {
+      return JSON.parse(pet.customTrackingSettings);
+    }
+    return emptyCustomTrackingSettings;
+  }, [pet, emptyCustomTrackingSettings]);
+
+
   const calculateScore = (assessmentData: AssessmentData) => {
-    return (
+    const sum =  (
       assessmentData.hurt +
       assessmentData.hunger +
       assessmentData.hydration +
@@ -60,6 +70,10 @@ const useAssessments = (pet?: Pet) => {
       assessmentData.happiness +
       assessmentData.mobility
     );
+    if(assessmentData.customValue !== undefined && assessmentData.customValue !== null) {
+      return Math.round((sum + assessmentData.customValue) / 7 * 6);
+    }
+    return sum;
   };
 
   const addAssessment = async (assessmentData: AssessmentData) => {
@@ -79,6 +93,7 @@ const useAssessments = (pet?: Pet) => {
         hygiene: assessmentData.hygiene,
         happiness: assessmentData.happiness,
         mobility: assessmentData.mobility,
+        customValue: assessmentData.customValue,
         createdAt: assessmentData.date,
         petId: pet._id,
         notes: assessmentData.notes,
@@ -104,6 +119,7 @@ const useAssessments = (pet?: Pet) => {
       assessment.hygiene = assessmentData.hygiene;
       assessment.happiness = assessmentData.happiness;
       assessment.mobility = assessmentData.mobility;
+      assessment.customValue = assessmentData.customValue;
       assessment.notes = assessmentData.notes;
       assessment.images = noteImages as any; //this cast is necessary because Realm.List is not compatible with string[], but Realm will handle it
     });
@@ -146,7 +162,7 @@ const useAssessments = (pet?: Pet) => {
     return images.map(image => getImageFilename(image));
   };
 
-  return {assessments, lastAssessments, assessmentsWithNotes, addAssessment, editAssessment};
+  return {assessments, lastAssessments, assessmentsWithNotes, addAssessment, editAssessment, customTrackingSettings};
 };
 
 export default useAssessments;

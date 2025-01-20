@@ -11,6 +11,7 @@ export class Measurement extends Realm.Object {
   hygiene!: number;
   happiness!: number;
   mobility!: number;
+  customValue?: number;
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   petId: BSON.ObjectId = new BSON.ObjectId();
