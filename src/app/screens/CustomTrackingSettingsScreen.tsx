@@ -21,26 +21,47 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
     const [_customTrackingDescription, _setCustomTrackingDescription] = React.useState(customTrackingDescription);
     const [_customTrackingLabels, _setCustomTrackingLabels] = React.useState({ ...emptyCustomTrackingLabels, ...customTrackingLabels });
 
-    const customTrackingSettings = useMemo(() => {
-        return {
-            customTrackingEnabled: _customTrackingEnabled,
-            customTrackingName: _customTrackingName,
-            customTrackingDescription: _customTrackingDescription,
-            customTrackingLabels: _customTrackingLabels,
-        }
-    }, [_customTrackingEnabled, _customTrackingName, _customTrackingDescription, _customTrackingLabels]);
-
 
     const handleCustomTrackingEnabled = (enabled: boolean) => {
-        event.emit(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, customTrackingSettings);
         _setCustomTrackingEnabled(enabled);
+        event.emit(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, {
+            customTrackingEnabled: enabled,
+            customTrackingName: _customTrackingName,
+            customTrackingDescription: _customTrackingDescription,
+            customTrackingLabels: _customTrackingLabels,  // Use newLabels instead of _customTrackingLabels
+        });
+    }
+
+    const handleCustomTrackingNameChanged = (customTrackingName: string) => {
+        _setCustomTrackingName(customTrackingName);
+        event.emit(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, {
+            customTrackingEnabled: _customTrackingEnabled,
+            customTrackingName: customTrackingName,
+            customTrackingDescription: _customTrackingDescription,
+            customTrackingLabels: _customTrackingLabels,  // Use newLabels instead of _customTrackingLabels
+        });
+    }
+
+    const handleCustomTrackingDescriptionChanged = (customTrackingDescription: string) => {
+        _setCustomTrackingDescription(customTrackingDescription);
+        event.emit(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, {
+            customTrackingEnabled: _customTrackingEnabled,
+            customTrackingName: _customTrackingName,
+            customTrackingDescription: customTrackingDescription,
+            customTrackingLabels: _customTrackingLabels,  // Use newLabels instead of _customTrackingLabels
+        });
     }
 
     
     const handleCustomTrackingLabelChanged = (value: string, name: string) => {
         const newLabels = { ..._customTrackingLabels, [value]: name };
-        event.emit(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, customTrackingSettings);
         _setCustomTrackingLabels(newLabels);
+        event.emit(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, {
+            customTrackingEnabled: _customTrackingEnabled,
+            customTrackingName: _customTrackingName,
+            customTrackingDescription: _customTrackingDescription,
+            customTrackingLabels: newLabels,  // Use newLabels instead of _customTrackingLabels
+        });
     }
 
     return (
@@ -67,10 +88,16 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
                         </Card.Content>
                     </Card>
 
+                    <Text variant='bodyMedium'
+                                    style={{...styles.description, color: theme.colors.error}}
+
+                                >
+                                    {t('settings:customTrackingInfo')}
+                                </Text>
+
                     <List.Section>
                         <List.Item
                             title={t('settings:customTrackingEnabledLabel')}
-                            descriptionNumberOfLines={3}
                             right={() => (
                                 <Switch
                                     value={_customTrackingEnabled}
@@ -94,7 +121,7 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
                                     placeholder={t('settings:customTrackingNameInputLabel')}
                                     style={styles.textInput}
                                     value={_customTrackingName}
-                                    onChangeText={(text: string) => _setCustomTrackingName(text)}
+                                    onChangeText={(text: string) => handleCustomTrackingNameChanged(text)}
                                 />
                                 <TextInput
                                     dense={true}
@@ -102,7 +129,7 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
                                     placeholder={t('settings:customTrackingDescriptionInputLabel')}
                                     style={styles.textInput}
                                     value={_customTrackingDescription}
-                                    onChangeText={(text: string) => _setCustomTrackingDescription(text)}
+                                    onChangeText={(text: string) => handleCustomTrackingDescriptionChanged(text)}
                                 />
                                 <Text variant='bodyLarge' style={styles.description}>
                                     {t('settings:customTrackingLabelDescription')}

@@ -24,10 +24,12 @@
     "paused": "Suspended",
     "customTracking": "Custom tracking",
     "customTrackingEnabledLabel": "Custom tracking enabled",
-    "customTrackingDescription": "The app assesses your pet's quality of life based on the following aspects:\n\nPain, eating, drinking, cleanliness, joy and mobility.\n\n If you wish you can track another aspect of your pet's well-being by enabling custom tracking.",
+    "customTrackingInfo": "Before enabling this option, it is advisable to first assess your pet's quality of life using the default tracking options. This will give you a better understanding of what to track and how it works.",
+    "customTrackingDescriptionShort": "Track a custom aspect of your pet's well-being by enabling custom tracking.",
+    "customTrackingDescription": "The app assesses your pet's quality of life based on the following aspects: Pain, eating, drinking, cleanliness, joy and mobility.\n\n You can track another aspect of your pet's well-being by enabling custom tracking.",
     "customTrackingNameInfo": "Describe the custom issue you want to track. Give it a name and a short description:",
     "customTrackingNameInputLabel": "Name",
     "customTrackingDescriptionInputLabel": "Short description",
-    "customTrackingLabelDescription": "Give each of the 5 levels a name:",
+    "customTrackingLabelDescription": "There are 5 levels of severity. Give each of them a name:",
     "customTrackingLabelInputLabel": "Short name"
 }

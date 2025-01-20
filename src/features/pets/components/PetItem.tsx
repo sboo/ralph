@@ -39,7 +39,7 @@ import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { AssessmentFrequency } from '@/app/models/Pet';
 import { event, EVENT_NAMES } from '@/features/events';
 import { is24HourFormat } from 'react-native-device-time-format'
-import { CustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
+import { CustomTrackingSettings, emptyCustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
 
 
 interface Props {
@@ -61,7 +61,10 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   const [assessmentsPaused, setAssessmentsPaused] = useState<boolean>(
     (pet && pet?.pausedAt !== null) ?? false,
   );
-  const [customTrackingSettings, setCustomTrackingSettings] = useState<CustomTrackingSettings>({});
+  const [customTrackingSettings, setCustomTrackingSettings] = useState<CustomTrackingSettings>({
+    ...emptyCustomTrackingSettings,
+    ...(pet?.customTrackingSettings ? JSON.parse(pet.customTrackingSettings) : {}),
+  });
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
   const [reminderTime, setReminderTime] = useState(
     timeToDateObject(pet?.notificationsTime ?? '20:00'),
@@ -123,6 +126,16 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     }
   }, [setReminderTime]);
 
+  useEffect(() => {
+    const handleCustomTrackingSettings = (customTrackingSettings: CustomTrackingSettings) => {
+      setCustomTrackingSettings(customTrackingSettings)
+    }
+    event.on(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, handleCustomTrackingSettings);
+    return () => {
+      event.off(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, handleCustomTrackingSettings);
+    }
+  }, [setCustomTrackingSettings]);
+
   // Load reminders enabled from storage
   useEffect(() => {
     const checkPermissions = async () => {
@@ -159,6 +172,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
       isPaused: assessmentsPaused,
       avatar: avatar,
       assessmentFrequency: assessmentFrequency,
+      customTrackingSettings: JSON.stringify(customTrackingSettings),
     });
   };
 
@@ -357,23 +371,11 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
               onPress={() => navigation.navigate('AssessmentSettings', {
                 assessmentFrequency,
                 assessmentsPaused,
-                isExistingPet: pet ? true : false
-              })}
-            />
-            <List.Item
-              title={t('settings:customTracking')}
-              left={props => <List.Icon {...props} icon="clipboard-plus-outline" />}
-              right={props => <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text variant='bodySmall'>{
-                  customTrackingSettings?.customTrackingEnabled ? t('settings:on') : t('settings:off')
-                }</Text>
-                <List.Icon {...props} icon="chevron-right" />
-              </View>
-              }
-              onPress={() => navigation.navigate('CustomTrackingSettings', {
+                isExistingPet: pet ? true : false,
                 customTrackingSettings
               })}
             />
+            
             <List.Item
               title={t('settings:notifications')}
               left={props => <List.Icon {...props} icon="bell" />}

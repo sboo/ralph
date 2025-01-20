@@ -16,3 +16,10 @@ export type CustomTrackingSettings = {
     customTrackingDescription: string;
     customTrackingLabels: CustomTrackingLabels;
 };
+
+export const emptyCustomTrackingSettings: CustomTrackingSettings = {
+    customTrackingEnabled: false,
+    customTrackingName: '',
+    customTrackingDescription: '',
+    customTrackingLabels: emptyCustomTrackingLabels,
+};

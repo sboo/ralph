@@ -8,7 +8,7 @@ export type RootStackParamList = {
   Home: undefined;
   AddPet: undefined;
   EditPet: undefined;
-  AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean};
+  AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean, customTrackingSettings: CustomTrackingSettings};
   NotificationSettings: {notificationsEnabled: boolean; notificationTime: string};
   CustomTrackingSettings: {customTrackingSettings: CustomTrackingSettings};
   AddAssessment: {timestamp: number};
