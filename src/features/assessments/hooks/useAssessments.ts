@@ -8,7 +8,7 @@ import {useMemo} from 'react';
 import {Platform} from 'react-native';
 import { getImageFilename, getImagePath } from '@/support/helpers/ImageHelper';
 import { t, use } from 'i18next';
-import { emptyCustomTrackingSettings } from '../helpers/customTracking';
+import { CustomTrackingSettings, emptyCustomTrackingSettings } from '../helpers/customTracking';
 
 export interface AssessmentData {
   date: Date;
@@ -53,7 +53,7 @@ const useAssessments = (pet?: Pet) => {
       .sorted('createdAt', true);
   }, [_assessments, pet]);
 
-  const customTrackingSettings = useMemo(() => {
+  const customTrackingSettings: CustomTrackingSettings = useMemo(() => {
     if(pet?.customTrackingSettings) {
       return JSON.parse(pet.customTrackingSettings);
     }

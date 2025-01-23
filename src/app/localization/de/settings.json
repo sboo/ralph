@@ -23,6 +23,7 @@
     "paused": "Pausiert",
     "customTracking": "Füge deinen eigenen Tracker hinzu",
     "customTrackingEnabledLabel": "Eigener Tracker aktiviert",
+    "customTrackingFallbackLabel": "Eigener Tracker",
     "customTrackingInfo": "Bevor du diese Option aktivierst, ist es ratsam, die Lebensqualität deines Haustiers zunächst mit den Standard-Tracking-Optionen zu bewerten. Dies gibt dir ein besseres Verständnis dafür, was du tracken kannst und wie es funktioniert.",
     "customTrackingDescriptionShort": "Tracke einen eigenen Aspekt des Wohlbefindens deines Haustiers durch Aktivierung des eigenen Trackings.",
     "customTrackingDescription": "Die App bewertet die Lebensqualität deines Haustiers anhand der folgenden Aspekte: Schmerz, Essen, Trinken, Hygiene, Freude und Mobilität.\n\n Du kannst einen weiteren Aspekt des Wohlbefindens deines Haustiers tracken, indem du eigenes Tracking aktivierst.",

@@ -14,7 +14,7 @@ const useAssessmentExporter = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { activePet, getHeaderColor } = usePet();
-  const { assessments } = useAssessments(activePet);
+  const { assessments, customTrackingSettings } = useAssessments(activePet);
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
 
   const getItemColor = (score: number) => {
@@ -377,6 +377,12 @@ const useAssessmentExporter = () => {
               assessment.mobility,
             )}">${t(`${activePet?.species}:assessments:mobility`)}:${assessment.mobility
             }</p>
+            ${assessment.customValue !== undefined && assessment.customValue !== null ?
+              `<p class="item" style="background-color: ${getItemColor(
+                assessment.customValue,
+                )}">${customTrackingSettings.customTrackingName  || t('settings:customTrackingFallbackLabel')}:${assessment.customValue}</p>`
+              : ''
+            }
                     </div>
                     ${notes}
                     ${images}
