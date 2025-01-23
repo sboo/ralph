@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import { event, EVENT_NAMES } from "@/features/events";
 import { CustomTrackingSettingsScreenNavigationProps } from "@/features/navigation/types";
 import { useTranslation } from 'react-i18next';
-import { Avatar, Card, List, Switch, Text, TextInput, useTheme } from 'react-native-paper';
+import { Avatar, Button, Card, List, Switch, Text, TextInput, useTheme } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { getEmoticon } from '@/support/helpers/TooltipHelper';
 import { getValueColor } from '@/support/helpers/ColorHelper';
 import { emptyCustomTrackingLabels } from '@/features/assessments/helpers/customTracking';
 
-const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigationProps> = ({ route }) => {
+const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigationProps> = ({ route, navigation }) => {
     const { t } = useTranslation();
     const theme = useTheme();
 
@@ -52,7 +52,7 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
         });
     }
 
-    
+
     const handleCustomTrackingLabelChanged = (value: string, name: string) => {
         const newLabels = { ..._customTrackingLabels, [value]: name };
         _setCustomTrackingLabels(newLabels);
@@ -83,17 +83,17 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
                     <Card mode="contained" style={{ backgroundColor: theme.colors.surface, ...styles.card }}>
                         <Card.Content style={styles.cardContent}>
                             <Avatar.Icon icon="clipboard-plus-outline" size={50} style={{ backgroundColor: theme.colors.tertiary }} />
-                            <Text variant='headlineMedium'>{t('settings:customTracking')}</Text>
+                            <Text style={styles.cardTitle} variant='headlineMedium'>{t('settings:customTracking')}</Text>
                             <Text style={styles.cardText}>{t('settings:customTrackingDescription')}</Text>
                         </Card.Content>
                     </Card>
 
                     <Text variant='bodyMedium'
-                                    style={{...styles.description, color: theme.colors.error}}
+                        style={{ ...styles.description, color: theme.colors.error }}
 
-                                >
-                                    {t('settings:customTrackingInfo')}
-                                </Text>
+                    >
+                        {t('settings:customTrackingInfo')}
+                    </Text>
 
                     <List.Section>
                         <List.Item
@@ -127,6 +127,7 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
                                     dense={true}
                                     mode='outlined'
                                     placeholder={t('settings:customTrackingDescriptionInputLabel')}
+                                    multiline={true}
                                     style={styles.textInput}
                                     value={_customTrackingDescription}
                                     onChangeText={(text: string) => handleCustomTrackingDescriptionChanged(text)}
@@ -176,6 +177,14 @@ const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigat
                                 />
                             </View>) : null}
                 </ScrollView>
+                <View style={styles.buttons}>
+                    <Button
+                        mode={'contained'}
+                        onPress={() => navigation.goBack()}
+                    >
+                        {t('buttons:done')}
+                    </Button>
+                </View>
             </LinearGradient>
         </SafeAreaView>
     );
@@ -203,6 +212,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 20,
     },
+    cardTitle: {
+        textAlign: 'center',
+    },
     cardText: {
         textAlign: 'center',
     },
@@ -214,6 +226,13 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginHorizontal: 20,
     },
+    buttons: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      paddingVertical: 10,
+      borderTopWidth: 1,
+      borderTopColor: 'rgba(0,0,0,0.1)',
+    }
 });
 
 export default CustomTrackingSettingsScreen;

@@ -21,7 +21,11 @@ const EditPet: React.FC<EditPetScreenNavigationProps> = ({navigation}) => {
       navigation.goBack();
       return;
     }
+    try {
     updatePet(activePet._id, data);
+    } catch (error) {
+      console.error('Error updating pet', error);
+    }
     navigation.goBack();
   };
 

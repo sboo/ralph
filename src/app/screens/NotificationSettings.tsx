@@ -3,14 +3,14 @@ import { NotificationSettingsScreenNavigationProps } from "@/features/navigation
 import { timeToDateObject } from "@/support/helpers/DateTimeHelpers";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, SafeAreaView } from "react-native";
+import { ScrollView, StyleSheet, SafeAreaView, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { List, Switch, Button, useTheme, Avatar, Card, Text } from "react-native-paper";
 import { is24HourFormat } from 'react-native-device-time-format'
 import LinearGradient from "react-native-linear-gradient";
 
 
-const NotificationSettings: React.FC<NotificationSettingsScreenNavigationProps> = ({ route }) => {
+const NotificationSettings: React.FC<NotificationSettingsScreenNavigationProps> = ({ route, navigation }) => {
     const { t } = useTranslation();
     const theme = useTheme();
     const { notificationsEnabled, notificationTime } = route.params;
@@ -58,7 +58,7 @@ const NotificationSettings: React.FC<NotificationSettingsScreenNavigationProps> 
                     <Card mode="contained" style={{ backgroundColor: theme.colors.surface, ...styles.card }}>
                         <Card.Content style={styles.cardContent}>
                             <Avatar.Icon icon="bell" size={50} style={{ backgroundColor: theme.colors.tertiary }} />
-                            <Text variant='headlineMedium'>{t('settings:notifications')}</Text>
+                            <Text style={styles.cardTitle} variant='headlineMedium'>{t('settings:notifications')}</Text>
                             <Text style={styles.cardText}>{t('settings:notificationsDescription')}</Text>
                         </Card.Content>
                     </Card>
@@ -106,6 +106,14 @@ const NotificationSettings: React.FC<NotificationSettingsScreenNavigationProps> 
                         onCancel={() => setTimePickerOpen(false)}
                     />
                 </ScrollView>
+                <View style={styles.buttons}>
+                    <Button
+                        mode={'contained'}
+                        onPress={() => navigation.goBack()}
+                    >
+                        {t('buttons:done')}
+                    </Button>
+                </View>
             </LinearGradient>
         </SafeAreaView>
     );
@@ -133,8 +141,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 20,
     },
+    cardTitle: {
+        textAlign: 'center',
+    },
     cardText: {
         textAlign: 'center',
+    },
+    buttons: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      paddingVertical: 10,
+      borderTopWidth: 1,
+      borderTopColor: 'rgba(0,0,0,0.1)',
     }
 });
 

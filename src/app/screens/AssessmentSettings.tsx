@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, SafeAreaView, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import { useTheme, List, Switch, Card, Avatar, Text, Divider } from "react-native-paper";
+import { useTheme, List, Switch, Card, Avatar, Text, Divider, Button } from "react-native-paper";
 import { AssessmentFrequency } from "../models/Pet";
 import { event, EVENT_NAMES } from '@/features/events';
 import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
@@ -56,7 +56,7 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
           <Card mode="contained" style={{ backgroundColor: theme.colors.surface, ...styles.card }}>
             <Card.Content style={styles.cardContent}>
               <Avatar.Icon icon="clipboard-check-outline" size={50} style={{ backgroundColor: theme.colors.tertiary }} />
-              <Text variant='headlineMedium'>{t('settings:assessments')}</Text>
+              <Text style={styles.cardTitle} variant='headlineMedium'>{t('settings:assessments')}</Text>
               <Text style={styles.cardText}>{t('settings:assessmentsDescription')}</Text>
             </Card.Content>
           </Card>
@@ -94,7 +94,7 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
               description={t('settings:customTrackingDescriptionShort')}
             />
             <List.Item
-              title={t('settings:customTracking')}
+              title={t('settings:customTrackingEnabledLabel')}
 
               right={props => <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text variant='bodySmall'>{
@@ -123,6 +123,14 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
             />
           </List.Section>
         </ScrollView>
+        <View style={styles.buttons}>
+          <Button
+            mode={'contained'}
+            onPress={() => navigation.goBack()}
+          >
+            {t('buttons:done')}
+          </Button>
+        </View>
       </LinearGradient>
     </SafeAreaView>
   );
@@ -150,11 +158,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 20,
   },
+  cardTitle: {
+    textAlign: 'center',
+},
   cardText: {
     textAlign: 'center',
   },
   listItemRadio: {
     // height: 60,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.1)',
   }
 });
 

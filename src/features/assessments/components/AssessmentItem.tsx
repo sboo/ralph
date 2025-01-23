@@ -157,7 +157,7 @@ const AssessmentItem: React.FC<Props> = ({
     return (
       <>
       <Divider style={styles.divider} />
-        <Text style={styles.label}>{customTracking.customTrackingName}</Text>
+        <Text style={styles.label}>{customTracking.customTrackingName || t('settings:customTracking')}</Text>
         <Text style={styles.info}>
           {customTracking.customTrackingDescription}
         </Text>

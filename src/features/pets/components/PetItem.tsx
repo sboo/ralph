@@ -76,7 +76,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   const petComplete = useMemo(() => petType && petName, [petType, petName]);
   const welcomeTextTopMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
 
-   useEffect(() => {
+  useEffect(() => {
     const getTimeFormat = async () => {
       return await is24HourFormat();
     }
@@ -84,7 +84,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
       setHour12(!value);
     });
 
-  },[]);
+  }, []);
 
   useEffect(() => {
     const handleAssessmentFrequency = (assessmentFrequency: AssessmentFrequency) => {
@@ -375,7 +375,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
                 customTrackingSettings
               })}
             />
-            
+
             <List.Item
               title={t('settings:notifications')}
               left={props => <List.Icon {...props} icon="bell" />}
@@ -393,21 +393,22 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
                 notificationTime: dateObjectToTimeString(reminderTime)
               })}
             />
-            
+
 
           </List.Section>
         </View>
       </ScrollView>
-      <View style={styles.buttons}>
-        {pet && pets.length > 1 ? (
-          <Button
-            textColor={theme.colors.error}
-            buttonColor={theme.colors.errorContainer}
+      {pet && pets.length > 1 ? (
+        <List.Section>
+          <List.Item
+            left={props => <List.Icon {...props} icon="trash-can-outline" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
             onPress={() => setConfirmDeleteVisible(true)}
-            mode={'contained'}>
-            {t('buttons:delete_pet')}
-          </Button>
-        ) : null}
+            title={t('buttons:delete_pet')}
+          />
+        </List.Section>
+      ) : null}
+      <View style={styles.buttons}>
         <Button disabled={!petComplete} onPress={submitData} mode={'contained'}>
           {buttonLabel ?? t('buttons:save')}
         </Button>
