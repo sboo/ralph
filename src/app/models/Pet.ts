@@ -1,3 +1,4 @@
+
 import Realm, {BSON, index} from 'realm';
 
 export type AssessmentFrequency = 'DAILY' | 'WEEKLY';
@@ -17,4 +18,5 @@ export class Pet extends Realm.Object {
   assessmentFrequency: string = 'DAILY';
   headerColor?: string;
   pausedAt?: Date;
+  customTrackingSettings?: string = {};
 }

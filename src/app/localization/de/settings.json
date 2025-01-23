@@ -20,5 +20,16 @@
     "assessmentsDescription": "Die App hilft dir, die Lebensqualität deines Haustiers einzuschätzen, indem du ein paar Fragen beantwortest.",
     "notifications": "Erinnerungen",
     "notificationsDescription": "Die App kann dich daran erinnern, die Lebensqualität deines Haustiers zu überprüfen.",
-    "paused": "Pausiert"
+    "paused": "Pausiert",
+    "customTracking": "Füge deinen eigenen Tracker hinzu",
+    "customTrackingEnabledLabel": "Eigener Tracker aktiviert",
+    "customTrackingFallbackLabel": "Eigener Tracker",
+    "customTrackingInfo": "Bevor du diese Option aktivierst, ist es ratsam, die Lebensqualität deines Haustiers zunächst mit den Standard-Tracking-Optionen zu bewerten. Dies gibt dir ein besseres Verständnis dafür, was du tracken kannst und wie es funktioniert.",
+    "customTrackingDescriptionShort": "Tracke einen eigenen Aspekt des Wohlbefindens deines Haustiers durch Aktivierung des eigenen Trackings.",
+    "customTrackingDescription": "Die App bewertet die Lebensqualität deines Haustiers anhand der folgenden Aspekte: Schmerz, Essen, Trinken, Hygiene, Freude und Mobilität.\n\n Du kannst einen weiteren Aspekt des Wohlbefindens deines Haustiers tracken, indem du eigenes Tracking aktivierst.",
+    "customTrackingNameInfo": "Beschreibe den eigenen Aspekt, den du tracken möchtest. Gib ihm einen Namen und eine kurze Beschreibung:",
+    "customTrackingNameInputLabel": "Name",
+    "customTrackingDescriptionInputLabel": "Kurze Beschreibung",
+    "customTrackingLabelDescription": "Es gibt 5 Schweregrade. Gib jedem einen Namen:",
+    "customTrackingLabelInputLabel": "Kurzer Name"
 }

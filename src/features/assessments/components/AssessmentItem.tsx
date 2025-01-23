@@ -18,6 +18,7 @@ import RatingButtons from '@/support/components/RatingButtons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import { OptionText } from '@/support/helpers/TooltipHelper';
+import { CustomTrackingSettings } from '../helpers/customTracking';
 
 interface Props {
   petName: string;
@@ -25,6 +26,7 @@ interface Props {
   date: Date;
   assessment?: Measurement | null;
   scrollToNotes?: boolean;
+  customTracking: CustomTrackingSettings;
   onCancel: () => void;
   onSubmit: (
     hurt: number,
@@ -33,8 +35,10 @@ interface Props {
     hygiene: number,
     happiness: number,
     mobility: number,
+    customValue?: number,
     notes?: string,
     images?: string[],
+
   ) => void;
 }
 
@@ -45,6 +49,7 @@ const AssessmentItem: React.FC<Props> = ({
   onSubmit,
   onCancel,
   assessment: measurement,
+  customTracking,
   scrollToNotes
 }) => {
   const { t } = useTranslation();
@@ -66,6 +71,9 @@ const AssessmentItem: React.FC<Props> = ({
   );
   const [mobility, setMobility] = useState<number | undefined>(
     measurement?.mobility,
+  );
+  const [customValue, setCustomValue] = useState<number | undefined>(
+    measurement?.customValue ?? undefined,
   );
   const [notes, setNotes] = useState<string | undefined>(measurement?.notes);
   const [images, setImages] = useState<string[] | undefined>(
@@ -112,6 +120,7 @@ const AssessmentItem: React.FC<Props> = ({
       hygiene,
       happiness,
       mobility,
+      customValue,
       notes,
       images,
     );
@@ -129,12 +138,44 @@ const AssessmentItem: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    if(!loading && scrollToNotes) {
+    if (!loading && scrollToNotes) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
     }
   }, [loading, scrollToNotes]);
 
-  if(loading) {
+  const renderCustomTracking = () => {
+    if (!customTracking.customTrackingEnabled) {
+      return null;
+    }
+    const optionTexts: OptionText[] = Object.keys(customTracking.customTrackingLabels).map(key => {
+      return {
+        value: parseFloat(key),
+        title: customTracking.customTrackingLabels[key],
+        description: ''
+      }
+    });
+    return (
+      <>
+      <Divider style={styles.divider} />
+        <Text style={styles.label}>{customTracking.customTrackingName || t('settings:customTrackingFallbackLabel')}</Text>
+        <Text style={styles.info}>
+          {customTracking.customTrackingDescription}
+        </Text>
+        {useRatingButtons ? (<RatingButtons
+          onRatingChange={value => setCustomValue(value)}
+          initialRating={customValue}
+          optionTexts={optionTexts}
+        />) : (<RatingSlider
+          onRatingChange={value => setCustomValue(value)}
+          initialRating={customValue}
+          optionTexts={optionTexts}
+        />)}
+      </>
+    )
+
+  }
+
+  if (loading) {
     return null;
     // (
     //   <View style={styles.loadingContainer}>
@@ -294,11 +335,16 @@ const AssessmentItem: React.FC<Props> = ({
           }) as OptionText[]}
         />
       )}
+
+
+      {renderCustomTracking()}
+
+
       <Divider style={styles.divider} />
       <View style={styles.notesHolder}>
-      <Text style={styles.label}>
-        {t('measurements:notes')}
-      </Text>
+        <Text style={styles.label}>
+          {t('measurements:notes')}
+        </Text>
         {!notes ? null : (
           <Text style={styles.notesText} variant={'bodyMedium'}>
             {notes}

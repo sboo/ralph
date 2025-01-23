@@ -1,18 +1,31 @@
 import { AssessmentSettingsScreenNavigationProps } from "@/features/navigation/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, SafeAreaView, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import { useTheme, List, Switch, Card, Avatar, Text } from "react-native-paper";
+import { useTheme, List, Switch, Card, Avatar, Text, Divider, Button } from "react-native-paper";
 import { AssessmentFrequency } from "../models/Pet";
 import { event, EVENT_NAMES } from '@/features/events';
+import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
 
-const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({ route }) => {
+const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({ route, navigation }) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { assessmentFrequency, assessmentsPaused } = route.params;
+  const { assessmentFrequency, assessmentsPaused, customTrackingSettings } = route.params;
   const [_assessmentFrequency, _setAssessmentFrequency] = useState(assessmentFrequency);
   const [_assessmentsPaused, _setAssessmentsPaused] = useState(assessmentsPaused);
+  const [_customTrackingSettings, _setCustomTrackingSettings] = useState<CustomTrackingSettings>(customTrackingSettings);
+
+
+  useEffect(() => {
+    const handleCustomTrackingSettings = (customTrackingSettings: CustomTrackingSettings) => {
+      _setCustomTrackingSettings(customTrackingSettings)
+    }
+    event.on(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, handleCustomTrackingSettings);
+    return () => {
+      event.off(EVENT_NAMES.CUSTOM_TRACKING_CHANGED, handleCustomTrackingSettings);
+    }
+  }, [_setCustomTrackingSettings]);
 
   const handleAssessmentFrequency = (frequency: AssessmentFrequency) => {
     event.emit(EVENT_NAMES.ASSESSMENT_FREQUENCY_CHANGED, frequency);
@@ -43,7 +56,7 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
           <Card mode="contained" style={{ backgroundColor: theme.colors.surface, ...styles.card }}>
             <Card.Content style={styles.cardContent}>
               <Avatar.Icon icon="clipboard-check-outline" size={50} style={{ backgroundColor: theme.colors.tertiary }} />
-              <Text variant='headlineMedium'>{t('settings:assessments')}</Text>
+              <Text style={styles.cardTitle} variant='headlineMedium'>{t('settings:assessments')}</Text>
               <Text style={styles.cardText}>{t('settings:assessmentsDescription')}</Text>
             </Card.Content>
           </Card>
@@ -74,6 +87,28 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
               )}
             />
           </List.Section>
+          <Divider />
+          <List.Section>
+            <List.Item
+              title={t('settings:customTracking')}
+              description={t('settings:customTrackingDescriptionShort')}
+            />
+            <List.Item
+              title={t('settings:customTrackingEnabledLabel')}
+
+              right={props => <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text variant='bodySmall'>{
+                  _customTrackingSettings?.customTrackingEnabled ? t('settings:on') : t('settings:off')
+                }</Text>
+                <List.Icon {...props} icon="chevron-right" />
+              </View>
+              }
+              onPress={() => navigation.navigate('CustomTrackingSettings', {
+                customTrackingSettings: _customTrackingSettings
+              })}
+            />
+          </List.Section>
+          <Divider />
           <List.Section>
             <List.Item
               title={t('settings:pauseAssessmentsLabel')}
@@ -88,6 +123,14 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
             />
           </List.Section>
         </ScrollView>
+        <View style={styles.buttons}>
+          <Button
+            mode={'contained'}
+            onPress={() => navigation.goBack()}
+          >
+            {t('buttons:done')}
+          </Button>
+        </View>
       </LinearGradient>
     </SafeAreaView>
   );
@@ -115,11 +158,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 20,
   },
+  cardTitle: {
+    textAlign: 'center',
+},
   cardText: {
     textAlign: 'center',
   },
   listItemRadio: {
     // height: 60,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.1)',
   }
 });
 

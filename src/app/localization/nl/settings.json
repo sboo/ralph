@@ -20,5 +20,16 @@
     "assessmentsDescription": "De app helpt je om de levenskwaliteit van je huisdier te beoordelen door een paar vragen te beantwoorden.",
     "notifications": "Herinneringen",
     "notificationsDescription": "De app kan je eraan herinneren om de levenskwaliteit van je huisdier te checken.",
-    "paused": "Gepauzeerd"
+    "paused": "Gepauzeerd",
+    "customTracking": "Voeg je eigen tracker toe",
+    "customTrackingEnabledLabel": "Eigen tracker ingeschakeld",
+    "customTrackingFallbackLabel": "Eigen tracker",
+    "customTrackingInfo": "Voordat je deze optie inschakelt, is het raadzaam om eerst de levenskwaliteit van je huisdier te beoordelen met de standaard trackingopties. Dit geeft je een beter begrip van wat je kunt tracken en hoe het werkt.",
+    "customTrackingDescriptionShort": "Track een eigen aspect van het welzijn van je huisdier door eigen tracking in te schakelen.",
+    "customTrackingDescription": "De app beoordeelt de levenskwaliteit van je huisdier op basis van de volgende aspecten: Pijn, eten, drinken, hygiëne, vreugde en mobiliteit.\n\n Je kunt een ander aspect van het welzijn van je huisdier tracken door eigen tracking in te schakelen.",
+    "customTrackingNameInfo": "Beschrijf het eigen aspect dat je wilt tracken. Geef het een naam en een korte beschrijving:",
+    "customTrackingNameInputLabel": "Naam",
+    "customTrackingDescriptionInputLabel": "Korte beschrijving",
+    "customTrackingLabelDescription": "Er zijn 5 ernstniveaus. Geef elk niveau een naam:",
+    "customTrackingLabelInputLabel": "Korte naam"
 }

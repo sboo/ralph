@@ -10,4 +10,5 @@ export enum EVENT_NAMES {
   ASSESSMENT_PAUSED = 'assessmentPaused',
   REMINDERS_TOGGLED = 'remindersEnabled',
   REMINDER_TIME_CHANGED = 'reminderTimeChanged',
+  CUSTOM_TRACKING_CHANGED = 'customTrackingChagned',
 }

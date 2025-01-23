@@ -19,7 +19,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
   const assessment = useObject(Measurement, _id);
   const theme = useTheme();
   const {activePet} = usePet();
-  const {editAssessment} = useAssessments(activePet);
+  const {editAssessment, customTrackingSettings} = useAssessments(activePet);
 
   if (!activePet) {
     navigation.goBack();
@@ -33,6 +33,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
     hygiene: number,
     happiness: number,
     mobility: number,
+    customValue?: number,
     notes?: string,
     images?: string[],
   ) => {
@@ -45,6 +46,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
         hygiene,
         happiness,
         mobility,
+        customValue,
         notes,
         images,
       });
@@ -71,6 +73,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
           petName={activePet.name}
           petSpecies={activePet.species}
           assessment={assessment}
+          customTracking={customTrackingSettings}
           onCancel={() => navigation.goBack()}
           onSubmit={handleSubmit}
           scrollToNotes={scrollToNotes}

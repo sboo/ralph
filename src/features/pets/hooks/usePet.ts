@@ -4,6 +4,7 @@ import {Pet} from '@/app/models/Pet';
 import {BSON} from 'realm';
 import {MD3Theme, useTheme} from 'react-native-paper';
 import { AssessmentFrequency } from '@/app/models/Pet';
+import { CustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
 
 export interface PetData {
   id?: BSON.ObjectId;
@@ -17,6 +18,7 @@ export interface PetData {
   isPaused?: boolean;
   pausedAt?: Date;
   delete?: boolean;
+  customTrackingSettings?: string;
 }
 
 const usePet = () => {

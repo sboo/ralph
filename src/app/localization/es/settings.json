@@ -20,5 +20,16 @@
     "assessmentsDescription": "La app te ayuda a evaluar la calidad de vida de tu mascota respondiendo unas preguntas.",
     "notifications": "Recordatorios",
     "notificationsDescription": "La app puede recordarte evaluar la calidad de vida de tu mascota.",
-    "paused": "Suspendido"
+    "paused": "Suspendido",
+    "customTracking": "Añade tu propio seguimiento",
+    "customTrackingEnabledLabel": "Seguimiento propio activado",
+    "customTrackingFallbackLabel": "Seguimiento propio",
+    "customTrackingInfo": "Antes de activar esta opción, es recomendable evaluar primero la calidad de vida de tu mascota usando las opciones de seguimiento predeterminadas. Esto te dará una mejor comprensión de qué seguir y cómo funciona.",
+    "customTrackingDescriptionShort": "Realiza un seguimiento personalizado del bienestar de tu mascota activando el seguimiento personalizado.",
+    "customTrackingDescription": "La aplicación evalúa la calidad de vida de tu mascota según los siguientes aspectos: Dolor, alimentación, bebida, higiene, alegría y movilidad.\n\n Puedes realizar un seguimiento de otro aspecto del bienestar de tu mascota activando el seguimiento personalizado.",
+    "customTrackingNameInfo": "Describe el aspecto personalizado que deseas seguir. Dale un nombre y una breve descripción:",
+    "customTrackingNameInputLabel": "Nombre",
+    "customTrackingDescriptionInputLabel": "Breve descripción",
+    "customTrackingLabelDescription": "Hay 5 niveles de severidad. Dale un nombre a cada uno:",
+    "customTrackingLabelInputLabel": "Nombre corto"
 }
