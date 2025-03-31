@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { Dimensions, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Avatar, Button, IconButton, Text, useTheme } from 'react-native-paper';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
+import { Dimensions, Platform, SafeAreaView, ScrollView, StyleSheet, View, Animated } from 'react-native';
+import { Avatar, IconButton, Text, useTheme } from 'react-native-paper';
 import { WelcomeScreenNavigationProps } from '@/features/navigation/types.tsx';
 import { useTranslation } from 'react-i18next';
 import SwiperFlatList from 'react-native-swiper-flatlist';
@@ -16,8 +16,15 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   const { t } = useTranslation();
   const theme = useTheme();
 
+  // Create animated value for pulsating effect
+  const pulseAnim = useRef(new Animated.Value(1)).current;
 
   const onContiune = () => {
+    if (!isLastIndex) {
+      swiper.current?.scrollToIndex({ index: currentIndex + 1, animated: true });
+      return;
+    }
+    // If it's the last index, navigate to the onboarding screen
     navigation.navigate('Onboarding');
   }
 
@@ -48,6 +55,39 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   const isFirstIndex = useMemo(() => currentIndex === 0, [currentIndex]);
   const topMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
 
+  // Start pulsating animation when on last slide
+  useEffect(() => {
+    let animationLoop: Animated.CompositeAnimation;
+
+    if (isLastIndex) {
+      animationLoop = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.2,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+
+      animationLoop.start();
+    } else {
+      // Reset animation when not on last slide
+      pulseAnim.setValue(1);
+    }
+
+    return () => {
+      if (animationLoop) {
+        animationLoop.stop();
+      }
+    };
+  }, [isLastIndex, pulseAnim]);
+
   return (
     <SafeAreaView
       style={{
@@ -63,24 +103,34 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         showPagination
         PaginationComponent={CustomPagination}
         renderItem={({ item }) => (
-          <View style={styles.child}>
+          <ScrollView contentContainerStyle={styles.child}>
             {item.image ? (
               <View style={styles.imageContainer}>
                 <Avatar.Image size={width * 0.6} source={item.image} theme={{ colors: { primary: theme.colors.secondaryContainer } }} />
               </View>
             ) : null}
             <Text variant='titleLarge' style={{ ...styles.text, color: theme.colors.onPrimary }}>{item.description}</Text>
-            <View style={styles.continueButton}>
-              {item.showButton ? (
-                <Button mode="contained-tonal" onPress={onContiune}>{t('buttons:getStarted')}</Button>
-            ) : null}
-            </View>
-          </View>
+          </ScrollView>
         )}
       />
       <View style={styles.buttons}>
         <IconButton icon={'chevron-left'} iconColor={theme.colors.secondaryContainer} onPress={() => swiper.current?.scrollToIndex({ index: currentIndex - 1, animated: true })} disabled={isFirstIndex} />
-        <IconButton icon={'chevron-right'} iconColor={theme.colors.secondaryContainer} onPress={() => swiper.current?.scrollToIndex({ index: currentIndex + 1, animated: true })}  disabled={isLastIndex} />
+        {isLastIndex ? (
+          <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
+            <IconButton
+              icon={'chevron-right'}
+              iconColor={theme.colors.secondary}
+              onPress={onContiune}
+              mode={'contained'}
+            />
+          </Animated.View>
+        ) : (
+          <IconButton
+            icon={'chevron-right'}
+            iconColor={theme.colors.secondaryContainer}
+            onPress={onContiune}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -97,18 +147,13 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   title: {
-    height: 100,
+    minHeight: 100,
     fontWeight: 'bold',
     paddingHorizontal: 20,
 
   },
   swiper: {
     position: 'relative',
-  },
-  continueButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    height:40
   },
   buttons: {
     flexDirection: 'row',
@@ -125,7 +170,7 @@ const styles = StyleSheet.create({
   image: {
     alignSelf: 'center',
   },
-  child: { width, justifyContent: 'space-evenly', paddingHorizontal: 20 },
+  child: { width, justifyContent: 'space-evenly', paddingHorizontal: 20, gap: 20 },
   text: { textAlign: 'center' },
 });
 

@@ -133,7 +133,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
 
   return (
     <Appbar.Header style={options.headerStyle}>
-      {back ? <Appbar.BackAction onPress={navigation.goBack} style={Platform.OS === 'ios' ? { position: "absolute" } : null} /> : null}
+      {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title={title} />
       {!back ? (
         <Appbar.Action
