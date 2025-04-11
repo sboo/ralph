@@ -8,17 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* RalphTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RalphTests.m */; };
-		0A15160CD0F88B09E57920B9 /* libPods-Ralph-RalphTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97614549B969E75A395F65B7 /* libPods-Ralph-RalphTests.a */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		AE4B450CCC13587EADF2476C /* libPods-Ralph.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F921C6913E204C350CC72BA /* libPods-Ralph.a */; };
 		F62546622BE7C3B600B233BD /* Ralph App logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F62546612BE7C3B600B233BD /* Ralph App logo.png */; };
 		F66A3CED2D0EF2CD002B5620 /* IAPProducts.storekit in Resources */ = {isa = PBXBuildFile; fileRef = F66A3CEC2D0EF2CD002B5620 /* IAPProducts.storekit */; };
 		F6769D742BB455B800C9508C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6769D732BB455B800C9508C /* StoreKit.framework */; };
 		F6769D762BB459E300C9508C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F6769D752BB459E300C9508C /* PrivacyInfo.xcprivacy */; };
+		F686FA0A2DA95D980086AA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F686FA092DA95D980086AA46 /* AppDelegate.swift */; };
 		F69E8A812BA0C784007E9E91 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */; };
+		F7BE594F137EAB048D34AD9D /* libPods-Ralph.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C60B879C22218133C4B5951A /* libPods-Ralph.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,19 +33,13 @@
 		00E356EE1AD99517003FC87E /* RalphTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RalphTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* RalphTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RalphTests.m; sourceTree = "<group>"; };
-		0DE917255C5E9367CA9F243D /* Pods-Ralph.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ralph.release.xcconfig"; path = "Target Support Files/Pods-Ralph/Pods-Ralph.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Ralph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ralph.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Ralph/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Ralph/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Ralph/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Ralph/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ralph/main.m; sourceTree = "<group>"; };
-		1F921C6913E204C350CC72BA /* libPods-Ralph.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ralph.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2136F42381C2D385BAB58D82 /* Pods-Ralph-RalphTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ralph-RalphTests.debug.xcconfig"; path = "Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests.debug.xcconfig"; sourceTree = "<group>"; };
+		30B977850B3B5A648CD5D7DB /* Pods-Ralph.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ralph.release.xcconfig"; path = "Target Support Files/Pods-Ralph/Pods-Ralph.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Ralph/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		97614549B969E75A395F65B7 /* libPods-Ralph-RalphTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ralph-RalphTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CBC63D4BB2E9893430FDA8CE /* Pods-Ralph.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ralph.debug.xcconfig"; path = "Target Support Files/Pods-Ralph/Pods-Ralph.debug.xcconfig"; sourceTree = "<group>"; };
-		CC2ADF719EB92B5F02F4CDAB /* Pods-Ralph-RalphTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ralph-RalphTests.release.xcconfig"; path = "Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests.release.xcconfig"; sourceTree = "<group>"; };
+		C60B879C22218133C4B5951A /* libPods-Ralph.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ralph.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB092383F63F45A15046B04A /* Pods-Ralph.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ralph.debug.xcconfig"; path = "Target Support Files/Pods-Ralph/Pods-Ralph.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F608CCFE2B8BABD300B901D6 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fontisto.ttf; sourceTree = "<group>"; };
 		F608CCFF2B8BABD300B901D6 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
@@ -73,6 +65,8 @@
 		F66A3CEC2D0EF2CD002B5620 /* IAPProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = IAPProducts.storekit; sourceTree = "<group>"; };
 		F6769D732BB455B800C9508C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F6769D752BB459E300C9508C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F686FA092DA95D980086AA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F686FA0B2DA95DA10086AA46 /* Ralph-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ralph-Bridging-Header.h"; sourceTree = "<group>"; };
 		F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,7 +75,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A15160CD0F88B09E57920B9 /* libPods-Ralph-RalphTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6769D742BB455B800C9508C /* StoreKit.framework in Frameworks */,
-				AE4B450CCC13587EADF2476C /* libPods-Ralph.a in Frameworks */,
+				F7BE594F137EAB048D34AD9D /* libPods-Ralph.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,14 +110,13 @@
 		13B07FAE1A68108700A75B9A /* Ralph */ = {
 			isa = PBXGroup;
 			children = (
+				F686FA092DA95D980086AA46 /* AppDelegate.swift */,
 				F625465F2BE7C38E00B233BD /* Files */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				13B07FB71A68108700A75B9A /* main.m */,
 				F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */,
+				F686FA0B2DA95DA10086AA46 /* Ralph-Bridging-Header.h */,
 			);
 			name = Ralph;
 			sourceTree = "<group>";
@@ -135,8 +127,7 @@
 				F6769D732BB455B800C9508C /* StoreKit.framework */,
 				F60A4EBA2B9C934B0030CE8D /* hermes.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				1F921C6913E204C350CC72BA /* libPods-Ralph.a */,
-				97614549B969E75A395F65B7 /* libPods-Ralph-RalphTests.a */,
+				C60B879C22218133C4B5951A /* libPods-Ralph.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -178,10 +169,8 @@
 			isa = PBXGroup;
 			children = (
 				F608CCFD2B8BABD300B901D6 /* Fonts */,
-				CBC63D4BB2E9893430FDA8CE /* Pods-Ralph.debug.xcconfig */,
-				0DE917255C5E9367CA9F243D /* Pods-Ralph.release.xcconfig */,
-				2136F42381C2D385BAB58D82 /* Pods-Ralph-RalphTests.debug.xcconfig */,
-				CC2ADF719EB92B5F02F4CDAB /* Pods-Ralph-RalphTests.release.xcconfig */,
+				DB092383F63F45A15046B04A /* Pods-Ralph.debug.xcconfig */,
+				30B977850B3B5A648CD5D7DB /* Pods-Ralph.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -236,12 +225,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RalphTests" */;
 			buildPhases = (
-				E4A84C73A99FF5BB1A9F8E92 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				0672B0C172DDAFCBA2D16A4B /* [CP] Embed Pods Frameworks */,
-				B5FE69186DAAEAEE4C6B416D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -257,14 +243,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Ralph" */;
 			buildPhases = (
-				7DFFE062E324F73E6ECCA946 /* [CP] Check Pods Manifest.lock */,
+				FEB08198305298E3132849A0 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				4AB94ADFBA034ADAB33C4EF9 /* Upload Debug Symbols to Sentry */,
-				A29059A9DF94DD46A8F9AF2F /* [CP] Embed Pods Frameworks */,
-				C15F586B9D9E4A2395D5C2C0 /* [CP] Copy Pods Resources */,
+				09C3B0A7792E85BEC91048DC /* [CP] Embed Pods Frameworks */,
+				0854206E5D20489B654067D4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -289,7 +275,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1630;
 					};
 				};
 			};
@@ -355,21 +341,46 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\nexport PATH=/opt/homebrew/bin:$PATH\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT \\\"/bin/sh ../node_modules/@sentry/react-native/scripts/sentry-xcode.sh $REACT_NATIVE_XCODE\\\"\"\n";
 		};
-		0672B0C172DDAFCBA2D16A4B /* [CP] Embed Pods Frameworks */ = {
+		0854206E5D20489B654067D4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09C3B0A7792E85BEC91048DC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4AB94ADFBA034ADAB33C4EF9 /* Upload Debug Symbols to Sentry */ = {
@@ -386,7 +397,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh ../node_modules/@sentry/react-native/scripts/sentry-xcode-debug-files.sh";
 		};
-		7DFFE062E324F73E6ECCA946 /* [CP] Check Pods Manifest.lock */ = {
+		FEB08198305298E3132849A0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -408,79 +419,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A29059A9DF94DD46A8F9AF2F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B5FE69186DAAEAEE4C6B416D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ralph-RalphTests/Pods-Ralph-RalphTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C15F586B9D9E4A2395D5C2C0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ralph/Pods-Ralph-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E4A84C73A99FF5BB1A9F8E92 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Ralph-RalphTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -496,8 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				F686FA0A2DA95D980086AA46 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +451,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2136F42381C2D385BAB58D82 /* Pods-Ralph-RalphTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -542,7 +478,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC2ADF719EB92B5F02F4CDAB /* Pods-Ralph-RalphTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -567,7 +502,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBC63D4BB2E9893430FDA8CE /* Pods-Ralph.debug.xcconfig */;
+			baseConfigurationReference = DB092383F63F45A15046B04A /* Pods-Ralph.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -589,6 +524,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = eu.sboo.ralph;
 				PRODUCT_NAME = Ralph;
+				SWIFT_OBJC_BRIDGING_HEADER = "Ralph-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -597,7 +533,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DE917255C5E9367CA9F243D /* Pods-Ralph.release.xcconfig */;
+			baseConfigurationReference = 30B977850B3B5A648CD5D7DB /* Pods-Ralph.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -618,6 +554,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = eu.sboo.ralph;
 				PRODUCT_NAME = Ralph;
+				SWIFT_OBJC_BRIDGING_HEADER = "Ralph-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

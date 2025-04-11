@@ -14,7 +14,7 @@ const {
  * Metro configuration
  * https://reactnative.dev/docs/metro
  *
- * @type {import('metro-config').MetroConfig}
+ * @type {import('@react-native/metro-config').MetroConfig}
  */
 const config = {
   serializer: {
@@ -23,7 +23,5 @@ const config = {
 };
 
 module.exports = wrapWithReanimatedMetroConfig(
-    withSentryConfig(
-      mergeConfig(getDefaultConfig(__dirname), config),
-    ),
+  withSentryConfig(mergeConfig(getDefaultConfig(__dirname), config)),
 );
