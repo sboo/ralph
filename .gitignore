@@ -33,6 +33,7 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+.kotlin/
 
 # node.js
 #
@@ -77,3 +78,4 @@ yarn-error.log
 /android/sentry.properties
 /android/local.settings
 /ios/sentry.properties
+android/app/upload_certificate.pem
