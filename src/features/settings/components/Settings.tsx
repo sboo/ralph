@@ -8,6 +8,7 @@ import { ANDROID_APP_ID, IOS_APP_ID } from '@/support/constants';
 import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Appearance, useAppearance } from '@/app/themes/hooks/useAppearance';
+import { useNavigation } from '@react-navigation/native';
 
 interface SettingsProps {
   onSettingsSaved: () => void;
@@ -15,6 +16,7 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
   const [useRatingButtons, setUseRatingButtons] = useState(false);
 
@@ -101,6 +103,28 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
           <Text>{t('settings:app_useful')}</Text>
           <Button onPress={openReviewInStore} icon={'star'} mode={'outlined'}>
             {t('settings:review_app')}
+          </Button>
+        </View>
+        
+        <Divider style={styles.divider} bold={true} />
+        <View style={styles.inputRowReview}>
+          <Text>Test WatermelonDB Migration</Text>
+          <Button 
+            onPress={() => navigation.navigate('WatermelonTest' as never)} 
+            icon={'database'} 
+            mode={'outlined'}>
+            WatermelonDB Test
+          </Button>
+        </View>
+        
+        <Divider style={styles.divider} bold={true} />
+        <View style={styles.inputRowReview}>
+          <Text>Comprehensive WatermelonDB Integration Demo</Text>
+          <Button 
+            onPress={() => navigation.navigate('WatermelonDBIntegration' as never)} 
+            icon={'database-plus'} 
+            mode={'outlined'}>
+            Integration Demo
           </Button>
         </View>
       </View>

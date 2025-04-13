@@ -37,6 +37,9 @@ import usePet from '@/features/pets/hooks/usePet';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { useAppearance } from './themes/hooks/useAppearance';
 
+// Import WatermelonDB provider
+import { DatabaseProvider } from '@/app/database/context';
+
 // Screen imports
 import WelcomeScreen from './screens/WelcomeScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
@@ -52,6 +55,8 @@ import CustomTrackingSettingsScreen from './screens/CustomTrackingSettingsScreen
 import AllNotesScreen from './screens/AllNotesScreen';
 import DebugScreen from './screens/DebugScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
+import WatermelonTest from '@/features/settings/WatermelonTest';
+import WatermelonDBIntegration from '@/features/settings/WatermelonDBIntegration';
 
 // Constants
 const VALID_PRODUCT_IDS = [
@@ -255,119 +260,137 @@ const App: React.FC = () => {
     <KeyboardAvoidingView
       style={styles.keyboardViewContainer}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer onStateChange={onNavigationStateChange}>
-          <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              header: props => <CustomNavigationBar {...props} />,
-            }}>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                title: '',
-                headerStyle: { backgroundColor: getHeaderColor(theme) },
-              }}
-            />
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Onboarding"
-              component={OnboardingScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{
-                title: t('settings'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="EditPet"
-              component={EditPet}
-              options={{
-                title: t('edit_pet'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="AddPet"
-              component={AddPet}
-              options={{
-                title: t('add_pet'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="AssessmentSettings"
-              component={AssessmentSettings}
-              options={{
-                title: t('settings:assessments'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="NotificationSettings"
-              component={NotificationSettings}
-              options={{
-                title: t('settings:notifications'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="CustomTrackingSettings"
-              component={CustomTrackingSettingsScreen}
-              options={{
-                title: t('settings:customTracking'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="AddAssessment"
-              component={AddAssessment}
-              options={{
-                title: t('measurements:title', {
-                  petName: activePet?.name,
-                }),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="EditAssessment"
-              component={EditAssessment}
-              options={{
-                title: t('measurements:title', {
-                  petName: activePet?.name,
-                }),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="AllNotes"
-              component={AllNotesScreen}
-              options={{
-                title: t('measurements:notes'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen
-              name="AllAssessments"
-              component={AllAssessmentsScreen}
-              options={{
-                title: t('measurements:allAssessments'),
-                headerStyle: { backgroundColor: theme.colors.primaryContainer },
-              }}
-            />
-            <Stack.Screen name="DebugScreen" component={DebugScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
+      <DatabaseProvider>
+        <PaperProvider theme={theme}>
+          <NavigationContainer onStateChange={onNavigationStateChange}>
+            <Stack.Navigator
+              initialRouteName="Home"
+              screenOptions={{
+                header: props => <CustomNavigationBar {...props} />,
+              }}>
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                  title: '',
+                  headerStyle: { backgroundColor: getHeaderColor(theme) },
+                }}
+              />
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Onboarding"
+                component={OnboardingScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{
+                  title: t('settings'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="EditPet"
+                component={EditPet}
+                options={{
+                  title: t('edit_pet'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="AddPet"
+                component={AddPet}
+                options={{
+                  title: t('add_pet'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="AssessmentSettings"
+                component={AssessmentSettings}
+                options={{
+                  title: t('settings:assessments'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="NotificationSettings"
+                component={NotificationSettings}
+                options={{
+                  title: t('settings:notifications'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="CustomTrackingSettings"
+                component={CustomTrackingSettingsScreen}
+                options={{
+                  title: t('settings:customTracking'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="AddAssessment"
+                component={AddAssessment}
+                options={{
+                  title: t('measurements:title', {
+                    petName: activePet?.name,
+                  }),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="EditAssessment"
+                component={EditAssessment}
+                options={{
+                  title: t('measurements:title', {
+                    petName: activePet?.name,
+                  }),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="AllNotes"
+                component={AllNotesScreen}
+                options={{
+                  title: t('measurements:notes'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen
+                name="AllAssessments"
+                component={AllAssessmentsScreen}
+                options={{
+                  title: t('measurements:allAssessments'),
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen name="DebugScreen" component={DebugScreen} />
+              <Stack.Screen 
+                name="WatermelonTest" 
+                component={WatermelonTest} 
+                options={{
+                  title: 'WatermelonDB Test',
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+              <Stack.Screen 
+                name="WatermelonDBIntegration" 
+                component={WatermelonDBIntegration} 
+                options={{
+                  title: 'WatermelonDB Integration',
+                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
+      </DatabaseProvider>
     </KeyboardAvoidingView>
   );
 };

@@ -16,6 +16,8 @@ export type RootStackParamList = {
   AllNotes: undefined;
   AllAssessments: undefined;
   DebugScreen: undefined;
+  WatermelonTest: undefined;
+  WatermelonDBIntegration: undefined;
 };
 
 export type WelcomeScreenNavigationProps = NativeStackScreenProps<
