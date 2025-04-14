@@ -1,13 +1,12 @@
 import moment from "moment";
-import { Measurement } from "@/app/models/Measurement";
-import { Pet } from "@/app/models/Pet";
 import { Results } from "realm";
 import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, ProcessedChartData } from "../types";
+import { Pet, Assessment } from "@/app/database";
 
 /**
  * Calculates the date range for a chart based on the provided assessments, pet status, and other parameters.
  *
- * @param {Results<Measurement> | null} assessments - The list of assessments or null if there are none.
+ * @param {Assessment[] | null} assessments - The list of assessments or null if there are none.
  * @param {Pet | undefined} pet - The pet object which may contain a paused date.
  * @param {boolean} isWeekly - Determines if the date range should be calculated on a weekly basis.
  * @param {number} maxDays - The maximum number of days to include in the date range.
@@ -15,7 +14,7 @@ import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, ProcessedChartData } fr
  * @returns {ChartDateRange} - An object containing the start and end dates of the calculated date range.
  */
 export const calculateDateRange = (
-  assessments: Results<Measurement> | null,
+  assessments: Assessment[] | null,
   pet: Pet | undefined,
   isWeekly: boolean,
   maxDays: number,
@@ -96,7 +95,7 @@ export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: bool
  */
 export const processDailyScores = (
   dateRange: Date[],
-  assessments: Results<Measurement> | null
+  assessments: Assessment[] | null
 ): ScoreMetadata[] => {
   if (!assessments?.length) {
     return dateRange.map((date, index) => ({
@@ -177,7 +176,7 @@ export const processDailyScores = (
  */
 export const processWeeklyScores = (
   dateRange: Date[],
-  assessments: Results<Measurement> | null
+  assessments: Assessment[] | null
 ): ScoreMetadata[] => {
   // Default score for weeks with no assessments
   let previousWeekScore: number = CHART_CONSTANTS.DEFAULT_SCORE;
@@ -238,7 +237,7 @@ export const processWeeklyScores = (
  * @param isWeekly - A boolean indicating whether the chart data should be processed weekly or daily.
  * @returns An object containing processed chart data, including scores, dot types, metadata, and labels.
  */
-export const generateChartData = (dateRange: Date[], assessments: Results<Measurement> | null, isWeekly: boolean): ProcessedChartData => {
+export const generateChartData = (dateRange: Date[], assessments: Assessment[] | null, isWeekly: boolean): ProcessedChartData => {
   const scoreData = isWeekly
     ? processWeeklyScores(dateRange, assessments)
     : processDailyScores(dateRange, assessments);

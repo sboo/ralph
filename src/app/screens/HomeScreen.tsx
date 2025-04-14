@@ -112,8 +112,9 @@ const HomeScreenComponent = ({
     if (!date) {
       date = new Date();
     }
-    const today = moment(date).format('YYYY-MM-DD');
-    const assessment = assessments?.find(m => m.date === today);
+    const assessmentDate = moment(date).format('YYYY-MM-DD');
+    const assessment = assessments?.find(m => m.date === assessmentDate);
+  
     if (assessment === undefined) {
       navigation.navigate('AddAssessment', {
         timestamp: date.getTime(),

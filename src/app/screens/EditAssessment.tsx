@@ -1,29 +1,32 @@
 import React from 'react';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
-import {useObject} from '@realm/react';
 import {useTheme} from 'react-native-paper';
-import {Measurement} from '@/app/models/Measurement';
-import {BSON} from 'realm';
 import {EditAssessmentScreenNavigationProps} from '@/features/navigation/types.tsx';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import usePet from '@/features/pets/hooks/usePet';
-import useAssessments from '@/features/assessments/hooks/useAssessments';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { database } from '@/app/database';
+import { Q } from '@nozbe/watermelondb';
+import { Pet } from '@/app/database/models/Pet';
+import { Assessment } from '@/app/database/models/Assessment';
+import { map } from 'rxjs/operators';
 
-const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
+// The presentational component
+const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
+  activePet: Pet | undefined,
+  assessment: Assessment | undefined
+}> = ({
   route,
   navigation,
+  activePet,
+  assessment
 }) => {
-  const _id = BSON.ObjectId.createFromHexString(route.params.assessmentId);
   const scrollToNotes = route.params.scrollToNotes;
-  const assessment = useObject(Measurement, _id);
   const theme = useTheme();
-  const {activePet} = usePet();
-  const {editAssessment, customTrackingSettings} = useAssessments(activePet);
 
-  if (!activePet) {
+  if (!activePet || !assessment) {
     navigation.goBack();
-    return;
+    return null;
   }
 
   const handleSubmit = async (
@@ -37,22 +40,29 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
     notes?: string,
     images?: string[],
   ) => {
-    if (assessment) {
-      await editAssessment(assessment, {
-        date: assessment!.createdAt,
-        hurt,
-        hunger,
-        hydration,
-        hygiene,
-        happiness,
-        mobility,
-        customValue,
-        notes,
-        images,
+    await database.write(async () => {
+      await assessment.update(record => {
+        record.hurt = hurt;
+        record.hunger = hunger;
+        record.hydration = hydration;
+        record.hygiene = hygiene;
+        record.happiness = happiness;
+        record.mobility = mobility;
+        if (customValue !== undefined) record.customValue = customValue;
+        if (notes !== undefined) record.notes = notes;
+        if (images) record.images = images;
+        record.score = Math.round((hurt + hunger + hydration + hygiene + happiness + mobility) / 6 * 10) / 10;
       });
-    }
+    });
     navigation.goBack();
   };
+
+  // Get custom tracking settings from the pet
+  const customTrackingSettings = activePet.customTrackingSettings ? 
+    (typeof activePet.customTrackingSettings === 'string' ? 
+      JSON.parse(activePet.customTrackingSettings) : 
+      activePet.customTrackingSettings) : 
+    {};
 
   return (
     <SafeAreaView
@@ -69,7 +79,7 @@ const EditAssessment: React.FC<EditAssessmentScreenNavigationProps> = ({
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
         <AssessmentItem
-          date={assessment!.createdAt}
+          date={new Date(assessment.date)}
           petName={activePet.name}
           petSpecies={activePet.species}
           assessment={assessment}
@@ -94,4 +104,27 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditAssessment;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables(['route'], ({ route }) => {
+  const assessmentId = route.params.assessmentId;
+  
+  // Get active pet
+  const activePetObservable = database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
+
+  // Get the assessment by ID
+  const assessmentObservable = database
+    .get<Assessment>('assessments')
+    .findAndObserve(assessmentId);
+
+  return {
+    activePet: activePetObservable,
+    assessment: assessmentObservable,
+  };
+});
+
+// Export the enhanced component
+export default enhance(EditAssessmentComponent);

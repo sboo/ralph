@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 import RatingSlider from '@/support/components/RatingSlider';
-import { Measurement } from '@/app/models/Measurement.ts';
 import NotesModal from './NotesModal';
 import { getImagePath } from '@/support/helpers/ImageHelper';
 import ImageView from 'react-native-image-viewing';
@@ -19,12 +18,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import { OptionText } from '@/support/helpers/TooltipHelper';
 import { CustomTrackingSettings } from '../helpers/customTracking';
+import { Assessment } from '@/app/database';
 
 interface Props {
   petName: string;
   petSpecies: string;
   date: Date;
-  assessment?: Measurement | null;
+  assessment?: Assessment | null;
   scrollToNotes?: boolean;
   customTracking: CustomTrackingSettings;
   onCancel: () => void;

@@ -4,24 +4,33 @@ import { LineChart } from 'react-native-chart-kit';
 import { Icon, useTheme } from 'react-native-paper';
 import moment from 'moment';
 import CustomDot from '@/support/components/CustomChartDot';
-import useAssessments from '@/features/assessments/hooks/useAssessments';
-import usePet from '@/features/pets/hooks/usePet';
 import { AssessmentChartProps, CHART_CONSTANTS, EMOTIONS } from '../types';
 import { calculateDateRange, generateDateRange, generateChartData } from '../utils/helperFunctions';
 import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { database } from '@/app/database';
+import { Q } from '@nozbe/watermelondb';
+import { Pet } from '@/app/database/models/Pet';
+import { Assessment } from '@/app/database/models/Assessment';
+import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-
-const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) => {
+// The presentational component
+const AssessmentChartComponent: React.FC<AssessmentChartProps & { 
+  activePet: Pet | undefined,
+  assessments: Assessment[] 
+}> = ({ 
+  onDataPointClick, 
+  activePet, 
+  assessments 
+}) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const chartScrollViewRef = useRef<ScrollView>();
   const theme = useTheme();
-  const { activePet } = usePet();
-  const { assessments } = useAssessments(activePet);
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
   const windowWidth = Dimensions.get('window').width;
 
-  
   const maxDays = isWeekly ? CHART_CONSTANTS.WEEKS_TO_SHOW * 7 : CHART_CONSTANTS.DAYS_TO_SHOW;
   const { startDate, endDate } = useMemo(
     () => calculateDateRange(assessments, activePet, isWeekly, maxDays),
@@ -39,7 +48,6 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
   );
 
   const handleDotPress = useCallback((index: number) => {
-
     if (!metadata[index]) return;
 
     const scoreData = metadata[index];
@@ -109,8 +117,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
         y={y}
         paused={Boolean(activePet?.pausedAt)}
         dotType={dotTypes[index]}
-        onPress={() => handleDotPress(index)}  // Add this line
-
+        onPress={() => handleDotPress(index)}
       />
     ),
     [dotTypes, activePet?.pausedAt, handleDotPress]
@@ -181,4 +188,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(AssessmentChart);
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => {
+  // Get active pet
+  const activePetObservable = database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
+
+  // Create assessments observable that depends on the active pet
+  const assessmentsObservable = activePetObservable.pipe(
+    switchMap(pet => {
+      if (!pet) {
+        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+      }
+      return database
+        .get<Assessment>('assessments')
+        .query(Q.where('pet_id', pet.id), Q.sortBy('created_at', 'asc'))
+        .observe();
+    })
+  );
+
+  return {
+    activePet: activePetObservable,
+    assessments: assessmentsObservable,
+  };
+});
+
+// Export the enhanced component
+export default enhance(AssessmentChartComponent);
