@@ -19,8 +19,11 @@ import AssessmentChart from '@/features/charts/components/AssessmentChart';
 import Tips from '@/features/tips/components/Tips';
 import TalkToVetTip from '@/features/tips/components/TalkToVetTip';
 import GetStartedTip from '@/features/tips/components/GetStartedTip';
-import usePet from '@/features/pets/hooks/usePet';
-import useAssessments from '@/features/assessments/hooks/useAssessments';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { Q } from '@nozbe/watermelondb';
+import { database } from '@/app/database';
+import { Pet } from '@/app/database/models/Pet';
+import { Assessment } from '@/app/database/models/Assessment';
 import { EVENT_NAMES, event } from '@/features/events';
 import { DateData } from 'react-native-calendars';
 import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
@@ -28,15 +31,27 @@ import AllNotes from '@/features/assessments/components/AllNotes';
 import { BlurView } from '@react-native-community/blur';
 import DeviceInfo from 'react-native-device-info';
 import { useAppearance } from '../themes/hooks/useAppearance';
+import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
-const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
+// The presentational component that will be enhanced with observables
+const HomeScreenComponent = ({ 
+  navigation, 
+  activePet, 
+  assessments, 
+  lastAssessments,
+  allPets
+}: HomeScreenNavigationProps & { 
+  activePet: Pet | undefined, 
+  assessments: Assessment[], 
+  lastAssessments: Assessment[],
+  allPets: Pet[]
+}) => {
   const { t } = useTranslation();
   const [averageScore, setAverageScore] = useState(60);
   const theme = useTheme();
   const { effectiveAppearance } = useAppearance();
-  const { activePet } = usePet();
   const { generateAndSharePDF } = useAssessmentExporter();
-  const { assessments, lastAssessments } = useAssessments(activePet);
   const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>('chart');
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -59,19 +74,19 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
 
   useEffect(() => {
     if (activePet) {
-      event.emit(EVENT_NAMES.FINISHED_SWITCHING_PET, activePet._id);
+      event.emit(EVENT_NAMES.FINISHED_SWITCHING_PET, activePet.id);
       setLoading(false);
     }
   }, [activePet]);
 
   useEffect(() => {
-    if (!activePet) {
+    if (!allPets || allPets.length === 0) {
       navigation.reset({
         index: 0,
         routes: [{ name: 'Welcome' }],
       });
     }
-  }, [activePet, navigation]);
+  }, [allPets, navigation]);
 
   const handleContentSizeChange = (width: number, height: number) => {
     setContentHeight(height);
@@ -81,19 +96,14 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
     setScrollViewHeight(event.nativeEvent.layout.height);
   };
 
-  const lastAssessment =
-    assessments && assessments.length > 0
-      ? assessments[assessments.length - 1]
-      : null;
+  const lastAssessment = assessments && assessments.length > 0 ? assessments[assessments.length - 1] : null;
 
   useEffect(() => {
     if (!lastAssessments?.length || lastAssessments.length < 5) {
       setAverageScore(60);
     } else {
       const lastSevenAssessments = lastAssessments.slice(0, 7);
-      const sum = lastSevenAssessments
-        .filter(assessment => assessment.createdAt !== undefined)
-        .reduce((acc, assessment) => acc + assessment.score, 0);
+      const sum = lastSevenAssessments.reduce((acc, assessment) => acc + assessment.score, 0);
       setAverageScore(sum / lastSevenAssessments.length);
     }
   }, [lastAssessments]);
@@ -110,7 +120,7 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
       });
     } else {
       navigation.navigate('EditAssessment', {
-        assessmentId: assessment._id.toHexString(),
+        assessmentId: assessment.id,
       });
     }
   };
@@ -166,7 +176,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
     }
   }
 
-
   // Create fade in/out animation functions
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
@@ -191,7 +200,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
       fadeIn();
     }
   }, [contentHeight, scrollViewHeight]);
-
 
   const hasNotch = DeviceInfo.hasNotch();
 
@@ -309,7 +317,6 @@ const HomeScreen: React.FC<HomeScreenNavigationProps> = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -371,4 +378,48 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => {
+  // Get active pet
+  const activePetObservable = database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
+
+  // Create assessments observable that depends on the active pet
+  const assessmentsObservable = activePetObservable.pipe(
+    switchMap(pet => {
+      if (!pet) {
+        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+      }
+      return database
+        .get<Assessment>('assessments')
+        .query(Q.where('pet_id', pet.id), Q.sortBy('created_at', 'asc'))
+        .observe();
+    })
+  );
+
+  // Create last assessments observable for the active pet
+  const lastAssessmentsObservable = activePetObservable.pipe(
+    switchMap(pet => {
+      if (!pet) {
+        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+      }
+      return database
+        .get<Assessment>('assessments')
+        .query(Q.where('pet_id', pet.id), Q.sortBy('created_at', 'desc'))
+        .observe();
+    })
+  );
+
+  return {
+    allPets: database.get<Pet>('pets').query(),
+    activePet: activePetObservable,
+    assessments: assessmentsObservable,
+    lastAssessments: lastAssessmentsObservable,
+  };
+});
+
+// Export the enhanced component
+export default enhance(HomeScreenComponent);
