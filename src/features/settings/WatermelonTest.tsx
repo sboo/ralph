@@ -113,7 +113,7 @@ const PetsList = () => {
           <Card key={pet.id} style={styles.petCard}>
             <Card.Content>
               <View style={styles.petHeader}>
-                <Text style={styles.petName}>{pet.name}</Text>
+                <Text style={styles.petName}>{pet.name} ({pet.id})</Text>
                 <Text style={[styles.activeStatus, 
                   {backgroundColor: pet.isActive ? '#d4edda' : '#f8d7da',
                    color: pet.isActive ? '#155724' : '#721c24'}]}>

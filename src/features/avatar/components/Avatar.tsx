@@ -3,16 +3,15 @@ import ImagePicker, {Image} from 'react-native-image-crop-picker';
 import {Badge, Avatar as BaseAvatar, useTheme} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
 import * as RNFS from '@dr.pogodin/react-native-fs';
-import {Pet} from '@/app/models/Pet';
-import {BSON} from 'realm';
 import {getImagePath} from '@/support/helpers/ImageHelper';
+import { Pet } from '@/app/database/models/Pet'; // Updated import from WatermelonDB models
 
 interface AvatarProps {
   mode?: 'edit' | 'view';
   size?: 'big' | 'small';
   pet?: Pet;
   onAvatarSelected?: (avatar: string | undefined) => void;
-  onAvatarViewModeTouch?: (petId: BSON.ObjectID | undefined) => void;
+  onAvatarViewModeTouch?: (petId: string | undefined) => void; // Changed from BSON.ObjectID to string
 }
 
 const Avatar: React.FC<AvatarProps> = ({
@@ -30,7 +29,7 @@ const Avatar: React.FC<AvatarProps> = ({
       openImagePicker();
     } else {
       if (onAvatarViewModeTouch) {
-        onAvatarViewModeTouch(pet?._id);
+        onAvatarViewModeTouch(pet?.id); // Using id instead of _id
       }
     }
   };

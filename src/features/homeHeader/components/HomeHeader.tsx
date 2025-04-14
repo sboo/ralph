@@ -1,16 +1,21 @@
-import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
 import Avatar from '@/features/avatar/components/Avatar';
-import usePet from '@/features/pets/hooks/usePet';
-import {BSON} from 'realm';
-import {event, EVENT_NAMES} from '@/features/events';
+import { event, EVENT_NAMES } from '@/features/events';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { Q } from '@nozbe/watermelondb';
+import { database } from '@/app/database';
+import { Pet } from '@/app/database/models/Pet';
+import { switchActivePet } from '@/app/database/hooks'; // Updated import path
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-const HomeHeader: React.FC = () => {
-  const {t} = useTranslation();
+// The presentational component
+const HomeHeaderComponent = ({ activePet, inactivePets }: { activePet: Pet | undefined, inactivePets: Pet[] }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
-  const {activePet, inactivePets, switchActivePet, headerColor} = usePet();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -23,12 +28,32 @@ const HomeHeader: React.FC = () => {
     return t('greeting_evening');
   };
 
-  const switchPet = (petId: BSON.ObjectID | undefined) => {
+  const switchPet = (petId: string | undefined) => {
     if (petId) {
       event.emit(EVENT_NAMES.SWITCHING_PET, petId);
       switchActivePet(petId);
     }
   };
+
+  // Determine header color based on active pet index
+  const headerColor = useMemo(() => {
+    if (activePet?.headerColor) {
+      return activePet.headerColor;
+    }
+
+    // If no custom header color, use the theme colors in rotation
+    const petIndex = activePet ? 0 : 0; // Fallback to 0 if no active pet
+    switch (petIndex % 3) {
+      case 0:
+        return theme.colors.primary;
+      case 1:
+        return theme.colors.secondary;
+      case 2:
+        return theme.colors.tertiary;
+      default:
+        return theme.colors.primary;
+    }
+  }, [activePet, theme.colors]);
 
   return (
     <View
@@ -37,10 +62,10 @@ const HomeHeader: React.FC = () => {
         ...styles.container,
       }}>
       <View style={styles.greetingsContainer}>
-        <Text style={{color: theme.colors.onPrimary, ...styles.greeting}}>
+        <Text style={{ color: theme.colors.onPrimary, ...styles.greeting }}>
           {getGreeting()}
         </Text>
-        <Text style={{color: theme.colors.onPrimary, ...styles.petName}}>
+        <Text style={{ color: theme.colors.onPrimary, ...styles.petName }}>
           {activePet?.name}
         </Text>
       </View>
@@ -48,19 +73,22 @@ const HomeHeader: React.FC = () => {
         {inactivePets.map(pet => {
           return (
             <Avatar
-              key={pet._id.toHexString()}
+              key={pet.id}
               pet={pet}
               size={'small'}
               onAvatarViewModeTouch={switchPet}
             />
           );
         })}
-        <Avatar key={activePet?._id.toHexString()} pet={activePet} />
+        {activePet && (
+          <Avatar key={activePet.id} pet={activePet} />
+        )}
       </View>
     </View>
   );
 };
 
+// Styles remain the same
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -94,4 +122,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeHeader;
+// Connect with WatermelonDB observables
+const enhance = withObservables([], () => ({
+  activePet: database.get<Pet>('pets').query(Q.where('is_active', true)).observeWithColumns(['is_active']).pipe(
+    // Handle empty results by returning undefined for activePet
+    map(pets => pets.length > 0 ? pets[0] : undefined)
+  ),
+  inactivePets: database.get<Pet>('pets').query(Q.where('is_active', false)),
+}));
+
+// Export the enhanced component
+export default enhance(HomeHeaderComponent);
