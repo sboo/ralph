@@ -10,6 +10,7 @@ import { Q } from '@nozbe/watermelondb';
 import { Pet } from '@/app/database/models/Pet';
 import { Assessment } from '@/app/database/models/Assessment';
 import { map } from 'rxjs/operators';
+import { calculateScore } from '@/features/assessments/helpers/helperFunctions';
 
 // The presentational component
 const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
@@ -40,6 +41,18 @@ const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
     notes?: string,
     images?: string[],
   ) => {
+
+    const score = calculateScore({
+      date: assessment.date,
+      hurt,
+      hunger,
+      hydration,
+      hygiene,
+      happiness,
+      mobility,
+      customValue,
+    });
+
     await database.write(async () => {
       await assessment.update(record => {
         record.hurt = hurt;
@@ -51,7 +64,7 @@ const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
         if (customValue !== undefined) record.customValue = customValue;
         if (notes !== undefined) record.notes = notes;
         if (images) record.images = images;
-        record.score = Math.round((hurt + hunger + hydration + hygiene + happiness + mobility) / 6 * 10) / 10;
+        record.score = score;
       });
     });
     navigation.goBack();

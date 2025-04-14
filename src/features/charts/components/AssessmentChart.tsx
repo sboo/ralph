@@ -203,10 +203,17 @@ const enhance = withObservables([], () => {
       if (!pet) {
         return new Observable<Assessment[]>(subscriber => subscriber.next([]));
       }
+      
+      // Observe the assessment collection with specific columns to ensure updates are detected
       return database
         .get<Assessment>('assessments')
-        .query(Q.where('pet_id', pet.id), Q.sortBy('created_at', 'asc'))
-        .observe();
+        .query(
+          Q.where('pet_id', pet.id),
+          Q.sortBy('created_at', 'asc')
+        )
+        .observeWithColumns([
+          'score'
+        ]);
     })
   );
 

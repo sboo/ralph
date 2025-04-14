@@ -5,10 +5,11 @@ import {AddAssessmentScreenNavigationProps} from '@/features/navigation/types.ts
 import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import { withObservables } from '@nozbe/watermelondb/react';
-import { database } from '@/app/database';
+import { Assessment, database } from '@/app/database';
 import { Q } from '@nozbe/watermelondb';
 import { Pet } from '@/app/database/models/Pet';
 import { map } from 'rxjs/operators';
+import { calculateScore } from '@/features/assessments/helpers/helperFunctions';
 
 // The presentational component
 const AddAssessmentComponent: React.FC<AddAssessmentScreenNavigationProps & { 
@@ -37,9 +38,22 @@ const AddAssessmentComponent: React.FC<AddAssessmentScreenNavigationProps & {
     notes?: string,
     images?: string[],
   ) => {
+
+    const dateString = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const score = calculateScore({
+          date: dateString,
+          hurt,
+          hunger,
+          hydration,
+          hygiene,
+          happiness,
+          mobility,
+          customValue,
+        });
+
     await database.write(async () => {
-      await database.get('assessments').create(record => {
-        record.date = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+      await database.get<Assessment>('assessments').create(record => {
+        record.date = dateString
         record.hurt = hurt;
         record.hunger = hunger;
         record.hydration = hydration;
@@ -49,7 +63,7 @@ const AddAssessmentComponent: React.FC<AddAssessmentScreenNavigationProps & {
         if (customValue !== undefined) record.customValue = customValue;
         if (notes) record.notes = notes;
         record.images = images || [];
-        record.score = Math.round((hurt + hunger + hydration + hygiene + happiness + mobility) / 6 * 10) / 10;
+        record.score = score;
         record.pet.set(activePet);
       });
     });
