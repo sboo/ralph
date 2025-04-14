@@ -63,7 +63,13 @@ const PetAssessments = ({ pet }: { pet: Pet }) => {
             <Text>Score: {assessment.score}</Text>
             <Text>Hurt: {assessment.hurt}, Hunger: {assessment.hunger}, Hydration: {assessment.hydration}</Text>
             <Text>Hygiene: {assessment.hygiene}, Happiness: {assessment.happiness}, Mobility: {assessment.mobility}</Text>
+            {assessment.customValue !== undefined && (
+              <Text style={styles.customValueText}>Custom Value: {assessment.customValue}</Text>
+            )}
             {assessment.notes && <Text>Notes: {assessment.notes}</Text>}
+            {assessment.images && assessment.images.length > 0 && (
+              <Text>Images: {assessment.images.length} image(s)</Text>
+            )}
           </View>
         ))
       ) : (
@@ -118,6 +124,18 @@ const PetsList = () => {
               <Text>Species: {pet.species}</Text>
               <Text>Assessment Frequency: {pet.assessmentFrequency}</Text>
               <Text>Notifications: {pet.notificationsEnabled ? 'Enabled' : 'Disabled'}</Text>
+              
+              {/* Display custom tracking settings if present */}
+              {pet.customTrackingSettings && Object.keys(pet.customTrackingSettings).length > 0 && (
+                <View style={styles.customSettingsContainer}>
+                  <Text style={styles.sectionSubtitle}>Custom Tracking Settings:</Text>
+                  {Object.entries(pet.customTrackingSettings).map(([key, value]) => (
+                    <Text key={key} style={styles.customSettingItem}>
+                      {key}: {JSON.stringify(value)}
+                    </Text>
+                  ))}
+                </View>
+              )}
               
               <Divider style={styles.divider} />
               
@@ -415,6 +433,27 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#888',
     marginTop: 10,
+  },
+  customSettingsContainer: {
+    marginTop: 10,
+    padding: 8,
+    backgroundColor: '#f0f8ff',
+    borderRadius: 4,
+  },
+  sectionSubtitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  customSettingItem: {
+    fontSize: 14,
+    color: '#555',
+    marginLeft: 8,
+    marginTop: 2,
+  },
+  customValueText: {
+    color: '#0066cc',
+    fontWeight: '500',
   },
 });
 
