@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
@@ -9,13 +9,17 @@ import { Q } from '@nozbe/watermelondb';
 import { database } from '@/app/database';
 import { Pet } from '@/app/database/models/Pet';
 import { switchActivePet } from '@/app/database/hooks'; // Updated import path
-import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // The presentational component
-const HomeHeaderComponent = ({ activePet, inactivePets }: { activePet: Pet | undefined, inactivePets: Pet[] }) => {
+const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: { 
+  activePet: Pet | undefined, 
+  inactivePets: Pet[],
+  allPets: Pet[]
+}) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const [headerColor, setHeaderColor] = useState(theme.colors.primary);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -36,24 +40,36 @@ const HomeHeaderComponent = ({ activePet, inactivePets }: { activePet: Pet | und
   };
 
   // Determine header color based on active pet index
-  const headerColor = useMemo(() => {
+  useEffect(() => {
     if (activePet?.headerColor) {
-      return activePet.headerColor;
+      setHeaderColor(activePet.headerColor);
+      return;
     }
 
-    // If no custom header color, use the theme colors in rotation
-    const petIndex = activePet ? 0 : 0; // Fallback to 0 if no active pet
+    // If no active pet, use primary color
+    if (!activePet || allPets.length === 0) {
+      setHeaderColor(theme.colors.primary);
+      return;
+    }
+
+    // Find the index of the active pet in the pets array
+    const petIndex = allPets.findIndex(pet => pet.id === activePet.id);
+    
+    // Use modulo to cycle through colors after 3 pets
     switch (petIndex % 3) {
       case 0:
-        return theme.colors.primary;
+        setHeaderColor(theme.colors.primary);
+        break;
       case 1:
-        return theme.colors.secondary;
+        setHeaderColor(theme.colors.secondary);
+        break;
       case 2:
-        return theme.colors.tertiary;
+        setHeaderColor(theme.colors.tertiary);
+        break;
       default:
-        return theme.colors.primary;
+        setHeaderColor(theme.colors.primary);
     }
-  }, [activePet, theme.colors]);
+  }, [activePet, allPets, theme.colors]);
 
   return (
     <View
@@ -124,6 +140,7 @@ const styles = StyleSheet.create({
 
 // Connect with WatermelonDB observables
 const enhance = withObservables([], () => ({
+  allPets: database.get<Pet>('pets').query(),
   activePet: database.get<Pet>('pets').query(Q.where('is_active', true)).observeWithColumns(['is_active']).pipe(
     // Handle empty results by returning undefined for activePet
     map(pets => pets.length > 0 ? pets[0] : undefined)
