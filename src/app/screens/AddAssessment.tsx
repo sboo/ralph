@@ -10,6 +10,7 @@ import { Q } from '@nozbe/watermelondb';
 import { Pet } from '@/app/database/models/Pet';
 import { map } from 'rxjs/operators';
 import { calculateScore } from '@/features/assessments/helpers/helperFunctions';
+import moment from 'moment';
 
 // The presentational component
 const AddAssessmentComponent: React.FC<AddAssessmentScreenNavigationProps & { 
@@ -39,9 +40,11 @@ const AddAssessmentComponent: React.FC<AddAssessmentScreenNavigationProps & {
     images?: string[],
   ) => {
 
-    const dateString = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+    const assessmentDate = moment(date).format('YYYY-MM-DD');
+  
     const score = calculateScore({
-          date: dateString,
+          date: assessmentDate,
           hurt,
           hunger,
           hydration,
@@ -53,7 +56,7 @@ const AddAssessmentComponent: React.FC<AddAssessmentScreenNavigationProps & {
 
     await database.write(async () => {
       await database.get<Assessment>('assessments').create(record => {
-        record.date = dateString
+        record.date = assessmentDate
         record.hurt = hurt;
         record.hunger = hunger;
         record.hydration = hydration;
