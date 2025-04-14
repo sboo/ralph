@@ -2,6 +2,16 @@ import { Model } from '@nozbe/watermelondb';
 import { field, date, relation, text, readonly, json } from '@nozbe/watermelondb/decorators';
 import { associations } from '@nozbe/watermelondb/Model';
 
+// Sanitizer function for images array
+const sanitizeImages = (rawImages: any): string[] => {
+  // Ensure we return an array of strings even if we get invalid input
+  if (Array.isArray(rawImages)) {
+    return rawImages.filter(item => typeof item === 'string');
+  }
+  // Return empty array for invalid inputs
+  return [];
+};
+
 export class Assessment extends Model {
   static table = 'assessments';
   static associations = {
@@ -18,7 +28,7 @@ export class Assessment extends Model {
   @field('mobility') mobility!: number;
   @field('custom_value') customValue?: number;
   @text('notes') notes?: string;
-  @json('images', json => json ? JSON.parse(json) : []) images!: string[];
+  @json('images', sanitizeImages) images!: string[];
   @relation('pets', 'pet_id') pet!: any;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;

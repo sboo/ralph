@@ -22,6 +22,7 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
   // Open the Realm database
   const realm = await Realm.open({
     schema: [RealmPet, RealmMeasurement],
+    schemaVersion: 12,
   });
 
   try {
