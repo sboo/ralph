@@ -12,6 +12,7 @@ import { Measurement as RealmMeasurement } from '@/app/models/Measurement';
 interface MigrationResult {
   success: boolean;
   message: string;
+  hadNotifications?: boolean;
   error?: unknown;
 }
 const NOTIFICATION_PREFIX = 'eu.sboo.ralph.reminder_';
@@ -31,10 +32,10 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
 
   try {
     // Start a batch operation in WatermelonDB
+    let hadNotifications = false;
+    
     await database.write(async () => {
       console.log('Starting migration from Realm to WatermelonDB...');
-
-      let hadNotifictions = false;
 
       // --- Migrate Pets ---
       const realmPets = realm.objects<RealmPet>('Pet');
@@ -57,7 +58,7 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
         };
 
         if (pet.notificationsEnabled) {
-          hadNotifictions
+          hadNotifications = true;
           await notifee.cancelAllNotifications([
             'eu.sboo.ralph.reminder',
             getNotificationId(realmPet._id.toHexString()),
@@ -117,7 +118,7 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
       console.log('Migration completed successfully!');
     });
 
-    return { success: true, message: 'Migration completed successfully!' };
+    return { success: true, message: 'Migration completed successfully!', hadNotifications };
   } catch (error: unknown) {
     console.error('Migration failed:', error);
     return {

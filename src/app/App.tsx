@@ -7,9 +7,13 @@ import {
 } from 'react-native';
 import {
   adaptNavigationTheme,
+  Button,
+  Dialog,
   MD3DarkTheme,
   MD3LightTheme,
   PaperProvider,
+  Portal,
+  Text,
 } from 'react-native-paper';
 import {
   DarkTheme as NavigationDarkTheme,
@@ -71,33 +75,8 @@ const VALID_PRODUCT_IDS = [
 
 // Migration key for AsyncStorage
 const REALM_MIGRATION_COMPLETE_KEY = 'ralph_realm_to_watermelon_migration_complete';
+const NOTIFICATIONS_REACTIVATION_KEY = 'ralph_notifications_reactivation_needed';
 
-// Function to check and run migration if needed
-const checkAndRunMigration = async () => {
-  try {
-    // Check if migration has already been run
-    const migrationComplete = await AsyncStorage.getItem(REALM_MIGRATION_COMPLETE_KEY);
-    if (migrationComplete === 'true') {
-      console.log('Migration from Realm to WatermelonDB already completed.');
-      return;
-    }
-    
-    // If not, run the migration
-    console.log('Starting migration from Realm to WatermelonDB...');
-    const result = await migrateFromRealm();
-    
-    if (result.success) {
-      // Mark migration as complete in AsyncStorage
-      await AsyncStorage.setItem(REALM_MIGRATION_COMPLETE_KEY, 'true');
-      console.log('Migration completed and marked as done.');
-    } else {
-      console.error('Migration failed:', result.message);
-      // We don't mark as complete so it will try again next time
-    }
-  } catch (error) {
-    console.error('Error during migration process:', error);
-  }
-};
 
 // Initialize Stack Navigator
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -132,6 +111,41 @@ const App: React.FC<{
   // State
   const [handledInitialNotificationId, setHandledInitialNotificationId] =
     useState<string | undefined>();
+  const [showNotificationReactivationDialog, setShowNotificationReactivationDialog] =
+    useState<boolean>(false);
+
+  // Function to check and run migration if needed
+  const checkAndRunMigration = async () => {
+    try {
+      // Check if migration has already been run
+      const migrationComplete = await AsyncStorage.getItem(REALM_MIGRATION_COMPLETE_KEY);
+      if (migrationComplete === 'true') {
+        console.log('Migration from Realm to WatermelonDB already completed.');
+        return;
+      }
+
+      // If not, run the migration
+      console.log('Starting migration from Realm to WatermelonDB...');
+      const result = await migrateFromRealm();
+
+      if (result.success) {
+        // Mark migration as complete in AsyncStorage
+        await AsyncStorage.setItem(REALM_MIGRATION_COMPLETE_KEY, 'true');
+
+        // If user had notifications enabled, store flag to show dialog
+        if (result.hadNotifications) {
+          setShowNotificationReactivationDialog(true);
+        }
+
+        console.log('Migration completed and marked as done.');
+      } else {
+        console.error('Migration failed:', result.message);
+        // We don't mark as complete so it will try again next time
+      }
+    } catch (error) {
+      console.error('Error during migration process:', error);
+    }
+  };
 
   // Theme setup
   const { LightTheme, DarkTheme } = adaptNavigationTheme({
@@ -224,7 +238,7 @@ const App: React.FC<{
     },
     [database],
   );
-    
+
 
   // Effects
   // Separate initial check effect
@@ -259,31 +273,31 @@ const App: React.FC<{
   ]);
 
   useEffect(() => {
-  
-      // If no active pet, use primary color
-      if (!activePet || allPets.length === 0) {
+
+    // If no active pet, use primary color
+    if (!activePet || allPets.length === 0) {
+      setHeaderColor(theme.colors.primary);
+      return;
+    }
+
+    // Find the index of the active pet in the pets array
+    const petIndex = allPets.findIndex(pet => pet.id === activePet.id);
+
+    // Use modulo to cycle through colors after 3 pets
+    switch (petIndex % 3) {
+      case 0:
         setHeaderColor(theme.colors.primary);
-        return;
-      }
-  
-      // Find the index of the active pet in the pets array
-      const petIndex = allPets.findIndex(pet => pet.id === activePet.id);
-  
-      // Use modulo to cycle through colors after 3 pets
-      switch (petIndex % 3) {
-        case 0:
-          setHeaderColor(theme.colors.primary);
-          break;
-        case 1:
-          setHeaderColor(theme.colors.secondary);
-          break;
-        case 2:
-          setHeaderColor(theme.colors.tertiary);
-          break;
-        default:
-          setHeaderColor(theme.colors.primary);
-      }
-    }, [activePet, allPets, theme.colors]);
+        break;
+      case 1:
+        setHeaderColor(theme.colors.secondary);
+        break;
+      case 2:
+        setHeaderColor(theme.colors.tertiary);
+        break;
+      default:
+        setHeaderColor(theme.colors.primary);
+    }
+  }, [activePet, allPets, theme.colors]);
 
   useEffect(() => {
     if (currentPurchaseError) {
@@ -308,6 +322,7 @@ const App: React.FC<{
     checkAndRunMigration();
   }, []);
 
+
   // Render
   return (
     <KeyboardAvoidingView
@@ -315,6 +330,23 @@ const App: React.FC<{
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <DatabaseProvider>
         <PaperProvider theme={theme}>
+          {/* Notification Reactivation Dialog */}
+          <Portal>
+            <Dialog
+              visible={showNotificationReactivationDialog}
+              onDismiss={() => setShowNotificationReactivationDialog(false)}>
+              <Dialog.Title>{t('notifications:reactivation_needed')}</Dialog.Title>
+              <Dialog.Content>
+                <Text variant="bodyMedium">
+                  {t('notifications:reactivation_message')}
+                </Text>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button onPress={() => setShowNotificationReactivationDialog(false)}>{t('buttons:close')}</Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+
           <NavigationContainer onStateChange={onNavigationStateChange}>
             <Stack.Navigator
               initialRouteName="Home"
