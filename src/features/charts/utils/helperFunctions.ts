@@ -240,9 +240,6 @@ export const processWeeklyScores = (
  * @returns An object containing processed chart data, including scores, dot types, metadata, and labels.
  */
 export const generateChartData = (dateRange: Date[], assessments: Assessment[] | null, isWeekly: boolean): ProcessedChartData => {
-  console.log("dateRange", dateRange[0].toString(), dateRange[1].toString());
-  console.log("assessments", assessments);
-  console.log('isWeekly', isWeekly);
   const scoreData = isWeekly
     ? processWeeklyScores(dateRange, assessments)
     : processDailyScores(dateRange, assessments);

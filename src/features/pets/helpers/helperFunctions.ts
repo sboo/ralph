@@ -1,4 +1,5 @@
-import { AssessmentFrequency, CustomTrackingSettings } from "@/app/database/models/Pet";
+import { AssessmentFrequency, CustomTrackingSettings, Pet } from "@/app/database/models/Pet";
+import { MD3Theme } from "react-native-paper/src/types";
 
 export interface PetData {
   id?: string;
@@ -12,4 +13,21 @@ export interface PetData {
   pausedAt?: Date;
   delete?: boolean;
   customTrackingSettings?: CustomTrackingSettings;
+}
+
+export const getHeaderColor = (allPets: Pet[], petId: string, theme: MD3Theme): string => {
+  const petIndex = allPets.findIndex(pet => pet.id === petId);
+  switch (petIndex % 3) {
+    case 0:
+      return theme.colors.primary;
+      break;
+    case 1:
+      return theme.colors.secondary;
+      break;
+    case 2:
+      return theme.colors.tertiary;
+      break;
+    default:
+      return theme.colors.primary;
+  }
 }

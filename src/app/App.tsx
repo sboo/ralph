@@ -60,6 +60,8 @@ import { Q } from '@nozbe/watermelondb';
 import { database } from '@/app/database';
 import { Pet } from '@/app/database/models/Pet';
 import { map } from 'rxjs/operators';
+import MigrationScreen from './screens/MigrationScreen';
+import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
 
 // Constants
 const VALID_PRODUCT_IDS = [
@@ -106,32 +108,42 @@ const App: React.FC<{
   // State
   const [handledInitialNotificationId, setHandledInitialNotificationId] =
     useState<string | undefined>();
+  const [isMigrating, setIsMigrating] = useState<boolean>(false);
+  const [migrationComplete, setMigrationComplete] = useState<boolean | null>(null);
   
   // Function to check and run migration if needed
   const checkAndRunMigration = async () => {
     try {
       // Check if migration has already been run
-      const migrationComplete = await AsyncStorage.getItem(REALM_MIGRATION_COMPLETE_KEY);
-      if (migrationComplete === 'true') {
+      const migrationCompleteFromStorage = await AsyncStorage.getItem(REALM_MIGRATION_COMPLETE_KEY);
+      
+      if (migrationCompleteFromStorage === 'true') {
         console.log('Migration from Realm to WatermelonDB already completed.');
+        setMigrationComplete(true);
         return;
       }
 
       // If not, run the migration
       console.log('Starting migration from Realm to WatermelonDB...');
+      setIsMigrating(true);
+      
       const result = await migrateFromRealm();
 
       if (result.success) {
         // Mark migration as complete in AsyncStorage
         await AsyncStorage.setItem(REALM_MIGRATION_COMPLETE_KEY, 'true');
-
+        setMigrationComplete(true);
         console.log('Migration completed and marked as done.');
       } else {
         console.error('Migration failed:', result.message);
+        setMigrationComplete(false);
         // We don't mark as complete so it will try again next time
       }
     } catch (error) {
       console.error('Error during migration process:', error);
+      setMigrationComplete(false);
+    } finally {
+      setIsMigrating(false);
     }
   };
 
@@ -262,30 +274,14 @@ const App: React.FC<{
 
   useEffect(() => {
 
-    // If no active pet, use primary color
-    if (!activePet || allPets.length === 0) {
-      setHeaderColor(theme.colors.primary);
-      return;
-    }
-
-    // Find the index of the active pet in the pets array
-    const petIndex = allPets.findIndex(pet => pet.id === activePet.id);
-
-    // Use modulo to cycle through colors after 3 pets
-    switch (petIndex % 3) {
-      case 0:
-        setHeaderColor(theme.colors.primary);
-        break;
-      case 1:
-        setHeaderColor(theme.colors.secondary);
-        break;
-      case 2:
-        setHeaderColor(theme.colors.tertiary);
-        break;
-      default:
-        setHeaderColor(theme.colors.primary);
-    }
-  }, [activePet, allPets, theme.colors]);
+    setHeaderColor(
+      getHeaderColor(
+        allPets,
+        activePet?.id || '',
+        theme,
+      ),  
+    )
+  }, [activePet, allPets, theme]);
 
   useEffect(() => {
     if (currentPurchaseError) {
@@ -312,6 +308,10 @@ const App: React.FC<{
 
 
   // Render
+  if (isMigrating || migrationComplete === null) {
+    return <MigrationScreen />;
+  }
+
   return (
     <KeyboardAvoidingView
       style={styles.keyboardViewContainer}
@@ -325,6 +325,11 @@ const App: React.FC<{
               screenOptions={{
                 header: props => <CustomNavigationBar {...props} />,
               }}>
+              <Stack.Screen
+                name="Migration"
+                component={MigrationScreen}
+                options={{ headerShown: false }}
+              />
               <Stack.Screen
                 name="Home"
                 component={HomeScreen}

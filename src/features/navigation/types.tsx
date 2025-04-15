@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Onboarding: undefined;
   Settings: undefined;
   Home: undefined;
+  Migration: undefined;
   AddPet: undefined;
   EditPet: undefined;
   AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean, customTrackingSettings: CustomTrackingSettings};
@@ -81,4 +82,9 @@ export type AllNotesNavigationProps = NativeStackScreenProps<
 export type AllAssessmentsScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'AllAssessments'
+>;
+
+export type MigrationScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Migration'
 >;

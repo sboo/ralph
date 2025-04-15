@@ -20,6 +20,7 @@ const useAssessmentExporter = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [activePet, setActivePet] = useState<Pet | undefined>(undefined);
+  const [headerColor, setHeaderColor] = useState(theme.colors.primary);
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [customTrackingSettings, setCustomTrackingSettings] = useState<any>({});
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
@@ -33,7 +34,7 @@ const useAssessmentExporter = () => {
       .pipe(map(pets => pets.length > 0 ? pets[0] : undefined))
       .subscribe(pet => {
         setActivePet(pet);
-        
+
         // Parse custom tracking settings
         if (pet?.customTrackingSettings) {
           try {
@@ -128,10 +129,10 @@ const useAssessmentExporter = () => {
         ? padding.left + (chartWidth / 2)
         : padding.left + (index * (chartWidth / (scores.length - 1)));
       const y = padding.top + (chartHeight - (chartHeight * score / 60));
-      return { 
-        x, 
-        y, 
-        score: score, 
+      return {
+        x,
+        y,
+        score: score,
         date: labels[index],
         dotType: dotTypes[index]
       };
@@ -226,12 +227,12 @@ const useAssessmentExporter = () => {
 
         <!-- Points with different styles based on dotType -->
         ${points.map(point => {
-          const style = getPointStyle(point.dotType);
-          return `
+      const style = getPointStyle(point.dotType);
+      return `
             <circle cx="${point.x}" cy="${point.y}" r="${style.radius}"
                     fill="${style.fill}" stroke="${style.stroke}" stroke-width="${style.strokeWidth}" />
           `;
-        }).join('')}
+    }).join('')}
 
         ${hasOlderData ? `
           <text x="${width - padding.right}" 
@@ -246,21 +247,6 @@ const useAssessmentExporter = () => {
     `;
   };
 
-  // Get header color function based on pet
-  const getHeaderColor = useCallback((theme: any) => {
-    if (!activePet) {
-      return theme.colors.primary;
-    }
-
-    if (activePet.headerColor) {
-      return activePet.headerColor;
-    }
-
-    // Return a default color if needed
-    return theme.colors.primary;
-  }, [activePet]);
-
-  const headerColor = getHeaderColor(theme);
 
   const getHtmlContent = async () => {
     const base64Images = await getAllAssessmentBase64ImagesList();
@@ -451,7 +437,7 @@ const useAssessmentExporter = () => {
             ${assessment.customValue !== undefined && assessment.customValue !== null ?
               `<p class="item" style="background-color: ${getItemColor(
                 assessment.customValue,
-                )}">${customTrackingSettings.customTrackingName  || t('settings:customTrackingFallbackLabel')}:${assessment.customValue}</p>`
+              )}">${customTrackingSettings.customTrackingName || t('settings:customTrackingFallbackLabel')}:${assessment.customValue}</p>`
               : ''
             }
                     </div>

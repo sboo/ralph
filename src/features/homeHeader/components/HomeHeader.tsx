@@ -9,6 +9,7 @@ import { Q } from '@nozbe/watermelondb';
 import { database } from '@/app/database';
 import { Pet } from '@/app/database/models/Pet';
 import { map } from 'rxjs/operators';
+import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
 
 // The presentational component
 const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
@@ -53,31 +54,10 @@ const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
 
   // Determine header color based on active pet index
   useEffect(() => {
-
-    // If no active pet, use primary color
-    if (!activePet || allPets.length === 0) {
-      setHeaderColor(theme.colors.primary);
-      return;
-    }
-
-    // Find the index of the active pet in the pets array
-    const petIndex = allPets.findIndex(pet => pet.id === activePet.id);
-
-    // Use modulo to cycle through colors after 3 pets
-    switch (petIndex % 3) {
-      case 0:
-        setHeaderColor(theme.colors.primary);
-        break;
-      case 1:
-        setHeaderColor(theme.colors.secondary);
-        break;
-      case 2:
-        setHeaderColor(theme.colors.tertiary);
-        break;
-      default:
-        setHeaderColor(theme.colors.primary);
-    }
-  }, [activePet, allPets, theme.colors]);
+    setHeaderColor(
+      getHeaderColor(allPets, activePet?.id || '', theme)
+    );
+  }, [activePet, allPets, theme]);
 
   return (
     <View

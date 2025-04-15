@@ -105,28 +105,6 @@ const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
             {t('settings:review_app')}
           </Button>
         </View>
-        
-        <Divider style={styles.divider} bold={true} />
-        <View style={styles.inputRowReview}>
-          <Text>Test WatermelonDB Migration</Text>
-          <Button 
-            onPress={() => navigation.navigate('WatermelonTest' as never)} 
-            icon={'database'} 
-            mode={'outlined'}>
-            WatermelonDB Test
-          </Button>
-        </View>
-        
-        <Divider style={styles.divider} bold={true} />
-        <View style={styles.inputRowReview}>
-          <Text>Comprehensive WatermelonDB Integration Demo</Text>
-          <Button 
-            onPress={() => navigation.navigate('WatermelonDBIntegration' as never)} 
-            icon={'database-plus'} 
-            mode={'outlined'}>
-            Integration Demo
-          </Button>
-        </View>
       </View>
       <View style={styles.buttons}>
         <Button onPress={onDone} mode={'contained'}>
