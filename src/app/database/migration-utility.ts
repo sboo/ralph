@@ -1,8 +1,9 @@
-import Realm, { BSON } from 'realm';
+import Realm from 'realm';
 import { database, petCollection, assessmentCollection } from '@/app/database';
 import { AssessmentFrequency, Pet as WatermelonPet } from '@/app/database/models/Pet';
 import { Assessment as WatermelonAssessment } from '@/app/database/models/Assessment';
 import notifee from '@notifee/react-native';
+import {onMigration} from '@/app/models';
 
 // Original Realm models
 import { Pet as RealmPet } from '@/app/models/Pet';
@@ -16,14 +17,42 @@ interface MigrationResult {
   message: string;
   error?: unknown;
 }
+
+const resetDatabase = async () => {
+    try {
+      await database.write(async () => {
+        // Delete all assessments first (due to foreign key constraints)
+        const allAssessments = await assessmentCollection.query().fetch();
+        for (const assessment of allAssessments) {
+          await assessment.destroyPermanently();
+        }
+        
+        // Then delete all pets
+        const allPets = await petCollection.query().fetch();
+        for (const pet of allPets) {
+          await pet.destroyPermanently();
+        }
+      });
+      
+    } catch (error) {
+      console.error('Error resetting database:', error);
+    }
+  };
+
 /**
  * Migrate data from Realm to WatermelonDB
  */
 export const migrateFromRealm = async (): Promise<MigrationResult> => {
-  // Open the Realm database
+
+  // Reset the database before migration
+  await resetDatabase();
+  console.log('Database reset successfully.');
+  
+  // Open the Realm database, and make sure we're on version 12
   const realm = await Realm.open({
     schema: [RealmPet, RealmMeasurement],
     schemaVersion: 12,
+    onMigration: onMigration
   });
 
   try {
@@ -64,7 +93,7 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
           record.species = pet.species;
           record.name = pet.name;
           if (pet.avatar) record.avatar = pet.avatar;
-          record.notificationsEnabled = false;
+          record.notificationsEnabled = pet.notificationsEnabled;
           if (pet.notificationsTime) record.notificationsTime = pet.notificationsTime;
           record.showNotificationDot = pet.showNotificationDot;
           record.isActive = pet.isActive;
