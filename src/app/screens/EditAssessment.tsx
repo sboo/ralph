@@ -10,7 +10,7 @@ import { Q } from '@nozbe/watermelondb';
 import { Pet } from '@/app/database/models/Pet';
 import { Assessment } from '@/app/database/models/Assessment';
 import { map } from 'rxjs/operators';
-import { calculateScore } from '@/features/assessments/helpers/helperFunctions';
+import { calculateScore, storeImages } from '@/features/assessments/helpers/helperFunctions';
 
 // The presentational component
 const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
@@ -53,6 +53,11 @@ const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
       customValue,
     });
 
+    const noteImages = await storeImages(
+      images,
+      Array.from(assessment.images ?? []),
+    );
+
     await database.write(async () => {
       await assessment.update(record => {
         record.hurt = hurt;
@@ -63,7 +68,7 @@ const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
         record.mobility = mobility;
         if (customValue !== undefined) record.customValue = customValue;
         if (notes !== undefined) record.notes = notes;
-        if (images) record.images = images;
+        record.images = noteImages;
         record.score = score;
       });
     });
