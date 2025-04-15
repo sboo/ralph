@@ -60,7 +60,6 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
           record.showNotificationDot = pet.showNotificationDot;
           record.isActive = pet.isActive;
           record.assessmentFrequency = pet.assessmentFrequency as any;
-          if (pet.headerColor) record.headerColor = pet.headerColor;
           if (pet.pausedAt) record.pausedAt = pet.pausedAt;
           record.customTrackingSettings = typeof pet.customTrackingSettings === 'string' 
             ? JSON.parse(pet.customTrackingSettings) 

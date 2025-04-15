@@ -1,17 +1,44 @@
-import {AddPetScreenNavigationProps} from '@/features/navigation/types';
+import { AddPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
-import usePet, {PetData} from '@/features/pets/hooks/usePet';
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useTheme} from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
+import { database, Pet } from '@/app/database';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { Q } from '@nozbe/watermelondb';
+import { event, EVENT_NAMES } from '@/features/events';
 
-const AddPet: React.FC<AddPetScreenNavigationProps> = ({navigation}) => {
+// The presentational component
+const AddPetComponent: React.FC<AddPetScreenNavigationProps & {
+  allPets: Pet[]
+}> = ({ navigation, allPets }) => {
   const theme = useTheme();
-  const {createPet} = usePet();
 
-  const onSubmit = (data: PetData) => {
-    createPet(data);
+  const onSubmit = async (data: PetData) => {
+    console.log('AddPetComponent', data);
+    await database.write(async () => {
+      const newPet = await database.get<Pet>('pets').create(record => {
+        record.species = data.species!;
+        record.name = data.name!;
+        record.isActive = true; // New pet is active by default
+        if (data.avatar) record.avatar = data.avatar;
+        record.notificationsEnabled = data.notificationsEnabled!;
+        if (data.notificationsTime) record.notificationsTime = data.notificationsTime;
+        record.showNotificationDot = false;
+        record.assessmentFrequency = data.assessmentFrequency!;
+        if (data.customTrackingSettings) {
+          record.customTrackingSettings = data.customTrackingSettings;
+        }
+      });
+      event.emit(EVENT_NAMES.SWITCHING_PET, newPet.id);
+      for (const pet of allPets) {
+        pet.update(record => {
+          record.isActive = false;
+        });
+      }
+    });
     navigation.goBack();
   };
 
@@ -46,4 +73,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddPet;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => ({
+  allPets: database
+    .get<Pet>('pets')
+    .query()
+    .observe(),
+}));
+
+export default enhance(AddPetComponent);

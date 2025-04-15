@@ -93,14 +93,14 @@ export type Props = {
  * ## Usage
  * ```js
  * import * as React from 'react';
- * import { SafeAreaView, StyleSheet } from 'react-native';
+ * import { View, StyleSheet } from 'react-native';
  * import { SegmentedButtons } from 'react-native-paper';
  *
  * const MyComponent = () => {
  *   const [value, setValue] = React.useState('');
  *
  *   return (
- *     <SafeAreaView style={styles.container}>
+ *     <View style={styles.container}>
  *       <SegmentedButtons
  *         value={value}
  *         onValueChange={setValue}
@@ -116,7 +116,7 @@ export type Props = {
  *           { value: 'drive', label: 'Driving' },
  *         ]}
  *       />
- *     </SafeAreaView>
+ *     </View>
  *   );
  * };
  *

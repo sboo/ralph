@@ -1,28 +1,57 @@
-import {EditPetScreenNavigationProps} from '@/features/navigation/types';
+import { EditPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
-import usePet, {PetData} from '@/features/pets/hooks/usePet';
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useTheme} from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
+import { database } from '@/app/database';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { Pet } from '@/app/database/models/Pet';
+import { Q } from '@nozbe/watermelondb';
+import { map } from 'rxjs/operators';
+import { PetData } from '@/features/pets/helpers/helperFunctions';
 
-const EditPet: React.FC<EditPetScreenNavigationProps> = ({navigation}) => {
+// The presentational component
+const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
+  activePet: Pet | undefined
+  allPets: Pet[]
+}> = ({ navigation, activePet, allPets }) => {
   const theme = useTheme();
-  const {activePet, updatePet, deletePet} = usePet();
 
   if (!activePet) {
     navigation.goBack();
-    return;
+    return null;
   }
 
-  const onSubmit = (data: PetData) => {
+  const onSubmit = async (data: PetData) => {
+    console.log('EditPetComponent onSubmit', data);
     if (data.delete) {
-      deletePet(activePet._id);
+      await database.write(async () => {
+        await activePet.destroyPermanently();
+        const newActivePet = allPets[0];
+        await newActivePet.update(record => {
+          record.isActive = true;
+        });
+
+      });
       navigation.goBack();
       return;
     }
+
     try {
-    updatePet(activePet._id, data);
+      await database.write(async () => {
+        await activePet.update(record => {
+          record.species = data.species!;
+          record.name = data.name!;
+          if (data.avatar !== undefined) record.avatar = data.avatar;
+          record.notificationsEnabled = data.notificationsEnabled!;
+          if (data.notificationsTime !== undefined) record.notificationsTime = data.notificationsTime;
+          record.assessmentFrequency = data.assessmentFrequency!;
+          if (data.customTrackingSettings) {
+            record.customTrackingSettings = data.customTrackingSettings;
+          }
+        });
+      });
     } catch (error) {
       console.error('Error updating pet', error);
     }
@@ -60,4 +89,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditPet;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => ({
+  activePet: database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined)),
+    allPets : database
+    .get<Pet>('pets')
+    .query()
+    .observe(),
+}));
+
+// Export the enhanced component
+export default enhance(EditPetComponent);

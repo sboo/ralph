@@ -14,7 +14,6 @@ export default appSchema({
         { name: 'show_notification_dot', type: 'boolean' },
         { name: 'is_active', type: 'boolean', isIndexed: true },
         { name: 'assessment_frequency', type: 'string' },
-        { name: 'header_color', type: 'string', isOptional: true },
         { name: 'paused_at', type: 'number', isOptional: true },
         { name: 'custom_tracking_settings', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },

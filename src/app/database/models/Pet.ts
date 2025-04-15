@@ -4,6 +4,32 @@ import { associations } from '@nozbe/watermelondb/Model';
 
 export type AssessmentFrequency = 'DAILY' | 'WEEKLY';
 
+export type CustomTrackingLabels = {
+  [key: string]: string;
+}
+
+export const emptyCustomTrackingLabels: CustomTrackingLabels = {
+  '0': '',
+  '2.5': '',
+  '5': '',
+  '7.5': '',
+  '10': '',
+};
+
+export type CustomTrackingSettings = {
+  customTrackingEnabled: boolean;
+  customTrackingName: string;
+  customTrackingDescription: string;
+  customTrackingLabels: CustomTrackingLabels;
+};
+
+export const emptyCustomTrackingSettings: CustomTrackingSettings = {
+  customTrackingEnabled: false,
+  customTrackingName: '',
+  customTrackingDescription: '',
+  customTrackingLabels: emptyCustomTrackingLabels,
+};
+
 // Sanitizer function for customTrackingSettings
 const sanitizeTrackingSettings = (rawSettings: any): Record<string, any> => {
   // Ensure we return an object even if we get invalid input
@@ -28,9 +54,8 @@ export class Pet extends Model {
   @field('show_notification_dot') showNotificationDot!: boolean;
   @field('is_active') isActive!: boolean;
   @text('assessment_frequency') assessmentFrequency!: AssessmentFrequency;
-  @text('header_color') headerColor?: string;
   @date('paused_at') pausedAt?: Date;
-  @json('custom_tracking_settings', sanitizeTrackingSettings) customTrackingSettings?: Record<string, any>;
+  @json('custom_tracking_settings', sanitizeTrackingSettings) customTrackingSettings?: CustomTrackingSettings;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 

@@ -1,21 +1,44 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import {OnboardingScreenNavigationProps} from '@/features/navigation/types.tsx';
 import {useTranslation} from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
-import usePet, {PetData} from '@/features/pets/hooks/usePet';
 import PetItem from '@/features/pets/components/PetItem';
+import { database, Pet } from '@/app/database';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { PetData } from '@/features/pets/helpers/helperFunctions';
 
-const OnboardingScreen: React.FC<OnboardingScreenNavigationProps> = ({
+// The presentational component
+const OnboardingScreenComponent: React.FC<OnboardingScreenNavigationProps> = ({
   navigation,
 }) => {
   const {t} = useTranslation();
   const theme = useTheme();
-  const {createPet} = usePet();
 
-  const onSubmit = (data: PetData) => {
-    createPet(data);
+  console.log('OnboardingScreenComponent');
+
+  const onSubmit = async (data: PetData) => {
+    // Create the pet using WatermelonDB directly
+    await database.write(async () => {
+      await database.get<Pet>('pets').create(record => {
+        record.species = data.species;
+        record.name = data.name;
+        if (data.avatar) record.avatar = data.avatar;
+        record.notificationsEnabled = data.notificationsEnabled;
+        if (data.notificationsTime) record.notificationsTime = data.notificationsTime;
+        record.showNotificationDot = data.showNotificationDot || false;
+        record.isActive = true; // New pet is active by default
+        record.assessmentFrequency = data.assessmentFrequency;
+        if (data.customTrackingSettings) {
+          record.customTrackingSettings = typeof data.customTrackingSettings === 'string'
+            ? data.customTrackingSettings
+            : JSON.stringify(data.customTrackingSettings);
+        }
+      });
+    });
+
+    // After creating the pet, navigate to Home
     navigation.reset({
       index: 0,
       routes: [{name: 'Home'}],
@@ -42,6 +65,7 @@ const OnboardingScreen: React.FC<OnboardingScreenNavigationProps> = ({
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -53,4 +77,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingScreen;
+// Connect the component with WatermelonDB observables 
+const enhance = withObservables([], () => ({}));
+
+// Export the enhanced component
+export default OnboardingScreenComponent;

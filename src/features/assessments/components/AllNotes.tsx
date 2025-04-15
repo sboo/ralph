@@ -3,13 +3,11 @@ import usePet from '@/features/pets/hooks/usePet';
 import { getImagePath } from '@/support/helpers/ImageHelper';
 import moment from 'moment';
 import React, { useMemo, useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView, Image, View, TouchableOpacity } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet, ScrollView, Image, View, TouchableOpacity } from 'react-native';
 import { Avatar, Card, Icon, IconButton, Text, useTheme } from 'react-native-paper';
 import ImageView from 'react-native-image-viewing';
 import { Measurement } from '@/app/models/Measurement';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
-import { AllNotesNavigationProps } from '@/features/navigation/types';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -25,7 +23,7 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
     const [imagesList, setImagesList] = useState<ImageSource[]>();
     const [imageViewerVisible, setImageViewerVisible] = useState(false);
     const [clickedImage, setClickedImage] = useState<number>(0);
-
+    
     const updateImagesList = (assessment: Measurement) => {
         return assessment.images?.map(image => {
             return { uri: getImagePath(image, true) };

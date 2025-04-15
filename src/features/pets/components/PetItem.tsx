@@ -32,15 +32,14 @@ import {
   getValidReminderTimestamp,
   timeToDateObject,
 } from '@/support/helpers/DateTimeHelpers';
-import { Pet } from '@/app/models/Pet';
-import usePet, { PetData } from '../hooks/usePet';
-import { BSON } from 'realm';
+import { CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@/app/database/models/Pet';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
-import { AssessmentFrequency } from '@/app/models/Pet';
+import { AssessmentFrequency } from '@/app/database/models/Pet';
 import { event, EVENT_NAMES } from '@/features/events';
 import { is24HourFormat } from 'react-native-device-time-format'
-import { CustomTrackingSettings, emptyCustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
-
+import { database } from '@/app/database';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { PetData } from '../helpers/helperFunctions';
 
 interface Props {
   pet?: Pet;
@@ -48,9 +47,17 @@ interface Props {
   onSubmit: (data: PetData) => void;
   isWelcomeScreen?: boolean;
   navigation: any;
+  allPets?: Pet[];
 }
 
-const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isWelcomeScreen = false }) => {
+const PetItem: React.FC<Props> = ({ 
+  pet, 
+  buttonLabel, 
+  onSubmit, 
+  navigation, 
+  isWelcomeScreen = false,
+  allPets = []
+}) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { getNotificationId } = useNotifications();
@@ -63,7 +70,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   );
   const [customTrackingSettings, setCustomTrackingSettings] = useState<CustomTrackingSettings>({
     ...emptyCustomTrackingSettings,
-    ...(pet?.customTrackingSettings ? JSON.parse(pet.customTrackingSettings) : {}),
+    ...(pet?.customTrackingSettings || {}),
   });
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
   const [reminderTime, setReminderTime] = useState(
@@ -71,7 +78,6 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   );
   const [hour12, setHour12] = useState<boolean>(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
-  const { pets } = usePet();
 
   const petComplete = useMemo(() => petType && petName, [petType, petName]);
   const welcomeTextTopMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
@@ -152,7 +158,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
 
   // Store pet name and type in storage
   const submitData = async () => {
-    const id = pet?._id ?? new BSON.ObjectId();
+    let id = pet?.id;
     let notificationsEnabled = remindersEnabled;
     // Disable reminders if assessments are paused
     if (assessmentsPaused) {
@@ -172,7 +178,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
       isPaused: assessmentsPaused,
       avatar: avatar,
       assessmentFrequency: assessmentFrequency,
-      customTrackingSettings: JSON.stringify(customTrackingSettings),
+      customTrackingSettings: customTrackingSettings,
     });
   };
 
@@ -180,7 +186,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     if (!pet) {
       return;
     }
-    const notificationId = getNotificationId(pet._id);
+    const notificationId = getNotificationId(pet.id);
     await notifee.cancelAllNotifications([
       'eu.sboo.ralph.reminder',
       notificationId,
@@ -207,7 +213,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     );
   };
 
-  const enableReminders = async (petId: BSON.ObjectId) => {
+  const enableReminders = async (petId: string) => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
       try {
@@ -237,18 +243,17 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     }
   };
 
-  const createTriggerNotification = async (petId: BSON.ObjectId) => {
+  const createTriggerNotification = async (petId: string) => {
     const channelGroupId = await notifee.createChannelGroup({
       id: 'reminders',
       name: i18next.t('measurements:reminders'),
     });
 
     const channelId = await notifee.createChannel({
-      id: petId.toHexString(),
+      id: petId,
       groupId: channelGroupId,
       name: petName,
     });
-
 
     const reminderTimestamp = getValidReminderTimestamp(reminderTime, assessmentFrequency);
     console.log('reminderTime', moment(reminderTimestamp).format('YYYY-MM-DD HH:mm'));
@@ -281,7 +286,9 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     );
   };
 
-  const cancelReminders = async (petId: BSON.ObjectId) => {
+  const cancelReminders = async (petId: string | undefined) => {
+    if (!petId) return;
+    
     await notifee.cancelAllNotifications([
       'eu.sboo.ralph.reminder',
       getNotificationId(petId),
@@ -289,7 +296,9 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   };
 
   // Toggle reminders
-  const toggleReminders = async (petId: BSON.ObjectId) => {
+  const toggleReminders = async (petId: string | undefined) => {
+    if (!petId) return false;
+    
     await cancelReminders(petId);
     let enabled = remindersEnabled;
     if (enabled) {
@@ -398,7 +407,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
           </List.Section>
         </View>
       </ScrollView>
-      {pet && pets.length > 1 ? (
+      {pet && allPets.length > 1 ? (
         <List.Section>
           <List.Item
             left={props => <List.Icon {...props} icon="trash-can-outline" />}
@@ -440,11 +449,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   );
 };
 
-
-
-// Notification Settings Screen
-
-
+// Styles remain the same
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -501,5 +506,10 @@ const styles = StyleSheet.create({
   },
 });
 
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => ({
+  allPets: database.get('pets').query()
+}));
 
-export default Settings;
+// Export the enhanced component
+export default enhance(PetItem);

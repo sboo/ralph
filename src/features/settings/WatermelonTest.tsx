@@ -4,7 +4,6 @@ import { database } from '../../app/database';
 import { DatabaseProvider, useDatabaseContext } from '../../app/database/context';
 import { migrateFromRealm } from '../../app/database/migration-utility';
 import { withObservables } from '@nozbe/watermelondb/react';
-import { createPet, usePetsCollection, useActivePets, usePetAssessments } from '../../app/database/hooks';
 import { Pet } from '../../app/database/models/Pet';
 import { Assessment } from '../../app/database/models/Assessment';
 import { useNavigation } from '@react-navigation/native';
@@ -201,25 +200,7 @@ const WatermelonTestContent = () => {
     }
   };
 
-  const testCreatePet = async () => {
-    try {
-      await createPet({
-        species: 'Cat',
-        name: 'Test WatermelonDB Cat',
-        notificationsEnabled: false,
-        showNotificationDot: false,
-        isActive: true,
-        assessmentFrequency: 'DAILY',
-      });
-      
-      // Refresh counts
-      const pets = await collections.pets.query().fetchCount();
-      setPetsCount(pets);
-    } catch (error) {
-      console.error('Error creating test pet:', error);
-    }
-  };
-
+  
   const resetDatabase = async () => {
     try {
       await database.write(async () => {
@@ -291,10 +272,6 @@ const WatermelonTestContent = () => {
       {dbReady && (
         <>
           <View style={styles.actionsContainer}>
-            <Button 
-              title="Create Test Pet" 
-              onPress={testCreatePet}
-            />
             <Button 
               title="Reset Database" 
               onPress={resetDatabase}

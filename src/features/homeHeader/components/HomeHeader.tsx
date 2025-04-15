@@ -8,12 +8,11 @@ import { withObservables } from '@nozbe/watermelondb/react';
 import { Q } from '@nozbe/watermelondb';
 import { database } from '@/app/database';
 import { Pet } from '@/app/database/models/Pet';
-import { switchActivePet } from '@/app/database/hooks'; // Updated import path
 import { map } from 'rxjs/operators';
 
 // The presentational component
-const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: { 
-  activePet: Pet | undefined, 
+const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
+  activePet: Pet | undefined,
   inactivePets: Pet[],
   allPets: Pet[]
 }) => {
@@ -32,10 +31,23 @@ const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
     return t('greeting_evening');
   };
 
-  const switchPet = (petId: string | undefined) => {
+  const switchPet = async (petId: string | undefined) => {
     if (petId) {
       event.emit(EVENT_NAMES.SWITCHING_PET, petId);
-      switchActivePet(petId);
+      await database.write(async () => {
+        for (const pet of allPets) {
+          if (pet.id === petId) {
+            pet.update(record => {
+              record.isActive = true;
+            }
+            );
+          } else {
+            pet.update(record => {
+              record.isActive = false;
+            });
+          }
+        }
+      });
     }
   };
 
@@ -54,7 +66,7 @@ const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
 
     // Find the index of the active pet in the pets array
     const petIndex = allPets.findIndex(pet => pet.id === activePet.id);
-    
+
     // Use modulo to cycle through colors after 3 pets
     switch (petIndex % 3) {
       case 0:
@@ -140,7 +152,7 @@ const styles = StyleSheet.create({
 
 // Connect with WatermelonDB observables
 const enhance = withObservables([], () => ({
-  allPets: database.get<Pet>('pets').query(),
+  allPets: database.get<Pet>('pets').query().observe(),
   activePet: database.get<Pet>('pets').query(Q.where('is_active', true)).observeWithColumns(['is_active']).pipe(
     // Handle empty results by returning undefined for activePet
     map(pets => pets.length > 0 ? pets[0] : undefined)
