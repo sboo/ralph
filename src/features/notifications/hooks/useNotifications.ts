@@ -1,14 +1,14 @@
-import {BSON} from 'realm';
-import notifee, {EventType} from '@notifee/react-native';
-import {useCallback} from 'react';
+import { BSON } from 'realm';
+import notifee, { EventType } from '@notifee/react-native';
+import { useCallback } from 'react';
 import usePet from '@/features/pets/hooks/usePet';
 
 const useNotifications = () => {
-  const {enableNotifcationDot} = usePet();
+  const { enableNotifcationDot } = usePet();
   const NOTIFICATION_PREFIX = 'eu.sboo.ralph.reminder_';
 
-  const getNotificationId = useCallback((petId: BSON.ObjectId) => {
-    return `${NOTIFICATION_PREFIX}${petId.toHexString()}`;
+  const getNotificationId = useCallback((petId: string) => {
+    return `${NOTIFICATION_PREFIX}${petId}`;
   }, []);
 
   const getPetIdFromNotificationId = useCallback((notificationId: string) => {
@@ -21,7 +21,7 @@ const useNotifications = () => {
   }, []);
 
   const onForegroundNotification = useCallback(async () => {
-    return notifee.onForegroundEvent(({type, detail}) => {
+    return notifee.onForegroundEvent(({ type, detail }) => {
       switch (type) {
         case EventType.DISMISSED:
           console.log('User dismissed notification', detail.notification);
