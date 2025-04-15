@@ -1,25 +1,21 @@
 import Realm, { BSON } from 'realm';
 import { database, petCollection, assessmentCollection } from '@/app/database';
-import { Pet as WatermelonPet } from '@/app/database/models/Pet';
+import { AssessmentFrequency, Pet as WatermelonPet } from '@/app/database/models/Pet';
 import { Assessment as WatermelonAssessment } from '@/app/database/models/Assessment';
 import notifee from '@notifee/react-native';
 
 // Original Realm models
 import { Pet as RealmPet } from '@/app/models/Pet';
 import { Measurement as RealmMeasurement } from '@/app/models/Measurement';
+import { createTriggerNotification, getNotificationId } from '@/features/notifications/helpers/helperFunctions';
+import { timeToDateObject } from '@/support/helpers/DateTimeHelpers';
 
 // Define types for migration result
 interface MigrationResult {
   success: boolean;
   message: string;
-  hadNotifications?: boolean;
   error?: unknown;
 }
-const NOTIFICATION_PREFIX = 'eu.sboo.ralph.reminder_';
-
-const getNotificationId = (petId: string) => {
-  return `${NOTIFICATION_PREFIX}${petId}`;
-};
 /**
  * Migrate data from Realm to WatermelonDB
  */
@@ -32,7 +28,6 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
 
   try {
     // Start a batch operation in WatermelonDB
-    let hadNotifications = false;
     
     await database.write(async () => {
       console.log('Starting migration from Realm to WatermelonDB...');
@@ -58,7 +53,6 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
         };
 
         if (pet.notificationsEnabled) {
-          hadNotifications = true;
           await notifee.cancelAllNotifications([
             'eu.sboo.ralph.reminder',
             getNotificationId(realmPet._id.toHexString()),
@@ -80,6 +74,11 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
             ? JSON.parse(pet.customTrackingSettings)
             : pet.customTrackingSettings;
         });
+
+        if(pet.notificationsEnabled) {
+          createTriggerNotification(newPet.id, pet.name, timeToDateObject(pet.notificationsTime!), pet.assessmentFrequency as AssessmentFrequency);
+        }
+
 
         console.log(`Migrated pet: ${pet.name} with new ID: ${newPet.id}`);
 
@@ -118,7 +117,7 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
       console.log('Migration completed successfully!');
     });
 
-    return { success: true, message: 'Migration completed successfully!', hadNotifications };
+    return { success: true, message: 'Migration completed successfully!'};
   } catch (error: unknown) {
     console.error('Migration failed:', error);
     return {

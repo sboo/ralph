@@ -40,6 +40,7 @@ import { is24HourFormat } from 'react-native-device-time-format'
 import { database } from '@/app/database';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { PetData } from '../helpers/helperFunctions';
+import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
 
 interface Props {
   pet?: Pet;
@@ -217,7 +218,7 @@ const PetItem: React.FC<Props> = ({
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
       try {
-        await createTriggerNotification(petId);
+        await createTriggerNotification(petId, petName, reminderTime, assessmentFrequency);
         return true;
       } catch (error) {
         console.error(error);
@@ -241,49 +242,6 @@ const PetItem: React.FC<Props> = ({
     } else {
       await notifee.openNotificationSettings();
     }
-  };
-
-  const createTriggerNotification = async (petId: string) => {
-    const channelGroupId = await notifee.createChannelGroup({
-      id: 'reminders',
-      name: i18next.t('measurements:reminders'),
-    });
-
-    const channelId = await notifee.createChannel({
-      id: petId,
-      groupId: channelGroupId,
-      name: petName,
-    });
-
-    const reminderTimestamp = getValidReminderTimestamp(reminderTime, assessmentFrequency);
-    console.log('reminderTime', moment(reminderTimestamp).format('YYYY-MM-DD HH:mm'));
-
-    // Create a time-based trigger
-    const trigger: TimestampTrigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: reminderTimestamp,
-      repeatFrequency: assessmentFrequency == 'WEEKLY' ? RepeatFrequency.WEEKLY : RepeatFrequency.DAILY,
-    };
-
-    await notifee.createTriggerNotification(
-      {
-        id: getNotificationId(petId),
-        title: t('measurements:notificationTitle', {
-          petName: petName,
-        }),
-        body: t('measurements:notificationBody', {
-          petName: petName,
-        }),
-        android: {
-          channelId: channelId,
-          smallIcon: 'ic_small_icon',
-          pressAction: {
-            id: 'default',
-          },
-        },
-      },
-      trigger,
-    );
   };
 
   const cancelReminders = async (petId: string | undefined) => {
