@@ -1,22 +1,32 @@
-import usePet from '@/features/pets/hooks/usePet';
 import React, {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Calendar, DateData, LocaleConfig} from 'react-native-calendars';
 import {useTheme} from 'react-native-paper';
-import useAssessments from '../hooks/useAssessments';
 import {MarkedDates} from 'react-native-calendars/src/types';
 import moment from 'moment';
 import {StyleSheet} from 'react-native';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { database } from '@/app/database';
+import { Q } from '@nozbe/watermelondb';
+import { Pet } from '@/app/database/models/Pet';
+import { Assessment } from '@/app/database/models/Assessment';
+import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 interface Props {
   onCalendarDayPress: (dateData: DateData) => void;
+  activePet?: Pet;
+  assessments?: Assessment[];
 }
 
-const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
+// The presentational component
+const AssessmentsCalendarComponent: React.FC<Props> = ({
+  onCalendarDayPress,
+  activePet,
+  assessments = []
+}) => {
   const {i18n} = useTranslation();
   const theme = useTheme();
-  const {activePet} = usePet();
-  const {lastAssessments} = useAssessments(activePet);
   LocaleConfig.defaultLocale = i18n.resolvedLanguage;
 
   const getIconColor = (score: number) => {
@@ -35,8 +45,8 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
 
   const markedDates: MarkedDates = useMemo(() => {
     return (
-      lastAssessments?.reduce((acc, assessment) => {
-        const date = moment(assessment.createdAt).format('YYYY-MM-DD');
+      assessments?.reduce((acc, assessment) => {
+        const date = assessment.date; // Using date directly from WatermelonDB Assessment
         acc[date] = {
           selected: true,
           selectedColor: getIconColor(assessment.score),
@@ -45,7 +55,7 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
         return acc;
       }, {} as MarkedDates) ?? ({} as MarkedDates)
     );
-  }, [lastAssessments]);
+  }, [assessments]);
 
   return (
     <Calendar
@@ -66,4 +76,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AssessmentsCalendar;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => {
+  // Get active pet
+  const activePetObservable = database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
+
+  // Create assessments observable that depends on the active pet
+  const assessmentsObservable = activePetObservable.pipe(
+    switchMap(pet => {
+      if (!pet) {
+        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+      }
+      return database
+        .get<Assessment>('assessments')
+        .query(Q.where('pet_id', pet.id), Q.sortBy('date', 'desc'))
+        .observe();
+    })
+  );
+
+  return {
+    activePet: activePetObservable,
+    assessments: assessmentsObservable
+  };
+});
+
+// Export the enhanced component
+export default enhance(AssessmentsCalendarComponent);

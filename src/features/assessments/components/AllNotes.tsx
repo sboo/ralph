@@ -1,30 +1,38 @@
-import useAssessments from '@/features/assessments/hooks/useAssessments';
-import usePet from '@/features/pets/hooks/usePet';
 import { getImagePath } from '@/support/helpers/ImageHelper';
 import moment from 'moment';
-import React, { useMemo, useState } from 'react';
-import { StyleSheet, ScrollView, Image, View, TouchableOpacity } from 'react-native';
-import { Avatar, Card, Icon, IconButton, Text, useTheme } from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
+import { Avatar, Card, IconButton, Text, useTheme } from 'react-native-paper';
 import ImageView from 'react-native-image-viewing';
-import { Measurement } from '@/app/models/Measurement';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
 import { useTranslation } from 'react-i18next';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { database } from '@/app/database';
+import { Q } from '@nozbe/watermelondb';
+import { Pet } from '@/app/database/models/Pet';
+import { Assessment } from '@/app/database/models/Assessment';
+import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 interface Props {
     onNotePress: (assessmentId: string) => void;
+    activePet?: Pet;
+    assessmentsWithNotes?: Assessment[];
 }
 
-const AllNotes: React.FC<Props> = ({ onNotePress }) => {
-
+// The presentational component
+const AllNotesComponent: React.FC<Props> = ({ 
+    onNotePress, 
+    activePet,
+    assessmentsWithNotes = []
+}) => {
     const { t } = useTranslation();
     const theme = useTheme();
-    const { activePet } = usePet();
-    const { assessmentsWithNotes } = useAssessments(activePet);
     const [imagesList, setImagesList] = useState<ImageSource[]>();
     const [imageViewerVisible, setImageViewerVisible] = useState(false);
     const [clickedImage, setClickedImage] = useState<number>(0);
     
-    const updateImagesList = (assessment: Measurement) => {
+    const updateImagesList = (assessment: Assessment) => {
         return assessment.images?.map(image => {
             return { uri: getImagePath(image, true) };
         });
@@ -34,6 +42,7 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
         setClickedImage(index);
         setImageViewerVisible(true);
     }
+    
     if (!assessmentsWithNotes?.length) {
         return (
             <View style={styles.container}>
@@ -49,7 +58,6 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
                     </Card.Content>
                 </Card>
             </View>
-
         )
     }
 
@@ -57,7 +65,6 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
         <View style={styles.container}>
             {assessmentsWithNotes?.map((assessment, index) => (
                 <View key={index}>
-
                     <Card
                         style={{ ...styles.card, backgroundColor: theme.colors.surface }}
                         mode='contained'
@@ -71,7 +78,7 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
                                     day: 'numeric',
                                 })}</Text>
                                 <IconButton size={14} icon='pencil'
-                                    onPress={() => onNotePress(assessment._id.toHexString())}
+                                    onPress={() => onNotePress(assessment.id)}
                                 />
                             </View>
                             <Text variant='bodyMedium' style={styles.note}>{assessment.notes}</Text>
@@ -147,5 +154,38 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AllNotes;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => {
+  // Get active pet
+  const activePetObservable = database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
+
+  // Create assessments with notes observable that depends on the active pet
+  const assessmentsWithNotesObservable = activePetObservable.pipe(
+    switchMap(pet => {
+      if (!pet) {
+        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+      }
+      return database
+        .get<Assessment>('assessments')
+        .query(
+          Q.where('pet_id', pet.id),
+          Q.where('notes', Q.notEq(null)),
+          Q.sortBy('date', 'desc') 
+        )
+        .observe();
+    })
+  );
+
+  return {
+    activePet: activePetObservable,
+    assessmentsWithNotes: assessmentsWithNotesObservable
+  };
+});
+
+// Export the enhanced component
+export default enhance(AllNotesComponent);
 

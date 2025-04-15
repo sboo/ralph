@@ -4,18 +4,74 @@ import { Platform } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { getValueColor } from '@/support/helpers/ColorHelper';
 import Share from 'react-native-share';
-import usePet from '@/features/pets/hooks/usePet';
-import useAssessments from '@/features/assessments/hooks/useAssessments';
 import { getBase64Image } from '@/support/helpers/ImageHelper';
 import { calculateDateRange, generateDateRange, generateChartData } from '@/features/charts/utils/helperFunctions';
 import { DotType } from '@/features/charts/types';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { database } from '@/app/database';
+import { Q } from '@nozbe/watermelondb';
+import { Pet } from '@/app/database/models/Pet';
+import { Assessment } from '@/app/database/models/Assessment';
+import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { useState, useEffect, useCallback } from 'react';
 
 const useAssessmentExporter = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { activePet, getHeaderColor } = usePet();
-  const { assessments, customTrackingSettings } = useAssessments(activePet);
+  const [activePet, setActivePet] = useState<Pet | undefined>(undefined);
+  const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const [customTrackingSettings, setCustomTrackingSettings] = useState<any>({});
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
+
+  // Fetch active pet and its assessments
+  useEffect(() => {
+    const activePetSubscription = database
+      .get<Pet>('pets')
+      .query(Q.where('is_active', true))
+      .observe()
+      .pipe(map(pets => pets.length > 0 ? pets[0] : undefined))
+      .subscribe(pet => {
+        setActivePet(pet);
+        
+        // Parse custom tracking settings
+        if (pet?.customTrackingSettings) {
+          try {
+            const settings = typeof pet.customTrackingSettings === 'string'
+              ? JSON.parse(pet.customTrackingSettings)
+              : pet.customTrackingSettings;
+            setCustomTrackingSettings(settings);
+          } catch (e) {
+            console.error('Error parsing custom tracking settings:', e);
+            setCustomTrackingSettings({});
+          }
+        }
+      });
+
+    return () => {
+      activePetSubscription.unsubscribe();
+    };
+  }, []);
+
+  // When active pet changes, fetch its assessments
+  useEffect(() => {
+    if (!activePet) {
+      setAssessments([]);
+      return;
+    }
+
+    const assessmentsSubscription = database
+      .get<Assessment>('assessments')
+      .query(Q.where('pet_id', activePet.id), Q.sortBy('date', 'asc'))
+      .observe()
+      .subscribe(result => {
+        setAssessments(result);
+      });
+
+    return () => {
+      assessmentsSubscription.unsubscribe();
+    };
+  }, [activePet]);
 
   const getItemColor = (score: number) => {
     const color = getValueColor(theme.colors.outline, score);
@@ -189,6 +245,20 @@ const useAssessmentExporter = () => {
     `;
   };
 
+  // Get header color function based on pet
+  const getHeaderColor = useCallback((theme: any) => {
+    if (!activePet) {
+      return theme.colors.primary;
+    }
+
+    if (activePet.headerColor) {
+      return activePet.headerColor;
+    }
+
+    // Return a default color if needed
+    return theme.colors.primary;
+  }, [activePet]);
+
   const headerColor = getHeaderColor(theme);
 
   const getHtmlContent = async () => {
@@ -340,9 +410,9 @@ const useAssessmentExporter = () => {
                             </div>`;
           }
           return `
-                <div class="assessment" key=${assessment._id.toHexString()}>
+                <div class="assessment" key=${assessment.id}>
                     <div class="row">
-                        <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
+                        <p class="date">${new Date(assessment.createdAt).toLocaleDateString()}</p>
                         <p class="score">${assessment.score}</p>
                     </div>
                     <div class="row">

@@ -5,14 +5,20 @@ import {View, Text, Button, Alert} from 'react-native';
 import {requestPurchase, useIAP} from 'react-native-iap';
 import {Divider} from 'react-native-paper';
 import {STORAGE_KEYS} from '../store/storageKeys';
-import {useQuery} from '@realm/react';
-import {Pet} from '@/app/models/Pet';
-import usePet from '@/features/pets/hooks/usePet';
-import useTips, {Tip} from '@/features/tips/hooks/useTips';
 import Tips from '@/features/tips/components/Tips';
 import * as Sentry from '@sentry/react-native';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { database } from '@/app/database';
+import { Q } from '@nozbe/watermelondb';
+import { Pet } from '@/app/database/models/Pet';
+import { map } from 'rxjs/operators';
 
-const DebugScreen: React.FC = () => {
+// The presentational component
+const DebugScreenComponent: React.FC<{
+  activePet: Pet | undefined
+}> = ({ 
+  activePet 
+}) => {
   const {
     connected,
     products,
@@ -68,8 +74,6 @@ const DebugScreen: React.FC = () => {
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
-  const {activePet} = usePet();
-
   return (
     <>
       <Button
@@ -117,4 +121,14 @@ const DebugScreen: React.FC = () => {
   );
 };
 
-export default DebugScreen;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => ({
+  activePet: database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined))
+}));
+
+// Export the enhanced component
+export default enhance(DebugScreenComponent);

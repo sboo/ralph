@@ -4,20 +4,29 @@ import {Divider, useTheme} from 'react-native-paper';
 import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
-import useAssessments from '@/features/assessments/hooks/useAssessments';
-import usePet from '@/features/pets/hooks/usePet';
 import {DateData} from 'react-native-calendars/src/types';
 import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { database } from '@/app/database';
+import { Q } from '@nozbe/watermelondb';
+import { Pet } from '@/app/database/models/Pet';
+import { Assessment } from '@/app/database/models/Assessment';
+import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
+// The presentational component
+const AllAssessmentsScreenComponent: React.FC<AllAssessmentsScreenNavigationProps & {
+  activePet: Pet | undefined,
+  assessments: Assessment[]
+}> = ({
   navigation,
+  activePet,
+  assessments
 }) => {
   const theme = useTheme();
-  const {activePet} = usePet();
-  const {lastAssessments} = useAssessments(activePet);
 
   const addOrEditAssessment = (dateData: DateData) => {
-    const assessment = lastAssessments?.find(
+    const assessment = assessments?.find(
       m => m.date === dateData.dateString,
     );
     if (assessment === undefined) {
@@ -26,7 +35,7 @@ const AllAssessmentsScreen: React.FC<AllAssessmentsScreenNavigationProps> = ({
       });
     } else {
       navigation.navigate('EditAssessment', {
-        assessmentId: assessment._id.toHexString(),
+        assessmentId: assessment.id,
       });
     }
   };
@@ -83,4 +92,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllAssessmentsScreen;
+// Connect the component with WatermelonDB observables
+const enhance = withObservables([], () => {
+  // Get active pet
+  const activePetObservable = database
+    .get<Pet>('pets')
+    .query(Q.where('is_active', true))
+    .observe()
+    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
+
+  // Create assessments observable that depends on the active pet (sorted by date descending)
+  const assessmentsObservable = activePetObservable.pipe(
+    switchMap(pet => {
+      if (!pet) {
+        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+      }
+      return database
+        .get<Assessment>('assessments')
+        .query(Q.where('pet_id', pet.id), Q.sortBy('date', 'desc'))
+        .observe();
+    })
+  );
+
+  return {
+    activePet: activePetObservable,
+    assessments: assessmentsObservable
+  };
+});
+
+// Export the enhanced component
+export default enhance(AllAssessmentsScreenComponent);
