@@ -21,19 +21,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { getAvailablePurchases, getProducts, initConnection, useIAP, withIAPContext } from 'react-native-iap';
-import { useQuery, useRealm } from '@realm/react';
 import merge from 'deepmerge';
 
 // Local imports
 import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
 import { event, EVENT_NAMES } from '@/features/events';
-import { Pet } from '@/app/models/Pet';
 import { PET_REQUIRES_MIGRATION, getPetData } from '@/app/store/helper';
 import { RootStackParamList } from '@/features/navigation/types.tsx';
 import defaultColors from '@/app/themes/lightTheme.json';
 import darkColors from '@/app/themes/darkTheme.json';
 import CustomNavigationBar from '@/features/navigation/components/CustomNavigationBar.tsx';
-import usePet from '@/features/pets/hooks/usePet';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { useAppearance } from './themes/hooks/useAppearance';
 
@@ -57,6 +54,11 @@ import DebugScreen from './screens/DebugScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
 import WatermelonTest from '@/features/settings/WatermelonTest';
 import WatermelonDBIntegration from '@/features/settings/WatermelonDBIntegration';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { Q } from '@nozbe/watermelondb';
+import { database } from '@/app/database';
+import { Pet } from '@/app/database/models/Pet';
+import { map } from 'rxjs/operators';
 
 // Constants
 const VALID_PRODUCT_IDS = [
@@ -76,10 +78,12 @@ if (Platform.OS === 'android') {
   StatusBar.setTranslucent(true);
 }
 
-const App: React.FC = () => {
+const App: React.FC<{
+  allPets: Pet[],
+  activePet: Pet | undefined
+}> = ({ allPets, activePet }) => {
   // Hooks
   const { t } = useTranslation();
-  const realm = useRealm();
   const {
     purchaseHistory,
     currentPurchase,
@@ -92,7 +96,6 @@ const App: React.FC = () => {
     onForegroundNotification,
     getPetIdFromNotificationId,
   } = useNotifications();
-  const { activePet, getHeaderColor, enableNotifcationDot } = usePet();
   const { effectiveAppearance } = useAppearance();
 
   // State
@@ -119,11 +122,7 @@ const App: React.FC = () => {
   const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
   const theme = effectiveAppearance === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme;
 
-  // Database queries
-  const petsToFix = useQuery({
-    type: Pet,
-    query: collection => collection.filtered('name = $0', PET_REQUIRES_MIGRATION),
-  });
+  const [headerColor, setHeaderColor] = useState(theme.colors.primary);
 
   // Callback functions
   const checkPurchases = useCallback(async () => {
@@ -170,25 +169,6 @@ const App: React.FC = () => {
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
-  const fixPetData = useCallback(async () => {
-    if (realm.schemaVersion > 0 && petsToFix.length > 0) {
-      const petData = await getPetData();
-      petsToFix.forEach((pet, idx) => {
-        realm.write(() => {
-          pet.isActive = idx === 0;
-          pet.name = petData.name;
-          pet.species = petData.species;
-          pet.notificationsEnabled = petData.notificationsEnabled;
-          if (petData.avatar) {
-            pet.avatar = petData.avatar;
-          }
-          if (petData.notificationsTime) {
-            pet.notificationsTime = petData.notificationsTime;
-          }
-        });
-      });
-    }
-  }, [petsToFix, realm]);
 
   const onNavigationStateChange = useCallback(
     (state: NavigationState | undefined) => {
@@ -201,15 +181,25 @@ const App: React.FC = () => {
     [],
   );
 
+  const enableNotificationDot = useCallback(
+    (petId: string) => {
+      database.write(async () => {
+        const pet = await database.get<Pet>('pets').find(petId);
+        if (pet && !pet.isActive) {
+          pet.showNotificationDot = true;
+        }
+      }
+      );
+    },
+    [database],
+  );
+    
+
   // Effects
   // Separate initial check effect
   useEffect(() => {
     checkPurchases();
   }, []);
-
-  useEffect(() => {
-    fixPetData();
-  }, [fixPetData]);
 
   useEffect(() => {
     const consumeInitialNotification = async () => {
@@ -220,7 +210,7 @@ const App: React.FC = () => {
             initialNotification.notification.id,
           );
           if (petId) {
-            enableNotifcationDot(petId);
+            enableNotificationDot(petId);
           }
         }
         setHandledInitialNotificationId(initialNotification?.notification.id);
@@ -233,9 +223,36 @@ const App: React.FC = () => {
     getInitialNotification,
     onForegroundNotification,
     getPetIdFromNotificationId,
-    enableNotifcationDot,
+    enableNotificationDot,
     handledInitialNotificationId,
   ]);
+
+  useEffect(() => {
+  
+      // If no active pet, use primary color
+      if (!activePet || allPets.length === 0) {
+        setHeaderColor(theme.colors.primary);
+        return;
+      }
+  
+      // Find the index of the active pet in the pets array
+      const petIndex = allPets.findIndex(pet => pet.id === activePet.id);
+  
+      // Use modulo to cycle through colors after 3 pets
+      switch (petIndex % 3) {
+        case 0:
+          setHeaderColor(theme.colors.primary);
+          break;
+        case 1:
+          setHeaderColor(theme.colors.secondary);
+          break;
+        case 2:
+          setHeaderColor(theme.colors.tertiary);
+          break;
+        default:
+          setHeaderColor(theme.colors.primary);
+      }
+    }, [activePet, allPets, theme.colors]);
 
   useEffect(() => {
     if (currentPurchaseError) {
@@ -273,7 +290,7 @@ const App: React.FC = () => {
                 component={HomeScreen}
                 options={{
                   title: '',
-                  headerStyle: { backgroundColor: getHeaderColor(theme) },
+                  headerStyle: { backgroundColor: headerColor },
                 }}
               />
               <Stack.Screen
@@ -371,17 +388,17 @@ const App: React.FC = () => {
                 }}
               />
               <Stack.Screen name="DebugScreen" component={DebugScreen} />
-              <Stack.Screen 
-                name="WatermelonTest" 
-                component={WatermelonTest} 
+              <Stack.Screen
+                name="WatermelonTest"
+                component={WatermelonTest}
                 options={{
                   title: 'WatermelonDB Test',
                   headerStyle: { backgroundColor: theme.colors.primaryContainer },
                 }}
               />
-              <Stack.Screen 
-                name="WatermelonDBIntegration" 
-                component={WatermelonDBIntegration} 
+              <Stack.Screen
+                name="WatermelonDBIntegration"
+                component={WatermelonDBIntegration}
                 options={{
                   title: 'WatermelonDB Integration',
                   headerStyle: { backgroundColor: theme.colors.primaryContainer },
@@ -401,4 +418,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withIAPContext(App);
+// Connect with WatermelonDB observables
+const enhance = withObservables([], () => ({
+  allPets: database.get<Pet>('pets').query().observe(),
+  activePet: database.get<Pet>('pets').query(Q.where('is_active', true)).observeWithColumns(['is_active']).pipe(
+    // Handle empty results by returning undefined for activePet
+    map(pets => pets.length > 0 ? pets[0] : undefined)
+  ),
+}));
+
+export default withIAPContext(
+  enhance(App)
+);

@@ -53,10 +53,6 @@ const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
 
   // Determine header color based on active pet index
   useEffect(() => {
-    if (activePet?.headerColor) {
-      setHeaderColor(activePet.headerColor);
-      return;
-    }
 
     // If no active pet, use primary color
     if (!activePet || allPets.length === 0) {
