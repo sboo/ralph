@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Calendar, DateData, LocaleConfig} from 'react-native-calendars';
-import {useTheme} from 'react-native-paper';
+import {Text, useTheme} from 'react-native-paper';
 import {MarkedDates} from 'react-native-calendars/src/types';
 import moment from 'moment';
 import {StyleSheet} from 'react-native';
@@ -65,6 +65,9 @@ const AssessmentsCalendarComponent: React.FC<Props> = ({
       maxDate={moment().format('YYYY-MM-DD')}
       enableSwipeMonths={true}
       firstDay={1}
+      renderHeader={(date) => {
+        return <Text variant='titleMedium'>{date.toString('MMMM yyyy')}</Text>;
+      }}
     />
   );
 };
