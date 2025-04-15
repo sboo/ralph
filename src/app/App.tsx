@@ -33,6 +33,7 @@ import darkColors from '@/app/themes/darkTheme.json';
 import CustomNavigationBar from '@/features/navigation/components/CustomNavigationBar.tsx';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { useAppearance } from './themes/hooks/useAppearance';
+import { migrateFromRealm } from '@/app/database/migration-utility';
 
 // Import WatermelonDB provider
 import { DatabaseProvider } from '@/app/database/context';
@@ -67,6 +68,36 @@ const VALID_PRODUCT_IDS = [
   'eu.sboo.ralph.lunch',
   'eu.sboo.ralph.croissant',
 ];
+
+// Migration key for AsyncStorage
+const REALM_MIGRATION_COMPLETE_KEY = 'ralph_realm_to_watermelon_migration_complete';
+
+// Function to check and run migration if needed
+const checkAndRunMigration = async () => {
+  try {
+    // Check if migration has already been run
+    const migrationComplete = await AsyncStorage.getItem(REALM_MIGRATION_COMPLETE_KEY);
+    if (migrationComplete === 'true') {
+      console.log('Migration from Realm to WatermelonDB already completed.');
+      return;
+    }
+    
+    // If not, run the migration
+    console.log('Starting migration from Realm to WatermelonDB...');
+    const result = await migrateFromRealm();
+    
+    if (result.success) {
+      // Mark migration as complete in AsyncStorage
+      await AsyncStorage.setItem(REALM_MIGRATION_COMPLETE_KEY, 'true');
+      console.log('Migration completed and marked as done.');
+    } else {
+      console.error('Migration failed:', result.message);
+      // We don't mark as complete so it will try again next time
+    }
+  } catch (error) {
+    console.error('Error during migration process:', error);
+  }
+};
 
 // Initialize Stack Navigator
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -271,6 +302,11 @@ const App: React.FC<{
         });
     }
   }, [currentPurchase, finishTransaction]);
+
+  // Run migration on app start
+  useEffect(() => {
+    checkAndRunMigration();
+  }, []);
 
   // Render
   return (
