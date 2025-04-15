@@ -1,5 +1,4 @@
 import moment from "moment";
-import { Results } from "realm";
 import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, ProcessedChartData } from "../types";
 import { Pet, Assessment } from "@/app/database";
 
@@ -28,12 +27,12 @@ export const calculateDateRange = (
   if (hasAssessments && !pet?.pausedAt) {
     end = today;
   } else if (hasAssessments) {
-    end = assessments[assessments.length - 1].createdAt;
+    end = assessments[assessments.length - 1].date;
   } else {
     end = pausedDate;
   }
 
-  const firstAssessmentDate = hasAssessments ? assessments[0].createdAt : null;
+  const firstAssessmentDate = hasAssessments ? assessments[0].date : null;
 
   // Determine start date based on available data
   const maxDaysAgo = moment(end).subtract(maxDays, 'days');
@@ -45,9 +44,12 @@ export const calculateDateRange = (
     : maxDaysAgo.startOf(isWeekly ? 'isoWeek' : 'day').toDate();
 
   const finalEnd = hasAssessments && !padding
-    ? moment(assessments[assessments.length - 1].createdAt)
+    ? moment(assessments[assessments.length - 1].date)
         .endOf(isWeekly ? 'isoWeek' : 'day').toDate()
     : moment(end).endOf(isWeekly ? 'isoWeek' : 'day').toDate();
+
+    console.log("start", start.toString());
+    console.log("end", finalEnd.toString());
 
   return {
     startDate: start,
@@ -224,7 +226,7 @@ export const processWeeklyScores = (
     return {
       score,
       dotType,
-      assessmentDates: weekAssessments.map(a => a.createdAt).sort((a, b) => a.getTime() - b.getTime()),
+      assessmentDates: weekAssessments.map(a => new Date(a.date)).sort((a, b) => a.getTime() - b.getTime()),
     };
   });
 };
@@ -238,9 +240,14 @@ export const processWeeklyScores = (
  * @returns An object containing processed chart data, including scores, dot types, metadata, and labels.
  */
 export const generateChartData = (dateRange: Date[], assessments: Assessment[] | null, isWeekly: boolean): ProcessedChartData => {
+  console.log("dateRange", dateRange[0].toString(), dateRange[1].toString());
+  console.log("assessments", assessments);
+  console.log('isWeekly', isWeekly);
   const scoreData = isWeekly
     ? processWeeklyScores(dateRange, assessments)
     : processDailyScores(dateRange, assessments);
+
+    console.log("scoreData", scoreData);
 
   return {
     scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),

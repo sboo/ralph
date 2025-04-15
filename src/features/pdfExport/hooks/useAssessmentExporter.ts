@@ -100,8 +100,9 @@ const useAssessmentExporter = () => {
     const dateRange = generateDateRange(startDate, endDate, isWeekly);
 
     const { scores, labels, dotTypes, metadata } = generateChartData(dateRange, assessments, isWeekly);
+    console.log('Chart data:', { scores, labels, dotTypes, metadata });
 
-    const hasOlderData = assessments.some(a => new Date(a.createdAt) < startDate);
+    const hasOlderData = assessments.some(a => new Date(a.date) < startDate);
 
     if (scores.length === 0) {
       return `<div style="width: 780px; height: 400px; display: flex; align-items: center; justify-content: center; background-color: transparent; font-family: 'Inter', sans-serif;">
@@ -412,7 +413,7 @@ const useAssessmentExporter = () => {
           return `
                 <div class="assessment" key=${assessment.id}>
                     <div class="row">
-                        <p class="date">${new Date(assessment.createdAt).toLocaleDateString()}</p>
+                        <p class="date">${new Date(assessment.date).toLocaleDateString()}</p>
                         <p class="score">${assessment.score}</p>
                     </div>
                     <div class="row">
