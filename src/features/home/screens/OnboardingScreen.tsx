@@ -1,4 +1,5 @@
 import { database, Pet } from '@/app/database';
+import { AssessmentFrequency } from '@/app/database/models/Pet';
 import { OnboardingScreenNavigationProps } from '@/features/navigation/types.tsx';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
@@ -8,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { AssessmentFrequency } from '../database/models/Pet';
 
 // The presentational component
 const OnboardingScreenComponent: React.FC<OnboardingScreenNavigationProps> = ({

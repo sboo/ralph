@@ -1,9 +1,9 @@
+import { database, petCollection } from '@/app/database';
 import { Q } from '@nozbe/watermelondb';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { ComponentType } from 'react';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { database, petCollection } from '../database';
 import { Assessment } from './models/Assessment';
 import { Pet } from './models/Pet';
 

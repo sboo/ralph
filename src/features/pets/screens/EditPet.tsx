@@ -1,4 +1,5 @@
 import { database } from '@/app/database';
+import { withActivePet } from '@/app/database/hoc';
 import { Pet } from '@/app/database/models/Pet';
 import { EditPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
@@ -8,7 +9,6 @@ import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { withActivePet } from '../database/hoc';
 
 // The presentational component
 const EditPetComponent: React.FC<EditPetScreenNavigationProps & {

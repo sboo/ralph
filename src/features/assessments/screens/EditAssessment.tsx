@@ -1,4 +1,5 @@
 import { database } from '@/app/database';
+import { withActivePet } from '@/app/database/hoc';
 import { Assessment } from '@/app/database/models/Assessment';
 import { Pet } from '@/app/database/models/Pet';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
@@ -9,7 +10,6 @@ import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { withActivePet } from '../database/hoc';
 
 // The presentational component
 const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {

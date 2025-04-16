@@ -1,5 +1,6 @@
 import { database } from '@/app/database';
 import { Pet } from '@/app/database/models/Pet';
+import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
 import Tips from '@/features/tips/components/Tips';
 import { Q } from '@nozbe/watermelondb';
@@ -10,7 +11,6 @@ import { Alert, Button, Text, View } from 'react-native';
 import { requestPurchase, useIAP } from 'react-native-iap';
 import { Divider } from 'react-native-paper';
 import { map } from 'rxjs/operators';
-import { STORAGE_KEYS } from '../store/storageKeys';
 
 // The presentational component
 const DebugScreenComponent: React.FC<{

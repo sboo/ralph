@@ -1,3 +1,4 @@
+import { database } from '@/app/database';
 import { withActivePetAssessments, withAllAndActivePet } from '@/app/database/hoc';
 import { Assessment } from '@/app/database/models/Assessment';
 import { Pet } from '@/app/database/models/Pet';
@@ -30,8 +31,7 @@ import { DateData } from 'react-native-calendars';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { FAB, useTheme } from 'react-native-paper';
-import { database } from '../database';
-import { useAppearance } from '../themes/hooks/useAppearance';
+import { useAppearance } from '../../../app/themes/hooks/useAppearance';
 
 // The presentational component that will be enhanced with observables
 const HomeScreenComponent = ({ 

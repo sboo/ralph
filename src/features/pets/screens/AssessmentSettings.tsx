@@ -1,3 +1,4 @@
+import { AssessmentFrequency } from "@/app/database/models/Pet";
 import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
 import { event, EVENT_NAMES } from '@/features/events';
 import { AssessmentSettingsScreenNavigationProps } from "@/features/navigation/types";
@@ -6,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { Avatar, Button, Card, Divider, List, Switch, Text, useTheme } from "react-native-paper";
-import { AssessmentFrequency } from "../database/models/Pet";
 
 const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({ route, navigation }) => {
   const { t } = useTranslation();

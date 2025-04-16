@@ -12,21 +12,21 @@ import { RootStackParamList } from './routes';
 
 // Screen imports
 import { Pet } from '@/app/database/models/Pet';
-import AddAssessment from '@/app/screens/AddAssessment';
-import AddPet from '@/app/screens/AddPet';
-import AllAssessmentsScreen from '@/app/screens/AllAssessmentsScreen';
-import AllNotesScreen from '@/app/screens/AllNotesScreen';
-import AssessmentSettings from '@/app/screens/AssessmentSettings';
-import CustomTrackingSettingsScreen from '@/app/screens/CustomTrackingSettingsScreen';
-import DebugScreen from '@/app/screens/DebugScreen';
-import EditAssessment from '@/app/screens/EditAssessment';
-import EditPet from '@/app/screens/EditPet';
-import HomeScreen from '@/app/screens/HomeScreen';
-import MigrationScreen from '@/app/screens/MigrationScreen';
-import NotificationSettings from '@/app/screens/NotificationSettings';
-import OnboardingScreen from '@/app/screens/OnboardingScreen';
-import SettingsScreen from '@/app/screens/SettingsScreen';
-import WelcomeScreen from '@/app/screens/WelcomeScreen';
+import AddAssessment from '@/features/assessments/screens/AddAssessment';
+import AllAssessmentsScreen from '@/features/assessments/screens/AllAssessmentsScreen';
+import AllNotesScreen from '@/features/assessments/screens/AllNotesScreen';
+import EditAssessment from '@/features/assessments/screens/EditAssessment';
+import DebugScreen from '@/features/debug/screens/DebugScreen';
+import HomeScreen from '@/features/home/screens/HomeScreen';
+import MigrationScreen from '@/features/home/screens/MigrationScreen';
+import OnboardingScreen from '@/features/home/screens/OnboardingScreen';
+import WelcomeScreen from '@/features/home/screens/WelcomeScreen';
+import AddPet from '@/features/pets/screens/AddPet';
+import AssessmentSettings from '@/features/pets/screens/AssessmentSettings';
+import CustomTrackingSettingsScreen from '@/features/pets/screens/CustomTrackingSettingsScreen';
+import EditPet from '@/features/pets/screens/EditPet';
+import NotificationSettings from '@/features/pets/screens/NotificationSettings';
+import SettingsScreen from '@/features/settings/screens/SettingsScreen';
 
 // Initialize Stack Navigator
 const Stack = createNativeStackNavigator<RootStackParamList>();

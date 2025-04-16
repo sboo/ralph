@@ -1,3 +1,4 @@
+import { withActivePetAssessments } from '@/app/database/hoc';
 import { Assessment } from '@/app/database/models/Assessment';
 import { AllNotesNavigationProps } from '@/features/navigation/types';
 import { getImagePath } from '@/support/helpers/ImageHelper';
@@ -8,7 +9,6 @@ import { Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } f
 import ImageView from 'react-native-image-viewing';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
 import { Card, IconButton, Text, useTheme } from 'react-native-paper';
-import { withActivePetAssessments } from '../database/hoc';
 
 // The presentational component
 const AllNotesScreenComponent: React.FC<AllNotesNavigationProps & {
