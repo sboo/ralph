@@ -55,6 +55,10 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
     onMigration: onMigration
   });
 
+
+
+  notifee.cancelAllNotifications();
+
   try {
     // Start a batch operation in WatermelonDB
     
@@ -80,13 +84,6 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
           pausedAt: realmPet.pausedAt,
           customTrackingSettings: realmPet.customTrackingSettings || '{}',
         };
-
-        if (pet.notificationsEnabled) {
-          await notifee.cancelAllNotifications([
-            'eu.sboo.ralph.reminder',
-            getNotificationId(realmPet._id.toHexString()),
-          ]);
-        }
 
         // Create a new Pet record in WatermelonDB
         const newPet = await petCollection.create((record: WatermelonPet) => {
