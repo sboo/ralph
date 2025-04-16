@@ -1,3 +1,12 @@
+import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
+import { event, EVENT_NAMES } from '@/features/events';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getHeaderTitle } from '@react-navigation/elements';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Linking, Platform, StyleSheet } from 'react-native';
+import { PurchaseError, requestPurchase } from 'react-native-iap';
 import {
   Appbar,
   Button,
@@ -8,15 +17,6 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import { getHeaderTitle } from '@react-navigation/elements';
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { PurchaseError, requestPurchase } from 'react-native-iap';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
-import { Linking, Platform, StyleSheet } from 'react-native';
-import { event, EVENT_NAMES } from '@/features/events';
 import SupportDialog from './SupportDialog';
 
 interface CoffeeButtonProps {

@@ -1,5 +1,5 @@
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { CustomTrackingLabels, CustomTrackingSettings } from '../assessments/helpers/customTracking';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CustomTrackingSettings } from '../assessments/helpers/customTracking';
 
 export type RootStackParamList = {
   Welcome: undefined;

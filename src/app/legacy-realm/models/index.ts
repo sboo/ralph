@@ -1,7 +1,7 @@
 import Realm from 'realm';
 import {Measurement} from '@/app/legacy-realm/models/Measurement';
 import {Pet} from '@/app/legacy-realm/models/Pet';
-import {PET_REQUIRES_MIGRATION} from '../../store/helper';
+import {PET_REQUIRES_MIGRATION} from '../helper';
 
 export const schemas = [Measurement, Pet];
 

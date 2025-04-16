@@ -1,13 +1,11 @@
 import { AssessmentFrequency } from '@/app/database/models/Pet';
 import { getValidReminderTimestamp } from '@/support/helpers/DateTimeHelpers';
 import notifee, {
-    AuthorizationStatus,
-    RepeatFrequency,
-    TimestampTrigger,
-    TriggerType,
-  } from '@notifee/react-native';
-  import i18next from 'i18next';
-import moment from 'moment';
+  RepeatFrequency,
+  TimestampTrigger,
+  TriggerType
+} from '@notifee/react-native';
+import i18next from 'i18next';
 
 const NOTIFICATION_PREFIX = 'eu.sboo.ralph.reminder_';
 

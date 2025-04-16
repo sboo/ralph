@@ -10,10 +10,10 @@ import {
 
 import type { ThemeProp } from 'react-native-paper/src/types';
 
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+import { useInternalTheme } from 'react-native-paper/src/core/theming';
 import SegmentedButtonItem from './SegmentedButtonItem';
 import { getDisabledSegmentedButtonStyle } from './utils';
-import { useInternalTheme } from 'react-native-paper/src/core/theming';
-import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 type ConditionalValue =
   | {

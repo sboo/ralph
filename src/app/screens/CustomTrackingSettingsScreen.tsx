@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { event, EVENT_NAMES } from "@/features/events";
 import { CustomTrackingSettingsScreenNavigationProps } from "@/features/navigation/types";
 import { useTranslation } from 'react-i18next';

@@ -1,7 +1,6 @@
-import { BSON } from 'realm';
+import { database, Pet } from '@/app/database';
 import notifee, { EventType } from '@notifee/react-native';
 import { useCallback } from 'react';
-import { database, Pet } from '@/app/database';
 
 const useNotifications = () => {
   const NOTIFICATION_PREFIX = 'eu.sboo.ralph.reminder_';

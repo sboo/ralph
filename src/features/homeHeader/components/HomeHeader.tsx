@@ -1,15 +1,15 @@
+import { database } from '@/app/database';
+import { Pet } from '@/app/database/models/Pet';
+import Avatar from '@/features/avatar/components/Avatar';
+import { event, EVENT_NAMES } from '@/features/events';
+import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import Avatar from '@/features/avatar/components/Avatar';
-import { event, EVENT_NAMES } from '@/features/events';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { Q } from '@nozbe/watermelondb';
-import { database } from '@/app/database';
-import { Pet } from '@/app/database/models/Pet';
 import { map } from 'rxjs/operators';
-import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
 
 // The presentational component
 const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {

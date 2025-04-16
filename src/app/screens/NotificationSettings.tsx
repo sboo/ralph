@@ -3,11 +3,11 @@ import { NotificationSettingsScreenNavigationProps } from "@/features/navigation
 import { timeToDateObject } from "@/support/helpers/DateTimeHelpers";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, SafeAreaView, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { List, Switch, Button, useTheme, Avatar, Card, Text } from "react-native-paper";
-import { is24HourFormat } from 'react-native-device-time-format'
+import { is24HourFormat } from 'react-native-device-time-format';
 import LinearGradient from "react-native-linear-gradient";
+import { Avatar, Button, Card, List, Switch, Text, useTheme } from "react-native-paper";
 
 
 const NotificationSettings: React.FC<NotificationSettingsScreenNavigationProps> = ({ route, navigation }) => {

@@ -1,15 +1,15 @@
+import { database } from '@/app/database';
+import { Pet } from '@/app/database/models/Pet';
 import { EditPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
+import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { database } from '@/app/database';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { Pet } from '@/app/database/models/Pet';
-import { Q } from '@nozbe/watermelondb';
 import { map } from 'rxjs/operators';
-import { PetData } from '@/features/pets/helpers/helperFunctions';
 
 // The presentational component
 const EditPetComponent: React.FC<EditPetScreenNavigationProps & {

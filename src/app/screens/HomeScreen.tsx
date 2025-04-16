@@ -1,3 +1,20 @@
+import { database } from '@/app/database';
+import { Assessment } from '@/app/database/models/Assessment';
+import { Pet } from '@/app/database/models/Pet';
+import AllNotes from '@/features/assessments/components/AllNotes';
+import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
+import AssessmentChart from '@/features/charts/components/AssessmentChart';
+import { EVENT_NAMES, event } from '@/features/events';
+import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
+import { HomeScreenNavigationProps } from '@/features/navigation/types.tsx';
+import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
+import GetStartedTip from '@/features/tips/components/GetStartedTip';
+import TalkToVetTip from '@/features/tips/components/TalkToVetTip';
+import Tips from '@/features/tips/components/Tips';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
+import { BlurView } from '@react-native-community/blur';
+import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,30 +26,13 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { FAB, useTheme } from 'react-native-paper';
-import { HomeScreenNavigationProps } from '@/features/navigation/types.tsx';
-import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
-import LinearGradient from 'react-native-linear-gradient';
-import moment from 'moment';
-import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
-import AssessmentChart from '@/features/charts/components/AssessmentChart';
-import Tips from '@/features/tips/components/Tips';
-import TalkToVetTip from '@/features/tips/components/TalkToVetTip';
-import GetStartedTip from '@/features/tips/components/GetStartedTip';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { Q } from '@nozbe/watermelondb';
-import { database } from '@/app/database';
-import { Pet } from '@/app/database/models/Pet';
-import { Assessment } from '@/app/database/models/Assessment';
-import { EVENT_NAMES, event } from '@/features/events';
 import { DateData } from 'react-native-calendars';
-import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
-import AllNotes from '@/features/assessments/components/AllNotes';
-import { BlurView } from '@react-native-community/blur';
 import DeviceInfo from 'react-native-device-info';
-import { useAppearance } from '../themes/hooks/useAppearance';
+import LinearGradient from 'react-native-linear-gradient';
+import { FAB, useTheme } from 'react-native-paper';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { useAppearance } from '../themes/hooks/useAppearance';
 
 // The presentational component that will be enhanced with observables
 const HomeScreenComponent = ({ 

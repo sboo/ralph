@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import {Card, Icon, Text} from 'react-native-paper';
-import useTips, {Tip, TipCategory} from '../hooks/useTips';
-import {getTipBackgroundColor} from '@/support/helpers/ColorHelper';
-import {useTranslation} from 'react-i18next';
-import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import { Assessment, Pet } from '@/app/database';
+import { getTipBackgroundColor } from '@/support/helpers/ColorHelper';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { Card, Icon, Text } from 'react-native-paper';
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import useTips, { Tip, TipCategory } from '../hooks/useTips';
 interface TipsProps {
   activePet: Pet;
   assessment?: Assessment;

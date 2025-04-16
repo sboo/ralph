@@ -1,6 +1,6 @@
 import React from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
-import {Card, Icon, Text} from 'react-native-paper';
+import { Dimensions, StyleSheet } from 'react-native';
+import { Card, Icon, Text } from 'react-native-paper';
 
 interface Props {
   color: string;

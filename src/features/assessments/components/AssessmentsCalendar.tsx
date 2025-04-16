@@ -1,17 +1,17 @@
-import React, {useMemo} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Calendar, DateData, LocaleConfig} from 'react-native-calendars';
-import {Text, useTheme} from 'react-native-paper';
-import {MarkedDates} from 'react-native-calendars/src/types';
-import moment from 'moment';
-import {StyleSheet} from 'react-native';
-import { withObservables } from '@nozbe/watermelondb/react';
 import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
-import { Pet } from '@/app/database/models/Pet';
 import { Assessment } from '@/app/database/models/Assessment';
-import { map, switchMap } from 'rxjs/operators';
+import { Pet } from '@/app/database/models/Pet';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
+import moment from 'moment';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import { Calendar, DateData, LocaleConfig } from 'react-native-calendars';
+import { MarkedDates } from 'react-native-calendars/src/types';
+import { Text, useTheme } from 'react-native-paper';
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 interface Props {
   onCalendarDayPress: (dateData: DateData) => void;

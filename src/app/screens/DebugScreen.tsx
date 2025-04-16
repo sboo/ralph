@@ -1,17 +1,16 @@
-import {event, EVENT_NAMES} from '@/features/events';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text, Button, Alert} from 'react-native';
-import {requestPurchase, useIAP} from 'react-native-iap';
-import {Divider} from 'react-native-paper';
-import {STORAGE_KEYS} from '../store/storageKeys';
-import Tips from '@/features/tips/components/Tips';
-import * as Sentry from '@sentry/react-native';
-import { withObservables } from '@nozbe/watermelondb/react';
 import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
 import { Pet } from '@/app/database/models/Pet';
+import { event, EVENT_NAMES } from '@/features/events';
+import Tips from '@/features/tips/components/Tips';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useCallback, useEffect } from 'react';
+import { Alert, Button, Text, View } from 'react-native';
+import { requestPurchase, useIAP } from 'react-native-iap';
+import { Divider } from 'react-native-paper';
 import { map } from 'rxjs/operators';
+import { STORAGE_KEYS } from '../store/storageKeys';
 
 // The presentational component
 const DebugScreenComponent: React.FC<{

@@ -1,18 +1,18 @@
-import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {Divider, useTheme} from 'react-native-paper';
-import {AllAssessmentsScreenNavigationProps} from '@/features/navigation/types.tsx';
-import LinearGradient from 'react-native-linear-gradient';
-import ExportPdf from '@/features/pdfExport/components/ExportPdf';
-import {DateData} from 'react-native-calendars/src/types';
-import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
-import { withObservables } from '@nozbe/watermelondb/react';
 import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
-import { Pet } from '@/app/database/models/Pet';
 import { Assessment } from '@/app/database/models/Assessment';
-import { map, switchMap } from 'rxjs/operators';
+import { Pet } from '@/app/database/models/Pet';
+import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
+import { AllAssessmentsScreenNavigationProps } from '@/features/navigation/types.tsx';
+import ExportPdf from '@/features/pdfExport/components/ExportPdf';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
+import React from 'react';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { DateData } from 'react-native-calendars/src/types';
+import LinearGradient from 'react-native-linear-gradient';
+import { Divider, useTheme } from 'react-native-paper';
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 // The presentational component
 const AllAssessmentsScreenComponent: React.FC<AllAssessmentsScreenNavigationProps & {

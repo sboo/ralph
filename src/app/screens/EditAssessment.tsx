@@ -1,16 +1,16 @@
-import React from 'react';
-import AssessmentItem from '@/features/assessments/components/AssessmentItem';
-import {useTheme} from 'react-native-paper';
-import {EditAssessmentScreenNavigationProps} from '@/features/navigation/types.tsx';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { withObservables } from '@nozbe/watermelondb/react';
 import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
-import { Pet } from '@/app/database/models/Pet';
 import { Assessment } from '@/app/database/models/Assessment';
-import { map } from 'rxjs/operators';
+import { Pet } from '@/app/database/models/Pet';
+import AssessmentItem from '@/features/assessments/components/AssessmentItem';
 import { calculateScore, storeImages } from '@/features/assessments/helpers/helperFunctions';
+import { EditAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
+import React from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { useTheme } from 'react-native-paper';
+import { map } from 'rxjs/operators';
 
 // The presentational component
 const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {

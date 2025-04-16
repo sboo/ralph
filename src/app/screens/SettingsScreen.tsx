@@ -1,11 +1,11 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
-import {SettingsScreenNavigationProps} from '@/features/navigation/types.tsx';
-import {useTranslation} from 'react-i18next';
+import { SettingsScreenNavigationProps } from '@/features/navigation/types.tsx';
 import Settings from '@/features/settings/components/Settings.tsx';
-import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import LinearGradient from 'react-native-linear-gradient';
+import { Text, useTheme } from 'react-native-paper';
 
 const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
   navigation,

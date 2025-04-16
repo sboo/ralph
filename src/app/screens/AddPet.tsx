@@ -7,7 +7,6 @@ import { useTheme } from 'react-native-paper';
 import { database, Pet } from '@/app/database';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
-import { Q } from '@nozbe/watermelondb';
 import { event, EVENT_NAMES } from '@/features/events';
 
 // The presentational component

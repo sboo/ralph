@@ -1,5 +1,5 @@
 import * as RNFS from '@dr.pogodin/react-native-fs';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 export const getImagePath = (
   filename: string,

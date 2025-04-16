@@ -1,4 +1,4 @@
-import {TipType} from '@/features/tips/hooks/useTips';
+import { TipType } from '@/features/tips/hooks/useTips';
 
 const getValueColor = (neutralColor: string, value: number | undefined) => {
   if (value === undefined) {
@@ -30,4 +30,4 @@ const getTipBackgroundColor = (tipType?: TipType) => {
   }
 };
 
-export {getValueColor, getTipBackgroundColor};
+export { getTipBackgroundColor, getValueColor };

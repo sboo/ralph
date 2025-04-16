@@ -26,7 +26,6 @@ import merge from 'deepmerge';
 // Local imports
 import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
 import { event, EVENT_NAMES } from '@/features/events';
-import { PET_REQUIRES_MIGRATION, getPetData } from '@/app/store/helper';
 import { RootStackParamList } from '@/features/navigation/types.tsx';
 import defaultColors from '@/app/themes/lightTheme.json';
 import darkColors from '@/app/themes/darkTheme.json';
@@ -53,8 +52,6 @@ import CustomTrackingSettingsScreen from './screens/CustomTrackingSettingsScreen
 import AllNotesScreen from './screens/AllNotesScreen';
 import DebugScreen from './screens/DebugScreen';
 import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
-import WatermelonTest from '@/features/settings/WatermelonTest';
-import WatermelonDBIntegration from '@/features/settings/WatermelonDBIntegration';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { Q } from '@nozbe/watermelondb';
 import { database } from '@/app/database';
@@ -433,22 +430,6 @@ const App: React.FC<{
                 }}
               />
               <Stack.Screen name="DebugScreen" component={DebugScreen} />
-              <Stack.Screen
-                name="WatermelonTest"
-                component={WatermelonTest}
-                options={{
-                  title: 'WatermelonDB Test',
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="WatermelonDBIntegration"
-                component={WatermelonDBIntegration}
-                options={{
-                  title: 'WatermelonDB Integration',
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
             </Stack.Navigator>
           </NavigationContainer>
         </PaperProvider>

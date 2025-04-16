@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import AssessmentItem from '@/features/assessments/components/AssessmentItem';
-import { useTheme } from 'react-native-paper';
-import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
-import LinearGradient from 'react-native-linear-gradient';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { withObservables } from '@nozbe/watermelondb/react';
 import { Assessment, database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
 import { Pet } from '@/app/database/models/Pet';
-import { map } from 'rxjs/operators';
+import AssessmentItem from '@/features/assessments/components/AssessmentItem';
 import { calculateScore, storeImages } from '@/features/assessments/helpers/helperFunctions';
+import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
 import moment from 'moment';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { useTheme } from 'react-native-paper';
+import { map } from 'rxjs/operators';
 
 // The presentational component
 const AddAssessmentComponent: React.FC<AddAssessmentScreenNavigationProps & {

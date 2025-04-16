@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { SegmentedButtons} from '@/support/components/SegmentedButtons/SegmentedButtons';
-import { StyleSheet, Touchable, TouchableWithoutFeedback, View } from 'react-native';
-import RatingSliderToolTip from './RatingSliderToolTip';
-import { useTheme } from 'react-native-paper';
+import { SegmentedButtons } from '@/support/components/SegmentedButtons/SegmentedButtons';
 import { getValueColor } from '@/support/helpers/ColorHelper';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import { getEmoticon, getTooltipContent, OptionText } from '../helpers/TooltipHelper';
+import RatingSliderToolTip from './RatingSliderToolTip';
 
 interface Props {
     initialRating: number | undefined;

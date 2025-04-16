@@ -1,20 +1,18 @@
-import { useTheme } from 'react-native-paper';
+import { database } from '@/app/database';
+import { Assessment } from '@/app/database/models/Assessment';
+import { Pet } from '@/app/database/models/Pet';
+import { DotType } from '@/features/charts/types';
+import { calculateDateRange, generateChartData, generateDateRange } from '@/features/charts/utils/helperFunctions';
+import { getValueColor } from '@/support/helpers/ColorHelper';
+import { getBase64Image } from '@/support/helpers/ImageHelper';
+import { Q } from '@nozbe/watermelondb';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import { getValueColor } from '@/support/helpers/ColorHelper';
+import { useTheme } from 'react-native-paper';
 import Share from 'react-native-share';
-import { getBase64Image } from '@/support/helpers/ImageHelper';
-import { calculateDateRange, generateDateRange, generateChartData } from '@/features/charts/utils/helperFunctions';
-import { DotType } from '@/features/charts/types';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
-import { Pet } from '@/app/database/models/Pet';
-import { Assessment } from '@/app/database/models/Assessment';
-import { map, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { useState, useEffect, useCallback } from 'react';
+import { map } from 'rxjs/operators';
 
 const useAssessmentExporter = () => {
   const { t } = useTranslation();

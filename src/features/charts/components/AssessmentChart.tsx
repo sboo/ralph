@@ -1,19 +1,19 @@
+import { database } from '@/app/database';
+import { Assessment } from '@/app/database/models/Assessment';
+import { Pet } from '@/app/database/models/Pet';
+import CustomDot from '@/support/components/CustomChartDot';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
+import moment from 'moment';
 import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Icon, useTheme } from 'react-native-paper';
-import moment from 'moment';
-import CustomDot from '@/support/components/CustomChartDot';
-import { AssessmentChartProps, CHART_CONSTANTS, EMOTIONS } from '../types';
-import { calculateDateRange, generateDateRange, generateChartData } from '../utils/helperFunctions';
-import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
-import { Pet } from '@/app/database/models/Pet';
-import { Assessment } from '@/app/database/models/Assessment';
-import { map, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { AssessmentChartProps, CHART_CONSTANTS, EMOTIONS } from '../types';
+import { calculateDateRange, generateChartData, generateDateRange } from '../utils/helperFunctions';
+import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
 
 // The presentational component
 const AssessmentChartComponent: React.FC<AssessmentChartProps & { 

@@ -1,4 +1,19 @@
+import { database } from '@/app/database';
+import { AssessmentFrequency, CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@/app/database/models/Pet';
+import Avatar from '@/features/avatar/components/Avatar';
+import { event, EVENT_NAMES } from '@/features/events';
+import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
+import useNotifications from '@/features/notifications/hooks/useNotifications';
+import {
+  dateObjectToTimeString,
+  timeToDateObject
+} from '@/support/helpers/DateTimeHelpers';
+import notifee, {
+  AuthorizationStatus
+} from '@notifee/react-native';
+import { withObservables } from '@nozbe/watermelondb/react';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Linking,
@@ -7,6 +22,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import { is24HourFormat } from 'react-native-device-time-format';
 import {
   Button,
   Dialog,
@@ -17,30 +33,7 @@ import {
   TextInput,
   useTheme,
 } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import notifee, {
-  AuthorizationStatus,
-  RepeatFrequency,
-  TimestampTrigger,
-  TriggerType,
-} from '@notifee/react-native';
-import Avatar from '@/features/avatar/components/Avatar';
-import i18next from 'i18next';
-import moment from 'moment';
-import {
-  dateObjectToTimeString,
-  getValidReminderTimestamp,
-  timeToDateObject,
-} from '@/support/helpers/DateTimeHelpers';
-import { CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@/app/database/models/Pet';
-import useNotifications from '@/features/notifications/hooks/useNotifications';
-import { AssessmentFrequency } from '@/app/database/models/Pet';
-import { event, EVENT_NAMES } from '@/features/events';
-import { is24HourFormat } from 'react-native-device-time-format'
-import { database } from '@/app/database';
-import { withObservables } from '@nozbe/watermelondb/react';
 import { PetData } from '../helpers/helperFunctions';
-import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
 
 interface Props {
   pet?: Pet;

@@ -1,18 +1,18 @@
+import { database } from '@/app/database';
+import { Assessment } from '@/app/database/models/Assessment';
+import { Pet } from '@/app/database/models/Pet';
 import { getImagePath } from '@/support/helpers/ImageHelper';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
-import { Avatar, Card, IconButton, Text, useTheme } from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ImageView from 'react-native-image-viewing';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
-import { useTranslation } from 'react-i18next';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
-import { Pet } from '@/app/database/models/Pet';
-import { Assessment } from '@/app/database/models/Assessment';
-import { map, switchMap } from 'rxjs/operators';
+import { Avatar, Card, IconButton, Text, useTheme } from 'react-native-paper';
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 interface Props {
     onNotePress: (assessmentId: string) => void;

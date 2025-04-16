@@ -1,6 +1,6 @@
+import { Assessment, Pet } from "@/app/database";
 import moment from "moment";
-import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, ProcessedChartData } from "../types";
-import { Pet, Assessment } from "@/app/database";
+import { CHART_CONSTANTS, ChartDateRange, ProcessedChartData, ScoreMetadata } from "../types";
 
 /**
  * Calculates the date range for a chart based on the provided assessments, pet status, and other parameters.

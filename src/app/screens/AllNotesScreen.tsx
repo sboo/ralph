@@ -1,18 +1,18 @@
+import { database } from '@/app/database';
+import { Assessment } from '@/app/database/models/Assessment';
+import { Pet } from '@/app/database/models/Pet';
+import { AllNotesNavigationProps } from '@/features/navigation/types';
 import { getImagePath } from '@/support/helpers/ImageHelper';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView, Image, View, TouchableOpacity } from 'react-native';
-import { Card, IconButton, Text, useTheme } from 'react-native-paper';
+import { Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ImageView from 'react-native-image-viewing';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
-import { AllNotesNavigationProps } from '@/features/navigation/types';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { database } from '@/app/database';
-import { Q } from '@nozbe/watermelondb';
-import { Pet } from '@/app/database/models/Pet';
-import { Assessment } from '@/app/database/models/Assessment';
-import { map, switchMap } from 'rxjs/operators';
+import { Card, IconButton, Text, useTheme } from 'react-native-paper';
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 // The presentational component
 const AllNotesScreenComponent: React.FC<AllNotesNavigationProps & {

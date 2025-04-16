@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import Svg, { Circle } from 'react-native-svg';
 import { Animated, Easing } from 'react-native';
+import { Circle } from 'react-native-svg';
 
 interface PulsatingCircleProps {
   color?: string;

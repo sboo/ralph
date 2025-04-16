@@ -14,14 +14,14 @@ import {
 import color from 'color';
 import type { ThemeProp } from 'react-native-paper/src/types';
 
+import { Icon, Text, TouchableRipple } from 'react-native-paper';
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+import { useInternalTheme } from 'react-native-paper/src/core/theming';
 import {
   getSegmentedButtonBorderRadius,
   getSegmentedButtonColors,
   getSegmentedButtonDensityPadding,
 } from './utils';
-import { useInternalTheme } from 'react-native-paper/src/core/theming';
-import { Text , Icon,  TouchableRipple } from 'react-native-paper';
-import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 export type Props = {
   /**

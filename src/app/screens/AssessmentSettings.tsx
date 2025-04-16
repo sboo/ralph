@@ -1,11 +1,11 @@
+import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
+import { event, EVENT_NAMES } from '@/features/events';
 import { AssessmentSettingsScreenNavigationProps } from "@/features/navigation/types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, SafeAreaView, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import { useTheme, List, Switch, Card, Avatar, Text, Divider, Button } from "react-native-paper";
-import { event, EVENT_NAMES } from '@/features/events';
-import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
+import { Avatar, Button, Card, Divider, List, Switch, Text, useTheme } from "react-native-paper";
 import { AssessmentFrequency } from "../database/models/Pet";
 
 const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({ route, navigation }) => {

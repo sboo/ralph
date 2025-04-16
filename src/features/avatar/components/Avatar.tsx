@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import ImagePicker, {Image} from 'react-native-image-crop-picker';
-import {Badge, Avatar as BaseAvatar, useTheme} from 'react-native-paper';
-import {StyleSheet, View} from 'react-native';
-import * as RNFS from '@dr.pogodin/react-native-fs';
-import {getImagePath} from '@/support/helpers/ImageHelper';
 import { Pet } from '@/app/database/models/Pet'; // Updated import from WatermelonDB models
+import { getImagePath } from '@/support/helpers/ImageHelper';
+import * as RNFS from '@dr.pogodin/react-native-fs';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
+import { Badge, Avatar as BaseAvatar, useTheme } from 'react-native-paper';
 
 interface AvatarProps {
   mode?: 'edit' | 'view';

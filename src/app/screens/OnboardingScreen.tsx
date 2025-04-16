@@ -1,13 +1,13 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import {useTheme} from 'react-native-paper';
-import {OnboardingScreenNavigationProps} from '@/features/navigation/types.tsx';
-import {useTranslation} from 'react-i18next';
-import LinearGradient from 'react-native-linear-gradient';
-import PetItem from '@/features/pets/components/PetItem';
 import { database, Pet } from '@/app/database';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { OnboardingScreenNavigationProps } from '@/features/navigation/types.tsx';
+import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { withObservables } from '@nozbe/watermelondb/react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { useTheme } from 'react-native-paper';
 
 // The presentational component
 const OnboardingScreenComponent: React.FC<OnboardingScreenNavigationProps> = ({

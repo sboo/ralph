@@ -1,3 +1,10 @@
+import { Assessment } from '@/app/database';
+import { STORAGE_KEYS } from '@/app/store/storageKeys';
+import RatingButtons from '@/support/components/RatingButtons';
+import RatingSlider from '@/support/components/RatingSlider';
+import { getImagePath } from '@/support/helpers/ImageHelper';
+import { OptionText } from '@/support/helpers/TooltipHelper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,17 +15,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, Divider, Text } from 'react-native-paper';
-import RatingSlider from '@/support/components/RatingSlider';
-import NotesModal from './NotesModal';
-import { getImagePath } from '@/support/helpers/ImageHelper';
 import ImageView from 'react-native-image-viewing';
-import RatingButtons from '@/support/components/RatingButtons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
-import { OptionText } from '@/support/helpers/TooltipHelper';
+import { Button, Divider, Text } from 'react-native-paper';
 import { CustomTrackingSettings } from '../helpers/customTracking';
-import { Assessment } from '@/app/database';
+import NotesModal from './NotesModal';
 
 interface Props {
   petName: string;

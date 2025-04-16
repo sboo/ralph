@@ -1,10 +1,10 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react';
-import { Dimensions, Platform, SafeAreaView, ScrollView, StyleSheet, View, Animated } from 'react-native';
-import { Avatar, IconButton, Text, useTheme } from 'react-native-paper';
 import { WelcomeScreenNavigationProps } from '@/features/navigation/types.tsx';
-import { useTranslation } from 'react-i18next';
-import SwiperFlatList from 'react-native-swiper-flatlist';
 import { CustomPagination } from '@/support/components/CustomSwiperPagination';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Animated, Dimensions, Platform, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { Avatar, IconButton, Text, useTheme } from 'react-native-paper';
+import SwiperFlatList from 'react-native-swiper-flatlist';
 
 const width = Dimensions.get('window').width;
 

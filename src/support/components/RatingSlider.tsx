@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Slider } from '@miblanchard/react-native-slider';
-import { StyleSheet, View } from 'react-native';
-import RatingSliderToolTip from './RatingSliderToolTip';
-import { useTheme } from 'react-native-paper';
 import { getValueColor } from '@/support/helpers/ColorHelper';
-import { getEmoticon, getTooltipContent, OptionText } from '../helpers/TooltipHelper';
+import { Slider } from '@miblanchard/react-native-slider';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
+import { getTooltipContent, OptionText } from '../helpers/TooltipHelper';
+import RatingSliderToolTip from './RatingSliderToolTip';
 
 interface Props {
   initialRating: number | undefined;
