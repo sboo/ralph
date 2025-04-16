@@ -3,11 +3,11 @@ import { database, petCollection, assessmentCollection } from '@/app/database';
 import { AssessmentFrequency, Pet as WatermelonPet } from '@/app/database/models/Pet';
 import { Assessment as WatermelonAssessment } from '@/app/database/models/Assessment';
 import notifee from '@notifee/react-native';
-import {onMigration} from '@/app/models';
+import {onMigration} from '@/app/legacy-realm/models';
 
 // Original Realm models
-import { Pet as RealmPet } from '@/app/models/Pet';
-import { Measurement as RealmMeasurement } from '@/app/models/Measurement';
+import { Pet as RealmPet } from '@/app/legacy-realm/models/Pet';
+import { Measurement as RealmMeasurement } from '@/app/legacy-realm/models/Measurement';
 import { createTriggerNotification, getNotificationId } from '@/features/notifications/helpers/helperFunctions';
 import { timeToDateObject } from '@/support/helpers/DateTimeHelpers';
 
