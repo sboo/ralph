@@ -3,11 +3,10 @@ export { default as AppNavigator } from './AppNavigator';
 
 // Export navigation options
 export {
-  createAssessmentTitle,
-  createDefaultScreenOptions,
-  createHeaderOptions,
-  createHomeHeaderOptions,
-  createNoHeaderOptions
+    createDefaultScreenOptions,
+    createHeaderOptions,
+    createHomeHeaderOptions,
+    createNoHeaderOptions
 } from './navigationOptions';
 
 // Export types

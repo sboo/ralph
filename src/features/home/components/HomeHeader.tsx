@@ -10,7 +10,6 @@ import React, { ComponentType, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { map } from 'rxjs/operators';
 
 // The presentational component
 const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
@@ -126,16 +125,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
 });
-
-// Connect with WatermelonDB observables
-const enhancex = withObservables([], () => ({
-  allPets: database.get<Pet>('pets').query().observe(),
-  activePet: database.get<Pet>('pets').query(Q.where('is_active', true)).observeWithColumns(['is_active']).pipe(
-    // Handle empty results by returning undefined for activePet
-    map(pets => pets.length > 0 ? pets[0] : undefined)
-  ),
-  inactivePets: database.get<Pet>('pets').query(Q.where('is_active', false)),
-}));
 
 const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
   withAllAndActivePet,

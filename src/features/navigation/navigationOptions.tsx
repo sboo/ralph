@@ -41,13 +41,3 @@ export const createNoHeaderOptions = (): NativeStackNavigationOptions => {
     headerShown: false,
   };
 };
-
-/**
- * Create assessment screen title with pet name
- */
-export const createAssessmentTitle = (
-  title: string, 
-  petName?: string
-): string => {
-  return petName ? `${title} - ${petName}` : title;
-};

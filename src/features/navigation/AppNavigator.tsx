@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-    createAssessmentTitle,
     createDefaultScreenOptions,
     createHeaderOptions,
     createHomeHeaderOptions,
@@ -123,7 +122,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({
         name="AddAssessment"
         component={AddAssessment}
         options={createHeaderOptions(
-          createAssessmentTitle(t('measurements:title'), activePet?.name), 
+          t('measurements:title', {petName: activePet?.name}),
           theme.colors.primaryContainer
         )}
       />
@@ -131,7 +130,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({
         name="EditAssessment"
         component={EditAssessment}
         options={createHeaderOptions(
-          createAssessmentTitle(t('measurements:title'), activePet?.name),
+          t('measurements:title', {petName: activePet?.name}),
           theme.colors.primaryContainer
         )}
       />
