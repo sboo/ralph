@@ -1,17 +1,17 @@
-import darkColors from '@/app/themes/darkTheme.json';
-import { useAppearance } from '@/app/themes/hooks/useAppearance';
-import defaultColors from '@/app/themes/lightTheme.json';
+import { useAppearance } from '@/features/themes';
+import darkColors from '@/features/themes/darkTheme.json';
+import defaultColors from '@/features/themes/lightTheme.json';
 import {
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
+    DarkTheme as NavigationDarkTheme,
+    DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
 import merge from 'deepmerge';
 import React, { ReactNode } from 'react';
 import {
-  adaptNavigationTheme,
-  MD3DarkTheme,
-  MD3LightTheme,
-  PaperProvider
+    adaptNavigationTheme,
+    MD3DarkTheme,
+    MD3LightTheme,
+    PaperProvider
 } from 'react-native-paper';
 
 interface ThemeProviderProps {

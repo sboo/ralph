@@ -2,16 +2,14 @@ import { database } from '@/app/database';
 import { withActivePetAssessments, withAllAndActivePet } from '@/app/database/hoc';
 import { Assessment } from '@/app/database/models/Assessment';
 import { Pet } from '@/app/database/models/Pet';
-import AllNotes from '@/features/assessments/components/AllNotes';
-import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
-import AssessmentChart from '@/features/charts/components/AssessmentChart';
+import { AllNotes, AssessmentsCalendar } from '@/features/assessments';
+import { AssessmentChart } from '@/features/charts';
 import { EVENT_NAMES, event } from '@/features/events';
-import HomeHeader from '@/features/homeHeader/components/HomeHeader.tsx';
-import { HomeScreenNavigationProps } from '@/features/navigation/types.tsx';
-import useAssessmentExporter from '@/features/pdfExport/hooks/useAssessmentExporter.ts';
-import GetStartedTip from '@/features/tips/components/GetStartedTip';
-import TalkToVetTip from '@/features/tips/components/TalkToVetTip';
-import Tips from '@/features/tips/components/Tips';
+import { HomeHeader } from '@/features/home';
+import { HomeScreenNavigationProps } from '@/features/navigation';
+import { useAssessmentExporter } from '@/features/pdfExport';
+import { useAppearance } from '@/features/themes';
+import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from '@react-native-community/blur';
@@ -31,7 +29,6 @@ import { DateData } from 'react-native-calendars';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { FAB, useTheme } from 'react-native-paper';
-import { useAppearance } from '../../../app/themes/hooks/useAppearance';
 
 // The presentational component that will be enhanced with observables
 const HomeScreenComponent = ({ 

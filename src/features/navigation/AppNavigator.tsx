@@ -2,31 +2,49 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  createAssessmentTitle,
-  createDefaultScreenOptions,
-  createHeaderOptions,
-  createHomeHeaderOptions,
-  createNoHeaderOptions
+    createAssessmentTitle,
+    createDefaultScreenOptions,
+    createHeaderOptions,
+    createHomeHeaderOptions,
+    createNoHeaderOptions
 } from './navigationOptions';
 import { RootStackParamList } from './routes';
 
-// Screen imports
+// Import from Pet model
 import { Pet } from '@/app/database/models/Pet';
-import AddAssessment from '@/features/assessments/screens/AddAssessment';
-import AllAssessmentsScreen from '@/features/assessments/screens/AllAssessmentsScreen';
-import AllNotesScreen from '@/features/assessments/screens/AllNotesScreen';
-import EditAssessment from '@/features/assessments/screens/EditAssessment';
-import DebugScreen from '@/features/debug/screens/DebugScreen';
-import HomeScreen from '@/features/home/screens/HomeScreen';
-import MigrationScreen from '@/features/home/screens/MigrationScreen';
-import OnboardingScreen from '@/features/home/screens/OnboardingScreen';
-import WelcomeScreen from '@/features/home/screens/WelcomeScreen';
-import AddPet from '@/features/pets/screens/AddPet';
-import AssessmentSettings from '@/features/pets/screens/AssessmentSettings';
-import CustomTrackingSettingsScreen from '@/features/pets/screens/CustomTrackingSettingsScreen';
-import EditPet from '@/features/pets/screens/EditPet';
-import NotificationSettings from '@/features/pets/screens/NotificationSettings';
-import SettingsScreen from '@/features/settings/screens/SettingsScreen';
+
+// Import screens from their respective feature modules
+import {
+    AddAssessment,
+    AllAssessmentsScreen,
+    AllNotesScreen,
+    EditAssessment
+} from '@/features/assessments';
+
+import { DebugScreen } from '@/features/debug';
+
+import {
+    HomeScreen,
+} from '@/features/home';
+
+import {
+    MigrationScreen
+} from '@/features/app';
+
+import {
+    OnboardingScreen,
+    WelcomeScreen
+} from '@/features/onboarding';
+
+import {
+    AddPet,
+    AssessmentSettings,
+    CustomTrackingSettingsScreen,
+    EditPet,
+    NotificationSettings
+} from '@/features/pets';
+
+import { SettingsScreen } from '@/features/settings';
 
 // Initialize Stack Navigator
 const Stack = createNativeStackNavigator<RootStackParamList>();

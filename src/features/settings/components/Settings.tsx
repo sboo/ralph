@@ -1,6 +1,6 @@
 import { AVAILABLE_LANGUAGES } from '@/app/localization/i18n';
 import { STORAGE_KEYS } from '@/app/store/storageKeys';
-import { Appearance, useAppearance } from '@/app/themes/hooks/useAppearance';
+import { Appearance, useAppearance } from '@/features/themes';
 import { ANDROID_APP_ID, IOS_APP_ID } from '@/support/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';

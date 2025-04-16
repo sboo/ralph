@@ -1,10 +1,10 @@
 import { DatabaseProvider } from '@/app/database/context';
+import { MigrationProvider } from '@/app/legacy-realm/providers/MigrationProvider';
+import { NotificationProvider } from '@/features/notifications';
+import { PurchaseProvider } from '@/features/purchases';
+import { ThemeProvider } from '@/features/themes';
 import React, { ReactNode } from 'react';
 import { withIAPContext } from 'react-native-iap';
-import MigrationProvider from './MigrationProvider';
-import NotificationProvider from './NotificationProvider';
-import PurchaseProvider from './PurchaseProvider';
-import ThemeProvider from './ThemeProvider';
 
 interface AppProvidersProps {
   children: ReactNode;

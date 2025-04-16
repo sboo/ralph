@@ -1,5 +1,5 @@
 import { migrateFromRealm } from '@/app/database/migration-utility';
-import MigrationScreen from '@/features/home/screens/MigrationScreen';
+import { MigrationScreen } from '@/features/app';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { ReactNode, useEffect, useState } from 'react';
 

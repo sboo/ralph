@@ -1,7 +1,5 @@
-import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { Theme } from "@react-navigation/native";
 import CustomNavigationBar from "@/features/navigation/components/CustomNavigationBar";
-import { Pet } from "@/app/database/models/Pet";
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
 /**
  * Create default screen options with custom navigation bar

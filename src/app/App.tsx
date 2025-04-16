@@ -12,11 +12,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
-// Import Navigator
+// Import Navigator and Providers
+import { AppProviders } from '@/features/app';
+import { AppNavigator } from '@/features/navigation';
 import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
-import AppNavigator from '@/navigation/AppNavigator';
-import AppProviders from '@/providers/AppProviders';
-import { useTheme } from '@/providers/ThemeProvider';
+import { useTheme } from '@/features/themes';
 import { withAllAndActivePet } from './database/hoc';
 
 // Initialize StatusBar
