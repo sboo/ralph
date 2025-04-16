@@ -1,8 +1,7 @@
-import { database } from '@/app/database';
+import { withActivePetAssessments } from '@/app/database/hoc';
 import { Assessment } from '@/app/database/models/Assessment';
 import { Pet } from '@/app/database/models/Pet';
-import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,8 +9,6 @@ import { StyleSheet } from 'react-native';
 import { Calendar, DateData, LocaleConfig } from 'react-native-calendars';
 import { MarkedDates } from 'react-native-calendars/src/types';
 import { Text, useTheme } from 'react-native-paper';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 
 interface Props {
   onCalendarDayPress: (dateData: DateData) => void;
@@ -79,33 +76,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => {
-  // Get active pet
-  const activePetObservable = database
-    .get<Pet>('pets')
-    .query(Q.where('is_active', true))
-    .observe()
-    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
 
-  // Create assessments observable that depends on the active pet
-  const assessmentsObservable = activePetObservable.pipe(
-    switchMap(pet => {
-      if (!pet) {
-        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
-      }
-      return database
-        .get<Assessment>('assessments')
-        .query(Q.where('pet_id', pet.id), Q.sortBy('date', 'desc'))
-        .observe();
-    })
-  );
-
-  return {
-    activePet: activePetObservable,
-    assessments: assessmentsObservable
-  };
-});
+const enhance = compose(
+  withActivePetAssessments({
+    sortBy: { column: 'created_at', direction: 'asc' }
+  })
+);
 
 // Export the enhanced component
 export default enhance(AssessmentsCalendarComponent);

@@ -1,6 +1,6 @@
-import { Model } from '@nozbe/watermelondb';
-import { field, date, children, text, readonly, json } from '@nozbe/watermelondb/decorators';
-import { associations } from '@nozbe/watermelondb/Model';
+import { Model, Query } from '@nozbe/watermelondb';
+import { children, date, field, json, readonly, text } from '@nozbe/watermelondb/decorators';
+import { Assessment } from './Assessment';
 
 export type AssessmentFrequency = 'DAILY' | 'WEEKLY';
 
@@ -59,5 +59,5 @@ export class Pet extends Model {
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 
-  @children('assessments') assessments: any;
+  @children('assessments') assessments!: Query<Assessment>;
 }

@@ -1,4 +1,4 @@
-import { database } from '@/app/database';
+import { withActivePetAssessments, withAllAndActivePet } from '@/app/database/hoc';
 import { Assessment } from '@/app/database/models/Assessment';
 import { Pet } from '@/app/database/models/Pet';
 import AllNotes from '@/features/assessments/components/AllNotes';
@@ -12,7 +12,7 @@ import GetStartedTip from '@/features/tips/components/GetStartedTip';
 import TalkToVetTip from '@/features/tips/components/TalkToVetTip';
 import Tips from '@/features/tips/components/Tips';
 import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from '@react-native-community/blur';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -30,8 +30,7 @@ import { DateData } from 'react-native-calendars';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { FAB, useTheme } from 'react-native-paper';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { database } from '../database';
 import { useAppearance } from '../themes/hooks/useAppearance';
 
 // The presentational component that will be enhanced with observables
@@ -379,48 +378,24 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => {
-  // Get active pet
-  const activePetObservable = database
-    .get<Pet>('pets')
-    .query(Q.where('is_active', true))
-    .observe()
-    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
-
-  // Create assessments observable that depends on the active pet
-  const assessmentsObservable = activePetObservable.pipe(
-    switchMap(pet => {
-      if (!pet) {
-        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
-      }
-      return database
-        .get<Assessment>('assessments')
-        .query(Q.where('pet_id', pet.id), Q.sortBy('created_at', 'asc'))
-        .observe();
-    })
-  );
-
-  // Create last assessments observable for the active pet
-  const lastAssessmentsObservable = activePetObservable.pipe(
-    switchMap(pet => {
-      if (!pet) {
-        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
-      }
-      return database
-        .get<Assessment>('assessments')
-        .query(Q.where('pet_id', pet.id), Q.sortBy('created_at', 'desc'))
-        .observe();
-    })
-  );
-
-  return {
-    allPets: database.get<Pet>('pets').query(),
-    activePet: activePetObservable,
-    assessments: assessmentsObservable,
-    lastAssessments: lastAssessmentsObservable,
-  };
-});
+// Connect the component with WatermelonDB observables using enhanced HOCs
+const enhance: (component: React.ComponentType<any>) => React.ComponentType<any> = compose(
+  // Get all pets and active pet
+  withAllAndActivePet,
+  // Add assessments from active pet, sorted by created_at ascending
+  withActivePetAssessments({
+    sortBy: { column: 'created_at', direction: 'asc' }
+  }),
+  // Add last assessments from active pet, sorted by created_at descending
+  withObservables(['activePet'], ({ activePet }: { activePet: Pet | undefined }) => ({
+    lastAssessments: activePet
+      ? database
+          .get<Assessment>('assessments')
+          .query(Q.where('pet_id', activePet.id), Q.sortBy('created_at', 'desc'))
+          .observe()
+      : Promise.resolve([]) // Return an empty result if activePet is undefined
+  }))
+);
 
 // Export the enhanced component
 export default enhance(HomeScreenComponent);

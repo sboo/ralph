@@ -1,26 +1,20 @@
-import { database } from '@/app/database';
 import { Assessment } from '@/app/database/models/Assessment';
-import { Pet } from '@/app/database/models/Pet';
 import { AllNotesNavigationProps } from '@/features/navigation/types';
 import { getImagePath } from '@/support/helpers/ImageHelper';
-import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ImageView from 'react-native-image-viewing';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
 import { Card, IconButton, Text, useTheme } from 'react-native-paper';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { withActivePetAssessments } from '../database/hoc';
 
 // The presentational component
 const AllNotesScreenComponent: React.FC<AllNotesNavigationProps & {
-  activePet: Pet | undefined,
   assessmentsWithNotes: Assessment[]
 }> = ({ 
   navigation,
-  activePet,
   assessmentsWithNotes
 }) => {
     const theme = useTheme();
@@ -141,37 +135,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => {
-  // Get active pet
-  const activePetObservable = database
-    .get<Pet>('pets')
-    .query(Q.where('is_active', true))
-    .observe()
-    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
-
-  // Create assessments with notes observable that depends on the active pet
-  const assessmentsWithNotesObservable = activePetObservable.pipe(
-    switchMap(pet => {
-      if (!pet) {
-        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
-      }
-      return database
-        .get<Assessment>('assessments')
-        .query(
-          Q.where('pet_id', pet.id),
-          Q.where('notes', Q.notEq(null)),
-          Q.sortBy('date', 'desc') 
-        )
-        .observe();
-    })
-  );
-
-  return {
-    activePet: activePetObservable,
-    assessmentsWithNotes: assessmentsWithNotesObservable
-  };
-});
+const enhance = compose(
+    withActivePetAssessments({
+        sortBy: { column: 'created_at', direction: 'asc' },
+        withNotes: true,
+      }),
+);
 
 // Export the enhanced component
 export default enhance(AllNotesScreenComponent);

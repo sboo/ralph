@@ -1,6 +1,6 @@
-import { Model } from '@nozbe/watermelondb';
-import { field, date, relation, text, readonly, json } from '@nozbe/watermelondb/decorators';
-import { associations } from '@nozbe/watermelondb/Model';
+import { Model, Query } from '@nozbe/watermelondb';
+import { date, field, json, readonly, relation, text } from '@nozbe/watermelondb/decorators';
+import { Pet } from './Pet';
 
 // Sanitizer function for images array
 const sanitizeImages = (rawImages: any): string[] => {
@@ -29,7 +29,7 @@ export class Assessment extends Model {
   @field('custom_value') customValue?: number;
   @text('notes') notes?: string;
   @json('images', sanitizeImages) images!: string[];
-  @relation('pets', 'pet_id') pet!: any;
+  @relation('pets', 'pet_id') pet!: Query<Pet>;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 }

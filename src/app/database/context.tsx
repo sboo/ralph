@@ -1,9 +1,8 @@
-import React, { createContext, useContext, ReactNode, useMemo } from 'react';
-import { database, petCollection, assessmentCollection } from './index';
-import { Database } from '@nozbe/watermelondb';
-import { Collection } from '@nozbe/watermelondb/Collection';
-import { Pet } from './models/Pet';
+import Collection from '@nozbe/watermelondb/Collection';
+import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import { assessmentCollection, database, petCollection } from './index';
 import { Assessment } from './models/Assessment';
+import { Pet } from './models/Pet';
 
 interface DatabaseContextType {
   database: typeof database;
