@@ -1,16 +1,13 @@
-import { database } from '@/app/database';
+import { withActivePetAssessments } from '@/app/database/hoc';
 import { Assessment } from '@/app/database/models/Assessment';
 import { Pet } from '@/app/database/models/Pet';
 import CustomDot from '@/support/components/CustomChartDot';
-import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Icon, useTheme } from 'react-native-paper';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { AssessmentChartProps, CHART_CONSTANTS, EMOTIONS } from '../types';
 import { calculateDateRange, generateChartData, generateDateRange } from '../utils/helperFunctions';
 import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
@@ -188,40 +185,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => {
-  // Get active pet
-  const activePetObservable = database
-    .get<Pet>('pets')
-    .query(Q.where('is_active', true))
-    .observe()
-    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
-
-  // Create assessments observable that depends on the active pet
-  const assessmentsObservable = activePetObservable.pipe(
-    switchMap(pet => {
-      if (!pet) {
-        return new Observable<Assessment[]>(subscriber => subscriber.next([]));
-      }
-      
-      // Observe the assessment collection with specific columns to ensure updates are detected
-      return database
-        .get<Assessment>('assessments')
-        .query(
-          Q.where('pet_id', pet.id),
-          Q.sortBy('created_at', 'asc')
-        )
-        .observeWithColumns([
-          'score'
-        ]);
-    })
-  );
-
-  return {
-    activePet: activePetObservable,
-    assessments: assessmentsObservable,
-  };
-});
+const enhance: (component: React.ComponentType<any>) => React.ComponentType<any> = compose(
+  // Add assessments from active pet, sorted by created_at ascending
+  withActivePetAssessments({
+    sortBy: { column: 'created_at', direction: 'asc' }
+  }),
+);
 
 // Export the enhanced component
 export default enhance(AssessmentChartComponent);

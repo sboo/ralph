@@ -1,13 +1,14 @@
+import { database, Pet } from '@/app/database';
+import { event, EVENT_NAMES } from '@/features/events';
 import { AddPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
+import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { compose } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { database, Pet } from '@/app/database';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { PetData } from '@/features/pets/helpers/helperFunctions';
-import { event, EVENT_NAMES } from '@/features/events';
+import { withAllPets } from '../database/hoc';
 
 // The presentational component
 const AddPetComponent: React.FC<AddPetScreenNavigationProps & {
@@ -72,12 +73,9 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => ({
-  allPets: database
-    .get<Pet>('pets')
-    .query()
-    .observe(),
-}));
+
+const enhance = compose(
+  withAllPets,
+);
 
 export default enhance(AddPetComponent);

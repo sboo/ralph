@@ -4,13 +4,12 @@ import { Pet } from '@/app/database/models/Pet';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
 import { calculateScore, storeImages } from '@/features/assessments/helpers/helperFunctions';
 import { EditAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
-import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose, withObservables } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { map } from 'rxjs/operators';
+import { withActivePet } from '../database/hoc';
 
 // The presentational component
 const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
@@ -122,27 +121,19 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables(['route'], ({ route }) => {
-  const assessmentId = route.params.assessmentId;
-  
-  // Get active pet
-  const activePetObservable = database
-    .get<Pet>('pets')
-    .query(Q.where('is_active', true))
-    .observe()
-    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
-
-  // Get the assessment by ID
-  const assessmentObservable = database
-    .get<Assessment>('assessments')
-    .findAndObserve(assessmentId);
-
-  return {
-    activePet: activePetObservable,
-    assessment: assessmentObservable,
-  };
-});
+const enhance: (component: React.ComponentType<any>) => React.ComponentType<any> = compose(
+  withActivePet,
+  withObservables(['route'], ({ route }) => {
+    const assessmentId = route.params.assessmentId;
+    // Get the assessment by ID
+    const assessmentObservable = database
+      .get<Assessment>('assessments')
+      .findAndObserve(assessmentId);
+    return {
+      assessment: assessmentObservable,
+    };
+  })
+);
 
 // Export the enhanced component
 export default enhance(EditAssessmentComponent);

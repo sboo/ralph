@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
+import { AssessmentFrequency } from '../database/models/Pet';
 
 // The presentational component
 const OnboardingScreenComponent: React.FC<OnboardingScreenNavigationProps> = ({
@@ -22,18 +23,16 @@ const OnboardingScreenComponent: React.FC<OnboardingScreenNavigationProps> = ({
     // Create the pet using WatermelonDB directly
     await database.write(async () => {
       await database.get<Pet>('pets').create(record => {
-        record.species = data.species;
-        record.name = data.name;
+        record.species = data.species || 'other';
+        record.name = data.name || 'New Pet';
         if (data.avatar) record.avatar = data.avatar;
-        record.notificationsEnabled = data.notificationsEnabled;
+        record.notificationsEnabled = data.notificationsEnabled || false;
         if (data.notificationsTime) record.notificationsTime = data.notificationsTime;
-        record.showNotificationDot = data.showNotificationDot || false;
+        record.showNotificationDot = false;
         record.isActive = true; // New pet is active by default
-        record.assessmentFrequency = data.assessmentFrequency;
+        record.assessmentFrequency = data.assessmentFrequency as AssessmentFrequency;
         if (data.customTrackingSettings) {
-          record.customTrackingSettings = typeof data.customTrackingSettings === 'string'
-            ? data.customTrackingSettings
-            : JSON.stringify(data.customTrackingSettings);
+          record.customTrackingSettings = data.customTrackingSettings;
         }
       });
     });

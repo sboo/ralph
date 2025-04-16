@@ -3,13 +3,12 @@ import { Pet } from '@/app/database/models/Pet';
 import { EditPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
-import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { map } from 'rxjs/operators';
+import { withActivePet } from '../database/hoc';
 
 // The presentational component
 const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
@@ -89,18 +88,10 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => ({
-  activePet: database
-    .get<Pet>('pets')
-    .query(Q.where('is_active', true))
-    .observe()
-    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined)),
-    allPets : database
-    .get<Pet>('pets')
-    .query()
-    .observe(),
-}));
+
+const enhance = compose(
+  withActivePet
+)
 
 // Export the enhanced component
 export default enhance(EditPetComponent);

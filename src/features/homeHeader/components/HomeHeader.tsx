@@ -1,11 +1,12 @@
 import { database } from '@/app/database';
+import { withAllAndActivePet } from '@/app/database/hoc';
 import { Pet } from '@/app/database/models/Pet';
 import Avatar from '@/features/avatar/components/Avatar';
 import { event, EVENT_NAMES } from '@/features/events';
 import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
 import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
-import React, { useEffect, useState } from 'react';
+import { compose, withObservables } from '@nozbe/watermelondb/react';
+import React, { ComponentType, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
 });
 
 // Connect with WatermelonDB observables
-const enhance = withObservables([], () => ({
+const enhancex = withObservables([], () => ({
   allPets: database.get<Pet>('pets').query().observe(),
   activePet: database.get<Pet>('pets').query(Q.where('is_active', true)).observeWithColumns(['is_active']).pipe(
     // Handle empty results by returning undefined for activePet
@@ -135,6 +136,14 @@ const enhance = withObservables([], () => ({
   ),
   inactivePets: database.get<Pet>('pets').query(Q.where('is_active', false)),
 }));
+
+const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
+  withAllAndActivePet,
+  withObservables([], () => ({
+    inactivePets: database.get<Pet>('pets').query(Q.where('is_active', false)),
+  }))
+)
+
 
 // Export the enhanced component
 export default enhance(HomeHeaderComponent);

@@ -1,4 +1,4 @@
-import { database } from '@/app/database';
+import { withAllPets } from '@/app/database/hoc';
 import { AssessmentFrequency, CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@/app/database/models/Pet';
 import Avatar from '@/features/avatar/components/Avatar';
 import { event, EVENT_NAMES } from '@/features/events';
@@ -11,7 +11,7 @@ import {
 import notifee, {
   AuthorizationStatus
 } from '@notifee/react-native';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose } from '@nozbe/watermelondb/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -457,10 +457,10 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => ({
-  allPets: database.get('pets').query()
-}));
+
+const enhance = compose(
+  withAllPets
+)
 
 // Export the enhanced component
 export default enhance(PetItem);

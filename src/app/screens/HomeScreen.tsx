@@ -15,7 +15,7 @@ import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from '@react-native-community/blur';
 import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ComponentType, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Animated,
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
 });
 
 // Connect the component with WatermelonDB observables using enhanced HOCs
-const enhance: (component: React.ComponentType<any>) => React.ComponentType<any> = compose(
+const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
   // Get all pets and active pet
   withAllAndActivePet,
   // Add assessments from active pet, sorted by created_at ascending
@@ -393,7 +393,7 @@ const enhance: (component: React.ComponentType<any>) => React.ComponentType<any>
           .get<Assessment>('assessments')
           .query(Q.where('pet_id', activePet.id), Q.sortBy('created_at', 'desc'))
           .observe()
-      : Promise.resolve([]) // Return an empty result if activePet is undefined
+      : Promise.resolve([]), // Return an empty result if activePet is undefined
   }))
 );
 

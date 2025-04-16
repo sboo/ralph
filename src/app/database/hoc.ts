@@ -3,7 +3,7 @@ import { withObservables } from '@nozbe/watermelondb/react';
 import { ComponentType } from 'react';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { assessmentCollection, database, petCollection } from '../database';
+import { database, petCollection } from '../database';
 import { Assessment } from './models/Assessment';
 import { Pet } from './models/Pet';
 
@@ -93,86 +93,4 @@ export const withActivePetAssessments = (options?: {
       assessments: assessmentsObservable,
     };
   })(Component);
-};
-
-/**
- * HOC to observe assessments for the active pet in reverse order (newest first)
- */
-export const withActivePetRecentAssessments = (Component: ComponentType<any>) => {
-  return withObservables([], () => {
-    const activePetObservable = database
-      .get<Pet>('pets')
-      .query(Q.where('is_active', true))
-      .observe()
-      .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
-
-    const assessmentsObservable = activePetObservable.pipe(
-      switchMap(pet => {
-        if (!pet) {
-          return new Observable<Assessment[]>(subscriber => subscriber.next([]));
-        }
-        return database
-          .get<Assessment>('assessments')
-          .query(Q.where('pet_id', pet.id), Q.sortBy('created_at', 'desc'))
-          .observe();
-      })
-    );
-
-    return {
-      activePet: activePetObservable,
-      lastAssessments: assessmentsObservable,
-    };
-  })(Component);
-};
-
-/**
- * HOC to observe assessments with notes for the active pet
- */
-export const withActivePetNotesAssessments = (Component: ComponentType<any>) => {
-  return withObservables([], () => {
-    const activePetObservable = database
-      .get<Pet>('pets')
-      .query(Q.where('is_active', true))
-      .observe()
-      .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
-
-    const assessmentsWithNotesObservable = activePetObservable.pipe(
-      switchMap(pet => {
-        if (!pet) {
-          return new Observable<Assessment[]>(subscriber => subscriber.next([]));
-        }
-        return database
-          .get<Assessment>('assessments')
-          .query(
-            Q.where('pet_id', pet.id),
-            Q.where('notes', Q.notEq(null)),
-            Q.sortBy('date', 'desc') 
-          )
-          .observe();
-      })
-    );
-
-    return {
-      activePet: activePetObservable,
-      assessmentsWithNotes: assessmentsWithNotesObservable
-    };
-  })(Component);
-};
-
-/**
- * HOC to observe a single assessment by ID
- */
-export const withAssessment = (Component: ComponentType<any>) => {
-  return withObservables(['assessmentId'], ({ assessmentId }: { assessmentId: string }) => ({
-    assessment: assessmentCollection.findAndObserve(assessmentId),
-  }))(Component);
-};
-
-/**
- * HOC to observe all assessments
- */
-export const withAllAssessments = (Component: ComponentType<any>) => {
-  return withObservables([], () => ({
-    assessments: assessmentCollection.query().observe(),
-  }))(Component);
 };
