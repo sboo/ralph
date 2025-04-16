@@ -1,3 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  NavigationContainer,
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+  NavigationState,
+} from '@react-navigation/native';
+import merge from 'deepmerge';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -5,60 +13,35 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
+import { getAvailablePurchases, getProducts, initConnection, useIAP, withIAPContext } from 'react-native-iap';
 import {
   adaptNavigationTheme,
   MD3DarkTheme,
   MD3LightTheme,
   PaperProvider,
 } from 'react-native-paper';
-import {
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
-  NavigationContainer,
-  NavigationState,
-} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTranslation } from 'react-i18next';
-import { getAvailablePurchases, getProducts, initConnection, useIAP, withIAPContext } from 'react-native-iap';
-import merge from 'deepmerge';
 
 // Local imports
+import { migrateFromRealm } from '@/app/database/migration-utility';
 import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
-import { event, EVENT_NAMES } from '@/features/events';
-import { RootStackParamList } from '@/features/navigation/types.tsx';
-import defaultColors from '@/app/themes/lightTheme.json';
 import darkColors from '@/app/themes/darkTheme.json';
-import CustomNavigationBar from '@/features/navigation/components/CustomNavigationBar.tsx';
+import defaultColors from '@/app/themes/lightTheme.json';
+import { event, EVENT_NAMES } from '@/features/events';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
 import { useAppearance } from './themes/hooks/useAppearance';
-import { migrateFromRealm } from '@/app/database/migration-utility';
 
 // Import WatermelonDB provider
 import { DatabaseProvider } from '@/app/database/context';
 
-// Screen imports
-import WelcomeScreen from './screens/WelcomeScreen';
-import OnboardingScreen from './screens/OnboardingScreen';
-import HomeScreen from './screens/HomeScreen';
-import SettingsScreen from './screens/SettingsScreen';
-import AddAssessment from './screens/AddAssessment';
-import EditAssessment from './screens/EditAssessment';
-import AddPet from './screens/AddPet';
-import EditPet from './screens/EditPet';
-import AssessmentSettings from './screens/AssessmentSettings';
-import NotificationSettings from './screens/NotificationSettings';
-import CustomTrackingSettingsScreen from './screens/CustomTrackingSettingsScreen';
-import AllNotesScreen from './screens/AllNotesScreen';
-import DebugScreen from './screens/DebugScreen';
-import AllAssessmentsScreen from './screens/AllAssessmentsScreen';
-import { withObservables } from '@nozbe/watermelondb/react';
-import { Q } from '@nozbe/watermelondb';
+// Import Navigator
 import { database } from '@/app/database';
 import { Pet } from '@/app/database/models/Pet';
+import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
+import AppNavigator from '@/navigation/AppNavigator';
+import { Q } from '@nozbe/watermelondb';
+import { withObservables } from '@nozbe/watermelondb/react';
 import { map } from 'rxjs/operators';
 import MigrationScreen from './screens/MigrationScreen';
-import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
 
 // Constants
 const VALID_PRODUCT_IDS = [
@@ -70,10 +53,6 @@ const VALID_PRODUCT_IDS = [
 
 // Migration key for AsyncStorage
 const REALM_MIGRATION_COMPLETE_KEY = 'ralph_realm_to_watermelon_migration_complete';
-
-
-// Initialize Stack Navigator
-const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // Initialize StatusBar
 StatusBar.setBarStyle('light-content');
@@ -87,7 +66,6 @@ const App: React.FC<{
   activePet: Pet | undefined
 }> = ({ allPets, activePet }) => {
   // Hooks
-  const { t } = useTranslation();
   const {
     purchaseHistory,
     currentPurchase,
@@ -211,7 +189,6 @@ const App: React.FC<{
     }
   }, [getPurchaseHistory, purchaseHistory]);
 
-
   const onNavigationStateChange = useCallback(
     (state: NavigationState | undefined) => {
       if (!state) return;
@@ -230,15 +207,12 @@ const App: React.FC<{
         if (pet && !pet.isActive) {
           pet.showNotificationDot = true;
         }
-      }
-      );
+      });
     },
     [database],
   );
 
-
   // Effects
-  // Separate initial check effect
   useEffect(() => {
     checkPurchases();
   }, []);
@@ -270,7 +244,6 @@ const App: React.FC<{
   ]);
 
   useEffect(() => {
-
     setHeaderColor(
       getHeaderColor(
         allPets,
@@ -303,7 +276,6 @@ const App: React.FC<{
     checkAndRunMigration();
   }, []);
 
-
   // Render
   if (isMigrating || migrationComplete === null) {
     return <MigrationScreen />;
@@ -315,122 +287,12 @@ const App: React.FC<{
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <DatabaseProvider>
         <PaperProvider theme={theme}>
-
           <NavigationContainer onStateChange={onNavigationStateChange}>
-            <Stack.Navigator
-              initialRouteName="Home"
-              screenOptions={{
-                header: props => <CustomNavigationBar {...props} />,
-              }}>
-              <Stack.Screen
-                name="Migration"
-                component={MigrationScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{
-                  title: '',
-                  headerStyle: { backgroundColor: headerColor },
-                }}
-              />
-              <Stack.Screen
-                name="Welcome"
-                component={WelcomeScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Onboarding"
-                component={OnboardingScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{
-                  title: t('settings'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="EditPet"
-                component={EditPet}
-                options={{
-                  title: t('edit_pet'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="AddPet"
-                component={AddPet}
-                options={{
-                  title: t('add_pet'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="AssessmentSettings"
-                component={AssessmentSettings}
-                options={{
-                  title: t('settings:assessments'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="NotificationSettings"
-                component={NotificationSettings}
-                options={{
-                  title: t('settings:notifications'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="CustomTrackingSettings"
-                component={CustomTrackingSettingsScreen}
-                options={{
-                  title: t('settings:customTracking'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="AddAssessment"
-                component={AddAssessment}
-                options={{
-                  title: t('measurements:title', {
-                    petName: activePet?.name,
-                  }),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="EditAssessment"
-                component={EditAssessment}
-                options={{
-                  title: t('measurements:title', {
-                    petName: activePet?.name,
-                  }),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="AllNotes"
-                component={AllNotesScreen}
-                options={{
-                  title: t('measurements:notes'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen
-                name="AllAssessments"
-                component={AllAssessmentsScreen}
-                options={{
-                  title: t('measurements:allAssessments'),
-                  headerStyle: { backgroundColor: theme.colors.primaryContainer },
-                }}
-              />
-              <Stack.Screen name="DebugScreen" component={DebugScreen} />
-            </Stack.Navigator>
+            <AppNavigator 
+              headerColor={headerColor}
+              theme={theme}
+              activePet={activePet}
+            />
           </NavigationContainer>
         </PaperProvider>
       </DatabaseProvider>
