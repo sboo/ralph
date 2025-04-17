@@ -1,35 +1,47 @@
-# Feature-Based Code Organization
+# Feature-Based Architecture
 
-This project follows a feature-based organization pattern where code is grouped by features rather than by technical types. This approach helps with:
+This project follows a feature-based architecture pattern to improve maintainability, modularity, and readability. This document outlines the architectural approach and provides guidelines for developers working on this project.
 
-1. **Better discoverability** - Related code is grouped together
-2. **Improved maintainability** - Changes to a feature are isolated to that feature's directory
-3. **Cleaner imports** - Import paths are simpler and more consistent
-4. **Feature isolation** - Easier to understand feature boundaries
+## Principles
+
+1. **Feature Isolation**: Each feature is self-contained with its own components, screens, hooks, helpers, and types.
+2. **Clear Boundaries**: Features have well-defined responsibilities and boundaries.
+3. **Explicit Dependencies**: Dependencies between features are made explicit through imports.
+4. **Single Responsibility**: Each file and component should have a single responsibility.
 
 ## Directory Structure
 
-Each feature follows this standard structure:
+The project is structured as follows:
 
 ```
-feature-name/
-├── index.ts             # Exports the public API of the feature
-├── components/          # React components specific to this feature
-│   └── Component.tsx
-├── screens/             # Screen components used by the navigator
-│   └── FeatureScreen.tsx
-├── hooks/               # Custom hooks specific to this feature
-│   └── useFeature.ts
-├── helpers/             # Helper functions specific to this feature
-│   └── helperFunction.ts
-└── types.ts             # TypeScript interfaces, types, and enums
+src/
+├── core/                 # Application-level concerns (App.tsx, assets, etc.)
+├── features/            # Feature modules
+│   ├── feature-name/    # Each feature gets its own directory
+│   │   ├── index.ts     # Public API of the feature
+│   │   ├── components/  # Components specific to this feature
+│   │   ├── screens/     # Screen components for navigation
+│   │   ├── hooks/       # Custom hooks 
+│   │   ├── helpers/     # Helper functions and utilities
+│   │   ├── types.ts     # TypeScript types for this feature
+│   │   └── ...          # Other feature-specific files
+└── shared/             # Shared utilities and constants
 ```
 
-Not all features need all these subdirectories. Only create what you need.
+## Feature Organization
+
+Each feature directory should:
+
+1. Have an `index.ts` file that exports the public API
+2. Contain subdirectories for different concerns (components, screens, etc.)
+3. Keep related code together regardless of file type
+4. Hide implementation details, exposing only what's necessary
 
 ## Import Guidelines
 
-Always import from the feature's index file when accessing a feature from another feature:
+### Inter-feature Imports
+
+When importing from another feature, always import from the feature's index file:
 
 ```typescript
 // Good
@@ -39,39 +51,30 @@ import { HomeScreen } from '@/features/home';
 import HomeScreen from '@/features/home/screens/HomeScreen';
 ```
 
-For imports within a feature, use relative paths:
+### Intra-feature Imports
+
+When importing within a feature, use relative paths:
 
 ```typescript
 // From within the same feature
-import { helperFunction } from '../helpers/helperFunction';
+import { SomeComponent } from '../components/SomeComponent';
 ```
 
 ## Feature Communication
 
-Features should communicate through:
+Features should communicate using:
 
-1. **Props** - For parent-child relationships
-2. **Context** - For shared state across multiple components
-3. **Events** - For cross-feature communication
+1. **Props**: For parent-child relationships
+2. **Context Providers**: For state that needs to be shared across components
+3. **Event System**: For loose coupling between features
+4. **Navigation Parameters**: For passing data during navigation
 
-Avoid direct imports of internal feature components from other features.
+## Adding a New Feature
 
-## Creating a New Feature
+When adding a new feature:
 
-When creating a new feature:
+1. Create a directory in `/src/features/`
+2. Create an `index.ts` file that exports the public API
+3. Add necessary subdirectories (components, screens, etc.)
+4. Update navigation if needed
 
-1. Create a directory in the `/src/features/` folder
-2. Add an `index.ts` file that exports the public API
-3. Create subdirectories for components, screens, etc.
-4. Update this README if needed
-
-## Example Features
-
-Current features include:
-- **assessments** - Functionality for pet health assessments
-- **avatar** - Pet avatar handling
-- **home** - Main screens and home functionality
-- **navigation** - App navigation structure
-- **pets** - Pet management functionality
-- **settings** - App settings
-- **tips** - Pet care tips
