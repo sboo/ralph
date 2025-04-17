@@ -64,7 +64,7 @@ const RatingButtons: React.FC<Props> = ({
             onPressOut={() => setPressed(false)}
             >
             <SegmentedButtons
-                value={selectedRating?.toString() || ''}
+                value={selectedRating?.toString() ?? ''}
                 onValueChange={value => onValueChange(parseFloat(value))}
                 density='small'
                 theme={{ colors: { secondaryContainer: getValueColor(theme.colors.outline, selectedRating) }}}

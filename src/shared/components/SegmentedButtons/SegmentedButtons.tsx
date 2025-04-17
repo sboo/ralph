@@ -200,4 +200,4 @@ const styles = StyleSheet.create({
 export default SegmentedButtons;
 
 // @component-docs ignore-next-line
-export { SegmentedButtons as SegmentedButtons };
+export { SegmentedButtons };

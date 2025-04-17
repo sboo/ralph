@@ -163,7 +163,7 @@ const SegmentedButtonItem = ({
     segment,
   });
   const rippleColor =
-    customRippleColor || color(textColor).alpha(0.12).rgb().string();
+    customRippleColor ?? color(textColor).alpha(0.12).rgb().string();
 
   const showIcon = !icon ? false : label && checked ? !showSelectedCheck : true;
   const showCheckedIcon = checked && showSelectedCheck;
