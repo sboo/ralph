@@ -90,7 +90,7 @@ android {
         applicationId "eu.sboo.ralph"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 113
+        versionCode 116
         versionName "4.2.1"
         missingDimensionStrategy "store", "play"
         vectorDrawables.useSupportLibrary = true
