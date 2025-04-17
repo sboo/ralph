@@ -1,10 +1,10 @@
+import { useAppearance } from '@/core/themes';
 import { AllNotes, AssessmentsCalendar } from '@/features/assessments';
 import { AssessmentChart } from '@/features/charts';
 import { EVENT_NAMES, event } from '@/features/events';
 import { HomeHeader } from '@/features/home';
 import { HomeScreenNavigationProps } from '@/features/navigation';
 import { useAssessmentExporter } from '@/features/pdfExport';
-import { useAppearance } from '@/features/themes';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
 import { database } from '@core/database';
 import { withActivePetAssessments, withAllAndActivePet } from '@core/database/hoc';

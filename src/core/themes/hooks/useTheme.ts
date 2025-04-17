@@ -1,4 +1,4 @@
-import { ThemeContext } from "@core/providers";
+import { ThemeContext } from "@/core/providers";
 import React from "react";
 
 export const useTheme = () => {

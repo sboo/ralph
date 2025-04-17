@@ -1,22 +1,22 @@
-import { Pet } from '@core/database/models/Pet';
+import { Pet } from '@/core/database/models/Pet';
 import { compose } from '@nozbe/watermelondb/react';
 import {
-    NavigationContainer,
-    NavigationState,
+  NavigationContainer,
+  NavigationState,
 } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    StatusBar,
-    StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  StatusBar,
+  StyleSheet,
 } from 'react-native';
 
 // Import Navigator and Providers
+import { AppProviders } from '@/core/providers';
+import { useTheme } from '@/core/themes';
 import { AppNavigator } from '@/features/navigation';
 import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
-import { useTheme } from '@/features/themes';
-import { AppProviders } from '@core/providers';
 import { withAllAndActivePet } from './database/hoc';
 
 // Initialize StatusBar

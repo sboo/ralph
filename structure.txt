@@ -25,7 +25,6 @@
 │   │   │   ├── Measurement.ts
 │   │   │   └── Pet.ts
 │   │   └── providers
-│   │       └── MigrationProvider.tsx
 │   ├── localization
 │   │   ├── de
 │   │   │   ├── buttons.json
@@ -78,6 +77,13 @@
 │   │       ├── settings.json
 │   │       ├── tips.json
 │   │       └── welcome.json
+│   ├── providers
+│   │   ├── AppProviders.tsx
+│   │   ├── index.ts
+│   │   ├── MigrationProvider.tsx
+│   │   ├── NotificationProvider.tsx
+│   │   ├── PurchaseProvider.tsx
+│   │   └── ThemeProvider.tsx
 │   └── store
 │       └── storageKeys.ts
 ├── features
@@ -85,8 +91,6 @@
 │   │   └── index.ts
 │   ├── app
 │   │   ├── index.ts
-│   │   ├── providers
-│   │   │   └── AppProviders.tsx
 │   │   └── screens
 │   │       └── MigrationScreen.tsx
 │   ├── assessments
@@ -151,9 +155,7 @@
 │   │   │   └── helperFunctions.ts
 │   │   ├── hooks
 │   │   │   └── useNotifications.ts
-│   │   ├── index.ts
-│   │   └── providers
-│   │       └── NotificationProvider.tsx
+│   │   └── index.ts
 │   ├── onboarding
 │   │   ├── hooks
 │   │   ├── index.ts
@@ -183,10 +185,6 @@
 │   │   ├── service
 │   │   ├── types
 │   │   └── types.ts
-│   ├── purchases
-│   │   ├── index.ts
-│   │   └── providers
-│   │       └── PurchaseProvider.tsx
 │   ├── README.md
 │   ├── settings
 │   │   ├── components
@@ -199,11 +197,10 @@
 │   ├── themes
 │   │   ├── darkTheme.json
 │   │   ├── hooks
-│   │   │   └── useAppearance.ts
+│   │   │   ├── useAppearance.ts
+│   │   │   └── useTheme.ts
 │   │   ├── index.ts
 │   │   ├── lightTheme.json
-│   │   ├── providers
-│   │   │   └── ThemeProvider.tsx
 │   │   └── types.ts
 │   └── tips
 │       ├── components
@@ -213,8 +210,6 @@
 │       ├── hooks
 │       │   └── useTips.ts
 │       └── index.ts
-├── navigation
-├── providers
 └── support
     ├── components
     │   ├── CustomChartDot.tsx
@@ -234,4 +229,4 @@
         ├── ImageHelper.ts
         └── TooltipHelper.ts
 
-83 directories, 152 files
+77 directories, 153 files

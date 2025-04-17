@@ -1,6 +1,6 @@
-import { useAppearance } from '@/features/themes';
-import darkColors from '@/features/themes/darkTheme.json';
-import defaultColors from '@/features/themes/lightTheme.json';
+import { useAppearance } from '@/core/themes';
+import darkColors from '@/core/themes/darkTheme.json';
+import defaultColors from '@/core/themes/lightTheme.json';
 import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,

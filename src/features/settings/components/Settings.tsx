@@ -1,4 +1,4 @@
-import { Appearance, useAppearance } from '@/features/themes';
+import { Appearance, useAppearance } from '@/core/themes';
 import { ANDROID_APP_ID, IOS_APP_ID } from '@/support/constants';
 import { AVAILABLE_LANGUAGES } from '@core/localization/i18n';
 import { STORAGE_KEYS } from '@core/store/storageKeys';
