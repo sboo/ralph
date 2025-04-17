@@ -34,7 +34,6 @@ const RatingSlider: React.FC<Props> = ({
 
   const onSlidingComplete = (value: number[]) => {
     setSliding(false);
-    const rating = Math.round(value[0] / 2.5) * 2.5;
     if (onRatingChange) {
       onRatingChange(value[0] * 2.5);
     }
@@ -60,7 +59,7 @@ const RatingSlider: React.FC<Props> = ({
             <RatingSliderToolTip
                 color={getValueColor(
                     theme.colors.outline,
-                    selectedRating !== undefined ? selectedRating : 5,
+                    selectedRating ?? 5,
                 )}
                 {...tooltipContent}
             />
@@ -71,7 +70,7 @@ const RatingSlider: React.FC<Props> = ({
     <View style={styles.container}>
       <Tooltip />
       <Slider
-        value={sliderValue !== undefined ? sliderValue : 2}
+        value={sliderValue ?? 2}
         onValueChange={value => onValueChange(value)}
         onSlidingStart={onSlidingStart}
         onSlidingComplete={value => onSlidingComplete(value)}

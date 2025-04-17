@@ -1,10 +1,10 @@
+import { database } from '@/core/database';
+import { Assessment } from '@/core/database/models/Assessment';
+import { Pet } from '@/core/database/models/Pet';
 import { DotType } from '@/features/charts/types';
 import { calculateDateRange, generateChartData, generateDateRange } from '@/features/charts/utils/helperFunctions';
 import { getValueColor } from '@/shared/helpers/ColorHelper';
 import { getBase64Image } from '@/shared/helpers/ImageHelper';
-import { database } from '@core/database';
-import { Assessment } from '@core/database/models/Assessment';
-import { Pet } from '@core/database/models/Pet';
 import { Q } from '@nozbe/watermelondb';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,6 @@ const useAssessmentExporter = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [activePet, setActivePet] = useState<Pet | undefined>(undefined);
-  const [headerColor, setHeaderColor] = useState(theme.colors.primary);
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [customTrackingSettings, setCustomTrackingSettings] = useState<any>({});
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
@@ -274,7 +273,7 @@ const useAssessmentExporter = () => {
                   margin: 0;
               }
               .header-section {
-                  background-color: ${headerColor};
+                  background-color: ${theme.colors.primary};
                   color: #ffffff;
                   padding: 40px;
                   border-bottom-left-radius: 25px;

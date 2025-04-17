@@ -29,18 +29,6 @@ const RatingButtons: React.FC<Props> = ({
         }
     }, [initialRating]);
 
-    const getSelectedLabel = () => {
-        if (selectedRating === undefined) {
-            return {
-                title: '',
-                description: '',
-                icon: 'emoticon-neutral-outline',
-            };
-        }
-        const emoticon = getEmoticon(selectedRating);
-        const texts = optionTexts.find(v => v.value === selectedRating);
-        return { ...texts, icon: emoticon?.icon };
-    };
 
     const onPressIn = (value: number) => {
         setSelectedRating(value);
@@ -48,7 +36,6 @@ const RatingButtons: React.FC<Props> = ({
     }
 
     const onValueChange = (value: number) => {
-        // setSelectedRating(value);
         onRatingChange?.(value);
     };
 
@@ -62,7 +49,7 @@ const RatingButtons: React.FC<Props> = ({
             <RatingSliderToolTip
                 color={getValueColor(
                     theme.colors.outline,
-                    selectedRating !== undefined ? selectedRating : 5,
+                    selectedRating ?? 5,
                 )}
                 {...tooltipContent}
             />

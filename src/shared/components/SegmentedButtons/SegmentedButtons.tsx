@@ -174,7 +174,7 @@ const SegmentedButtons = ({
         return (
           <SegmentedButtonItem
             {...item}
-            key={i}
+            key={item.value}
             checked={checked}
             segment={segment}
             density={density}

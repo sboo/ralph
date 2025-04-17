@@ -1,7 +1,7 @@
+import { AssessmentFrequency } from "@/core/database/models/Pet";
 import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
 import { event, EVENT_NAMES } from '@/features/events';
 import { AssessmentSettingsScreenNavigationProps } from "@/features/navigation/types";
-import { AssessmentFrequency } from "@core/database/models/Pet";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
@@ -36,6 +36,18 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
     event.emit(EVENT_NAMES.ASSESSMENT_PAUSED, paused);
     _setAssessmentsPaused(paused);
   }
+
+  const assessmentFrequencyIconColor = (isSelected: boolean) => {
+    if (!isSelected) {
+      return 'transparent';
+    }
+    return _assessmentsPaused ? theme.colors.onSurfaceDisabled : '';
+  }
+
+  const assessmentFrequencyIcon = (assessmentFrequency: AssessmentFrequency) => {
+    return <List.Icon icon="check" color={assessmentFrequencyIconColor(_assessmentFrequency === assessmentFrequency)} />
+  }
+
 
   return (
     <SafeAreaView
@@ -72,9 +84,7 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
               style={styles.listItemRadio}
               titleStyle={{ color: _assessmentsPaused ? theme.colors.onSurfaceDisabled : '' }}
               onPress={() => handleAssessmentFrequency('DAILY')}
-              right={() => (
-                <List.Icon icon="check" color={_assessmentFrequency === 'DAILY' ? (_assessmentsPaused ? theme.colors.onSurfaceDisabled : '') : 'transparent'} />
-              )}
+              right={() => assessmentFrequencyIcon('DAILY')}
             />
             <List.Item
               disabled={_assessmentsPaused}
@@ -82,9 +92,7 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
               style={styles.listItemRadio}
               titleStyle={{ color: _assessmentsPaused ? theme.colors.onSurfaceDisabled : '' }}
               onPress={() => handleAssessmentFrequency('WEEKLY')}
-              right={() => (
-                <List.Icon icon="check" color={_assessmentFrequency === 'WEEKLY' ? (_assessmentsPaused ? theme.colors.onSurfaceDisabled : '') : 'transparent'} />
-              )}
+              right={() => assessmentFrequencyIcon('WEEKLY')}
             />
           </List.Section>
           <Divider />
@@ -160,7 +168,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     textAlign: 'center',
-},
+  },
   cardText: {
     textAlign: 'center',
   },

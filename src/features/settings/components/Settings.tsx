@@ -1,14 +1,13 @@
+import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import { Appearance, useAppearance } from '@/core/themes';
 import { ANDROID_APP_ID, IOS_APP_ID } from '@/shared/constants';
-import { AVAILABLE_LANGUAGES } from '@core/localization/i18n';
-import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import i18next from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, Platform, StyleSheet, View } from 'react-native';
 import { Button, Divider, Icon, IconButton, Switch, Text } from 'react-native-paper';
+import { AVAILABLE_LANGUAGES } from '/core/localization/i18n';
 
 interface SettingsProps {
   onSettingsSaved: () => void;
@@ -16,7 +15,6 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({ onSettingsSaved }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
 
   const [useRatingButtons, setUseRatingButtons] = useState(false);
 

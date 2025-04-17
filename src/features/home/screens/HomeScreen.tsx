@@ -31,15 +31,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import { FAB, useTheme } from 'react-native-paper';
 
 // The presentational component that will be enhanced with observables
-const HomeScreenComponent = ({ 
-  navigation, 
-  activePet, 
-  assessments, 
+const HomeScreenComponent = ({
+  navigation,
+  activePet,
+  assessments,
   lastAssessments,
   allPets
-}: HomeScreenNavigationProps & { 
-  activePet: Pet | undefined, 
-  assessments: Assessment[], 
+}: HomeScreenNavigationProps & {
+  activePet: Pet | undefined,
+  assessments: Assessment[],
   lastAssessments: Assessment[],
   allPets: Pet[]
 }) => {
@@ -110,7 +110,7 @@ const HomeScreenComponent = ({
     }
     const assessmentDate = moment(date).format('YYYY-MM-DD');
     const assessment = assessments?.find(m => m.date === assessmentDate);
-  
+
     if (assessment === undefined) {
       navigation.navigate('AddAssessment', {
         timestamp: date.getTime(),
@@ -139,6 +139,21 @@ const HomeScreenComponent = ({
     setGeneratingPDF(false);
   }, [generateAndSharePDF]);
 
+  const tipContents = () => {
+    if (!activePet || !assessments || assessments.length <= 0) {
+      return <GetStartedTip />
+    }
+    if (averageScore < 30) {
+      return <TalkToVetTip />
+    }
+    return (
+      <Tips
+        assessment={lastAssessment!}
+        activePet={activePet}
+        numberOfTips={4}
+      />)
+  }
+
   const renderContent = () => {
     switch (viewMode) {
       case 'calendar':
@@ -147,27 +162,13 @@ const HomeScreenComponent = ({
         );
       case 'notes':
         return (
-          <>
-            <AllNotes onNotePress={onNotePress} />
-          </>
+          <AllNotes onNotePress={onNotePress} />
         );
       case 'chart':
         return (
           <>
             <AssessmentChart onDataPointClick={addOrEditAssessment} />
-            {activePet && assessments && assessments.length > 0 ? (
-              averageScore < 30 ? (
-                <TalkToVetTip />
-              ) : (
-                <Tips
-                  assessment={lastAssessment!}
-                  activePet={activePet}
-                  numberOfTips={4}
-                />
-              )
-            ) : (
-              <GetStartedTip />
-            )}
+            {tipContents()}
           </>
         )
     }
@@ -387,9 +388,9 @@ const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
   withObservables(['activePet'], ({ activePet }: { activePet: Pet | undefined }) => ({
     lastAssessments: activePet
       ? database
-          .get<Assessment>('assessments')
-          .query(Q.where('pet_id', activePet.id), Q.sortBy('created_at', 'desc'))
-          .observe()
+        .get<Assessment>('assessments')
+        .query(Q.where('pet_id', activePet.id), Q.sortBy('created_at', 'desc'))
+        .observe()
       : Promise.resolve([]), // Return an empty result if activePet is undefined
   }))
 );
