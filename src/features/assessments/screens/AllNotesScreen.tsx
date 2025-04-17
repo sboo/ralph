@@ -1,7 +1,7 @@
-import { withActivePetAssessments } from '@/app/database/hoc';
-import { Assessment } from '@/app/database/models/Assessment';
 import { AllNotesNavigationProps } from '@/features/navigation/types';
 import { getImagePath } from '@/support/helpers/ImageHelper';
+import { withActivePetAssessments } from '@core/database/hoc';
+import { Assessment } from '@core/database/models/Assessment';
 import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useState } from 'react';

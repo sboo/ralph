@@ -1,4 +1,4 @@
-import { database, Pet } from '@/app/database';
+import { database, Pet } from '@core/database';
 import notifee, { EventType } from '@notifee/react-native';
 import { useCallback } from 'react';
 

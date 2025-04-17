@@ -10,7 +10,7 @@ import {
 import { RootStackParamList } from './routes';
 
 // Import from Pet model
-import { Pet } from '@/app/database/models/Pet';
+import { Pet } from '@core/database/models/Pet';
 
 // Import screens from their respective feature modules
 import {

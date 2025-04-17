@@ -1,4 +1,4 @@
-import { Assessment, Pet } from "@/app/database";
+import { Assessment, Pet } from "@core/database";
 import moment from "moment";
 import { CHART_CONSTANTS, ChartDateRange, ProcessedChartData, ScoreMetadata } from "../types";
 

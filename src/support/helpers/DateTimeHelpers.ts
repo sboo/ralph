@@ -1,5 +1,5 @@
 
-import { AssessmentFrequency } from '@/app/database/models/Pet';
+import { AssessmentFrequency } from '@core/database/models/Pet';
 import moment from 'moment';
 
 export const getValidReminderTimestamp = (

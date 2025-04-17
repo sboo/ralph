@@ -1,4 +1,4 @@
-import { Pet } from "@/app/database/models/Pet";
+import { Pet } from "@core/database/models/Pet";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
 /**

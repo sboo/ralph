@@ -1,7 +1,3 @@
-import { database } from '@/app/database';
-import { withActivePetAssessments, withAllAndActivePet } from '@/app/database/hoc';
-import { Assessment } from '@/app/database/models/Assessment';
-import { Pet } from '@/app/database/models/Pet';
 import { AllNotes, AssessmentsCalendar } from '@/features/assessments';
 import { AssessmentChart } from '@/features/charts';
 import { EVENT_NAMES, event } from '@/features/events';
@@ -10,6 +6,10 @@ import { HomeScreenNavigationProps } from '@/features/navigation';
 import { useAssessmentExporter } from '@/features/pdfExport';
 import { useAppearance } from '@/features/themes';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
+import { database } from '@core/database';
+import { withActivePetAssessments, withAllAndActivePet } from '@core/database/hoc';
+import { Assessment } from '@core/database/models/Assessment';
+import { Pet } from '@core/database/models/Pet';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from '@react-native-community/blur';

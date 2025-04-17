@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from 'react-native';
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
+import { STORAGE_KEYS } from '@core/store/storageKeys';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useCallback, useEffect, useState } from 'react';
+import { useColorScheme } from 'react-native';
 
 export type Appearance = 'light' | 'dark' | 'system' | '';
 

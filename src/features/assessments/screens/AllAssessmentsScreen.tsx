@@ -1,9 +1,9 @@
-import { database } from '@/app/database';
-import { Assessment } from '@/app/database/models/Assessment';
-import { Pet } from '@/app/database/models/Pet';
 import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
 import { AllAssessmentsScreenNavigationProps } from '@/features/navigation/types.tsx';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
+import { database } from '@core/database';
+import { Assessment } from '@core/database/models/Assessment';
+import { Pet } from '@core/database/models/Pet';
 import { Q } from '@nozbe/watermelondb';
 import { withObservables } from '@nozbe/watermelondb/react';
 import React from 'react';

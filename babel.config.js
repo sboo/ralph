@@ -19,8 +19,8 @@ module.exports = {
         ],
         alias: {
           '@': './src',
-          '@app': './src/app',
-          '@components': './src/components',
+          '@app': './src/core',
+          '@core': './src/core',
         },
       },
     ],

@@ -1,4 +1,4 @@
-import { DatabaseProvider } from '@/app/database/context';
+import { DatabaseProvider } from '@core/database/context';
 import React, { ReactNode } from 'react';
 import { withIAPContext } from 'react-native-iap';
 import { MigrationProvider } from './MigrationProvider';

@@ -1,4 +1,4 @@
-import { database, petCollection } from '@/app/database';
+import { database, petCollection } from '@core/database';
 import { Q } from '@nozbe/watermelondb';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { ComponentType } from 'react';

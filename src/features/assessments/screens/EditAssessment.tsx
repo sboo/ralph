@@ -1,10 +1,10 @@
-import { database } from '@/app/database';
-import { withActivePet } from '@/app/database/hoc';
-import { Assessment } from '@/app/database/models/Assessment';
-import { Pet } from '@/app/database/models/Pet';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
 import { calculateScore, storeImages } from '@/features/assessments/helpers/helperFunctions';
 import { EditAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { database } from '@core/database';
+import { withActivePet } from '@core/database/hoc';
+import { Assessment } from '@core/database/models/Assessment';
+import { Pet } from '@core/database/models/Pet';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';

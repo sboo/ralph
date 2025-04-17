@@ -1,4 +1,4 @@
-import { AssessmentFrequency, CustomTrackingSettings, Pet } from "@/app/database/models/Pet";
+import { AssessmentFrequency, CustomTrackingSettings, Pet } from "@core/database/models/Pet";
 import { MD3Theme } from "react-native-paper/src/types";
 
 export interface PetData {

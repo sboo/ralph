@@ -1,5 +1,5 @@
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
+import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { ReactNode, useCallback, useEffect } from 'react';
 import { getAvailablePurchases, getProducts, initConnection, useIAP } from 'react-native-iap';

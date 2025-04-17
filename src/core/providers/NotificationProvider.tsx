@@ -1,6 +1,6 @@
-import { database } from '@/app/database';
-import { Pet } from '@/app/database/models/Pet';
 import useNotifications from '@/features/notifications/hooks/useNotifications';
+import { database } from '@core/database';
+import { Pet } from '@core/database/models/Pet';
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 interface NotificationProviderProps {

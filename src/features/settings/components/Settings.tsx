@@ -1,7 +1,7 @@
-import { AVAILABLE_LANGUAGES } from '@/app/localization/i18n';
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import { Appearance, useAppearance } from '@/features/themes';
 import { ANDROID_APP_ID, IOS_APP_ID } from '@/support/constants';
+import { AVAILABLE_LANGUAGES } from '@core/localization/i18n';
+import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import i18next from 'i18next';

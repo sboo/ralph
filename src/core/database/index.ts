@@ -1,10 +1,10 @@
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
-import migrations from '@/app/database/migrations';
-import schema from '@/app/database/schema';
-import { Pet } from '@/app/database/models/Pet';
-import { Assessment } from '@/app/database/models/Assessment';
+import migrations from '@core/database/migrations';
+import { Assessment } from '@core/database/models/Assessment';
+import { Pet } from '@core/database/models/Pet';
+import schema from '@core/database/schema';
 
 // Set up the adapter
 const adapter = new SQLiteAdapter({
@@ -30,4 +30,4 @@ export const petCollection = database.get<Pet>('pets');
 export const assessmentCollection = database.get<Assessment>('assessments');
 
 // Export the models
-export { Pet, Assessment };
+export { Assessment, Pet };

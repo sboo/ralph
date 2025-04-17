@@ -1,9 +1,9 @@
-import { Assessment } from '@/app/database';
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import RatingButtons from '@/support/components/RatingButtons';
 import RatingSlider from '@/support/components/RatingSlider';
 import { getImagePath } from '@/support/helpers/ImageHelper';
 import { OptionText } from '@/support/helpers/TooltipHelper';
+import { Assessment } from '@core/database';
+import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,8 +1,8 @@
-import { database, Pet } from '@/app/database';
-import { AssessmentFrequency } from '@/app/database/models/Pet';
 import { OnboardingScreenNavigationProps } from '@/features/navigation/types.tsx';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { database, Pet } from '@core/database';
+import { AssessmentFrequency } from '@core/database/models/Pet';
 import { withObservables } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

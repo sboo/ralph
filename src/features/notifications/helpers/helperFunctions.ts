@@ -1,9 +1,9 @@
-import { AssessmentFrequency } from '@/app/database/models/Pet';
 import { getValidReminderTimestamp } from '@/support/helpers/DateTimeHelpers';
+import { AssessmentFrequency } from '@core/database/models/Pet';
 import notifee, {
-  RepeatFrequency,
-  TimestampTrigger,
-  TriggerType
+    RepeatFrequency,
+    TimestampTrigger,
+    TriggerType
 } from '@notifee/react-native';
 import i18next from 'i18next';
 

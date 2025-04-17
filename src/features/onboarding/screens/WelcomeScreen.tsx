@@ -32,19 +32,19 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
     {
       title: t('welcome:title1'),
       description: t('welcome:text1'),
-      image: require('@app/assets/images/girl-with-dog.png'),
+      image: require('@core/assets/images/girl-with-dog.png'),
       showButton: false,
     },
     {
       title: t('welcome:title2'),
       description: t('welcome:text2'),
-      image: require('@app/assets/images/cat.png'),
+      image: require('@core/assets/images/cat.png'),
       showButton: false,
     },
     {
       title: t('welcome:title3'),
       description: t('welcome:text3'),
-      image: require('@app/assets/images/vet-examining-dog.png'),
+      image: require('@core/assets/images/vet-examining-dog.png'),
       showButton: true,
     },
   ]

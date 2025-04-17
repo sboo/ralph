@@ -1,8 +1,8 @@
-import { database } from '@/app/database';
-import { Pet } from '@/app/database/models/Pet';
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
 import Tips from '@/features/tips/components/Tips';
+import { database } from '@core/database';
+import { Pet } from '@core/database/models/Pet';
+import { STORAGE_KEYS } from '@core/store/storageKeys';
 import { Q } from '@nozbe/watermelondb';
 import { withObservables } from '@nozbe/watermelondb/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';

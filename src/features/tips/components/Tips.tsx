@@ -1,5 +1,5 @@
-import { Assessment, Pet } from '@/app/database';
 import { getTipBackgroundColor } from '@/support/helpers/ColorHelper';
+import { Assessment, Pet } from '@core/database';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, View } from 'react-native';

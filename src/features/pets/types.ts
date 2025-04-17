@@ -1,5 +1,5 @@
-import { Pet } from "@/app/database/models/Pet";
 import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
+import { Pet } from "@core/database/models/Pet";
 import { Theme } from "@react-navigation/native";
 
 /**

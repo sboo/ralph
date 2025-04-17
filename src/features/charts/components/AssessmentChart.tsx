@@ -1,7 +1,7 @@
-import { withActivePetAssessments } from '@/app/database/hoc';
-import { Assessment } from '@/app/database/models/Assessment';
-import { Pet } from '@/app/database/models/Pet';
 import CustomDot from '@/support/components/CustomChartDot';
+import { withActivePetAssessments } from '@core/database/hoc';
+import { Assessment } from '@core/database/models/Assessment';
+import { Pet } from '@core/database/models/Pet';
 import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react';

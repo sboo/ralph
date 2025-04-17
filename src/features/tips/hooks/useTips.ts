@@ -1,4 +1,4 @@
-import { Assessment } from '@/app/database';
+import { Assessment } from '@core/database';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 

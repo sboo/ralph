@@ -1,8 +1,8 @@
-import { Assessment, database } from '@/app/database';
-import { Pet } from '@/app/database/models/Pet';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
 import { calculateScore, storeImages } from '@/features/assessments/helpers/helperFunctions';
 import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { Assessment, database } from '@core/database';
+import { Pet } from '@core/database/models/Pet';
 import { Q } from '@nozbe/watermelondb';
 import { withObservables } from '@nozbe/watermelondb/react';
 import moment from 'moment';

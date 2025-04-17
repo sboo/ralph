@@ -1,15 +1,15 @@
-import Realm from 'realm';
-import { database, petCollection, assessmentCollection } from '@/app/database';
-import { AssessmentFrequency, Pet as WatermelonPet } from '@/app/database/models/Pet';
-import { Assessment as WatermelonAssessment } from '@/app/database/models/Assessment';
+import { assessmentCollection, database, petCollection } from '@core/database';
+import { Assessment as WatermelonAssessment } from '@core/database/models/Assessment';
+import { AssessmentFrequency, Pet as WatermelonPet } from '@core/database/models/Pet';
+import { onMigration } from '@core/legacy-realm/models';
 import notifee from '@notifee/react-native';
-import {onMigration} from '@/app/legacy-realm/models';
+import Realm from 'realm';
 
 // Original Realm models
-import { Pet as RealmPet } from '@/app/legacy-realm/models/Pet';
-import { Measurement as RealmMeasurement } from '@/app/legacy-realm/models/Measurement';
-import { createTriggerNotification, getNotificationId } from '@/features/notifications/helpers/helperFunctions';
+import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
 import { timeToDateObject } from '@/support/helpers/DateTimeHelpers';
+import { Measurement as RealmMeasurement } from '@core/legacy-realm/models/Measurement';
+import { Pet as RealmPet } from '@core/legacy-realm/models/Pet';
 
 // Define types for migration result
 interface MigrationResult {

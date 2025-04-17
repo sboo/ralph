@@ -1,7 +1,7 @@
-import { AssessmentFrequency } from "@/app/database/models/Pet";
 import { CustomTrackingSettings } from "@/features/assessments/helpers/customTracking";
 import { event, EVENT_NAMES } from '@/features/events';
 import { AssessmentSettingsScreenNavigationProps } from "@/features/navigation/types";
+import { AssessmentFrequency } from "@core/database/models/Pet";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";

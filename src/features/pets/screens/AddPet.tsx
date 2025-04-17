@@ -1,9 +1,9 @@
-import { database, Pet } from '@/app/database';
-import { withAllPets } from '@/app/database/hoc';
 import { event, EVENT_NAMES } from '@/features/events';
 import { AddPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { database, Pet } from '@core/database';
+import { withAllPets } from '@core/database/hoc';
 import { compose } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';

@@ -1,10 +1,10 @@
-import { database } from '@/app/database';
-import { Assessment } from '@/app/database/models/Assessment';
-import { Pet } from '@/app/database/models/Pet';
 import { DotType } from '@/features/charts/types';
 import { calculateDateRange, generateChartData, generateDateRange } from '@/features/charts/utils/helperFunctions';
 import { getValueColor } from '@/support/helpers/ColorHelper';
 import { getBase64Image } from '@/support/helpers/ImageHelper';
+import { database } from '@core/database';
+import { Assessment } from '@core/database/models/Assessment';
+import { Pet } from '@core/database/models/Pet';
 import { Q } from '@nozbe/watermelondb';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,5 +1,5 @@
-import { STORAGE_KEYS } from '@/app/store/storageKeys.ts';
 import { event, EVENT_NAMES } from '@/features/events';
+import { STORAGE_KEYS } from '@core/store/storageKeys.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
