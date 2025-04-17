@@ -28,7 +28,6 @@ export const onMigration = (oldRealm: Realm, newRealm: Realm) => {
     // loop through all objects and set the fullName property in the
     // new schema
     for (const objectIndex in newObjects) {
-      // const oldObject = oldObjects[objectIndex];
       const newObject = newObjects[objectIndex];
       console.log(newObject.createdAt);
       console.log(newObject.score);

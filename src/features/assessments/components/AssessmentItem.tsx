@@ -18,6 +18,7 @@ import {
 import ImageView from 'react-native-image-viewing';
 import { Button, Divider, Text } from 'react-native-paper';
 import { CustomTrackingSettings } from '../helpers/customTracking';
+import { AssessmentData } from '../helpers/helperFunctions';
 import NotesModal from './NotesModal';
 
 interface Props {
@@ -28,18 +29,7 @@ interface Props {
   scrollToNotes?: boolean;
   customTracking: CustomTrackingSettings;
   onCancel: () => void;
-  onSubmit: (
-    hurt: number,
-    hunger: number,
-    hydration: number,
-    hygiene: number,
-    happiness: number,
-    mobility: number,
-    customValue?: number,
-    notes?: string,
-    images?: string[],
-
-  ) => void;
+  onSubmit: (assessmentData: AssessmentData) => void;
 }
 
 const AssessmentItem: React.FC<Props> = ({

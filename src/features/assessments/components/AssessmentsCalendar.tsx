@@ -1,6 +1,6 @@
-import { withActivePetAssessments } from '@core/database/hoc';
-import { Assessment } from '@core/database/models/Assessment';
-import { Pet } from '@core/database/models/Pet';
+import { withActivePetAssessments } from '@/core/database/hoc';
+import { Assessment } from '@/core/database/models/Assessment';
+import { Pet } from '@/core/database/models/Pet';
 import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useMemo } from 'react';

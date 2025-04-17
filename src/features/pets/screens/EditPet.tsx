@@ -1,9 +1,9 @@
+import { database } from '@/core/database';
+import { withActivePet } from '@/core/database/hoc';
+import { Pet } from '@/core/database/models/Pet';
 import { EditPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
-import { database } from '@core/database';
-import { withActivePet } from '@core/database/hoc';
-import { Pet } from '@core/database/models/Pet';
 import { compose } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
@@ -28,7 +28,7 @@ const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
       await database.write(async () => {
         await activePet.destroyPermanently();
         const newActivePet = allPets[0];
-        await newActivePet.update(record => {
+        await newActivePet.update((record: Pet) => {
           record.isActive = true;
         });
 
@@ -39,7 +39,7 @@ const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
 
     try {
       await database.write(async () => {
-        await activePet.update(record => {
+        await activePet.update((record: Pet) => {
           record.species = data.species!;
           record.name = data.name!;
           if (data.avatar !== undefined) record.avatar = data.avatar;

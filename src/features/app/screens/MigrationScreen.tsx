@@ -1,10 +1,8 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
 
 const MigrationScreen: React.FC = () => {
-  const { t } = useTranslation();
   const theme = useTheme();
   
   return (

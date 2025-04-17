@@ -33,9 +33,11 @@ export const PurchaseProvider: React.FC<PurchaseProviderProps> = ({ children }) 
     try {
       // First ensure IAP connection is initialized
       const isConnected = await initConnection();
+      console.log('IAP connection initialized:', isConnected);
 
       // Get products first to ensure store connection
       const products = await getProducts({ skus: VALID_PRODUCT_IDS });
+      console.log('Available products:', products);
 
       // Get all active purchases
       const purchases = await getAvailablePurchases();

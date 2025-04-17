@@ -1,7 +1,7 @@
+import { withActivePetAssessments } from '@/core/database/hoc';
+import { Assessment } from '@/core/database/models/Assessment';
 import { AllNotesNavigationProps } from '@/features/navigation/types';
 import { getImagePath } from '@/shared/helpers/ImageHelper';
-import { withActivePetAssessments } from '@core/database/hoc';
-import { Assessment } from '@core/database/models/Assessment';
 import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -41,7 +41,7 @@ const AllNotesScreenComponent: React.FC<AllNotesNavigationProps & {
             }}>
                 <ScrollView style={styles.scrollview}>
                     {assessmentsWithNotes?.map((assessment, index) => (
-                        <View key={index}>
+                        <View key={assessment.id}>
                             <Card
                                 style={{ ...styles.card, backgroundColor: theme.colors.surface }}
                                 mode='contained'

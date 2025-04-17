@@ -108,9 +108,6 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
 
         console.log(`Migrated pet: ${pet.name} with new ID: ${newPet.id}`);
 
-        // Store the mapping between old and new IDs for reference in measurements
-        const oldPetId = (realmPet as any)._id.toString();
-
         // Migrate measurements for this pet
         const realmMeasurements = realm.objects<RealmMeasurement>('Measurement').filtered('petId == $0', (realmPet as any)._id);
         console.log(`Found ${realmMeasurements.length} measurements for pet: ${pet.name}`);

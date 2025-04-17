@@ -1,8 +1,8 @@
+import { database } from '@/core/database';
+import { Pet } from '@/core/database/models/Pet';
+import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
 import Tips from '@/features/tips/components/Tips';
-import { database } from '@core/database';
-import { Pet } from '@core/database/models/Pet';
-import { STORAGE_KEYS } from '@core/store/storageKeys';
 import { Q } from '@nozbe/watermelondb';
 import { withObservables } from '@nozbe/watermelondb/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,19 +19,11 @@ const DebugScreenComponent: React.FC<{
   activePet 
 }) => {
   const {
-    connected,
     products,
-    promotedProductsIOS,
-    subscriptions,
     purchaseHistory,
-    availablePurchases,
     currentPurchase,
-    currentPurchaseError,
     initConnectionError,
-    finishTransaction,
     getProducts,
-    getSubscriptions,
-    getAvailablePurchases,
     getPurchaseHistory,
   } = useIAP();
 

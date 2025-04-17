@@ -1,3 +1,5 @@
+import { withAllPets } from '@/core/database/hoc';
+import { AssessmentFrequency, CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@/core/database/models/Pet';
 import Avatar from '@/features/avatar/components/Avatar';
 import { event, EVENT_NAMES } from '@/features/events';
 import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
@@ -6,8 +8,6 @@ import {
   dateObjectToTimeString,
   timeToDateObject
 } from '@/shared/helpers/DateTimeHelpers';
-import { withAllPets } from '@core/database/hoc';
-import { AssessmentFrequency, CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@core/database/models/Pet';
 import notifee, {
   AuthorizationStatus
 } from '@notifee/react-native';

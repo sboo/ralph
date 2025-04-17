@@ -1,3 +1,7 @@
+import { database } from '@/core/database';
+import { withActivePetAssessments, withAllAndActivePet } from '@/core/database/hoc';
+import { Assessment } from '@/core/database/models/Assessment';
+import { Pet } from '@/core/database/models/Pet';
 import { useAppearance } from '@/core/themes';
 import { AllNotes, AssessmentsCalendar } from '@/features/assessments';
 import { AssessmentChart } from '@/features/charts';
@@ -6,10 +10,6 @@ import { HomeHeader } from '@/features/home';
 import { HomeScreenNavigationProps } from '@/features/navigation';
 import { useAssessmentExporter } from '@/features/pdfExport';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
-import { database } from '@core/database';
-import { withActivePetAssessments, withAllAndActivePet } from '@core/database/hoc';
-import { Assessment } from '@core/database/models/Assessment';
-import { Pet } from '@core/database/models/Pet';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from '@react-native-community/blur';
@@ -50,7 +50,7 @@ const HomeScreenComponent = ({
   const { generateAndSharePDF } = useAssessmentExporter();
   const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>('chart');
   const [isFabOpen, setIsFabOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const [scrollViewHeight, setScrollViewHeight] = useState(0);

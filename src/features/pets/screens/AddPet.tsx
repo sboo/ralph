@@ -1,9 +1,9 @@
+import { database, Pet } from '@/core/database';
+import { withAllPets } from '@/core/database/hoc';
 import { event, EVENT_NAMES } from '@/features/events';
 import { AddPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
-import { database, Pet } from '@core/database';
-import { withAllPets } from '@core/database/hoc';
 import { compose } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
@@ -19,7 +19,7 @@ const AddPetComponent: React.FC<AddPetScreenNavigationProps & {
   const onSubmit = async (data: PetData) => {
     console.log('AddPetComponent', data);
     await database.write(async () => {
-      const newPet = await database.get<Pet>('pets').create(record => {
+      const newPet = await database.get<Pet>('pets').create((record: Pet) => {
         record.species = data.species!;
         record.name = data.name!;
         record.isActive = true; // New pet is active by default
@@ -34,7 +34,7 @@ const AddPetComponent: React.FC<AddPetScreenNavigationProps & {
       });
       event.emit(EVENT_NAMES.SWITCHING_PET, newPet.id);
       for (const pet of allPets) {
-        pet.update(record => {
+        pet.update((record: Pet) => {
           record.isActive = false;
         });
       }

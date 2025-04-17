@@ -26,8 +26,9 @@ const getTipBackgroundColor = (tipType?: TipType) => {
 
     case TipType.encouragement:
       return '#74D40055';
-    default:
     case TipType.help:
+      return '#F0E10655';
+    default:
       return '#F0E10655';
   }
 };
