@@ -124,7 +124,7 @@ This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENS
 ## 🌐 Links
 
 - [Website](https://ralph.pet/)
-- [Privacy Policy](https://ralph.pet/privacy)
+- [Privacy Policy](https://ralph.pet/#privacy)
 - [Support](mailto:support@ralph.pet)
 
 ---
