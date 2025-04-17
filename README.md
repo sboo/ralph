@@ -28,7 +28,6 @@ Ralph is an easy-to-use app that helps pet owners understand and monitor their e
 src/
 ├── core/             # Core infrastructure
 │   ├── database/     # WatermelonDB configuration and models
-│   ├── legacy-realm/ # Legacy database for migration
 │   ├── localization/ # i18n configuration
 │   ├── providers/    # Context providers
 │   ├── themes/       # Theme configuration
