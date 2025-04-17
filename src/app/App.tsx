@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 // Import Navigator and Providers
-import { AppProviders } from '@/features/app';
+import { AppProviders } from '@/app/providers';
 import { AppNavigator } from '@/features/navigation';
 import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
 import { useTheme } from '@/features/themes';
