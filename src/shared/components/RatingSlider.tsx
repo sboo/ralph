@@ -1,4 +1,4 @@
-import { getValueColor } from '@/support/helpers/ColorHelper';
+import { getValueColor } from '@/shared/helpers/ColorHelper';
 import { Slider } from '@miblanchard/react-native-slider';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';

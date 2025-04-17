@@ -5,7 +5,7 @@ import useNotifications from '@/features/notifications/hooks/useNotifications';
 import {
   dateObjectToTimeString,
   timeToDateObject
-} from '@/support/helpers/DateTimeHelpers';
+} from '@/shared/helpers/DateTimeHelpers';
 import { withAllPets } from '@core/database/hoc';
 import { AssessmentFrequency, CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@core/database/models/Pet';
 import notifee, {

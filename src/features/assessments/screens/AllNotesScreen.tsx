@@ -1,5 +1,5 @@
 import { AllNotesNavigationProps } from '@/features/navigation/types';
-import { getImagePath } from '@/support/helpers/ImageHelper';
+import { getImagePath } from '@/shared/helpers/ImageHelper';
 import { withActivePetAssessments } from '@core/database/hoc';
 import { Assessment } from '@core/database/models/Assessment';
 import { compose } from '@nozbe/watermelondb/react';

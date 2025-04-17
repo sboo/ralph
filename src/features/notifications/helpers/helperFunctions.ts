@@ -1,4 +1,4 @@
-import { getValidReminderTimestamp } from '@/support/helpers/DateTimeHelpers';
+import { getValidReminderTimestamp } from '@/shared/helpers/DateTimeHelpers';
 import { AssessmentFrequency } from '@core/database/models/Pet';
 import notifee, {
     RepeatFrequency,

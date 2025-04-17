@@ -1,5 +1,5 @@
 import { Appearance, useAppearance } from '@/core/themes';
-import { ANDROID_APP_ID, IOS_APP_ID } from '@/support/constants';
+import { ANDROID_APP_ID, IOS_APP_ID } from '@/shared/constants';
 import { AVAILABLE_LANGUAGES } from '@core/localization/i18n';
 import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';

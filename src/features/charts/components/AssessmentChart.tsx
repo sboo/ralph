@@ -1,4 +1,4 @@
-import CustomDot from '@/support/components/CustomChartDot';
+import CustomDot from '@/shared/components/CustomChartDot';
 import { withActivePetAssessments } from '@core/database/hoc';
 import { Assessment } from '@core/database/models/Assessment';
 import { Pet } from '@core/database/models/Pet';

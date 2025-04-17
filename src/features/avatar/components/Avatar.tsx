@@ -1,5 +1,5 @@
-import { getImagePath } from '@/support/helpers/ImageHelper';
-import { Pet } from '@core/database/models/Pet'; // Updated import from WatermelonDB models
+import { Pet } from '@/core/database/models/Pet'; // Updated import from WatermelonDB models
+import { getImagePath } from '@/shared/helpers/ImageHelper';
 import * as RNFS from '@dr.pogodin/react-native-fs';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';

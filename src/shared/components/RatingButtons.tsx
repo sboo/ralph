@@ -1,5 +1,5 @@
-import { SegmentedButtons } from '@/support/components/SegmentedButtons/SegmentedButtons';
-import { getValueColor } from '@/support/helpers/ColorHelper';
+import { SegmentedButtons } from '@/shared/components/SegmentedButtons/SegmentedButtons';
+import { getValueColor } from '@/shared/helpers/ColorHelper';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { useTheme } from 'react-native-paper';

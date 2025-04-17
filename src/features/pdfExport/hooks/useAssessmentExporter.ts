@@ -1,7 +1,7 @@
 import { DotType } from '@/features/charts/types';
 import { calculateDateRange, generateChartData, generateDateRange } from '@/features/charts/utils/helperFunctions';
-import { getValueColor } from '@/support/helpers/ColorHelper';
-import { getBase64Image } from '@/support/helpers/ImageHelper';
+import { getValueColor } from '@/shared/helpers/ColorHelper';
+import { getBase64Image } from '@/shared/helpers/ImageHelper';
 import { database } from '@core/database';
 import { Assessment } from '@core/database/models/Assessment';
 import { Pet } from '@core/database/models/Pet';

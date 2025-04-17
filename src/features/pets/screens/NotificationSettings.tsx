@@ -1,6 +1,6 @@
 import { event, EVENT_NAMES } from "@/features/events";
 import { NotificationSettingsScreenNavigationProps } from "@/features/navigation/types";
-import { timeToDateObject } from "@/support/helpers/DateTimeHelpers";
+import { timeToDateObject } from "@/shared/helpers/DateTimeHelpers";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";

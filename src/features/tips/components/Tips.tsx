@@ -1,4 +1,4 @@
-import { getTipBackgroundColor } from '@/support/helpers/ColorHelper';
+import { getTipBackgroundColor } from '@/shared/helpers/ColorHelper';
 import { Assessment, Pet } from '@core/database';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

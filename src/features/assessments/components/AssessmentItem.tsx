@@ -1,7 +1,7 @@
-import RatingButtons from '@/support/components/RatingButtons';
-import RatingSlider from '@/support/components/RatingSlider';
-import { getImagePath } from '@/support/helpers/ImageHelper';
-import { OptionText } from '@/support/helpers/TooltipHelper';
+import RatingButtons from '@/shared/components/RatingButtons';
+import RatingSlider from '@/shared/components/RatingSlider';
+import { getImagePath } from '@/shared/helpers/ImageHelper';
+import { OptionText } from '@/shared/helpers/TooltipHelper';
 import { Assessment } from '@core/database';
 import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';

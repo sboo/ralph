@@ -1,4 +1,4 @@
-import { getImageFilename, getImagePath } from "@/support/helpers/ImageHelper";
+import { getImageFilename, getImagePath } from "@/shared/helpers/ImageHelper";
 import * as RNFS from '@dr.pogodin/react-native-fs';
 
 export interface AssessmentData {

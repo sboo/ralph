@@ -1,13 +1,13 @@
-import React from 'react';
+import { emptyCustomTrackingLabels } from '@/features/assessments/helpers/customTracking';
 import { event, EVENT_NAMES } from "@/features/events";
 import { CustomTrackingSettingsScreenNavigationProps } from "@/features/navigation/types";
+import { getValueColor } from '@/shared/helpers/ColorHelper';
+import { getEmoticon } from '@/shared/helpers/TooltipHelper';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Button, Card, List, Switch, Text, TextInput, useTheme } from 'react-native-paper';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { getEmoticon } from '@/support/helpers/TooltipHelper';
-import { getValueColor } from '@/support/helpers/ColorHelper';
-import { emptyCustomTrackingLabels } from '@/features/assessments/helpers/customTracking';
+import { Avatar, Button, Card, List, Switch, Text, TextInput, useTheme } from 'react-native-paper';
 
 const CustomTrackingSettingsScreen: React.FC<CustomTrackingSettingsScreenNavigationProps> = ({ route, navigation }) => {
     const { t } = useTranslation();

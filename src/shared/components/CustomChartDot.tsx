@@ -1,4 +1,4 @@
-import PulsatingCircle from '@/support/components/PulsatingCircle.tsx';
+import PulsatingCircle from '@/shared/components/PulsatingCircle.tsx';
 import React, { useMemo } from 'react';
 import { useTheme } from 'react-native-paper';
 import { Circle, G } from 'react-native-svg';

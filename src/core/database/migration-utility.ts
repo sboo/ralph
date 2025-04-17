@@ -7,7 +7,7 @@ import Realm from 'realm';
 
 // Original Realm models
 import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
-import { timeToDateObject } from '@/support/helpers/DateTimeHelpers';
+import { timeToDateObject } from '@/shared/helpers/DateTimeHelpers';
 import { Measurement as RealmMeasurement } from '@core/legacy-realm/models/Measurement';
 import { Pet as RealmPet } from '@core/legacy-realm/models/Pet';
 
