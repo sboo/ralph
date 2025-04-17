@@ -434,7 +434,7 @@ const useAssessmentExporter = () => {
             ${assessment.customValue !== undefined && assessment.customValue !== null ?
               `<p class="item" style="background-color: ${getItemColor(
                 assessment.customValue,
-              )}">${customTrackingSettings.customTrackingName || t('settings:customTrackingFallbackLabel')}:${assessment.customValue}</p>`
+              )}">${customTrackingSettings.customTrackingName ?? t('settings:customTrackingFallbackLabel')}:${assessment.customValue}</p>`
               : ''
             }
                     </div>

@@ -1,6 +1,5 @@
-import { Model, Query } from '@nozbe/watermelondb';
+import { Model } from '@nozbe/watermelondb';
 import { date, field, json, readonly, relation, text } from '@nozbe/watermelondb/decorators';
-import { Pet } from './Pet';
 
 // Sanitizer function for images array
 const sanitizeImages = (rawImages: any): string[] => {
@@ -13,8 +12,8 @@ const sanitizeImages = (rawImages: any): string[] => {
 };
 
 export class Assessment extends Model {
-  static table = 'assessments';
-  static associations = {
+  static readonly table = 'assessments';
+  static readonly associations = {
     pets: { type: 'belongs_to' as const, key: 'pet_id' },
   };
 
@@ -29,7 +28,7 @@ export class Assessment extends Model {
   @field('custom_value') customValue?: number;
   @text('notes') notes?: string;
   @json('images', sanitizeImages) images!: string[];
-  @relation('pets', 'pet_id') pet!: Query<Pet>;
+  @relation('pets', 'pet_id') pet: any;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 }

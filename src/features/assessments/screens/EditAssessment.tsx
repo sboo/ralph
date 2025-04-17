@@ -65,7 +65,7 @@ const EditAssessmentComponent: React.FC<EditAssessmentScreenNavigationProps & {
     };
 
     // Get custom tracking settings from the pet
-    const customTrackingSettings = activePet.customTrackingSettings || emptyCustomTrackingSettings;
+    const customTrackingSettings = activePet.customTrackingSettings ?? emptyCustomTrackingSettings;
 
     return (
       <SafeAreaView

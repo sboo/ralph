@@ -64,7 +64,7 @@ const PetItem: React.FC<Props> = ({
   );
   const [customTrackingSettings, setCustomTrackingSettings] = useState<CustomTrackingSettings>({
     ...emptyCustomTrackingSettings,
-    ...(pet?.customTrackingSettings || {}),
+    ...(pet?.customTrackingSettings ?? {}),
   });
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
   const [reminderTime, setReminderTime] = useState(

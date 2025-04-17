@@ -50,7 +50,7 @@ const HomeScreenComponent = ({
   const { generateAndSharePDF } = useAssessmentExporter();
   const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>('chart');
   const [isFabOpen, setIsFabOpen] = useState(false);
-  const [, setLoading] = useState(false);
+  const [_, setLoading] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const [scrollViewHeight, setScrollViewHeight] = useState(0);
@@ -105,9 +105,7 @@ const HomeScreenComponent = ({
   }, [lastAssessments]);
 
   const addOrEditAssessment = (date?: Date) => {
-    if (!date) {
-      date = new Date();
-    }
+    date ??= new Date();
     const assessmentDate = moment(date).format('YYYY-MM-DD');
     const assessment = assessments?.find(m => m.date === assessmentDate);
 

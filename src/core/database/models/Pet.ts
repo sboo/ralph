@@ -1,6 +1,5 @@
-import { Model, Query } from '@nozbe/watermelondb';
+import { Model } from '@nozbe/watermelondb';
 import { children, date, field, json, readonly, text } from '@nozbe/watermelondb/decorators';
-import { Assessment } from './Assessment';
 
 export type AssessmentFrequency = 'DAILY' | 'WEEKLY';
 
@@ -41,8 +40,8 @@ const sanitizeTrackingSettings = (rawSettings: any): Record<string, any> => {
 };
 
 export class Pet extends Model {
-  static table = 'pets';
-  static associations = {
+  static readonly table = 'pets';
+  static readonly associations = {
     assessments: { type: 'has_many' as const, foreignKey: 'pet_id' },
   };
 
@@ -59,5 +58,5 @@ export class Pet extends Model {
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 
-  @children('assessments') assessments!: Query<Assessment>;
+  @children('assessments') assessments: any;
 }

@@ -20,7 +20,7 @@ export const calculateDateRange = (
   padding: boolean = true
 ): ChartDateRange => {
   const today = new Date();
-  const pausedDate = pet?.pausedAt || today;
+  const pausedDate = pet?.pausedAt ?? today;
   const hasAssessments = assessments && assessments.length > 0;
 
   let end;

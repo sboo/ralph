@@ -1,5 +1,4 @@
 import { type LanguageDetectorModule } from 'i18next';
-import { Platform, NativeModules } from 'react-native';
 import { getLocales } from 'react-native-localize';
 
 

@@ -1,15 +1,15 @@
-import { assessmentCollection, database, petCollection } from '@core/database';
-import { Assessment as WatermelonAssessment } from '@core/database/models/Assessment';
-import { AssessmentFrequency, Pet as WatermelonPet } from '@core/database/models/Pet';
-import { onMigration } from '@core/legacy-realm/models';
+import { assessmentCollection, database, petCollection } from '@/core/database';
+import { Assessment as WatermelonAssessment } from '@/core/database/models/Assessment';
+import { AssessmentFrequency, Pet as WatermelonPet } from '@/core/database/models/Pet';
+import { onMigration } from '@/core/legacy-realm/models';
 import notifee from '@notifee/react-native';
 import Realm from 'realm';
 
 // Original Realm models
+import { Measurement as RealmMeasurement } from '@/core/legacy-realm/models/Measurement';
+import { Pet as RealmPet } from '@/core/legacy-realm/models/Pet';
 import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
 import { timeToDateObject } from '@/shared/helpers/DateTimeHelpers';
-import { Measurement as RealmMeasurement } from '@core/legacy-realm/models/Measurement';
-import { Pet as RealmPet } from '@core/legacy-realm/models/Pet';
 
 // Define types for migration result
 interface MigrationResult {
@@ -82,7 +82,7 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
           assessmentFrequency: realmPet.assessmentFrequency,
           headerColor: realmPet.headerColor,
           pausedAt: realmPet.pausedAt,
-          customTrackingSettings: realmPet.customTrackingSettings || '{}',
+          customTrackingSettings: realmPet.customTrackingSettings ?? '{}',
         };
 
         // Create a new Pet record in WatermelonDB
@@ -115,8 +115,8 @@ export const migrateFromRealm = async (): Promise<MigrationResult> => {
         for (const realmMeasurement of realmMeasurements) {
           // Convert Realm.List<string> to regular array
           const imageArray: string[] = [];
-          for (let i = 0; i < (realmMeasurement.images as any).length; i++) {
-            imageArray.push((realmMeasurement.images as any)[i]);
+          for (const element of realmMeasurement.images as any) {
+            imageArray.push(element);
           }
 
           // Create a new Assessment record in WatermelonDB

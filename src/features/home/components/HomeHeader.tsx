@@ -1,9 +1,9 @@
+import { database } from '@/core/database';
+import { withAllAndActivePet } from '@/core/database/hoc';
+import { Pet } from '@/core/database/models/Pet';
 import Avatar from '@/features/avatar/components/Avatar';
 import { event, EVENT_NAMES } from '@/features/events';
 import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
-import { database } from '@core/database';
-import { withAllAndActivePet } from '@core/database/hoc';
-import { Pet } from '@core/database/models/Pet';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import React, { ComponentType, useEffect, useState } from 'react';
@@ -55,7 +55,7 @@ const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
   // Determine header color based on active pet index
   useEffect(() => {
     setHeaderColor(
-      getHeaderColor(allPets, activePet?.id || '', theme)
+      getHeaderColor(allPets, activePet?.id ?? '', theme)
     );
   }, [activePet, allPets, theme]);
 

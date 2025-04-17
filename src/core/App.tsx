@@ -48,7 +48,7 @@ const App: React.FC<{
     setHeaderColor(
       getHeaderColor(
         allPets,
-        activePet?.id || '',
+        activePet?.id ?? '',
         theme,
       ),  
     )
