@@ -15,7 +15,7 @@ The project is structured as follows:
 
 ```
 src/
-├── app/                 # Application-level concerns (App.tsx, assets, etc.)
+├── core/                 # Application-level concerns (App.tsx, assets, etc.)
 ├── features/            # Feature modules
 │   ├── feature-name/    # Each feature gets its own directory
 │   │   ├── index.ts     # Public API of the feature
@@ -25,8 +25,7 @@ src/
 │   │   ├── helpers/     # Helper functions and utilities
 │   │   ├── types.ts     # TypeScript types for this feature
 │   │   └── ...          # Other feature-specific files
-├── providers/           # Global context providers
-└── support/             # Shared utilities and constants
+└── shared/             # Shared utilities and constants
 ```
 
 ## Feature Organization
