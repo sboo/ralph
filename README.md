@@ -11,7 +11,6 @@ Ralph is an easy-to-use app that helps pet owners understand and monitor their e
 ### Key Features
 
 - **Quality of Life Assessments**: Track your pet's wellbeing over time
-- **Symptom Tracking**: Monitor important health indicators
 - **Vet Visit Preparation**: Compile health data to share with your veterinarian  
 - **Multilingual Support**: Available in English, German, Spanish, and Dutch
 - **Data Visualization**: See trends in your pet's health with intuitive charts
@@ -49,7 +48,6 @@ src/
 - WatermelonDB (database)
 - i18next (localization)
 - React Navigation
-- [Add any other significant libraries]
 
 ## 🔧 Setup & Installation
 
