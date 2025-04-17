@@ -1,7 +1,7 @@
 # Ralph - Pet Quality of Life
 
 <p align="center">
-  <img src="./core/assets/images/some-logo-image.png" alt="Ralph App Logo" width="200"/>
+  <img src="./core/assets/images/logo.png" alt="Ralph App Logo" width="200"/>
 </p>
 
 ## 🐾 About Ralph
