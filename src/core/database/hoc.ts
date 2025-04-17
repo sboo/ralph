@@ -1,4 +1,4 @@
-import { database, petCollection } from '@core/database';
+import { database, petCollection } from '@/core/database';
 import { Q } from '@nozbe/watermelondb';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { ComponentType } from 'react';
@@ -72,7 +72,7 @@ export const withActivePetAssessments = (options?: {
     const assessmentsObservable = activePetObservable.pipe(
       switchMap(pet => {
         if (!pet) {
-          return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+          return createEmptyAssessmentsObservable();
         }
         
         let query = database
@@ -94,3 +94,8 @@ export const withActivePetAssessments = (options?: {
     };
   })(Component);
 };
+
+const createEmptyAssessmentsObservable = () => {
+  return new Observable<Assessment[]>(subscriber => subscriber.next([]));
+}
+

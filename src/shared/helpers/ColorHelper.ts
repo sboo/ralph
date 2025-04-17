@@ -10,23 +10,25 @@ const getValueColor = (neutralColor: string, value: number | undefined) => {
       return '#F44336';
     case 2.5:
       return '#F49503';
-    default:
     case 5:
       return '#F0E106';
     case 7.5:
       return '#74D400';
     case 10:
       return '#4CAF50';
+    default:
+      return '#F0E106';
   }
 };
 
 const getTipBackgroundColor = (tipType?: TipType) => {
   switch (tipType) {
+
+    case TipType.encouragement:
+      return '#74D40055';
     default:
     case TipType.help:
       return '#F0E10655';
-    case TipType.encouragement:
-      return '#74D40055';
   }
 };
 
