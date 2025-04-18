@@ -29,6 +29,7 @@ import { DateData } from 'react-native-calendars';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { FAB, useTheme } from 'react-native-paper';
+import { Observable } from 'rxjs';
 
 // The presentational component that will be enhanced with observables
 const HomeScreenComponent = ({
@@ -389,7 +390,7 @@ const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
         .get<Assessment>('assessments')
         .query(Q.where('pet_id', activePet.id), Q.sortBy('created_at', 'desc'))
         .observe()
-      : Promise.resolve([]), // Return an empty result if activePet is undefined
+      : new Observable<Assessment[]>(subscriber => subscriber.next([])), // Return an empty result if activePet is undefined
   }))
 );
 
