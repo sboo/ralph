@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
 
 const enhance = compose(
     withActivePetAssessments({
-        sortBy: { column: 'created_at', direction: 'desc' },
+        sortBy: { column: 'date', direction: 'desc' },
         withNotes: true,
       }),
 );

@@ -75,6 +75,7 @@ export const withActivePetAssessments = (options?: {
           return createEmptyAssessmentsObservable();
         }
         
+        // Query assessments for the active pet with the provided options
         let query = database
           .get<Assessment>('assessments')
           .query(
@@ -84,7 +85,8 @@ export const withActivePetAssessments = (options?: {
             ...(limit ? [Q.take(limit)] : [])
           );
         
-        return query.observe();
+        // Observe the query to get updates when the column score changes
+        return query.observeWithColumns(['score']);
       })
     );
 

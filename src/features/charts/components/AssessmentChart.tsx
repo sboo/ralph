@@ -1,7 +1,7 @@
+import { withActivePetAssessments } from '@/core/database/hoc';
+import { Assessment } from '@/core/database/models/Assessment';
+import { Pet } from '@/core/database/models/Pet';
 import CustomDot from '@/shared/components/CustomChartDot';
-import { withActivePetAssessments } from '@core/database/hoc';
-import { Assessment } from '@core/database/models/Assessment';
-import { Pet } from '@core/database/models/Pet';
 import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react';
@@ -23,7 +23,7 @@ const AssessmentChartComponent: React.FC<AssessmentChartProps & {
 }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-  const chartScrollViewRef = useRef<ScrollView>();
+  const chartScrollViewRef = useRef<ScrollView>(null);
   const theme = useTheme();
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
   const windowWidth = Dimensions.get('window').width;
@@ -186,9 +186,9 @@ const styles = StyleSheet.create({
 });
 
 const enhance: (component: React.ComponentType<any>) => React.ComponentType<any> = compose(
-  // Add assessments from active pet, sorted by created_at ascending
+  // Add assessments from active pet, sorted by date ascending
   withActivePetAssessments({
-    sortBy: { column: 'created_at', direction: 'asc' }
+    sortBy: { column: 'date', direction: 'asc' }
   }),
 );
 

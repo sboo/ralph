@@ -1,10 +1,10 @@
-import { TipCategory, TipType } from '../hooks/useTips';
+import { TipCategory, TipList, TipType } from '../hooks/useTips';
 
 /**
  * Centralized configuration for all available tips in the application
  * Tips are organized by category and reference translation keys
  */
-export const tipConfigurations = {
+export const tipConfigurations: TipList = {
   hurt: [
     { index: 1, category: TipCategory.hurt, type: TipType.help, showWhen: [2.5, 5, 7.5], translationKey: 0 },
     { index: 2, category: TipCategory.hurt, type: TipType.help, showWhen: [0, 2.5], translationKey: 1 },
@@ -25,7 +25,7 @@ export const tipConfigurations = {
   hydration: [
     { index: 1, category: TipCategory.hydration, type: TipType.help, showWhen: [2.5, 5, 7.5], translationKey: 0 },
     { index: 2, category: TipCategory.hydration, type: TipType.help, showWhen: [0, 2.5], translationKey: 1 },
-    { index: 3, category: TipCategory.hydration, type: TipType.help, showWhen: [0, 5], translationKey: 2, useHungerTranslation: true },
+    { index: 3, category: TipCategory.hydration, type: TipType.help, showWhen: [0, 5], translationKey: 2 },
     { index: 4, category: TipCategory.hydration, type: TipType.help, showWhen: [2.5, 7.5], translationKey: 3 },
     { index: 5, category: TipCategory.hydration, type: TipType.help, showWhen: [0], translationKey: 4 },
   ],
@@ -61,7 +61,7 @@ export const tipConfigurations = {
       category: TipCategory.encouragement, 
       type: TipType.encouragement, 
       showWhenCategories: {
-        hurt: 0, hunger: 0, hydration: 0, hygiene: 0, happiness: 0, mobility: 0
+        hurt: 0, hunger: 0, hydration: 0, hygiene: 0, happiness: 0, mobility: 0,
       }, 
       translationKey: 0
     },
@@ -72,8 +72,7 @@ export const tipConfigurations = {
       showWhenCategories: {
         hurt: 5, hunger: 5, hydration: 5, hygiene: 5, happiness: 0, mobility: 5
       }, 
-      translationKey: 1,
-      useHungerTranslation: true
+      translationKey: 1
     },
     {
       index: 3, 

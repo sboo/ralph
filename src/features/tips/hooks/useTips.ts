@@ -12,13 +12,12 @@ export interface Tip {
   index: number;
   category: TipCategory;
   type: TipType;
-  showWhen: number[];
-  showWhenCategories: {[key in TipCategory]: number};
-  title: string;
-  text: string;
+  showWhen?: number[];
+  showWhenCategories?: {[key in Exclude<TipCategory, TipCategory.encouragement>]: number};
+  translationKey: number;
 }
 
-interface TipList {
+export interface TipList {
   hurt: Tip[];
   hunger: Tip[];
   hydration: Tip[];
@@ -53,13 +52,13 @@ const useTips = () => {
     (petSpecies: string) => {
       // Get translations for each category
       const categoryTranslations: Record<string, TipTranslation[]> = {
-        hurt: t(`${petSpecies}:tips:hurt`, { returnObjects: true }),
-        hunger: t(`${petSpecies}:tips:hunger`, { returnObjects: true }),
-        hydration: t(`${petSpecies}:tips:hydration`, { returnObjects: true }),
-        hygiene: t(`${petSpecies}:tips:hygiene`, { returnObjects: true }),
-        happiness: t(`${petSpecies}:tips:happiness`, { returnObjects: true }),
-        mobility: t(`${petSpecies}:tips:mobility`, { returnObjects: true }),
-        encouragement: t(`${petSpecies}:tips:encouragement`, { returnObjects: true }),
+        hurt: t(`${petSpecies}:tips:hurt`, { returnObjects: true }) as TipTranslation[],
+        hunger: t(`${petSpecies}:tips:hunger`, { returnObjects: true }) as TipTranslation[],
+        hydration: t(`${petSpecies}:tips:hydration`, { returnObjects: true }) as TipTranslation[],
+        hygiene: t(`${petSpecies}:tips:hygiene`, { returnObjects: true }) as TipTranslation[],
+        happiness: t(`${petSpecies}:tips:happiness`, { returnObjects: true }) as TipTranslation[],
+        mobility: t(`${petSpecies}:tips:mobility`, { returnObjects: true }) as TipTranslation[],
+        encouragement: t(`${petSpecies}:tips:encouragement`, { returnObjects: true }) as TipTranslation[],
       };
       
       // Process all categories except encouragement, which has a special structure
@@ -72,15 +71,11 @@ const useTips = () => {
       processedCategories.forEach(category => {
         result[category] = tipConfigurations[category].map(tipConfig => {
           const translations = categoryTranslations[category];
-          // Handle special case where a tip uses translations from a different category
-          const translationSource = tipConfig.useHungerTranslation ? 
-                                    categoryTranslations.hunger : 
-                                    translations;
           
           return {
             ...tipConfig,
-            title: translationSource[tipConfig.translationKey].title,
-            text: translationSource[tipConfig.translationKey].text,
+            title: translations[tipConfig.translationKey].title,
+            text: translations[tipConfig.translationKey].text,
             // Ensure the property is present (even if empty) to match original structure
             showWhenCategories: (tipConfig.showWhenCategories || {}) as {[key in TipCategory]: number},
           };
@@ -89,9 +84,7 @@ const useTips = () => {
       
       // Process encouragement tips separately (they have showWhenCategories instead of showWhen)
       result.encouragement = tipConfigurations.encouragement.map(tipConfig => {
-        const translations = tipConfig.useHungerTranslation ? 
-                             categoryTranslations.hunger : 
-                             categoryTranslations.encouragement;
+        const translations = categoryTranslations.encouragement;
         
         return {
           ...tipConfig,
@@ -133,13 +126,13 @@ const useTips = () => {
       
       // Filter regular tips that use showWhen
       const regularTips = categories.flatMap(category => 
-        tips[category].filter(tip => tip.showWhen.includes(assessment[category]))
+        tips[category].filter(tip => tip.showWhen?.includes(assessment[category]))
       );
       
       // Filter encouragement tips (they use showWhenCategories with a different logic)
       const encouragementTips = tips.encouragement.filter(tip => {
         const showWhenCategories = tip.showWhenCategories;
-        return Object.entries(showWhenCategories).every(([category, requiredValue]) => 
+        return Object.entries(showWhenCategories ?? {}).every(([category, requiredValue]) => 
           assessment[category as keyof typeof assessment] >= requiredValue
         );
       });

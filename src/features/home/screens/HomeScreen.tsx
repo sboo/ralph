@@ -381,7 +381,7 @@ const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
   withAllAndActivePet,
   // Add assessments from active pet, sorted by created_at ascending
   withActivePetAssessments({
-    sortBy: { column: 'created_at', direction: 'asc' }
+    sortBy: { column: 'date', direction: 'asc' }
   }),
   // Add last assessments from active pet, sorted by created_at descending
   withObservables(['activePet'], ({ activePet }: { activePet: Pet | undefined }) => ({
