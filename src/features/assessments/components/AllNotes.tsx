@@ -1,32 +1,32 @@
-import useAssessments from '@/features/assessments/hooks/useAssessments';
-import usePet from '@/features/pets/hooks/usePet';
-import { getImagePath } from '@/support/helpers/ImageHelper';
+import { withActivePetAssessments } from '@/core/database/hoc';
+import { Assessment } from '@/core/database/models/Assessment';
+import { getImagePath } from '@/shared/helpers/ImageHelper';
+import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
-import React, { useMemo, useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView, Image, View, TouchableOpacity } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { Avatar, Card, Icon, IconButton, Text, useTheme } from 'react-native-paper';
-import ImageView from 'react-native-image-viewing';
-import { Measurement } from '@/app/models/Measurement';
-import { ImageSource } from 'react-native-image-viewing/dist/@types';
-import { AllNotesNavigationProps } from '@/features/navigation/types';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import ImageView from 'react-native-image-viewing';
+import { ImageSource } from 'react-native-image-viewing/dist/@types';
+import { Avatar, Card, IconButton, Text, useTheme } from 'react-native-paper';
 
 interface Props {
     onNotePress: (assessmentId: string) => void;
+    assessments?: Assessment[];
 }
 
-const AllNotes: React.FC<Props> = ({ onNotePress }) => {
-
+// The presentational component
+const AllNotesComponent: React.FC<Props> = ({ 
+    onNotePress, 
+    assessments: assessmentsWithNotes = []
+}) => {
     const { t } = useTranslation();
     const theme = useTheme();
-    const { activePet } = usePet();
-    const { assessmentsWithNotes } = useAssessments(activePet);
     const [imagesList, setImagesList] = useState<ImageSource[]>();
     const [imageViewerVisible, setImageViewerVisible] = useState(false);
     const [clickedImage, setClickedImage] = useState<number>(0);
-
-    const updateImagesList = (assessment: Measurement) => {
+    
+    const updateImagesList = (assessment: Assessment) => {
         return assessment.images?.map(image => {
             return { uri: getImagePath(image, true) };
         });
@@ -36,6 +36,7 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
         setClickedImage(index);
         setImageViewerVisible(true);
     }
+    
     if (!assessmentsWithNotes?.length) {
         return (
             <View style={styles.container}>
@@ -51,7 +52,6 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
                     </Card.Content>
                 </Card>
             </View>
-
         )
     }
 
@@ -59,7 +59,6 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
         <View style={styles.container}>
             {assessmentsWithNotes?.map((assessment, index) => (
                 <View key={index}>
-
                     <Card
                         style={{ ...styles.card, backgroundColor: theme.colors.surface }}
                         mode='contained'
@@ -73,7 +72,7 @@ const AllNotes: React.FC<Props> = ({ onNotePress }) => {
                                     day: 'numeric',
                                 })}</Text>
                                 <IconButton size={14} icon='pencil'
-                                    onPress={() => onNotePress(assessment._id.toHexString())}
+                                    onPress={() => onNotePress(assessment.id)}
                                 />
                             </View>
                             <Text variant='bodyMedium' style={styles.note}>{assessment.notes}</Text>
@@ -149,5 +148,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AllNotes;
+const enhance = compose(
+    withActivePetAssessments({
+        sortBy: { column: 'created_at', direction: 'desc' },
+        withNotes: true,
+      }),
+);
+
+// Export the enhanced component
+export default enhance(AllNotesComponent);
 

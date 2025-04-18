@@ -1,4 +1,19 @@
+import { withAllPets } from '@/core/database/hoc';
+import { AssessmentFrequency, CustomTrackingSettings, emptyCustomTrackingSettings, Pet } from '@/core/database/models/Pet';
+import Avatar from '@/features/avatar/components/Avatar';
+import { event, EVENT_NAMES } from '@/features/events';
+import { createTriggerNotification } from '@/features/notifications/helpers/helperFunctions';
+import useNotifications from '@/features/notifications/hooks/useNotifications';
+import {
+  dateObjectToTimeString,
+  timeToDateObject
+} from '@/shared/helpers/DateTimeHelpers';
+import notifee, {
+  AuthorizationStatus
+} from '@notifee/react-native';
+import { compose } from '@nozbe/watermelondb/react';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Linking,
@@ -7,6 +22,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import { is24HourFormat } from 'react-native-device-time-format';
 import {
   Button,
   Dialog,
@@ -17,30 +33,7 @@ import {
   TextInput,
   useTheme,
 } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import notifee, {
-  AuthorizationStatus,
-  RepeatFrequency,
-  TimestampTrigger,
-  TriggerType,
-} from '@notifee/react-native';
-import Avatar from '@/features/avatar/components/Avatar';
-import i18next from 'i18next';
-import moment from 'moment';
-import {
-  dateObjectToTimeString,
-  getValidReminderTimestamp,
-  timeToDateObject,
-} from '@/support/helpers/DateTimeHelpers';
-import { Pet } from '@/app/models/Pet';
-import usePet, { PetData } from '../hooks/usePet';
-import { BSON } from 'realm';
-import useNotifications from '@/features/notifications/hooks/useNotifications';
-import { AssessmentFrequency } from '@/app/models/Pet';
-import { event, EVENT_NAMES } from '@/features/events';
-import { is24HourFormat } from 'react-native-device-time-format'
-import { CustomTrackingSettings, emptyCustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
-
+import { PetData } from '../helpers/helperFunctions';
 
 interface Props {
   pet?: Pet;
@@ -48,9 +41,17 @@ interface Props {
   onSubmit: (data: PetData) => void;
   isWelcomeScreen?: boolean;
   navigation: any;
+  allPets?: Pet[];
 }
 
-const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isWelcomeScreen = false }) => {
+const PetItem: React.FC<Props> = ({ 
+  pet, 
+  buttonLabel, 
+  onSubmit, 
+  navigation, 
+  isWelcomeScreen = false,
+  allPets = []
+}) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { getNotificationId } = useNotifications();
@@ -63,7 +64,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   );
   const [customTrackingSettings, setCustomTrackingSettings] = useState<CustomTrackingSettings>({
     ...emptyCustomTrackingSettings,
-    ...(pet?.customTrackingSettings ? JSON.parse(pet.customTrackingSettings) : {}),
+    ...(pet?.customTrackingSettings ?? {}),
   });
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(false);
   const [reminderTime, setReminderTime] = useState(
@@ -71,7 +72,6 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   );
   const [hour12, setHour12] = useState<boolean>(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = React.useState(false);
-  const { pets } = usePet();
 
   const petComplete = useMemo(() => petType && petName, [petType, petName]);
   const welcomeTextTopMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
@@ -152,7 +152,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
 
   // Store pet name and type in storage
   const submitData = async () => {
-    const id = pet?._id ?? new BSON.ObjectId();
+    let id = pet?.id;
     let notificationsEnabled = remindersEnabled;
     // Disable reminders if assessments are paused
     if (assessmentsPaused) {
@@ -172,7 +172,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
       isPaused: assessmentsPaused,
       avatar: avatar,
       assessmentFrequency: assessmentFrequency,
-      customTrackingSettings: JSON.stringify(customTrackingSettings),
+      customTrackingSettings: customTrackingSettings,
     });
   };
 
@@ -180,7 +180,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     if (!pet) {
       return;
     }
-    const notificationId = getNotificationId(pet._id);
+    const notificationId = getNotificationId(pet.id);
     await notifee.cancelAllNotifications([
       'eu.sboo.ralph.reminder',
       notificationId,
@@ -207,11 +207,11 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     );
   };
 
-  const enableReminders = async (petId: BSON.ObjectId) => {
+  const enableReminders = async (petId: string) => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
       try {
-        await createTriggerNotification(petId);
+        await createTriggerNotification(petId, petName, reminderTime, assessmentFrequency);
         return true;
       } catch (error) {
         console.error(error);
@@ -237,51 +237,9 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
     }
   };
 
-  const createTriggerNotification = async (petId: BSON.ObjectId) => {
-    const channelGroupId = await notifee.createChannelGroup({
-      id: 'reminders',
-      name: i18next.t('measurements:reminders'),
-    });
-
-    const channelId = await notifee.createChannel({
-      id: petId.toHexString(),
-      groupId: channelGroupId,
-      name: petName,
-    });
-
-
-    const reminderTimestamp = getValidReminderTimestamp(reminderTime, assessmentFrequency);
-    console.log('reminderTime', moment(reminderTimestamp).format('YYYY-MM-DD HH:mm'));
-
-    // Create a time-based trigger
-    const trigger: TimestampTrigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: reminderTimestamp,
-      repeatFrequency: assessmentFrequency == 'WEEKLY' ? RepeatFrequency.WEEKLY : RepeatFrequency.DAILY,
-    };
-
-    await notifee.createTriggerNotification(
-      {
-        id: getNotificationId(petId),
-        title: t('measurements:notificationTitle', {
-          petName: petName,
-        }),
-        body: t('measurements:notificationBody', {
-          petName: petName,
-        }),
-        android: {
-          channelId: channelId,
-          smallIcon: 'ic_small_icon',
-          pressAction: {
-            id: 'default',
-          },
-        },
-      },
-      trigger,
-    );
-  };
-
-  const cancelReminders = async (petId: BSON.ObjectId) => {
+  const cancelReminders = async (petId: string | undefined) => {
+    if (!petId) return;
+    
     await notifee.cancelAllNotifications([
       'eu.sboo.ralph.reminder',
       getNotificationId(petId),
@@ -289,7 +247,9 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   };
 
   // Toggle reminders
-  const toggleReminders = async (petId: BSON.ObjectId) => {
+  const toggleReminders = async (petId: string | undefined) => {
+    if (!petId) return false;
+    
     await cancelReminders(petId);
     let enabled = remindersEnabled;
     if (enabled) {
@@ -398,7 +358,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
           </List.Section>
         </View>
       </ScrollView>
-      {pet && pets.length > 1 ? (
+      {pet && allPets.length > 1 ? (
         <List.Section>
           <List.Item
             left={props => <List.Icon {...props} icon="trash-can-outline" />}
@@ -440,11 +400,7 @@ const Settings: React.FC<Props> = ({ pet, buttonLabel, onSubmit, navigation, isW
   );
 };
 
-
-
-// Notification Settings Screen
-
-
+// Styles remain the same
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -502,4 +458,9 @@ const styles = StyleSheet.create({
 });
 
 
-export default Settings;
+const enhance = compose(
+  withAllPets
+)
+
+// Export the enhanced component
+export default enhance(PetItem);

@@ -1,3 +1,10 @@
+import RatingButtons from '@/shared/components/RatingButtons';
+import RatingSlider from '@/shared/components/RatingSlider';
+import { getImagePath } from '@/shared/helpers/ImageHelper';
+import { OptionText } from '@/shared/helpers/TooltipHelper';
+import { Assessment } from '@core/database';
+import { STORAGE_KEYS } from '@core/store/storageKeys';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,38 +15,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, Divider, Text } from 'react-native-paper';
-import RatingSlider from '@/support/components/RatingSlider';
-import { Measurement } from '@/app/models/Measurement.ts';
-import NotesModal from './NotesModal';
-import { getImagePath } from '@/support/helpers/ImageHelper';
 import ImageView from 'react-native-image-viewing';
-import RatingButtons from '@/support/components/RatingButtons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
-import { OptionText } from '@/support/helpers/TooltipHelper';
+import { Button, Divider, Text } from 'react-native-paper';
 import { CustomTrackingSettings } from '../helpers/customTracking';
+import { AssessmentData } from '../helpers/helperFunctions';
+import NotesModal from './NotesModal';
 
 interface Props {
   petName: string;
   petSpecies: string;
   date: Date;
-  assessment?: Measurement | null;
+  assessment?: Assessment | null;
   scrollToNotes?: boolean;
   customTracking: CustomTrackingSettings;
   onCancel: () => void;
-  onSubmit: (
-    hurt: number,
-    hunger: number,
-    hydration: number,
-    hygiene: number,
-    happiness: number,
-    mobility: number,
-    customValue?: number,
-    notes?: string,
-    images?: string[],
-
-  ) => void;
+  onSubmit: (assessmentData: AssessmentData) => void;
 }
 
 const AssessmentItem: React.FC<Props> = ({

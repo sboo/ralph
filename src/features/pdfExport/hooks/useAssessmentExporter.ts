@@ -1,21 +1,75 @@
-import { useTheme } from 'react-native-paper';
+import { database } from '@/core/database';
+import { Assessment } from '@/core/database/models/Assessment';
+import { Pet } from '@/core/database/models/Pet';
+import { DotType } from '@/features/charts/types';
+import { calculateDateRange, generateChartData, generateDateRange } from '@/features/charts/utils/helperFunctions';
+import { getValueColor } from '@/shared/helpers/ColorHelper';
+import { getBase64Image } from '@/shared/helpers/ImageHelper';
+import { Q } from '@nozbe/watermelondb';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import { getValueColor } from '@/support/helpers/ColorHelper';
+import { useTheme } from 'react-native-paper';
 import Share from 'react-native-share';
-import usePet from '@/features/pets/hooks/usePet';
-import useAssessments from '@/features/assessments/hooks/useAssessments';
-import { getBase64Image } from '@/support/helpers/ImageHelper';
-import { calculateDateRange, generateDateRange, generateChartData } from '@/features/charts/utils/helperFunctions';
-import { DotType } from '@/features/charts/types';
+import { map } from 'rxjs/operators';
 
 const useAssessmentExporter = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { activePet, getHeaderColor } = usePet();
-  const { assessments, customTrackingSettings } = useAssessments(activePet);
+  const [activePet, setActivePet] = useState<Pet | undefined>(undefined);
+  const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const [customTrackingSettings, setCustomTrackingSettings] = useState<any>({});
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
+
+  // Fetch active pet and its assessments
+  useEffect(() => {
+    const activePetSubscription = database
+      .get<Pet>('pets')
+      .query(Q.where('is_active', true))
+      .observe()
+      .pipe(map(pets => pets.length > 0 ? pets[0] : undefined))
+      .subscribe(pet => {
+        setActivePet(pet);
+
+        // Parse custom tracking settings
+        if (pet?.customTrackingSettings) {
+          try {
+            const settings = typeof pet.customTrackingSettings === 'string'
+              ? JSON.parse(pet.customTrackingSettings)
+              : pet.customTrackingSettings;
+            setCustomTrackingSettings(settings);
+          } catch (e) {
+            console.error('Error parsing custom tracking settings:', e);
+            setCustomTrackingSettings({});
+          }
+        }
+      });
+
+    return () => {
+      activePetSubscription.unsubscribe();
+    };
+  }, []);
+
+  // When active pet changes, fetch its assessments
+  useEffect(() => {
+    if (!activePet) {
+      setAssessments([]);
+      return;
+    }
+
+    const assessmentsSubscription = database
+      .get<Assessment>('assessments')
+      .query(Q.where('pet_id', activePet.id), Q.sortBy('date', 'asc'))
+      .observe()
+      .subscribe(result => {
+        setAssessments(result);
+      });
+
+    return () => {
+      assessmentsSubscription.unsubscribe();
+    };
+  }, [activePet]);
 
   const getItemColor = (score: number) => {
     const color = getValueColor(theme.colors.outline, score);
@@ -44,8 +98,9 @@ const useAssessmentExporter = () => {
     const dateRange = generateDateRange(startDate, endDate, isWeekly);
 
     const { scores, labels, dotTypes, metadata } = generateChartData(dateRange, assessments, isWeekly);
+    console.log('Chart data:', { scores, labels, dotTypes, metadata });
 
-    const hasOlderData = assessments.some(a => new Date(a.createdAt) < startDate);
+    const hasOlderData = assessments.some(a => new Date(a.date) < startDate);
 
     if (scores.length === 0) {
       return `<div style="width: 780px; height: 400px; display: flex; align-items: center; justify-content: center; background-color: transparent; font-family: 'Inter', sans-serif;">
@@ -71,10 +126,10 @@ const useAssessmentExporter = () => {
         ? padding.left + (chartWidth / 2)
         : padding.left + (index * (chartWidth / (scores.length - 1)));
       const y = padding.top + (chartHeight - (chartHeight * score / 60));
-      return { 
-        x, 
-        y, 
-        score: score, 
+      return {
+        x,
+        y,
+        score: score,
         date: labels[index],
         dotType: dotTypes[index]
       };
@@ -169,12 +224,12 @@ const useAssessmentExporter = () => {
 
         <!-- Points with different styles based on dotType -->
         ${points.map(point => {
-          const style = getPointStyle(point.dotType);
-          return `
+      const style = getPointStyle(point.dotType);
+      return `
             <circle cx="${point.x}" cy="${point.y}" r="${style.radius}"
                     fill="${style.fill}" stroke="${style.stroke}" stroke-width="${style.strokeWidth}" />
           `;
-        }).join('')}
+    }).join('')}
 
         ${hasOlderData ? `
           <text x="${width - padding.right}" 
@@ -189,7 +244,6 @@ const useAssessmentExporter = () => {
     `;
   };
 
-  const headerColor = getHeaderColor(theme);
 
   const getHtmlContent = async () => {
     const base64Images = await getAllAssessmentBase64ImagesList();
@@ -219,7 +273,7 @@ const useAssessmentExporter = () => {
                   margin: 0;
               }
               .header-section {
-                  background-color: ${headerColor};
+                  background-color: ${theme.colors.primary};
                   color: #ffffff;
                   padding: 40px;
                   border-bottom-left-radius: 25px;
@@ -340,9 +394,9 @@ const useAssessmentExporter = () => {
                             </div>`;
           }
           return `
-                <div class="assessment" key=${assessment._id.toHexString()}>
+                <div class="assessment" key=${assessment.id}>
                     <div class="row">
-                        <p class="date">${assessment.createdAt.toLocaleDateString()}</p>
+                        <p class="date">${new Date(assessment.date).toLocaleDateString()}</p>
                         <p class="score">${assessment.score}</p>
                     </div>
                     <div class="row">
@@ -380,7 +434,7 @@ const useAssessmentExporter = () => {
             ${assessment.customValue !== undefined && assessment.customValue !== null ?
               `<p class="item" style="background-color: ${getItemColor(
                 assessment.customValue,
-                )}">${customTrackingSettings.customTrackingName  || t('settings:customTrackingFallbackLabel')}:${assessment.customValue}</p>`
+              )}">${customTrackingSettings.customTrackingName ?? t('settings:customTrackingFallbackLabel')}:${assessment.customValue}</p>`
               : ''
             }
                     </div>

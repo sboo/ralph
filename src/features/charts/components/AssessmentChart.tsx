@@ -1,27 +1,33 @@
+import CustomDot from '@/shared/components/CustomChartDot';
+import { withActivePetAssessments } from '@core/database/hoc';
+import { Assessment } from '@core/database/models/Assessment';
+import { Pet } from '@core/database/models/Pet';
+import { compose } from '@nozbe/watermelondb/react';
+import moment from 'moment';
 import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Icon, useTheme } from 'react-native-paper';
-import moment from 'moment';
-import CustomDot from '@/support/components/CustomChartDot';
-import useAssessments from '@/features/assessments/hooks/useAssessments';
-import usePet from '@/features/pets/hooks/usePet';
 import { AssessmentChartProps, CHART_CONSTANTS, EMOTIONS } from '../types';
-import { calculateDateRange, generateDateRange, generateChartData } from '../utils/helperFunctions';
+import { calculateDateRange, generateChartData, generateDateRange } from '../utils/helperFunctions';
 import WeeklyAssessmentDialog from './WeeklyAssessmentDialog';
 
-
-const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) => {
+// The presentational component
+const AssessmentChartComponent: React.FC<AssessmentChartProps & { 
+  activePet: Pet | undefined,
+  assessments: Assessment[] 
+}> = ({ 
+  onDataPointClick, 
+  activePet, 
+  assessments 
+}) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const chartScrollViewRef = useRef<ScrollView>();
   const theme = useTheme();
-  const { activePet } = usePet();
-  const { assessments } = useAssessments(activePet);
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
   const windowWidth = Dimensions.get('window').width;
 
-  
   const maxDays = isWeekly ? CHART_CONSTANTS.WEEKS_TO_SHOW * 7 : CHART_CONSTANTS.DAYS_TO_SHOW;
   const { startDate, endDate } = useMemo(
     () => calculateDateRange(assessments, activePet, isWeekly, maxDays),
@@ -39,7 +45,6 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
   );
 
   const handleDotPress = useCallback((index: number) => {
-
     if (!metadata[index]) return;
 
     const scoreData = metadata[index];
@@ -109,8 +114,7 @@ const AssessmentChart: React.FC<AssessmentChartProps> = ({ onDataPointClick }) =
         y={y}
         paused={Boolean(activePet?.pausedAt)}
         dotType={dotTypes[index]}
-        onPress={() => handleDotPress(index)}  // Add this line
-
+        onPress={() => handleDotPress(index)}
       />
     ),
     [dotTypes, activePet?.pausedAt, handleDotPress]
@@ -181,4 +185,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(AssessmentChart);
+const enhance: (component: React.ComponentType<any>) => React.ComponentType<any> = compose(
+  // Add assessments from active pet, sorted by created_at ascending
+  withActivePetAssessments({
+    sortBy: { column: 'created_at', direction: 'asc' }
+  }),
+);
+
+// Export the enhanced component
+export default enhance(AssessmentChartComponent);

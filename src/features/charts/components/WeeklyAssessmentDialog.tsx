@@ -1,7 +1,7 @@
-import { Portal, Dialog, Text, List, Button } from "react-native-paper";
-import { WeeklyDialogProps } from "../types";
-import { StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Button, Dialog, List, Portal } from "react-native-paper";
+import { WeeklyDialogProps } from "../types";
 
 const WeeklyAssessmentDialog: React.FC<WeeklyDialogProps> = ({
     visible,

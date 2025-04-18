@@ -1,7 +1,7 @@
 import React from 'react';
-import {Trans, useTranslation} from 'react-i18next';
-import {StyleSheet} from 'react-native';
-import {useTheme, Card, Icon, Text} from 'react-native-paper';
+import { Trans, useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import { Card, Icon, Text, useTheme } from 'react-native-paper';
 
 const GetStartedTip: React.FC = () => {
   const {t} = useTranslation();

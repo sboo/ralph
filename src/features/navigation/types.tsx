@@ -1,22 +1,5 @@
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { CustomTrackingLabels, CustomTrackingSettings } from '../assessments/helpers/customTracking';
-
-export type RootStackParamList = {
-  Welcome: undefined;
-  Onboarding: undefined;
-  Settings: undefined;
-  Home: undefined;
-  AddPet: undefined;
-  EditPet: undefined;
-  AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean, customTrackingSettings: CustomTrackingSettings};
-  NotificationSettings: {notificationsEnabled: boolean; notificationTime: string};
-  CustomTrackingSettings: {customTrackingSettings: CustomTrackingSettings};
-  AddAssessment: {timestamp: number};
-  EditAssessment: {assessmentId: string, scrollToNotes?: boolean};
-  AllNotes: undefined;
-  AllAssessments: undefined;
-  DebugScreen: undefined;
-};
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from './routes';
 
 export type WelcomeScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -79,4 +62,9 @@ export type AllNotesNavigationProps = NativeStackScreenProps<
 export type AllAssessmentsScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'AllAssessments'
+>;
+
+export type MigrationScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Migration'
 >;

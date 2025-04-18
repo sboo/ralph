@@ -1,22 +1,29 @@
-import usePet from '@/features/pets/hooks/usePet';
-import React, {useMemo} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Calendar, DateData, LocaleConfig} from 'react-native-calendars';
-import {useTheme} from 'react-native-paper';
-import useAssessments from '../hooks/useAssessments';
-import {MarkedDates} from 'react-native-calendars/src/types';
+import { withActivePetAssessments } from '@/core/database/hoc';
+import { Assessment } from '@/core/database/models/Assessment';
+import { Pet } from '@/core/database/models/Pet';
+import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
-import {StyleSheet} from 'react-native';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import { Calendar, DateData, LocaleConfig } from 'react-native-calendars';
+import { MarkedDates } from 'react-native-calendars/src/types';
+import { Text, useTheme } from 'react-native-paper';
 
 interface Props {
   onCalendarDayPress: (dateData: DateData) => void;
+  activePet?: Pet;
+  assessments?: Assessment[];
 }
 
-const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
+// The presentational component
+const AssessmentsCalendarComponent: React.FC<Props> = ({
+  onCalendarDayPress,
+  activePet,
+  assessments = []
+}) => {
   const {i18n} = useTranslation();
   const theme = useTheme();
-  const {activePet} = usePet();
-  const {lastAssessments} = useAssessments(activePet);
   LocaleConfig.defaultLocale = i18n.resolvedLanguage;
 
   const getIconColor = (score: number) => {
@@ -35,8 +42,8 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
 
   const markedDates: MarkedDates = useMemo(() => {
     return (
-      lastAssessments?.reduce((acc, assessment) => {
-        const date = moment(assessment.createdAt).format('YYYY-MM-DD');
+      assessments?.reduce((acc, assessment) => {
+        const date = assessment.date; // Using date directly from WatermelonDB Assessment
         acc[date] = {
           selected: true,
           selectedColor: getIconColor(assessment.score),
@@ -45,7 +52,7 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
         return acc;
       }, {} as MarkedDates) ?? ({} as MarkedDates)
     );
-  }, [lastAssessments]);
+  }, [assessments]);
 
   return (
     <Calendar
@@ -55,6 +62,9 @@ const AssessmentsCalendar: React.FC<Props> = ({onCalendarDayPress}) => {
       maxDate={moment().format('YYYY-MM-DD')}
       enableSwipeMonths={true}
       firstDay={1}
+      renderHeader={(date) => {
+        return <Text variant='titleMedium'>{date.toString('MMMM yyyy')}</Text>;
+      }}
     />
   );
 };
@@ -66,4 +76,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AssessmentsCalendar;
+
+const enhance = compose(
+  withActivePetAssessments({
+    sortBy: { column: 'created_at', direction: 'asc' }
+  })
+);
+
+// Export the enhanced component
+export default enhance(AssessmentsCalendarComponent);

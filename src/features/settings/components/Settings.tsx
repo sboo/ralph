@@ -1,13 +1,13 @@
+import { AVAILABLE_LANGUAGES } from '@/core/localization/i18n';
+import { STORAGE_KEYS } from '@/core/store/storageKeys';
+import { Appearance, useAppearance } from '@/core/themes';
+import { ANDROID_APP_ID, IOS_APP_ID } from '@/shared/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18next from 'i18next';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Linking, Platform, StyleSheet, View } from 'react-native';
 import { Button, Divider, Icon, IconButton, Switch, Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { AVAILABLE_LANGUAGES } from '@/app/localization/i18n';
-import i18next from 'i18next';
-import { ANDROID_APP_ID, IOS_APP_ID } from '@/support/constants';
-import { STORAGE_KEYS } from '@/app/store/storageKeys';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Appearance, useAppearance } from '@/app/themes/hooks/useAppearance';
 
 interface SettingsProps {
   onSettingsSaved: () => void;

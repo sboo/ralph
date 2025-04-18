@@ -1,5 +1,7 @@
-import {t} from 'i18next';
-import React, {useState} from 'react';
+import { t } from 'i18next';
+import React, { useState } from 'react';
+import { Image, Platform, StyleSheet, View } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 import {
   Button,
   IconButton,
@@ -9,8 +11,6 @@ import {
   TextInput,
   useTheme,
 } from 'react-native-paper';
-import {Image, Platform, StyleSheet, View} from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
 
 interface Props {
   petName: string;

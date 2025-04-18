@@ -1,13 +1,11 @@
+import { Assessment, Pet } from "@core/database";
 import moment from "moment";
-import { Measurement } from "@/app/models/Measurement";
-import { Pet } from "@/app/models/Pet";
-import { Results } from "realm";
-import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, ProcessedChartData } from "../types";
+import { CHART_CONSTANTS, ChartDateRange, ProcessedChartData, ScoreMetadata } from "../types";
 
 /**
  * Calculates the date range for a chart based on the provided assessments, pet status, and other parameters.
  *
- * @param {Results<Measurement> | null} assessments - The list of assessments or null if there are none.
+ * @param {Assessment[] | null} assessments - The list of assessments or null if there are none.
  * @param {Pet | undefined} pet - The pet object which may contain a paused date.
  * @param {boolean} isWeekly - Determines if the date range should be calculated on a weekly basis.
  * @param {number} maxDays - The maximum number of days to include in the date range.
@@ -15,26 +13,26 @@ import { ChartDateRange, CHART_CONSTANTS, ScoreMetadata, ProcessedChartData } fr
  * @returns {ChartDateRange} - An object containing the start and end dates of the calculated date range.
  */
 export const calculateDateRange = (
-  assessments: Results<Measurement> | null,
+  assessments: Assessment[] | null,
   pet: Pet | undefined,
   isWeekly: boolean,
   maxDays: number,
   padding: boolean = true
 ): ChartDateRange => {
   const today = new Date();
-  const pausedDate = pet?.pausedAt || today;
+  const pausedDate = pet?.pausedAt ?? today;
   const hasAssessments = assessments && assessments.length > 0;
 
   let end;
   if (hasAssessments && !pet?.pausedAt) {
     end = today;
   } else if (hasAssessments) {
-    end = assessments[assessments.length - 1].createdAt;
+    end = assessments[assessments.length - 1].date;
   } else {
     end = pausedDate;
   }
 
-  const firstAssessmentDate = hasAssessments ? assessments[0].createdAt : null;
+  const firstAssessmentDate = hasAssessments ? assessments[0].date : null;
 
   // Determine start date based on available data
   const maxDaysAgo = moment(end).subtract(maxDays, 'days');
@@ -46,9 +44,12 @@ export const calculateDateRange = (
     : maxDaysAgo.startOf(isWeekly ? 'isoWeek' : 'day').toDate();
 
   const finalEnd = hasAssessments && !padding
-    ? moment(assessments[assessments.length - 1].createdAt)
+    ? moment(assessments[assessments.length - 1].date)
         .endOf(isWeekly ? 'isoWeek' : 'day').toDate()
     : moment(end).endOf(isWeekly ? 'isoWeek' : 'day').toDate();
+
+    console.log("start", start.toString());
+    console.log("end", finalEnd.toString());
 
   return {
     startDate: start,
@@ -96,7 +97,7 @@ export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: bool
  */
 export const processDailyScores = (
   dateRange: Date[],
-  assessments: Results<Measurement> | null
+  assessments: Assessment[] | null
 ): ScoreMetadata[] => {
   if (!assessments?.length) {
     return dateRange.map((date, index) => ({
@@ -177,7 +178,7 @@ export const processDailyScores = (
  */
 export const processWeeklyScores = (
   dateRange: Date[],
-  assessments: Results<Measurement> | null
+  assessments: Assessment[] | null
 ): ScoreMetadata[] => {
   // Default score for weeks with no assessments
   let previousWeekScore: number = CHART_CONSTANTS.DEFAULT_SCORE;
@@ -225,7 +226,7 @@ export const processWeeklyScores = (
     return {
       score,
       dotType,
-      assessmentDates: weekAssessments.map(a => a.createdAt).sort((a, b) => a.getTime() - b.getTime()),
+      assessmentDates: weekAssessments.map(a => new Date(a.date)).sort((a, b) => a.getTime() - b.getTime()),
     };
   });
 };
@@ -238,10 +239,12 @@ export const processWeeklyScores = (
  * @param isWeekly - A boolean indicating whether the chart data should be processed weekly or daily.
  * @returns An object containing processed chart data, including scores, dot types, metadata, and labels.
  */
-export const generateChartData = (dateRange: Date[], assessments: Results<Measurement> | null, isWeekly: boolean): ProcessedChartData => {
+export const generateChartData = (dateRange: Date[], assessments: Assessment[] | null, isWeekly: boolean): ProcessedChartData => {
   const scoreData = isWeekly
     ? processWeeklyScores(dateRange, assessments)
     : processDailyScores(dateRange, assessments);
+
+    console.log("scoreData", scoreData);
 
   return {
     scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),

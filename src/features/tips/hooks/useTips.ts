@@ -1,6 +1,6 @@
-import {Measurement} from '@/app/models/Measurement';
-import {useCallback} from 'react';
-import {useTranslation} from 'react-i18next';
+import { Assessment } from '@core/database';
+import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface TipTranslation {
   title: string;
@@ -609,7 +609,7 @@ const useTips = () => {
   );
 
   const getTipsForAssessment = useCallback(
-    (petSpecies: string, assessment: Measurement) => {
+    (petSpecies: string, assessment: Assessment) => {
       if (petSpecies === 'other') {
         return [];
       }
