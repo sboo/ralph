@@ -3,7 +3,6 @@ import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
 import { database, Pet } from '@core/database';
 import { AssessmentFrequency } from '@core/database/models/Pet';
-import { withObservables } from '@nozbe/watermelondb/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet } from 'react-native';
@@ -75,9 +74,6 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
 });
-
-// Connect the component with WatermelonDB observables 
-const enhance = withObservables([], () => ({}));
 
 // Export the enhanced component
 export default OnboardingScreenComponent;
