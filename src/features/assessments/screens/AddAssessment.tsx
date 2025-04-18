@@ -1,16 +1,15 @@
 import { Assessment, database } from '@/core/database';
+import { withActivePet } from '@/core/database/hoc';
 import { Pet } from '@/core/database/models/Pet';
 import AssessmentItem from '@/features/assessments/components/AssessmentItem';
 import { AssessmentData, calculateScore, storeImages } from '@/features/assessments/helpers/helperFunctions';
 import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
-import { Q } from '@nozbe/watermelondb';
-import { withObservables } from '@nozbe/watermelondb/react';
+import { compose } from '@nozbe/watermelondb/react';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
-import { map } from 'rxjs/operators';
 import { emptyCustomTrackingSettings } from '../helpers/customTracking';
 
 // The presentational component
@@ -106,14 +105,10 @@ const styles = StyleSheet.create({
   },
 });
 
-// Connect the component with WatermelonDB observables
-const enhance = withObservables([], () => ({
-  activePet: database
-    .get<Pet>('pets')
-    .query(Q.where('is_active', true))
-    .observe()
-    .pipe(map(pets => pets.length > 0 ? pets[0] : undefined))
-}));
+
+const enhance = compose(
+  withActivePet,
+);
 
 // Export the enhanced component
 export default enhance(AddAssessmentComponent);

@@ -1,9 +1,9 @@
+import { Assessment } from '@/core/database';
+import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import RatingButtons from '@/shared/components/RatingButtons';
 import RatingSlider from '@/shared/components/RatingSlider';
 import { getImagePath } from '@/shared/helpers/ImageHelper';
 import { OptionText } from '@/shared/helpers/TooltipHelper';
-import { Assessment } from '@core/database';
-import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ import ImageView from 'react-native-image-viewing';
 import { Button, Divider, Text } from 'react-native-paper';
 import { CustomTrackingSettings } from '../helpers/customTracking';
 import { AssessmentData } from '../helpers/helperFunctions';
+import { areMetricsFilled } from '../helpers/validationHelpers';
 import NotesModal from './NotesModal';
 
 interface Props {
@@ -80,16 +81,17 @@ const AssessmentItem: React.FC<Props> = ({
     getUseRatingButtons().then(() => setLoading(false));
   }, []);
 
-  const scrollViewRef = useRef<ScrollView>();
+  const scrollViewRef = useRef<ScrollView>(null);
 
-  const areMetricsFilled = !(
-    hurt === undefined ||
-    hunger === undefined ||
-    hydration === undefined ||
-    hygiene === undefined ||
-    happiness === undefined ||
-    mobility === undefined
-  );
+  // Use the extracted validation helper
+  const metricsValid = areMetricsFilled({
+    hurt,
+    hunger,
+    hydration,
+    hygiene,
+    happiness,
+    mobility
+  });
 
   const addNotesFromModal = (text?: string, noteImages?: string[]) => {
     setNotes(text);
@@ -99,11 +101,11 @@ const AssessmentItem: React.FC<Props> = ({
   };
 
   const _onSubmit = () => {
-    if (!areMetricsFilled) {
+    if (!metricsValid) {
       return;
     }
 
-    onSubmit(
+    onSubmit({
       hurt,
       hunger,
       hydration,
@@ -113,7 +115,7 @@ const AssessmentItem: React.FC<Props> = ({
       customValue,
       notes,
       images,
-    );
+    });
   };
 
   const imagesList = useMemo(() => {
@@ -146,7 +148,7 @@ const AssessmentItem: React.FC<Props> = ({
     });
     return (
       <>
-      <Divider style={styles.divider} />
+        <Divider style={styles.divider} />
         <Text style={styles.label}>{customTracking.customTrackingName || t('settings:customTrackingFallbackLabel')}</Text>
         <Text style={styles.info}>
           {customTracking.customTrackingDescription}
@@ -167,11 +169,6 @@ const AssessmentItem: React.FC<Props> = ({
 
   if (loading) {
     return null;
-    // (
-    //   <View style={styles.loadingContainer}>
-    //     <ActivityIndicator size="large" />
-    //   </View>
-    // );
   }
 
   return (
@@ -380,7 +377,7 @@ const AssessmentItem: React.FC<Props> = ({
           {t('buttons:back')}
         </Button>
         <Button
-          disabled={!areMetricsFilled}
+          disabled={!metricsValid}
           onPress={_onSubmit}
           mode={'contained'}>
           {t('buttons:submit')}
