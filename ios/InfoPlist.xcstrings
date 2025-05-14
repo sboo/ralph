@@ -1,0 +1,71 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ralph"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ralph"
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "comment" : "Privacy - Location When In Use Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Zugriff auf deine Fotobibliothek ermöglicht es dir, Bilder deines Haustiers als Avatar auszuwählen und Fotos zu deinen Notizen hinzuzufügen. Du kannst zum Beispiel ein Lieblingsbild deines Haustiers für sein Profil auswählen und relevante Fotos hinzufügen, um wichtige Momente in deinen Notizen zu dokumentieren."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo Library access enables you to select images of your pet to use as their avatar and to add photos to your notes. For example, you can choose a favorite picture of your pet for their profile and add relevant photos to document important moments in your notes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo Library access enables you to select images of your pet to use as their avatar and to add photos to your notes. For example, you can choose a favorite picture of your pet for their profile and add relevant photos to document important moments in your notes."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toegang tot je fotobibliotheek stelt je in staat om afbeeldingen van je huisdier te selecteren voor gebruik als avatar en om foto's toe te voegen aan je notities. Je kunt bijvoorbeeld een favoriete foto van je huisdier kiezen voor hun profiel en relevante foto's toevoegen om belangrijke momenten in je notities vast te leggen."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -16,6 +16,7 @@
 		F6769D762BB459E300C9508C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F6769D752BB459E300C9508C /* PrivacyInfo.xcprivacy */; };
 		F686FA0A2DA95D980086AA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F686FA092DA95D980086AA46 /* AppDelegate.swift */; };
 		F69E8A812BA0C784007E9E91 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */; };
+		F6A851122DB532FD00A9C2EE /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F6A851112DB532FD00A9C2EE /* InfoPlist.xcstrings */; };
 		F7BE594F137EAB048D34AD9D /* libPods-Ralph.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C60B879C22218133C4B5951A /* libPods-Ralph.a */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		F686FA092DA95D980086AA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F686FA0B2DA95DA10086AA46 /* Ralph-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ralph-Bridging-Header.h"; sourceTree = "<group>"; };
 		F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		F6A851112DB532FD00A9C2EE /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				F69E8A802BA0C784007E9E91 /* Localizable.xcstrings */,
 				F686FA0B2DA95DA10086AA46 /* Ralph-Bridging-Header.h */,
+				F6A851112DB532FD00A9C2EE /* InfoPlist.xcstrings */,
 			);
 			name = Ralph;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				F62546622BE7C3B600B233BD /* Ralph App logo.png in Resources */,
 				F66A3CED2D0EF2CD002B5620 /* IAPProducts.storekit in Resources */,
 				F6769D762BB459E300C9508C /* PrivacyInfo.xcprivacy in Resources */,
+				F6A851122DB532FD00A9C2EE /* InfoPlist.xcstrings in Resources */,
 				F69E8A812BA0C784007E9E91 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -639,6 +643,7 @@
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -713,6 +718,7 @@
 				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
