@@ -5,9 +5,27 @@
       "comment" : "Bundle display name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ralph"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Ralph"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ralph"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Ralph"
           }
         }
@@ -17,9 +35,27 @@
       "comment" : "Bundle name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ralph"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Ralph"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ralph"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Ralph"
           }
         }

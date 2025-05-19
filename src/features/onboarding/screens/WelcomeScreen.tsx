@@ -2,8 +2,9 @@ import { WelcomeScreenNavigationProps } from '@/features/navigation/types.tsx';
 import { CustomPagination } from '@/shared/components/CustomSwiperPagination';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Dimensions, Platform, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { Animated, Dimensions, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { Avatar, IconButton, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
 const width = Dimensions.get('window').width;

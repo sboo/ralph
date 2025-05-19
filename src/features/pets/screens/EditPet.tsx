@@ -6,9 +6,11 @@ import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
 import { compose } from '@nozbe/watermelondb/react';
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 // The presentational component
 const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
@@ -59,6 +61,7 @@ const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
 
   return (
     <SafeAreaView
+    edges={['bottom', 'left', 'right']}
       style={{
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,

@@ -39,7 +39,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(NSPhotoLibraryUsageDescription)</string>
+	<string>Photo Library access enables you to select images of your pet to use as their avatar and to add photos to your notes. For example, you can choose a favorite picture of your pet for their profile and add relevant photos to document important moments in your notes.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

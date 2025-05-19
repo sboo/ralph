@@ -1,0 +1,200 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "E584D89A",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "6480109522",
+      "localizations" : [
+        {
+          "description" : "Unterstütze mich, die App zu pflegen.",
+          "displayName" : "Kauf mir einen Kaffee",
+          "locale" : "de"
+        },
+        {
+          "description" : "Steun mij om de app up-to-date te houden",
+          "displayName" : "Trakteer me op koffie",
+          "locale" : "nl"
+        },
+        {
+          "description" : "Apoya mis esfuerzos por mantener la app",
+          "displayName" : "Invítame a un café",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "Support my efforts to keep the app updated",
+          "displayName" : "Buy me a Coffee",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "eu.sboo.ralph.coffee",
+      "referenceName" : "Buy me a Coffee",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6739427920",
+      "localizations" : [
+        {
+          "description" : "Support my efforts as a developer",
+          "displayName" : "Buy me a Croissant",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Unterstütze meine Bemühungen als Entwickler",
+          "displayName" : "Kauf mir ein Croissant",
+          "locale" : "de"
+        },
+        {
+          "description" : "Steun mijn inspanningen als ontwikkelaar",
+          "displayName" : "Koop een croissant voor me",
+          "locale" : "nl"
+        },
+        {
+          "description" : "Apoya mis esfuerzos como desarrollador",
+          "displayName" : "Invítame a un croissant",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "eu.sboo.ralph.croissant",
+      "referenceName" : "Buy me a Croissant",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "6739423091",
+      "localizations" : [
+        {
+          "description" : "Steun mijn inspanningen als ontwikkelaar",
+          "displayName" : "Koop een sandwich voor me",
+          "locale" : "nl"
+        },
+        {
+          "description" : "Unterstütze meine Bemühungen als Entwickler",
+          "displayName" : "Kauf mir ein Sandwich",
+          "locale" : "de"
+        },
+        {
+          "description" : "Apoya mis esfuerzos como desarrollador",
+          "displayName" : "Invítame a un bocadillo",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "Support my efforts as a developer",
+          "displayName" : "Buy me a Sandwich",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "eu.sboo.ralph.sandwich",
+      "referenceName" : "Buy me a Sandwich",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "8.99",
+      "familyShareable" : false,
+      "internalID" : "6739428011",
+      "localizations" : [
+        {
+          "description" : "Unterstütze meine Bemühungen als Entwickler",
+          "displayName" : "Kauf mir ein Mittagessen",
+          "locale" : "de"
+        },
+        {
+          "description" : "Support my efforts as a developer",
+          "displayName" : "Buy me Lunch",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Apoya mis esfuerzos como desarrollador",
+          "displayName" : "Invítame a comer",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "Steun mijn inspanningen als ontwikkelaar",
+          "displayName" : "Trakteer me op lunch",
+          "locale" : "nl"
+        }
+      ],
+      "productID" : "eu.sboo.ralph.lunch",
+      "referenceName" : "Buy me Lunch",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6480064704",
+    "_developerTeamID" : "3MLHP38QL5",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 769345227.66957498,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

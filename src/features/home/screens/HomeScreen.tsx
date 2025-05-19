@@ -1,5 +1,8 @@
 import { database } from '@/core/database';
-import { withActivePetAssessments, withAllAndActivePet } from '@/core/database/hoc';
+import {
+  withActivePetAssessments,
+  withAllAndActivePet,
+} from '@/core/database/hoc';
 import { Assessment } from '@/core/database/models/Assessment';
 import { Pet } from '@/core/database/models/Pet';
 import { useAppearance } from '@/core/themes';
@@ -20,7 +23,6 @@ import {
   Animated,
   LayoutChangeEvent,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
@@ -29,6 +31,7 @@ import { DateData } from 'react-native-calendars';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { FAB, useTheme } from 'react-native-paper';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Observable } from 'rxjs';
 
 // The presentational component that will be enhanced with observables
@@ -37,19 +40,21 @@ const HomeScreenComponent = ({
   activePet,
   assessments,
   lastAssessments,
-  allPets
+  allPets,
 }: HomeScreenNavigationProps & {
-  activePet: Pet | undefined,
-  assessments: Assessment[],
-  lastAssessments: Assessment[],
-  allPets: Pet[]
+  activePet: Pet | undefined;
+  assessments: Assessment[];
+  lastAssessments: Assessment[];
+  allPets: Pet[];
 }) => {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const [averageScore, setAverageScore] = useState(60);
   const theme = useTheme();
-  const { effectiveAppearance } = useAppearance();
-  const { generateAndSharePDF } = useAssessmentExporter();
-  const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>('chart');
+  const {effectiveAppearance} = useAppearance();
+  const {generateAndSharePDF} = useAssessmentExporter();
+  const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>(
+    'chart',
+  );
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [_, setLoading] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
@@ -80,7 +85,7 @@ const HomeScreenComponent = ({
     if (!allPets || allPets.length === 0) {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Welcome' }],
+        routes: [{name: 'Welcome'}],
       });
     }
   }, [allPets, navigation]);
@@ -93,14 +98,20 @@ const HomeScreenComponent = ({
     setScrollViewHeight(event.nativeEvent.layout.height);
   };
 
-  const lastAssessment = assessments && assessments.length > 0 ? assessments[assessments.length - 1] : null;
+  const lastAssessment =
+    assessments && assessments.length > 0
+      ? assessments[assessments.length - 1]
+      : null;
 
   useEffect(() => {
     if (!lastAssessments?.length || lastAssessments.length < 5) {
       setAverageScore(60);
     } else {
       const lastSevenAssessments = lastAssessments.slice(0, 7);
-      const sum = lastSevenAssessments.reduce((acc, assessment) => acc + assessment.score, 0);
+      const sum = lastSevenAssessments.reduce(
+        (acc, assessment) => acc + assessment.score,
+        0,
+      );
       setAverageScore(sum / lastSevenAssessments.length);
     }
   }, [lastAssessments]);
@@ -130,7 +141,7 @@ const HomeScreenComponent = ({
       assessmentId,
       scrollToNotes: true,
     });
-  }
+  };
 
   const shareAssessments = useCallback(async () => {
     setGeneratingPDF(true);
@@ -140,38 +151,35 @@ const HomeScreenComponent = ({
 
   const tipContents = () => {
     if (!activePet || !assessments || assessments.length <= 0) {
-      return <GetStartedTip />
+      return <GetStartedTip />;
     }
     if (averageScore < 30) {
-      return <TalkToVetTip />
+      return <TalkToVetTip />;
     }
     return (
       <Tips
         assessment={lastAssessment!}
         activePet={activePet}
         numberOfTips={4}
-      />)
-  }
+      />
+    );
+  };
 
   const renderContent = () => {
     switch (viewMode) {
       case 'calendar':
-        return (
-          <AssessmentsCalendar onCalendarDayPress={onCalendarDayPress} />
-        );
+        return <AssessmentsCalendar onCalendarDayPress={onCalendarDayPress} />;
       case 'notes':
-        return (
-          <AllNotes onNotePress={onNotePress} />
-        );
+        return <AllNotes onNotePress={onNotePress} />;
       case 'chart':
         return (
           <>
             <AssessmentChart onDataPointClick={addOrEditAssessment} />
             {tipContents()}
           </>
-        )
+        );
     }
-  }
+  };
 
   // Create fade in/out animation functions
   const fadeIn = () => {
@@ -199,61 +207,66 @@ const HomeScreenComponent = ({
   }, [contentHeight, scrollViewHeight]);
 
   const hasNotch = DeviceInfo.hasNotch();
+  const insets = useSafeAreaInsets()
 
   const renderFooterBackground = () => {
     if (Platform.OS === 'ios') {
       return (
-        <Animated.View style={{ opacity: fadeAnim }}>
+        <Animated.View style={{opacity: fadeAnim}}>
           <BlurView
-            style={hasNotch ? styles.footerBlurBackgroundNotch : styles.footerBlurBackground}
-            blurType={effectiveAppearance === 'dark' ? 'dark' : 'light'}
-          ></BlurView>
+            style={
+              hasNotch
+                ? styles.footerBlurBackgroundNotch
+                : styles.footerBlurBackground
+            }
+            blurType={
+              effectiveAppearance === 'dark' ? 'dark' : 'light'
+            }></BlurView>
         </Animated.View>
-      )
+      );
     } else {
       return (
         <LinearGradient
-          colors={[
-            'transparent',
-            theme.colors.primaryContainer,
-          ]}
+          colors={['transparent', theme.colors.primaryContainer]}
           locations={[0, 0.75]}
           style={styles.footerGradientBackground}
         />
-      )
+      );
     }
-  }
+  };
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: theme.colors.primaryContainer,
-        ...styles.container,
-      }}>
-      <LinearGradient
-        colors={viewMode == 'notes' ? [
-          theme.colors.primaryContainer,
-          theme.colors.primaryContainer,
-          theme.colors.primaryContainer
-        ] : [
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.35, 1]}
-        style={styles.gradient}>
+    <LinearGradient
+      colors={
+        viewMode == 'notes'
+          ? [
+              theme.colors.primaryContainer,
+              theme.colors.primaryContainer,
+              theme.colors.primaryContainer,
+            ]
+          : [
+              theme.colors.primaryContainer,
+              theme.colors.background,
+              theme.colors.primaryContainer,
+            ]
+      }
+      locations={[0, 0.35, 1]}
+      style={styles.gradient}>
+      <SafeAreaView
+        edges={['bottom', 'left', 'right']}
+        style={{
+          backgroundColor: theme.colors.primaryContainer,
+          ...styles.container,
+        }}>
         <HomeHeader />
         <ScrollView
           style={styles.bodyContainer}
           onContentSizeChange={handleContentSizeChange}
-          onLayout={handleLayout}
-        >
-          <View style={styles.bodyContentHolder}>
-            {renderContent()}
-          </View>
+          onLayout={handleLayout}>
+          <View style={styles.bodyContentHolder}>{renderContent()}</View>
         </ScrollView>
         {renderFooterBackground()}
-        <View style={styles.fabHolder}>
+        <View style={[styles.fabHolder, {bottom: insets.bottom + 15}]}>
           <FAB
             style={styles.fab}
             icon={'chart-bell-curve-cumulative'}
@@ -295,22 +308,23 @@ const HomeScreenComponent = ({
                 onPress: () => navigation.navigate('DebugScreen'),
               },
             ]}
-            onStateChange={({ open }) => setIsFabOpen(open)}
+            onStateChange={({open}) => setIsFabOpen(open)}
           />
         ) : (
-          assessments && assessments.length > 0 && (
+          assessments &&
+          assessments.length > 0 && (
             <FAB
-              style={styles.shareFab}
+              style={[styles.shareFab, {bottom: insets.bottom + 15}]}
               icon={'share-variant'}
               mode={'flat'}
               loading={generatingPDF}
               onPress={shareAssessments}
-              variant='surface'
+              variant="surface"
             />
           )
         )}
-      </LinearGradient>
-    </SafeAreaView >
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
@@ -327,7 +341,7 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   bodyContentHolder: {
-    paddingBottom: 100
+    paddingBottom: 100,
   },
   footerBlurBackgroundNotch: {
     position: 'absolute',
@@ -361,11 +375,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     display: 'flex',
     flexDirection: 'row',
-    gap: 10
+    gap: 10,
   },
-  fab: {
-
-  },
+  fab: {},
   shareFab: {
     position: 'absolute',
     marginRight: 25,
@@ -381,17 +393,23 @@ const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
   withAllAndActivePet,
   // Add assessments from active pet, sorted by created_at ascending
   withActivePetAssessments({
-    sortBy: { column: 'date', direction: 'asc' }
+    sortBy: {column: 'date', direction: 'asc'},
   }),
   // Add last assessments from active pet, sorted by created_at descending
-  withObservables(['activePet'], ({ activePet }: { activePet: Pet | undefined }) => ({
-    lastAssessments: activePet
-      ? database
-        .get<Assessment>('assessments')
-        .query(Q.where('pet_id', activePet.id), Q.sortBy('created_at', 'desc'))
-        .observe()
-      : new Observable<Assessment[]>(subscriber => subscriber.next([])), // Return an empty result if activePet is undefined
-  }))
+  withObservables(
+    ['activePet'],
+    ({activePet}: {activePet: Pet | undefined}) => ({
+      lastAssessments: activePet
+        ? database
+            .get<Assessment>('assessments')
+            .query(
+              Q.where('pet_id', activePet.id),
+              Q.sortBy('created_at', 'desc'),
+            )
+            .observe()
+        : new Observable<Assessment[]>(subscriber => subscriber.next([])), // Return an empty result if activePet is undefined
+    }),
+  ),
 );
 
 // Export the enhanced component

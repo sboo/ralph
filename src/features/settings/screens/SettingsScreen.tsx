@@ -1,10 +1,11 @@
 import { SettingsScreenNavigationProps } from '@/features/navigation/types.tsx';
 import Settings from '@/features/settings/components/Settings.tsx';
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
   navigation,
@@ -13,6 +14,7 @@ const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
 
   return (
     <SafeAreaView
+      edges={['bottom', 'left', 'right']}
       style={{
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
@@ -25,9 +27,7 @@ const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
         ]}
         locations={[0, 0.75, 1]}
         style={styles.gradient}>
-        <Settings
-          onSettingsSaved={() => navigation.goBack()}
-        />
+        <Settings onSettingsSaved={() => navigation.goBack()} />
       </LinearGradient>
       <Text style={styles.versionInfo} variant={'labelSmall'}>
         v{DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})

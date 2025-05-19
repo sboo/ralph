@@ -53,7 +53,7 @@ src/
 ### Prerequisites
 
 - Node.js 16 or newer
-- Yarn (preferred) or npm
+- Npm
 - For iOS: macOS, Xcode 13+
 - For Android: Android Studio, JDK 11
 
@@ -67,35 +67,20 @@ src/
 
 2. Install dependencies:
    ```sh
-   yarn install
-   ```
-
-3. Set up environment:
-   ```sh
-   cp .env.example .env
-   # Configure your .env file
+   npm install
    ```
 
 4. Run the app:
    - For iOS:
      ```sh
      cd ios && pod install && cd ..
-     yarn ios
+     npm run ios
      ```
    - For Android:
      ```sh
-     yarn android
+     npm run android
      ```
 
-## 🧪 Testing
-
-```sh
-# Run unit tests
-yarn test
-
-# Run specific tests
-yarn test -t "component name"
-```
 
 ## 📋 Development Workflow
 

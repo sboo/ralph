@@ -64,6 +64,9 @@
          identifier = "Paris, France"
          referenceType = "1">
       </LocationScenarioReference>
+      <StoreKitConfigurationFileReference
+         identifier = "../Ralph - Pet Quality of Life.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

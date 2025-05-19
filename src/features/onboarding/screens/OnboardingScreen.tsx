@@ -5,9 +5,11 @@ import { database, Pet } from '@core/database';
 import { AssessmentFrequency } from '@core/database/models/Pet';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 // The presentational component
 const OnboardingScreenComponent: React.FC<OnboardingScreenNavigationProps> = ({

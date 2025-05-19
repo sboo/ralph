@@ -1,6 +1,7 @@
 import { DatabaseProvider } from '@core/database/context';
 import React, { ReactNode } from 'react';
 import { withIAPContext } from 'react-native-iap';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { MigrationProvider } from './MigrationProvider';
 import { NotificationProvider } from './NotificationProvider';
 import { PurchaseProvider } from './PurchaseProvider';
@@ -20,7 +21,9 @@ const ProvidersComposition: React.FC<AppProvidersProps> = ({ children }) => (
       <ThemeProvider>
         <NotificationProvider>
           <PurchaseProvider>
+            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
             {children}
+            </SafeAreaProvider>
           </PurchaseProvider>
         </NotificationProvider>
       </ThemeProvider>

@@ -6,26 +6,23 @@ import { AllAssessmentsScreenNavigationProps } from '@/features/navigation/types
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
 import { compose } from '@nozbe/watermelondb/react';
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { DateData } from 'react-native-calendars/src/types';
 import LinearGradient from 'react-native-linear-gradient';
 import { Divider, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // The presentational component
-const AllAssessmentsScreenComponent: React.FC<AllAssessmentsScreenNavigationProps & {
-  activePet: Pet | undefined,
-  assessments: Assessment[]
-}> = ({
-  navigation,
-  activePet,
-  assessments
-}) => {
+const AllAssessmentsScreenComponent: React.FC<
+  AllAssessmentsScreenNavigationProps & {
+    activePet: Pet | undefined;
+    assessments: Assessment[];
+  }
+> = ({navigation, activePet, assessments}) => {
   const theme = useTheme();
 
   const addOrEditAssessment = (dateData: DateData) => {
-    const assessment = assessments?.find(
-      m => m.date === dateData.dateString,
-    );
+    const assessment = assessments?.find(m => m.date === dateData.dateString);
     if (assessment === undefined) {
       navigation.navigate('AddAssessment', {
         timestamp: dateData.timestamp,
@@ -39,6 +36,7 @@ const AllAssessmentsScreenComponent: React.FC<AllAssessmentsScreenNavigationProp
 
   return (
     <SafeAreaView
+      edges={['bottom', 'left', 'right']}
       style={{
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
@@ -89,12 +87,11 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const enhance = compose(
   withActivePetAssessments({
-    sortBy: { column: 'date', direction: 'asc' }
+    sortBy: {column: 'date', direction: 'asc'},
   }),
-)
+);
 
 // Export the enhanced component
 export default enhance(AllAssessmentsScreenComponent);

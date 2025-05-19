@@ -1,12 +1,18 @@
 import { t } from 'i18next';
 import React, { useState } from 'react';
-import { Image, Platform, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View
+} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {
   Button,
   IconButton,
-  Modal,
-  Portal,
   Text,
   TextInput,
   useTheme,
@@ -44,6 +50,7 @@ const NotesModal: React.FC<Props> = ({
   };
 
   const openImagePicker = () => {
+    console.log('Opening image picker...');
     ImagePicker.openPicker({
       width: 500,
       height: 500,
@@ -64,78 +71,115 @@ const NotesModal: React.FC<Props> = ({
   };
 
   return (
-    <Portal>
-      <Modal
-        visible={modalVisible}
-        contentContainerStyle={{
-          backgroundColor: theme.colors.surface,
-          ...styles.modal,
-        }}>
-        <Text variant={'titleLarge'}>{t('measurements:notes')}</Text>
-        <Text style={styles.info}>
-          {t('measurements:notesInfo', {petName})}:
-        </Text>
-        <View style={styles.formContainer}>
-          <TextInput
-            defaultValue={tempNotes}
-            mode="outlined"
-            onChangeText={text => setTempNotes(text)}
-            multiline
-            style={{
-              backgroundColor: theme.colors.surfaceVariant,
-              ...styles.textInput,
-            }}
-          />
-          <View style={styles.imagesHolder}>
-            {tempImages.map((image, index) => {
-              const path = (Platform.OS === 'android' ? 'file://' : '') + image;
-              return (
-                <View style={styles.imageHolder} key={index}>
-                  <Image source={{uri: path}} style={styles.image} />
-                  <IconButton
-                    style={styles.deleteIcon}
-                    icon="minus-circle"
-                    size={20}
-                    mode={'contained'}
-                    iconColor={theme.colors.error}
-                    containerColor={'transparent'}
-                    onPress={() => removeImage(index)}
-                  />
+    <Modal
+      visible={modalVisible}
+      transparent
+      animationType="fade"
+      navigationBarTranslucent
+      statusBarTranslucent
+      onRequestClose={handleCancel}>
+      <View style={styles.modalOverlay}>
+        <KeyboardAvoidingView
+          behavior={'padding'}
+          style={styles.keyboardAvoidingContainer}>
+          <View style={[styles.modalContent, { backgroundColor: theme.colors.surface }]}>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+              <Text variant={'titleLarge'}>{t('measurements:notes')}</Text>
+              <Text style={styles.info}>
+                {t('measurements:notesInfo', {petName})}:
+              </Text>
+              <View style={styles.formContainer}>
+                <TextInput
+                  defaultValue={tempNotes}
+                  mode="outlined"
+                  onChangeText={text => setTempNotes(text)}
+                  multiline
+                  style={{
+                    backgroundColor: theme.colors.surfaceVariant,
+                    ...styles.textInput,
+                  }}
+                />
+                <View style={styles.imagesHolder}>
+                  {tempImages.map((image, index) => {
+                    const path = (Platform.OS === 'android' ? 'file://' : '') + image;
+                    return (
+                      <View style={styles.imageHolder} key={index}>
+                        <Image source={{uri: path}} style={styles.image} />
+                        <IconButton
+                          style={styles.deleteIcon}
+                          icon="minus-circle"
+                          size={20}
+                          mode={'contained'}
+                          iconColor={theme.colors.error}
+                          containerColor={'transparent'}
+                          onPress={() => removeImage(index)}
+                        />
+                      </View>
+                    );
+                  })}
+                  {tempImages.length < 3 ? (
+                    <IconButton
+                      icon="image-plus"
+                      size={20}
+                      style={styles.addImageButton}
+                      onPress={openImagePicker}
+                    />
+                  ) : null}
                 </View>
-              );
-            })}
-            {tempImages.length < 3 ? (
-              <IconButton
-                icon="image-plus"
-                size={20}
-                style={styles.addImageButton}
-                onPress={openImagePicker}
-              />
-            ) : null}
+              </View>
+              <View style={styles.buttons}>
+                <Button 
+                  onPress={handleCancel} 
+                  mode={'contained-tonal'}
+                  style={styles.button}
+                >
+                  {t('buttons:cancel')}
+                </Button>
+                <Button 
+                  onPress={handleEditNotes} 
+                  mode={'contained'}
+                  style={styles.button}
+                >
+                  {t('buttons:save')}
+                </Button>
+              </View>
+            </ScrollView>
           </View>
-        </View>
-        <View style={styles.buttons}>
-          <Button onPress={handleCancel} mode={'contained-tonal'}>
-            {t('buttons:cancel')}
-          </Button>
-          <Button onPress={handleEditNotes} mode={'contained'}>
-            {t('buttons:save')}
-          </Button>
-        </View>
-      </Modal>
-    </Portal>
+        </KeyboardAvoidingView>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  modal: {
-    padding: 20,
-    margin: 20,
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  keyboardAvoidingContainer: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  modalContent: {
+    width: '90%',
+    maxHeight: '80%',
     borderRadius: 15,
+  },
+  scrollContent: {
+    padding: 20,
   },
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 20,
+    gap: 10, // Add some gap between buttons
+  },
+  button: {
+    flex: 1, // Make each button take equal space
   },
   info: {
     fontSize: 14,
@@ -144,7 +188,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formContainer: {
-    paddingHorizontal: 20,
     marginBottom: 20,
   },
   textInput: {
