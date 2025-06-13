@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "sboo-2010",
+        "projectKey": "sboo_ralph"
+    }
+}
