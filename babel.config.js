@@ -1,5 +1,5 @@
 module.exports = {
-  presets: ['module:@react-native/babel-preset'],
+  presets: ['babel-preset-expo'],
   plugins: [
     '@realm/babel-plugin',
     ['@babel/plugin-proposal-decorators', {legacy: true}],
@@ -21,6 +21,7 @@ module.exports = {
           '@': './src',
           '@core': './src/core',
           '@features': './src/features',
+          '@assets': './src/core/assets',
           '@shared': './src/shared',
         },
       },

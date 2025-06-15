@@ -1,10 +1,11 @@
 import { Pet } from '@/core/database/models/Pet'; // Updated import from WatermelonDB models
 import { getImagePath } from '@/shared/helpers/ImageHelper';
-import * as RNFS from '@dr.pogodin/react-native-fs';
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { Badge, Avatar as BaseAvatar, useTheme } from 'react-native-paper';
+
 
 interface AvatarProps {
   mode?: 'edit' | 'view';
@@ -35,12 +36,10 @@ const Avatar: React.FC<AvatarProps> = ({
   };
 
   const openImagePicker = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 300,
-      mediaType: 'photo',
-      cropping: true,
-      cropperCircleOverlay: true,
+    ImagePicker.launchImageLibraryAsync({
+          aspect: [1, 1],
+          mediaTypes: ['images'],
+          allowsEditing: true,
     })
       .then(image => {
         storeAvatar(image).then(avatarFilename => {
@@ -59,9 +58,9 @@ const Avatar: React.FC<AvatarProps> = ({
     if (avatar === undefined) {
       return;
     }
-    const exists = await RNFS.exists(avatar);
-    if (exists) {
-      await RNFS.unlink(avatar);
+    const fileInfo = await FileSystem.getInfoAsync(avatar);
+    if (fileInfo.exists) {
+      await FileSystem.deleteAsync(avatar);
     }
     if (onAvatarSelected) {
       onAvatarSelected(undefined);
@@ -69,9 +68,14 @@ const Avatar: React.FC<AvatarProps> = ({
     setAvatar(undefined);
   };
 
-  const storeAvatar = async (image: Image): Promise<string | undefined> => {
+  const storeAvatar = async (result: ImagePicker.ImagePickerResult): Promise<string | undefined> => {
+    const image = result.assets?.[0];
+    if (!image || !image.uri) {
+      console.error('No image selected or image path is undefined');
+      return;
+    }
     let extension = '';
-    switch (image.mime) {
+    switch (image.mimeType) {
       case 'image/png':
         extension = 'png';
         break;
@@ -88,7 +92,7 @@ const Avatar: React.FC<AvatarProps> = ({
     const path = getImagePath(filename);
 
     try {
-      await RNFS.moveFile(image.path, path);
+      await FileSystem.moveAsync({from: image.uri, to: path});
       if (onAvatarSelected) {
         onAvatarSelected(filename);
       }

@@ -1,8 +1,8 @@
+import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
-import { STORAGE_KEYS } from '@core/store/storageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { ReactNode, useCallback, useEffect } from 'react';
-import { getAvailablePurchases, getProducts, initConnection, useIAP } from 'react-native-iap';
+import { useIAP } from 'expo-iap';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 interface PurchaseProviderProps {
   children: ReactNode;
@@ -21,29 +21,44 @@ const VALID_PRODUCT_IDS = [
  */
 export const PurchaseProvider: React.FC<PurchaseProviderProps> = ({ children }) => {
   const {
-    purchaseHistory,
+    connected,
     currentPurchase,
     currentPurchaseError,
     finishTransaction,
-    getPurchaseHistory,
+    getProducts,
+    products,
+    getAvailablePurchases,
+    availablePurchases,
   } = useIAP();
+
+  // Local state
+  const [isLoading, setIsLoading] = useState(true)
+  
+  // Initialize IAP when connected
+  useEffect(() => {
+    if (!connected) return
+
+    const initializeIAP = async () => {
+      console.log('Initializing IAP...')
+      try {
+        setIsLoading(true)
+        await getProducts(VALID_PRODUCT_IDS)
+        await getAvailablePurchases(VALID_PRODUCT_IDS)
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Error initializing IAP:', error)
+        setIsLoading(false)
+      }
+    }
+
+    initializeIAP()
+  }, [connected, getProducts, getAvailablePurchases])
 
   // Initialize IAP and check for existing purchases
   const checkPurchases = useCallback(async () => {
     try {
-      // First ensure IAP connection is initialized
-      const isConnected = await initConnection();
-      console.log('IAP connection initialized:', isConnected);
-
-      // Get products first to ensure store connection
-      const products = await getProducts({ skus: VALID_PRODUCT_IDS });
-      console.log('Available products:', products);
-
-      // Get all active purchases
-      const purchases = await getAvailablePurchases();
-
-      const validPurchases = purchases.filter(purchase =>
-        VALID_PRODUCT_IDS.includes(purchase.productId)
+      const validPurchases = availablePurchases.filter(purchase =>
+        VALID_PRODUCT_IDS.includes(purchase.id)
       );
 
       const hasActivePurchase = validPurchases.length > 0;
@@ -58,7 +73,6 @@ export const PurchaseProvider: React.FC<PurchaseProviderProps> = ({ children }) 
       if (error.code === 'E_NOT_PREPARED') {
         console.log('IAP not prepared, retrying connection...');
         try {
-          await initConnection();
           await checkPurchases(); // Retry after initialization
         } catch (retryError) {
           console.log('Retry failed:', retryError);
@@ -73,12 +87,13 @@ export const PurchaseProvider: React.FC<PurchaseProviderProps> = ({ children }) 
         });
       }
     }
-  }, [getPurchaseHistory, purchaseHistory]);
+  }, [VALID_PRODUCT_IDS, availablePurchases]);
 
   // Check purchases on component mount
   useEffect(() => {
+    if (isLoading) return;
     checkPurchases();
-  }, []);
+  }, [isLoading]);
 
   // Handle purchase errors
   useEffect(() => {

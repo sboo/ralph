@@ -7,12 +7,12 @@ import {
   calculateScore,
   storeImages,
 } from '@/features/assessments/helpers/helperFunctions';
-import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types';
 import { compose } from '@nozbe/watermelondb/react';
+import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { emptyCustomTrackingSettings } from '../helpers/customTracking';

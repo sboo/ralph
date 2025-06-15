@@ -1,5 +1,5 @@
+import * as Localization from 'expo-localization';
 import { type LanguageDetectorModule } from 'i18next';
-import { getLocales } from 'react-native-localize';
 
 
 const defaultLang = 'en';
@@ -10,9 +10,11 @@ const RNLanguageDetector: LanguageDetectorModule = {
   detect: () => {
     const supportedLanguages = ['en', 'es', 'nl', 'de'];
 
-    const languageCode = getLocales()[0].languageCode;
+    const locales = Localization.getLocales();
+    const deviceLocale = locales && locales.length > 0 ? locales[0] : undefined;
+    const languageCode = deviceLocale?.languageCode || defaultLang;
 
-    console.log('languageCode', languageCode);
+    console.log('languageCode', languageCode );
 
     if (supportedLanguages.includes(languageCode)) {
       return languageCode;

@@ -12,6 +12,7 @@ import notifee, {
   AuthorizationStatus
 } from '@notifee/react-native';
 import { compose } from '@nozbe/watermelondb/react';
+import { getCalendars } from 'expo-localization';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,7 +23,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { is24HourFormat } from 'react-native-device-time-format';
 import {
   Button,
   Dialog,
@@ -77,13 +77,9 @@ const PetItem: React.FC<Props> = ({
   const welcomeTextTopMargin = useMemo(() => (Platform.OS === 'android' ? 30 : 5), []);
 
   useEffect(() => {
-    const getTimeFormat = async () => {
-      return await is24HourFormat();
-    }
-    getTimeFormat().then((value) => {
-      setHour12(!value);
-    });
-
+    const calendars = getCalendars();
+    const uses24Hour = calendars[0]?.uses24hourClock ?? false;
+    setHour12(!uses24Hour);
   }, []);
 
   useEffect(() => {

@@ -1,16 +1,17 @@
-import { SettingsScreenNavigationProps } from '@/features/navigation/types.tsx';
-import Settings from '@/features/settings/components/Settings.tsx';
+import { SettingsScreenNavigationProps } from '@/features/navigation/types';
+import Settings from '@/features/settings/components/Settings';
+import * as Application from 'expo-application';
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import LinearGradient from 'react-native-linear-gradient';
 import { Text, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
   navigation,
 }) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView
@@ -29,8 +30,8 @@ const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
         style={styles.gradient}>
         <Settings onSettingsSaved={() => navigation.goBack()} />
       </LinearGradient>
-      <Text style={styles.versionInfo} variant={'labelSmall'}>
-        v{DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
+      <Text style={{...styles.versionInfo, bottom: insets.bottom}} variant={'labelSmall'}>
+        v{Application.nativeApplicationVersion} ({Application.nativeBuildVersion})
       </Text>
     </SafeAreaView>
   );
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
   },
   versionInfo: {
     position: 'absolute',
-    bottom: 10,
     left: 0,
     width: '100%',
     textAlign: 'center',

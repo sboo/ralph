@@ -1,6 +1,5 @@
 import { DatabaseProvider } from '@core/database/context';
 import React, { ReactNode } from 'react';
-import { withIAPContext } from 'react-native-iap';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { MigrationProvider } from './MigrationProvider';
 import { NotificationProvider } from './NotificationProvider';
@@ -15,7 +14,7 @@ interface AppProvidersProps {
  * Root component that composes all providers together
  * Order matters - providers listed later have access to providers listed earlier
  */
-const ProvidersComposition: React.FC<AppProvidersProps> = ({ children }) => (
+const AppProviders: React.FC<AppProvidersProps> = ({ children }) => (
   <DatabaseProvider>
     <MigrationProvider>
       <ThemeProvider>
@@ -30,8 +29,5 @@ const ProvidersComposition: React.FC<AppProvidersProps> = ({ children }) => (
     </MigrationProvider>
   </DatabaseProvider>
 );
-
-// Wrap the providers with IAP context
-const AppProviders = withIAPContext(ProvidersComposition);
 
 export default AppProviders;

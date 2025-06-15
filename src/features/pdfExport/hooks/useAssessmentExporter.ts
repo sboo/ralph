@@ -6,12 +6,12 @@ import { calculateDateRange, generateChartData, generateDateRange } from '@/feat
 import { getValueColor } from '@/shared/helpers/ColorHelper';
 import { getBase64Image } from '@/shared/helpers/ImageHelper';
 import { Q } from '@nozbe/watermelondb';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { useTheme } from 'react-native-paper';
-import Share from 'react-native-share';
 import { map } from 'rxjs/operators';
 
 const useAssessmentExporter = () => {
@@ -452,16 +452,18 @@ const useAssessmentExporter = () => {
 
   const createPDF = async (): Promise<string | null> => {
     try {
+      const html = await getHtmlContent()
       let PDFOptions = {
-        html: await getHtmlContent(),
+        html: html,
         fileName: 'assessments',
         directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
       };
-      let file = await RNHTMLtoPDF.convert(PDFOptions);
-      if (!file.filePath) {
+      // let file = await Print.printToFileAsync(PDFOptions);
+      const { uri } = await Print.printToFileAsync({ html });
+      if (!uri) {
         return null;
       }
-      return file.filePath;
+      return uri;
     } catch (error: any) {
       console.error('Failed to generate pdf', error.message);
       return null;
@@ -472,7 +474,7 @@ const useAssessmentExporter = () => {
     const filePath = await createPDF();
     if (filePath) {
       try {
-        await Share.open({ url: `file://${filePath}` });
+        await Sharing.shareAsync(filePath, { UTI: '.pdf', mimeType: 'application/pdf' });
       } catch (error: any) {
         console.log('Failed to share pdf', error.message);
       }

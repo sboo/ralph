@@ -2,10 +2,10 @@ import { AssessmentFrequency } from '@/core/database/models/Pet';
 import { CustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
 import { event, EVENT_NAMES } from '@/features/events';
 import { AssessmentSettingsScreenNavigationProps } from '@/features/navigation/types';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {
   Avatar,
   Button,

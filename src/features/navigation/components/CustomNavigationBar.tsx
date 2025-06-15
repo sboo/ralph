@@ -1,12 +1,13 @@
+import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
-import { STORAGE_KEYS } from '@core/store/storageKeys.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { useIAP } from 'expo-iap';
+import { PurchaseError } from 'expo-iap/build/ExpoIap.types';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, Platform, StyleSheet } from 'react-native';
-import { PurchaseError, requestPurchase } from 'react-native-iap';
 import {
   Appbar,
   Button,
@@ -76,6 +77,8 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     }
   };
 
+  const { requestPurchase } = useIAP();
+
   useEffect(() => {
     const getCoffeeButtonPuchasedStatus = async () => {
       return await AsyncStorage.getItem(STORAGE_KEYS.COFFEE_PURCHASED);
@@ -116,11 +119,10 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   const handlePurchase = async (sku: string) => {
     setAwaitingInAppPurchase(true);
     try {
-      if (Platform.OS === 'ios') {
-        await requestPurchase({ sku });
-      } else if (Platform.OS === 'android') {
-        await requestPurchase({ skus: [sku] });
-      }
+
+      await requestPurchase({
+        request: Platform.OS === 'android' ? { skus: [sku] } : { sku: sku }
+      })
     } catch (error) {
       if (error instanceof PurchaseError) {
         console.error(`[${error.code}]: ${error.message}`, error);

@@ -2,13 +2,13 @@ import { withActivePetAssessments } from '@/core/database/hoc';
 import { Assessment } from '@/core/database/models/Assessment';
 import { Pet } from '@/core/database/models/Pet';
 import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
-import { AllAssessmentsScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { AllAssessmentsScreenNavigationProps } from '@/features/navigation/types';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
 import { compose } from '@nozbe/watermelondb/react';
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { DateData } from 'react-native-calendars/src/types';
-import LinearGradient from 'react-native-linear-gradient';
 import { Divider, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

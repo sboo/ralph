@@ -1,27 +1,14 @@
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const { getDefaultConfig } = require("expo/metro-config");
 
-const {
-  createSentryMetroSerializer,
-} = require('@sentry/react-native/dist/js/tools/sentryMetroSerializer');
+module.exports = (() => {
+  const config = getDefaultConfig(__dirname);
 
-const {withSentryConfig} = require('@sentry/react-native/metro');
+  const { resolver } = config;
 
-const {
-  wrapWithReanimatedMetroConfig,
-} = require('react-native-reanimated/metro-config');
+  config.resolver = {
+    ...resolver,
+    unstable_enablePackageExports: false
+  };
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {
-  serializer: {
-    customSerializer: createSentryMetroSerializer(),
-  },
-};
-
-module.exports = wrapWithReanimatedMetroConfig(
-  withSentryConfig(mergeConfig(getDefaultConfig(__dirname), config)),
-);
+  return config;
+})();

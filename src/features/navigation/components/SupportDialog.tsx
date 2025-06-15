@@ -1,7 +1,7 @@
+import { useIAP } from 'expo-iap';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { useIAP } from 'react-native-iap';
 import { ActivityIndicator, Button, Dialog, IconButton, Text, useTheme } from 'react-native-paper';
 
 interface SupportDialogProps {
@@ -26,13 +26,13 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
   ];
 
   const getPrice = useCallback((sku: string) => {
-    return products.find((product) => product.productId === sku)?.localizedPrice ?? 0;
+    return products.find((product) => product.id === sku)?.displayPrice ?? 0;
   }, [products]);
 
   useEffect(() => {
     const fechProducts = async () => {
       try {
-        await getProducts({ skus: ['eu.sboo.ralph.coffee', 'eu.sboo.ralph.croissant', 'eu.sboo.ralph.sandwich', 'eu.sboo.ralph.lunch'] });
+        await getProducts(['eu.sboo.ralph.coffee', 'eu.sboo.ralph.croissant', 'eu.sboo.ralph.sandwich', 'eu.sboo.ralph.lunch']);
       } catch (error) {
         console.log(error);
       }

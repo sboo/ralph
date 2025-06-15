@@ -1,3 +1,4 @@
+import * as ImagePicker from 'expo-image-picker';
 import { t } from 'i18next';
 import React, { useState } from 'react';
 import {
@@ -9,7 +10,6 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
 import {
   Button,
   IconButton,
@@ -51,14 +51,13 @@ const NotesModal: React.FC<Props> = ({
 
   const openImagePicker = () => {
     console.log('Opening image picker...');
-    ImagePicker.openPicker({
-      width: 500,
-      height: 500,
-      mediaType: 'photo',
-      cropping: true,
+    ImagePicker.launchImageLibraryAsync({
+      aspect: [1, 1],
+      mediaTypes: ['images'],
+      allowsEditing: true,
     })
       .then(image => {
-        setTempImages([...tempImages, image.path]);
+        setTempImages([...tempImages, image.assets?.[0]?.uri ?? '']);
       })
       .catch(err => {
         console.log('Error while picking image: ', err);

@@ -1,5 +1,5 @@
-import { useAppearance } from '@/core/themes';
 import darkColors from '@/core/themes/darkTheme.json';
+import { useAppearance } from '@/core/themes/hooks/useAppearance';
 import defaultColors from '@/core/themes/lightTheme.json';
 import {
   DarkTheme as NavigationDarkTheme,

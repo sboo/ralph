@@ -9,13 +9,15 @@ import { useAppearance } from '@/core/themes';
 import { AllNotes, AssessmentsCalendar } from '@/features/assessments';
 import { AssessmentChart } from '@/features/charts';
 import { EVENT_NAMES, event } from '@/features/events';
-import { HomeHeader } from '@/features/home';
+import HomeHeader from '@/features/home/components/HomeHeader';
 import { HomeScreenNavigationProps } from '@/features/navigation';
 import { useAssessmentExporter } from '@/features/pdfExport';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from '@react-native-community/blur';
+import * as Device from 'expo-device';
+import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 import React, { ComponentType, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,11 +30,10 @@ import {
   View,
 } from 'react-native';
 import { DateData } from 'react-native-calendars';
-import DeviceInfo from 'react-native-device-info';
-import LinearGradient from 'react-native-linear-gradient';
 import { FAB, useTheme } from 'react-native-paper';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Observable } from 'rxjs';
+
 
 // The presentational component that will be enhanced with observables
 const HomeScreenComponent = ({
@@ -206,8 +207,9 @@ const HomeScreenComponent = ({
     }
   }, [contentHeight, scrollViewHeight]);
 
-  const hasNotch = DeviceInfo.hasNotch();
+
   const insets = useSafeAreaInsets()
+  const hasNotch = Device.deviceType === Device.DeviceType.PHONE && insets.top > 20;
 
   const renderFooterBackground = () => {
     if (Platform.OS === 'ios') {
@@ -266,7 +268,7 @@ const HomeScreenComponent = ({
           <View style={styles.bodyContentHolder}>{renderContent()}</View>
         </ScrollView>
         {renderFooterBackground()}
-        <View style={[styles.fabHolder, {bottom: insets.bottom + 15}]}>
+        <View style={[styles.fabHolder, {bottom: insets.bottom}]}>
           <FAB
             style={styles.fab}
             icon={'chart-bell-curve-cumulative'}
@@ -314,7 +316,7 @@ const HomeScreenComponent = ({
           assessments &&
           assessments.length > 0 && (
             <FAB
-              style={[styles.shareFab, {bottom: insets.bottom + 15}]}
+              style={[styles.shareFab, {bottom: insets.bottom}]}
               icon={'share-variant'}
               mode={'flat'}
               loading={generatingPDF}

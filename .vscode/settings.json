@@ -1,0 +1,9 @@
+{
+    "path-intellisense.mappings": {
+        "@": "${workspaceRoot}/src",
+        "@assets": "${workspaceRoot}/src/core/assets",
+        "@core": "${workspaceRoot}/src/core",
+        "@features": "${workspaceRoot}/src/features",
+        "@shared": "${workspaceRoot}/src/shared",
+    }
+}
