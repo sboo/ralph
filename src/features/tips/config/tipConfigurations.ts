@@ -1,4 +1,4 @@
-import { TipCategory, TipList, TipType } from '../hooks/useTips';
+import { TipCategory, TipList, TipType } from '../types';
 
 /**
  * Centralized configuration for all available tips in the application

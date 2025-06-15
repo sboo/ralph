@@ -1,4 +1,4 @@
-import { WelcomeScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { WelcomeScreenNavigationProps } from '@/features/navigation/types';
 import { CustomPagination } from '@/shared/components/CustomSwiperPagination';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -3,19 +3,19 @@ import { event, EVENT_NAMES } from '@/features/events';
 import { CustomTrackingSettingsScreenNavigationProps } from '@/features/navigation/types';
 import { getValueColor } from '@/shared/helpers/ColorHelper';
 import { getEmoticon } from '@/shared/helpers/TooltipHelper';
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {
-    Avatar,
-    Button,
-    Card,
-    List,
-    Switch,
-    Text,
-    TextInput,
-    useTheme,
+  Avatar,
+  Button,
+  Card,
+  List,
+  Switch,
+  Text,
+  TextInput,
+  useTheme,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

@@ -1,12 +1,12 @@
-import { OnboardingScreenNavigationProps } from '@/features/navigation/types.tsx';
+import { OnboardingScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
 import { database, Pet } from '@core/database';
 import { AssessmentFrequency } from '@core/database/models/Pet';
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

@@ -9,7 +9,7 @@
       }
     ]
   },
-  "identifier" : "E584D89A",
+  "identifier" : "CF28E570",
   "nonRenewingSubscriptions" : [
 
   ],
@@ -139,7 +139,7 @@
     "_applicationInternalID" : "6480064704",
     "_developerTeamID" : "3MLHP38QL5",
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 769345227.66957498,
+    "_lastSynchronizedDate" : 771606679.91399205,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [

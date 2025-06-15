@@ -1,5 +1,5 @@
 import { getImageFilename, getImagePath } from "@/shared/helpers/ImageHelper";
-import * as RNFS from '@dr.pogodin/react-native-fs';
+import * as FileSystem from 'expo-file-system';
 
 export interface AssessmentData {
     date: string;
@@ -47,9 +47,9 @@ export const calculateScore = (assessmentData: AssessmentData) => {
       await Promise.allSettled(
         deletedImages.map(async image => {
           const imagePath = getImagePath(image);
-          const exists = await RNFS.exists(imagePath);
-          if (exists) {
-            await RNFS.unlink(imagePath);
+          const fileInfo = await FileSystem.getInfoAsync(imagePath);
+          if (fileInfo.exists) {
+            await FileSystem.deleteAsync(imagePath);
           }
         }),
       );
@@ -59,7 +59,7 @@ export const calculateScore = (assessmentData: AssessmentData) => {
       newImages.map(async image => {
         const filename = `${Date.now()}_${image.split('/').pop()}`;
         const path = getImagePath(filename);
-        await RNFS.moveFile(image, path);
+        await FileSystem.moveAsync({from: image, to: path});
         const idx = images.findIndex(img => img === image);
         images[idx] = path;
       }),

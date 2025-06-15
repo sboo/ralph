@@ -1,4 +1,4 @@
-import { TipType } from '@/features/tips/hooks/useTips';
+import { TipType } from '@/features/tips/types';
 
 const getValueColor = (neutralColor: string, value: number | undefined) => {
   if (value === undefined) {

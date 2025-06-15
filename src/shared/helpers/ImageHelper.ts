@@ -1,11 +1,11 @@
-import * as RNFS from '@dr.pogodin/react-native-fs';
+import * as FileSystem from 'expo-file-system';
 import { Platform } from 'react-native';
 
 export const getImagePath = (
   filename: string,
   addAndroidFilePrepend = false,
 ): string => {
-  const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+  const path = `${FileSystem.documentDirectory}/${filename}`;
   if (Platform.OS === 'android' && addAndroidFilePrepend) {
     return `file://${path}`;
   }
@@ -33,7 +33,7 @@ export const getBase64Image = async (imageName: string): Promise<string> => {
         mimeType = 'image/jpeg';
         break;
     }
-    const base64 = await RNFS.readFile(path, 'base64');
+    const base64 = await FileSystem.readAsStringAsync(path, {encoding: 'base64'});
     return `data:${mimeType};base64,${base64}`;
   } catch (error) {
     console.error(error);

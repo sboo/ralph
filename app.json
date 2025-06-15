@@ -1,4 +1,52 @@
 {
-  "name": "Ralph",
-  "displayName": "Ralph"
+  "expo": {
+    "name": "Ralph",
+    "slug": "Ralph",
+    "version": "5.0.0",
+    "orientation": "portrait",
+    "icon": "./src/core/assets/icons/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./src/core/assets/icons/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#dbe1ff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "eu.sboo.ralph"
+    },
+    "android": {
+      "package": "eu.sboo.ralph",
+      "versionCode": 128,
+      "adaptiveIcon": {
+        "foregroundImage": "./src/core/assets/icons/android/ic_launcher_foreground.png",
+        "backgroundImage": "./src/core/assets/icons/android/ic_launcher_background.png",
+        "monochromeImage": "./src/core/assets/icons/android/ic_launcher_monochrome.png",
+        "icon": "./src/core/assets/icons/android/ic_launcher.png",
+        "backgroundColor": "#dbe1ff"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      "expo-iap",
+      "expo-localization",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "enableBundleCompression": true
+          }
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Photo Library access enables you to select images of your pet to use as their avatar and to add photos to your notes. For example, you can choose a favorite picture of your pet for their profile and add relevant photos to document important moments in your notes."
+        }
+      ]
+    ]
+  }
 }

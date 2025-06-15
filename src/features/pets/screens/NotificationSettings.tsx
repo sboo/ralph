@@ -1,20 +1,20 @@
 import { event, EVENT_NAMES } from '@/features/events';
 import { NotificationSettingsScreenNavigationProps } from '@/features/navigation/types';
 import { timeToDateObject } from '@/shared/helpers/DateTimeHelpers';
+import { LinearGradient } from 'expo-linear-gradient';
+import { getCalendars } from 'expo-localization';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { is24HourFormat } from 'react-native-device-time-format';
-import LinearGradient from 'react-native-linear-gradient';
 import {
-    Avatar,
-    Button,
-    Card,
-    List,
-    Switch,
-    Text,
-    useTheme,
+  Avatar,
+  Button,
+  Card,
+  List,
+  Switch,
+  Text,
+  useTheme,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -33,12 +33,10 @@ const NotificationSettings: React.FC<
   const [hour12, setHour12] = useState<boolean>(false);
 
   useEffect(() => {
-    const getTimeFormat = async () => {
-      return await is24HourFormat();
-    };
-    getTimeFormat().then(value => {
-      setHour12(!value);
-    });
+    const calendars = getCalendars();
+    const uses24Hour = calendars[0]?.uses24hourClock ?? false;
+  setHour12(!uses24Hour);
+
   }, []);
 
   const handleRemindersToggled = (remindersEnabled: boolean) => {
