@@ -1,13 +1,12 @@
 import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import { event, EVENT_NAMES } from '@/features/events';
+import { useIAPService } from '@/features/iap/iapService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { useIAP } from 'expo-iap';
-import { PurchaseError } from 'expo-iap/build/ExpoIap.types';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, Platform, StyleSheet } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 import {
   Appbar,
   Button,
@@ -67,8 +66,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buyCoffeeVisible, setBuyCoffeeVisible] = React.useState(false);
   const [menuVisible, setMenuVisible] = React.useState(false);
-  const [awaitingInAppPurchase, setAwaitingInAppPurchase] =
-    React.useState(false);
+
   const onCoffeeButtonPress = async () => {
     if (coffeePurchased === 'true') {
       setThankYouVisible(true);
@@ -77,7 +75,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     }
   };
 
-  const { requestPurchase } = useIAP();
+  const { handlePurchase, processingPurchase } = useIAPService();
 
   useEffect(() => {
     const getCoffeeButtonPuchasedStatus = async () => {
@@ -91,14 +89,6 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
 
     const onCoffeePurchased = (purchased: boolean | string) => {
       setBuyCoffeeVisible(false);
-      setAwaitingInAppPurchase(false);
-
-      // Only show thank you dialog if we were awaiting a purchase
-      if (awaitingInAppPurchase && (purchased === true || purchased === 'true')) {
-        setTimeout(() => {
-          setThankYouVisible(true);
-        }, 500);
-      }
 
       getCoffeeButtonPuchasedStatus().then(status => {
         setCoffeePurchased(status);
@@ -110,28 +100,21 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     return () => {
       event.off(EVENT_NAMES.COFFEE_PURCHASED, onCoffeePurchased);
     };
-  }, [awaitingInAppPurchase]); // Add awaitingInAppPurchase to dependencies
+  }, []);
 
   const openMenu = () => setMenuVisible(true);
 
   const closeMenu = () => setMenuVisible(false);
 
-  const handlePurchase = async (sku: string) => {
-    setAwaitingInAppPurchase(true);
+  const handleSupportPurchase = async (sku: string) => {
+    setBuyCoffeeVisible(false);
     try {
-
-      await requestPurchase({
-        request: Platform.OS === 'android' ? { skus: [sku] } : { sku: sku }
-      })
+      await handlePurchase(sku);
+      setThankYouVisible(true);
     } catch (error) {
-      if (error instanceof PurchaseError) {
-        console.error(`[${error.code}]: ${error.message}`, error);
-      } else {
-        console.error('handleBuyProduct', error);
-      }
-      setAwaitingInAppPurchase(false);
+      console.error('Purchase failed:', error);
     }
-  };
+  }
 
   return (
     <Appbar.Header style={options.headerStyle}>
@@ -213,8 +196,8 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
         <SupportDialog
           visible={buyCoffeeVisible}
           onDismiss={() => setBuyCoffeeVisible(false)}
-          onSupport={handlePurchase}
-          loading={awaitingInAppPurchase}
+          onSupport={handleSupportPurchase}
+          loading={processingPurchase}
         />
       </Portal>
     </Appbar.Header>

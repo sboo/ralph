@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "eu.sboo.ralph",
-      "versionCode": 126,
+      "versionCode": 128,
       "adaptiveIcon": {
         "foregroundImage": "./src/core/assets/icons/android/ic_launcher_foreground.png",
         "backgroundImage": "./src/core/assets/icons/android/ic_launcher_background.png",

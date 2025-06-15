@@ -1,5 +1,5 @@
-import { useIAP } from 'expo-iap';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useIAPService } from '@/features/iap/iapService';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, Dialog, IconButton, Text, useTheme } from 'react-native-paper';
@@ -15,7 +15,7 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
   const [selectedValue, setSelectedValue] = useState<string>('');
   const theme = useTheme();
   const { t } = useTranslation();
-  const { products, getProducts } = useIAP();
+  const { products } = useIAPService();
 
 
   const supportOptions = [
@@ -29,23 +29,6 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
     return products.find((product) => product.id === sku)?.displayPrice ?? 0;
   }, [products]);
 
-  useEffect(() => {
-    const fechProducts = async () => {
-      try {
-        await getProducts(['eu.sboo.ralph.coffee', 'eu.sboo.ralph.croissant', 'eu.sboo.ralph.sandwich', 'eu.sboo.ralph.lunch']);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-   
-   
-    try {
-      fechProducts();
-    } catch (error) {
-      console.log(error);
-    }
-
-  }, [getProducts]);
 
   const handleSupport = () => {
     onSupport(selectedValue);
@@ -92,10 +75,10 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ visible, onDismiss, onSup
         {loading ? (
           <ActivityIndicator animating={true} />
         ) : (
-          <>
-            <Button onPress={onDismiss}>Cancel</Button>
-            <Button disabled={selectedValue === ''} onPress={handleSupport}>Support</Button>
-          </>
+          [
+            <Button key="cancel" onPress={onDismiss}>Cancel</Button>,
+            <Button key="support" disabled={selectedValue === ''} onPress={handleSupport}>Support</Button>
+          ]
         )}
       </Dialog.Actions>
     </Dialog>
