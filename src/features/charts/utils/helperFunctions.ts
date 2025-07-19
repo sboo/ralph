@@ -1,3 +1,4 @@
+import { assessmentDateToLocalDate } from "@/shared/helpers/DateTimeHelpers";
 import { Assessment, Pet } from "@core/database";
 import moment from "moment";
 import { CHART_CONSTANTS, ChartDateRange, ProcessedChartData, ScoreMetadata } from "../types";
@@ -16,7 +17,8 @@ export const calculateDateRange = (
   assessments: Assessment[] | null,
   pet: Pet | undefined,
   isWeekly: boolean,
-  maxDays: number,
+  minDays: number,
+  maxDays: number | undefined = undefined,
   padding: boolean = true
 ): ChartDateRange => {
   const today = new Date();
@@ -64,9 +66,9 @@ export const calculateDateRange = (
  * @param {Date} startDate - The start date of the range.
  * @param {Date} endDate - The end date of the range.
  * @param {boolean} isWeekly - If true, only include dates that are Mondays.
- * @returns {Date[]} An array of dates between the start and end dates.
+ * @returns {string[]} An array of dates between the start and end dates.
  */
-export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: boolean): Date[] => {
+export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: boolean): string[] => {
   const range: Date[] = [];
   let currentDate = new Date(startDate);
 
@@ -76,13 +78,14 @@ export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: bool
     }
     currentDate.setDate(currentDate.getDate() + 1);
   }
-  return range;
+
+  return range.map(date => moment(date).format('YYYY-MM-DD'));
 };
 
 /**
  * Processes daily scores for a given date range and assessments.
  *
- * @param {Date[]} dateRange - An array of dates representing the range to process.
+ * @param {string[]} dateRange - An array of dates representing the range to process.
  * @param {Results<Measurement> | null} assessments - An array of assessment results or null if no assessments are available.
  * @returns {ScoreMetadata[]} An array of score metadata objects for each date in the date range.
  *
@@ -96,7 +99,7 @@ export const generateDateRange = (startDate: Date, endDate: Date, isWeekly: bool
  * It then processes the date range to determine the score and dot type for each date.
  */
 export const processDailyScores = (
-  dateRange: Date[],
+  dateRange: string[],
   assessments: Assessment[] | null
 ): ScoreMetadata[] => {
   if (!assessments?.length) {
@@ -162,7 +165,7 @@ export const processDailyScores = (
 /**
  * Processes weekly scores based on a given date range and assessments.
  *
- * @param {Date[]} dateRange - An array of dates representing the start of each week.
+ * @param {string[]} dateRange - An array of dates representing the start of each week.
  * @param {Results<Measurement> | null} assessments - An array of assessment results or null.
  * @returns {ScoreMetadata[]} An array of score metadata for each week in the date range.
  *
@@ -177,7 +180,7 @@ export const processDailyScores = (
  * - `assessmentDates`: An array of dates when assessments were created, sorted in ascending order.
  */
 export const processWeeklyScores = (
-  dateRange: Date[],
+  dateRange: string[],
   assessments: Assessment[] | null
 ): ScoreMetadata[] => {
   // Default score for weeks with no assessments
@@ -193,8 +196,9 @@ export const processWeeklyScores = (
   }
 
   return dateRange.map(monday => {
-    const weekStart = moment(monday).startOf('isoWeek');
-    const weekEnd = moment(monday).endOf('isoWeek');
+    const mondayDate = assessmentDateToLocalDate(monday);
+    const weekStart = moment(mondayDate).startOf('isoWeek');
+    const weekEnd = moment(mondayDate).endOf('isoWeek');
 
     // Filter assessments falling within the current week
     const weekAssessments = assessments.filter(a =>
@@ -203,7 +207,7 @@ export const processWeeklyScores = (
 
     if (!weekAssessments.length) {
       // If no assessments, use the previous week's score
-      const isLastWeek = moment(monday).isSame(moment(), 'week');
+      const isLastWeek = moment(mondayDate).isSame(moment(), 'week');
       return {
         score: previousWeekScore,
         dotType: isLastWeek ? 'empty' : 'filler',
@@ -226,7 +230,7 @@ export const processWeeklyScores = (
     return {
       score,
       dotType,
-      assessmentDates: weekAssessments.map(a => new Date(a.date)).sort((a, b) => a.getTime() - b.getTime()),
+      assessmentDates: weekAssessments.map(a => a.date).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
     };
   });
 };
@@ -239,12 +243,10 @@ export const processWeeklyScores = (
  * @param isWeekly - A boolean indicating whether the chart data should be processed weekly or daily.
  * @returns An object containing processed chart data, including scores, dot types, metadata, and labels.
  */
-export const generateChartData = (dateRange: Date[], assessments: Assessment[] | null, isWeekly: boolean): ProcessedChartData => {
+export const generateChartData = (dateRange: string[], assessments: Assessment[] | null, isWeekly: boolean): ProcessedChartData => {
   const scoreData = isWeekly
     ? processWeeklyScores(dateRange, assessments)
     : processDailyScores(dateRange, assessments);
-
-    console.log("scoreData", scoreData);
 
   return {
     scores: scoreData.map(item => (item.score ?? CHART_CONSTANTS.DEFAULT_SCORE)),
@@ -253,7 +255,7 @@ export const generateChartData = (dateRange: Date[], assessments: Assessment[] |
     labels: dateRange.map(date =>
       isWeekly
         ? `W${moment(date).isoWeek()}`
-        : date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })
+        : assessmentDateToLocalDate(date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })
     ),
   };
 }

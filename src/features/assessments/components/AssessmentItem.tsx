@@ -2,6 +2,7 @@ import { Assessment } from '@/core/database';
 import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import RatingButtons from '@/shared/components/RatingButtons';
 import RatingSlider from '@/shared/components/RatingSlider';
+import { assessmentDateToLocalDateString } from '@/shared/helpers/DateTimeHelpers';
 import { getImagePath } from '@/shared/helpers/ImageHelper';
 import { OptionText } from '@/shared/helpers/TooltipHelper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,7 +26,7 @@ import NotesModal from './NotesModal';
 interface Props {
   petName: string;
   petSpecies: string;
-  date: Date;
+  assessmentDate: string;
   assessment?: Assessment | null;
   scrollToNotes?: boolean;
   customTracking: CustomTrackingSettings;
@@ -36,7 +37,7 @@ interface Props {
 const AssessmentItem: React.FC<Props> = ({
   petName,
   petSpecies,
-  date,
+  assessmentDate,
   onSubmit,
   onCancel,
   assessment: measurement,
@@ -164,11 +165,6 @@ const AssessmentItem: React.FC<Props> = ({
         />)}
       </>
     )
-
-  }
-
-  if (loading) {
-    return null;
   }
 
   return (
@@ -176,7 +172,7 @@ const AssessmentItem: React.FC<Props> = ({
       contentContainerStyle={styles.container}
       ref={scrollViewRef as RefObject<ScrollView> | null}>
       <Text variant={'titleSmall'} style={styles.date}>
-        {t('date')}: {date.toLocaleDateString()}
+        {t('date')}: {assessmentDateToLocalDateString(assessmentDate)}
       </Text>
       <Text variant={'bodyLarge'} style={styles.intro}>
         {t('measurements:intro', { petName })}

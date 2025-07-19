@@ -10,7 +10,6 @@ import {
 import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types';
 import { compose } from '@nozbe/watermelondb/react';
 import { LinearGradient } from 'expo-linear-gradient';
-import moment from 'moment';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -23,7 +22,7 @@ const AddAssessmentComponent: React.FC<
     activePet: Pet | undefined;
   }
 > = ({route, navigation, activePet}) => {
-  const [date] = useState(new Date(route.params.timestamp));
+  const [assessmentDate] = useState(route.params.assessmentDate);
   const theme = useTheme();
 
   if (!activePet) {
@@ -32,8 +31,6 @@ const AddAssessmentComponent: React.FC<
   }
 
   const handleSubmit = async (assessmentData: AssessmentData) => {
-    const assessmentDate = moment(date).format('YYYY-MM-DD');
-
     const score = calculateScore({
       date: assessmentDate,
       hurt: assessmentData.hurt,
@@ -89,7 +86,7 @@ const AddAssessmentComponent: React.FC<
           ...styles.container,
         }}>
         <AssessmentItem
-          date={date}
+          assessmentDate={assessmentDate}
           petName={activePet.name}
           petSpecies={activePet.species}
           customTracking={customTrackingSettings}

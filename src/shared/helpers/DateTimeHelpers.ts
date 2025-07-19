@@ -39,6 +39,23 @@ export const getValidReminderTimestamp = (
   }
 };
 
+export const assessmentDateToLocalDate = (dateString: string) => {
+  // Convert the date string to a moment object and format it to local date string
+  const tempDate = moment(dateString);
+  const date = new Date();
+  date.setUTCFullYear(tempDate.year());
+  date.setUTCMonth(tempDate.month());
+  date.setUTCDate(tempDate.date());
+  return date;
+}
+
+
+
+export const assessmentDateToLocalDateString = (dateString: string) => {
+  const date = assessmentDateToLocalDate(dateString);
+  return date.toLocaleDateString();
+}
+
 export const timeToDateObject = (timeString: string) => {
   // Use the current date but set the time according to the input string
   const timeParts = timeString.split(':');

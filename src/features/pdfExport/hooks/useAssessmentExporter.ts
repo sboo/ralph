@@ -1,7 +1,7 @@
 import { database } from '@/core/database';
 import { Assessment } from '@/core/database/models/Assessment';
 import { Pet } from '@/core/database/models/Pet';
-import { DotType } from '@/features/charts/types';
+import { CHART_CONSTANTS, DotType } from '@/features/charts/types';
 import { calculateDateRange, generateChartData, generateDateRange } from '@/features/charts/utils/helperFunctions';
 import { getValueColor } from '@/shared/helpers/ColorHelper';
 import { getBase64Image } from '@/shared/helpers/ImageHelper';
@@ -93,12 +93,13 @@ const useAssessmentExporter = () => {
   const generateChart = () => {
     if (!assessments?.length) return '';
 
+    const minDays = isWeekly ? CHART_CONSTANTS.WEEKS_TO_SHOW * 7 : CHART_CONSTANTS.DAYS_TO_SHOW;
     const maxDays = isWeekly ? 70 : 21;
-    const { startDate, endDate } = calculateDateRange(assessments, activePet, isWeekly, maxDays, false);
+    const { startDate, endDate } = calculateDateRange(assessments, activePet, isWeekly, minDays, maxDays, false);
     const dateRange = generateDateRange(startDate, endDate, isWeekly);
 
     const { scores, labels, dotTypes, metadata } = generateChartData(dateRange, assessments, isWeekly);
-    console.log('Chart data:', { scores, labels, dotTypes, metadata });
+    // console.log('Chart data:', { scores, labels, dotTypes, metadata });
 
     const hasOlderData = assessments.some(a => new Date(a.date) < startDate);
 

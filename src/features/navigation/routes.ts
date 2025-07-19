@@ -14,7 +14,7 @@ export type RootStackParamList = {
   AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean, customTrackingSettings: CustomTrackingSettings};
   NotificationSettings: {notificationsEnabled: boolean; notificationTime: string};
   CustomTrackingSettings: {customTrackingSettings: CustomTrackingSettings};
-  AddAssessment: {timestamp: number};
+  AddAssessment: {assessmentDate: string};
   EditAssessment: {assessmentId: string, scrollToNotes?: boolean};
   AllNotes: undefined;
   AllAssessments: undefined;
