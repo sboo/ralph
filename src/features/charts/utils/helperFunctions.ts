@@ -37,7 +37,7 @@ export const calculateDateRange = (
   const firstAssessmentDate = hasAssessments ? assessments[0].date : null;
 
   // Determine start date based on available data
-  const maxDaysAgo = moment(end).subtract(maxDays, 'days');
+  const maxDaysAgo = moment(end).subtract(minDays, 'days');
   let start = firstAssessmentDate 
     ? (padding 
         ? moment.min(moment(firstAssessmentDate), maxDaysAgo)
@@ -49,6 +49,13 @@ export const calculateDateRange = (
     ? moment(assessments[assessments.length - 1].date)
         .endOf(isWeekly ? 'isoWeek' : 'day').toDate()
     : moment(end).endOf(isWeekly ? 'isoWeek' : 'day').toDate();
+
+    if (maxDays !== undefined) {
+      const maxDaysAgoFromEnd = moment(finalEnd).subtract(maxDays, 'days').startOf(isWeekly ? 'isoWeek' : 'day').toDate();
+      if (start < maxDaysAgoFromEnd) {
+        start = maxDaysAgoFromEnd;
+      }
+    }
 
     console.log("start", start.toString());
     console.log("end", finalEnd.toString());
