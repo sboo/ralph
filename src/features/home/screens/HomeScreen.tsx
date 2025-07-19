@@ -13,10 +13,10 @@ import HomeHeader from '@/features/home/components/HomeHeader';
 import { HomeScreenNavigationProps } from '@/features/navigation';
 import { useAssessmentExporter } from '@/features/pdfExport';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
+import { hasModernNavigation } from '@/shared/helpers/DeviceHelper';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
-import { BlurView } from '@react-native-community/blur';
-import * as Device from 'expo-device';
+import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 import React, { ComponentType, useCallback, useEffect, useState } from 'react';
@@ -24,10 +24,9 @@ import { useTranslation } from 'react-i18next';
 import {
   Animated,
   LayoutChangeEvent,
-  Platform,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native';
 import { DateData } from 'react-native-calendars';
 import { FAB, useTheme } from 'react-native-paper';
@@ -117,14 +116,15 @@ const HomeScreenComponent = ({
     }
   }, [lastAssessments]);
 
-  const addOrEditAssessment = (date?: Date) => {
-    date ??= new Date();
-    const assessmentDate = moment(date).format('YYYY-MM-DD');
-    const assessment = assessments?.find(m => m.date === assessmentDate);
+  const addOrEditAssessment = (date: string) => {
+    console.log('addOrEditAssessment called with date:', date);
+    date ??= moment(date).format('YYYY-MM-DD');
+    const assessment = assessments?.find(m => m.date === date);
+    console.log('Found assessment:', assessment);
 
     if (assessment === undefined) {
       navigation.navigate('AddAssessment', {
-        timestamp: date.getTime(),
+        assessmentDate: date,
       });
     } else {
       navigation.navigate('EditAssessment', {
@@ -134,7 +134,7 @@ const HomeScreenComponent = ({
   };
 
   const onCalendarDayPress = (dateData: DateData) => {
-    addOrEditAssessment(new Date(dateData.dateString));
+    addOrEditAssessment(dateData.dateString);
   };
 
   const onNotePress = (assessmentId: string) => {
@@ -209,32 +209,23 @@ const HomeScreenComponent = ({
 
 
   const insets = useSafeAreaInsets()
-  const hasNotch = Device.deviceType === Device.DeviceType.PHONE && insets.top > 20;
+  const hasNotchOrGestures = hasModernNavigation(insets);
 
   const renderFooterBackground = () => {
-    if (Platform.OS === 'ios') {
       return (
         <Animated.View style={{opacity: fadeAnim}}>
           <BlurView
             style={
-              hasNotch
+              hasNotchOrGestures
                 ? styles.footerBlurBackgroundNotch
                 : styles.footerBlurBackground
             }
-            blurType={
+            experimentalBlurMethod="dimezisBlurView"
+            tint={
               effectiveAppearance === 'dark' ? 'dark' : 'light'
             }></BlurView>
         </Animated.View>
       );
-    } else {
-      return (
-        <LinearGradient
-          colors={['transparent', theme.colors.primaryContainer]}
-          locations={[0, 0.75]}
-          style={styles.footerGradientBackground}
-        />
-      );
-    }
   };
 
   return (
@@ -352,6 +343,7 @@ const styles = StyleSheet.create({
     bottom: 5,
     height: 75,
     borderRadius: 20,
+    overflow: 'hidden',
   },
   footerBlurBackground: {
     position: 'absolute',

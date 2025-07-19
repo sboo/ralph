@@ -1,13 +1,13 @@
 export type DotType = 'actual' | 'average' | 'empty' | 'filler';
 
 export interface AssessmentChartProps {
-    onDataPointClick?: (date: Date) => void;
+    onDataPointClick?: (date: string) => void;
 }
 
 export interface ScoreMetadata {
     score: number | null;
     dotType: DotType;
-    assessmentDates?: Date[];
+    assessmentDates?: string[];
 }
 
 export interface ChartDateRange {
@@ -25,8 +25,8 @@ export interface ProcessedChartData {
 export interface WeeklyDialogProps {
     visible: boolean;
     onDismiss: () => void;
-    dates: Date[];
-    onDateSelect: (date: Date) => void;
+    dates: string[];
+    onDateSelect: (date: string) => void;
   }
 
 // Constants

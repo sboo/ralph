@@ -88,7 +88,7 @@ const EditAssessmentComponent: React.FC<
           ...styles.container,
         }}>
         <AssessmentItem
-          date={new Date(assessment.date)}
+          assessmentDate={assessment.date}
           petName={activePet.name}
           petSpecies={activePet.species}
           assessment={assessment}

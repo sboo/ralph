@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_KEYS} from '../store/storageKeys.ts';
+import { STORAGE_KEYS } from '../store/storageKeys';
 
 export const PET_REQUIRES_MIGRATION = 'PET_REQUIRES_MIGRATION';
 

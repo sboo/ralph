@@ -22,7 +22,7 @@ const AssessmentChartComponent: React.FC<AssessmentChartProps & {
   assessments 
 }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const chartScrollViewRef = useRef<ScrollView>(null);
   const theme = useTheme();
   const isWeekly = activePet?.assessmentFrequency === 'WEEKLY';
@@ -52,11 +52,13 @@ const AssessmentChartComponent: React.FC<AssessmentChartProps & {
     if (!scoreData.assessmentDates?.length) return;
 
     if (scoreData.assessmentDates.length === 1) {
+      console.log('Single assessment date:', scoreData.assessmentDates[0]);
       // For single assessments, directly call onDataPointClick with the actual date
-      onDataPointClick?.(scoreData.assessmentDates[0]);
+      onDataPointClick?.(moment(scoreData.assessmentDates[0]).format('YYYY-MM-DD'));
     } else {
       // For averages, show the dialog
-      setSelectedDates(scoreData.assessmentDates);
+      console.log('Opening dialog for dates:', scoreData.assessmentDates);
+      setSelectedDates(scoreData.assessmentDates.map(date => moment(date).format('YYYY-MM-DD')));
       setDialogVisible(true);
     }
   }, [isWeekly, metadata, onDataPointClick]);
