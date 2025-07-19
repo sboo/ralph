@@ -59,27 +59,47 @@ src/
 
 ### Installation
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/sboo/ralph.git
-   cd ralph
-   ```
-
+1. Clone the repository
 2. Install dependencies:
-   ```sh
+   ```bash
    npm install
    ```
 
-4. Run the app:
-   - For iOS:
-     ```sh
-     cd ios && pod install && cd ..
-     npm run ios
-     ```
-   - For Android:
-     ```sh
-     npm run android
-     ```
+### Running the Development Client
+
+1. Run prebuild:
+
+```bash
+npx expo prebuild
+```
+
+2. Run on the desired platform:
+```bash
+npx expo run:ios
+# or
+npx expo run:android
+```
+
+This will build the app and launch it in the simulator or on your connected device.
+
+### Building for Production
+
+#### iOS
+
+1. Open the Xcode workspace:
+   ```bash
+   open ios/Ralph.xcworkspace
+   ```
+2. Select the "Product" menu and choose "Archive"
+3. Follow the prompts to distribute your app
+
+#### Android
+
+1. Create a production build:
+   ```bash
+   npx react-native build-android --mode=release
+   ```
+2. The AAB will be available at `android/app/build/outputs/bundle/release/app-release.aab`
 
 
 ## 📋 Development Workflow
