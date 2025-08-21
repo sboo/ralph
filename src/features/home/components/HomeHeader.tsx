@@ -4,17 +4,15 @@ import { Pet } from '@/core/database/models/Pet';
 import Avatar from '@/features/avatar/components/Avatar';
 import { event, EVENT_NAMES } from '@/features/events';
 import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
-import { Q } from '@nozbe/watermelondb';
-import { compose, withObservables } from '@nozbe/watermelondb/react';
-import React, { ComponentType, useEffect, useState } from 'react';
+import { compose } from '@nozbe/watermelondb/react';
+import React, { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 // The presentational component
-const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
+const HomeHeaderComponent = ({ activePet, allPets }: {
   activePet: Pet | undefined,
-  inactivePets: Pet[],
   allPets: Pet[]
 }) => {
   const { t } = useTranslation();
@@ -31,9 +29,14 @@ const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
     }
     return t('greeting_evening');
   };
+  // Calculate inactive pets from all pets - use useMemo to avoid recalculation on every render
+  const inactivePets = useMemo(() => {
+    if (!allPets || allPets.length === 0) return [];
+    return allPets.filter(pet => !pet.isActive);
+  }, [allPets]);
 
-  const switchPet = async (petId: string | undefined) => {
-    if (petId) {
+  const switchPet = useCallback(async (petId: string | undefined) => {
+    if (petId && allPets && allPets.length > 0) {
       event.emit(EVENT_NAMES.SWITCHING_PET, petId);
       await database.write(async () => {
         for (const pet of allPets) {
@@ -50,13 +53,15 @@ const HomeHeaderComponent = ({ activePet, inactivePets, allPets }: {
         }
       });
     }
-  };
+  }, [allPets]);
 
   // Determine header color based on active pet index
   useEffect(() => {
-    setHeaderColor(
-      getHeaderColor(allPets, activePet?.id ?? '', theme)
-    );
+    if (allPets && allPets.length > 0) {
+      setHeaderColor(
+        getHeaderColor(allPets, activePet?.id ?? '', theme)
+      );
+    }
   }, [activePet, allPets, theme]);
 
   return (
@@ -127,10 +132,7 @@ const styles = StyleSheet.create({
 });
 
 const enhance: (component: ComponentType<any>) => ComponentType<any> = compose(
-  withAllAndActivePet,
-  withObservables([], () => ({
-    inactivePets: database.get<Pet>('pets').query(Q.where('is_active', false)),
-  }))
+  withAllAndActivePet
 )
 
 

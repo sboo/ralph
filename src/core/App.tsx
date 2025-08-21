@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -32,6 +33,20 @@ const App: React.FC<{
 }> = ({ allPets, activePet }) => {
   const { theme } = useTheme();
   const [headerColor, setHeaderColor] = useState(theme.colors.primary);
+  const [behaviour, setBehaviour] = useState<'height' | undefined>('height'); 
+  useEffect(() => {
+    const showListener = Keyboard.addListener('keyboardDidShow', () => {
+      setBehaviour('height');
+    });
+    const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setBehaviour(undefined);
+    });
+
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }, []);
 
   const onNavigationStateChange = useCallback(
     (state: NavigationState | undefined) => {
@@ -57,7 +72,7 @@ const App: React.FC<{
   return (
     <KeyboardAvoidingView
       style={styles.keyboardViewContainer}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={Platform.OS === 'android' ? behaviour : 'height'}>
       <NavigationContainer onStateChange={onNavigationStateChange}>
         <AppNavigator 
           headerColor={headerColor}

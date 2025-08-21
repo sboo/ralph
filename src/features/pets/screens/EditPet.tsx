@@ -1,5 +1,5 @@
 import { database } from '@/core/database';
-import { withActivePet } from '@/core/database/hoc';
+import { withAllAndActivePet } from '@/core/database/hoc';
 import { Pet } from '@/core/database/models/Pet';
 import { EditPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
@@ -28,11 +28,19 @@ const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
     console.log('EditPetComponent onSubmit', data);
     if (data.delete) {
       await database.write(async () => {
+        // First destroy the current pet
         await activePet.destroyPermanently();
-        const newActivePet = allPets[0];
-        await newActivePet.update((record: Pet) => {
-          record.isActive = true;
-        });
+       
+        // Find remaining pets (excluding the one we just deleted)
+        const remainingPets = allPets.filter(pet => pet.id !== activePet.id);
+        
+        // If there are remaining pets, make the first one active
+        if (remainingPets.length > 0) {
+          await remainingPets[0].update((record: Pet) => {
+            record.isActive = true;
+          });
+        }
+
 
       });
       navigation.goBack();
@@ -98,7 +106,7 @@ const styles = StyleSheet.create({
 
 
 const enhance = compose(
-  withActivePet
+  withAllAndActivePet
 )
 
 // Export the enhanced component

@@ -34,11 +34,11 @@ export const withActivePet = (Component: ComponentType<any>) => {
  */
 export const withAllAndActivePet = (Component: ComponentType<any>) => {
   return withObservables([], () => ({
-    allPets: database.get<Pet>('pets').query().observe(),
+    allPets: database.get<Pet>('pets').query().observeWithColumns(['name', 'avatar', 'species', 'is_active']),
     activePet: database
       .get<Pet>('pets')
       .query(Q.where('is_active', true))
-      .observe()
+      .observeWithColumns(['name', 'avatar', 'species', 'is_active'])
       .pipe(map(pets => pets.length > 0 ? pets[0] : undefined)),
   }))(Component);
 };
