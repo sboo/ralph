@@ -64,11 +64,69 @@ export const hasTraditionalNavigation = (insets: EdgeInsets): boolean => {
 };
 
 /**
+ * Checks if the device is a tablet (any platform)
+ * 
+ * @returns true if device is a tablet
+ */
+export const isTablet = (): boolean => {
+  return Device.deviceType === Device.DeviceType.TABLET;
+};
+
+/**
+ * Checks if the device is specifically an iPad
+ * 
+ * @returns true if device is an iPad (iOS tablet)
+ */
+export const isIPad = (): boolean => {
+  return Platform.OS === 'ios' && Device.deviceType === Device.DeviceType.TABLET;
+};
+
+/**
+ * Checks if the device is a phone (any platform)
+ * 
+ * @returns true if device is a phone
+ */
+export const isPhone = (): boolean => {
+  return Device.deviceType === Device.DeviceType.PHONE;
+};
+
+/**
+ * Gets comprehensive device information
+ * Useful for components that need different styling based on device type
+ * 
+ * @param insets - Safe area insets from useSafeAreaInsets() (optional)
+ * @returns object with boolean flags for different device types and navigation
+ */
+export const getDeviceInfo = (insets?: EdgeInsets) => {
+  const modernNav = insets ? hasModernNavigation(insets) : false;
+  
+  return {
+    // Device types
+    isPhone: isPhone(),
+    isTablet: isTablet(),
+    isPad: isIPad(),
+    
+    // Platform detection
+    isIOS: Platform.OS === 'ios',
+    isAndroid: Platform.OS === 'android',
+    
+    // Navigation types (only available if insets provided)
+    ...(insets && {
+      hasModernNavigation: modernNav,
+      hasTraditionalNavigation: !modernNav,
+      hasNotch: hasNotch(insets),
+      hasGestureNavigation: hasGestureNavigation(insets),
+    }),
+  };
+};
+
+/**
  * Gets the appropriate styling based on device navigation type
  * Useful for components that need different styling for modern vs traditional navigation
  * 
  * @param insets - Safe area insets from useSafeAreaInsets()
  * @returns object with boolean flags for different navigation types
+ * @deprecated Use getDeviceInfo instead for more comprehensive device detection
  */
 export const getDeviceNavigationType = (insets: EdgeInsets) => {
   const modernNav = hasModernNavigation(insets);
