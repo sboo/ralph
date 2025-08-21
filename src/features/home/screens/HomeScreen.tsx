@@ -13,7 +13,7 @@ import HomeHeader from '@/features/home/components/HomeHeader';
 import { HomeScreenNavigationProps } from '@/features/navigation';
 import { useAssessmentExporter } from '@/features/pdfExport';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
-import { hasModernNavigation } from '@/shared/helpers/DeviceHelper';
+import { getDeviceInfo, hasModernNavigation } from '@/shared/helpers/DeviceHelper';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from 'expo-blur';
@@ -50,6 +50,7 @@ const HomeScreenComponent = ({
   const {t} = useTranslation();
   const [averageScore, setAverageScore] = useState(60);
   const theme = useTheme();
+  const { isTablet } = getDeviceInfo();
   const {effectiveAppearance} = useAppearance();
   const {generateAndSharePDF} = useAssessmentExporter();
   const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>(
@@ -176,7 +177,9 @@ const HomeScreenComponent = ({
         return (
           <>
             <AssessmentChart onDataPointClick={addOrEditAssessment} />
-            {tipContents()}
+            <View style={{ paddingTop: isTablet ? 100 : 0 }}>
+              {tipContents()}
+            </View>
           </>
         );
     }
@@ -253,7 +256,7 @@ const HomeScreenComponent = ({
         }}>
         <HomeHeader />
         <ScrollView
-          style={styles.bodyContainer}
+          style={[styles.bodyContainer, { paddingHorizontal: isTablet ? 180 : 20 }]}
           onContentSizeChange={handleContentSizeChange}
           onLayout={handleLayout}>
           <View style={styles.bodyContentHolder}>{renderContent()}</View>

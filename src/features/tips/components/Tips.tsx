@@ -1,4 +1,5 @@
 import { getTipBackgroundColor } from '@/shared/helpers/ColorHelper';
+import { getDeviceInfo } from '@/shared/helpers/DeviceHelper';
 import { Assessment, Pet } from '@core/database';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +20,7 @@ const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
   const [tips, setTips] = useState<Tip[]>([]);
   const {getTipsForAssessment, getAllTips} = useTips();
   const {t} = useTranslation();
+  const { isTablet } = getDeviceInfo();
 
   useEffect(() => {
     if (assessment) {
@@ -90,6 +92,9 @@ const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
     return null;
   }
 
+  const width = Dimensions.get('window').width - (isTablet ? 360 : 40);
+  const height = (width / 16) * 8;
+
   return (
     <Card
       mode={'contained'}
@@ -105,7 +110,7 @@ const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
         data={currentTips}
         onChangeIndex={({index}) => setCurrentIndex(index)}
         renderItem={({item}) => (
-          <View style={styles.cardContent}>
+          <View style={[styles.cardContent, {width: width, height: height}]}>
             <Card.Title
               title={item?.title}
               titleNumberOfLines={2}

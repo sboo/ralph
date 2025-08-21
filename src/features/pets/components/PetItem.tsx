@@ -8,6 +8,7 @@ import {
   dateObjectToTimeString,
   timeToDateObject
 } from '@/shared/helpers/DateTimeHelpers';
+import { getDeviceInfo } from '@/shared/helpers/DeviceHelper';
 import notifee, {
   AuthorizationStatus
 } from '@notifee/react-native';
@@ -54,6 +55,7 @@ const PetItem: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { isTablet } = getDeviceInfo();
   const { getNotificationId } = useNotifications();
   const [petType, setPetType] = useState<string>(pet?.species ?? '');
   const [petName, setPetName] = useState<string>(pet?.name ?? '');
@@ -255,7 +257,7 @@ const PetItem: React.FC<Props> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingHorizontal: isTablet ? 180 : 20, paddingTop: isTablet ? 180 : 0 }]}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}

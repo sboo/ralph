@@ -1,5 +1,6 @@
 import { WelcomeScreenNavigationProps } from '@/features/navigation/types';
 import { CustomPagination } from '@/shared/components/CustomSwiperPagination';
+import { getDeviceInfo } from '@shared/helpers/DeviceHelper';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Animated, Dimensions, Platform, ScrollView, StyleSheet, View } from 'react-native';
@@ -16,6 +17,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   const swiper = React.createRef<SwiperFlatList>();
   const { t } = useTranslation();
   const theme = useTheme();
+  const { isTablet } = getDeviceInfo();
 
   // Create animated value for pulsating effect
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -92,7 +94,7 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
   return (
     <SafeAreaView
       style={{
-        backgroundColor: theme.colors.primary,
+        backgroundColor: theme.colors.tertiary,
         ...styles.container,
       }}>
       <Text variant="headlineLarge" style={{ ...styles.title, color: theme.colors.onPrimary, marginTop: topMargin }}>{title}</Text>
@@ -101,16 +103,18 @@ const WelcomeScreen: React.FC<WelcomeScreenNavigationProps> = ({
         style={styles.swiper}
         onChangeIndex={({ index }) => setCurrentIndex(index)}
         data={data}
-        showPagination
+        // showPagination
         PaginationComponent={CustomPagination}
         renderItem={({ item }) => (
-          <ScrollView contentContainerStyle={styles.child}>
+          <ScrollView contentContainerStyle={isTablet ? styles.childTablet : styles.child}>
             {item.image ? (
-              <View style={styles.imageContainer}>
-                <Avatar.Image size={width * 0.6} source={item.image} theme={{ colors: { primary: theme.colors.secondaryContainer } }} />
+              <View style={isTablet ? styles.imageContainerTablet : styles.imageContainer}>
+                <Avatar.Image size={isTablet ? width * 0.35 : width * 0.6} source={item.image} theme={{ colors: { primary: theme.colors.secondaryContainer } }} />
               </View>
             ) : null}
-            <Text variant='titleLarge' style={{ ...styles.text, color: theme.colors.onPrimary }}>{item.description}</Text>
+            <View style={isTablet ? styles.textContainerTablet : styles.textContainer}>
+              <Text variant='titleLarge' style={{ ...styles.text, color: theme.colors.onPrimary, textAlign: isTablet ? 'left' : 'center' }}>{item.description}</Text>
+            </View>
           </ScrollView>
         )}
       />
@@ -151,6 +155,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
     fontWeight: 'bold',
     paddingHorizontal: 20,
+    textAlign: 'center',
 
   },
   swiper: {
@@ -168,10 +173,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  imageContainerTablet: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
   image: {
     alignSelf: 'center',
   },
   child: { width, justifyContent: 'space-evenly', paddingHorizontal: 20, gap: 20 },
+  childTablet: { 
+    width, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    paddingHorizontal: 100, 
+    gap: 30,
+    justifyContent: 'center',
+    flex: 1,
+  },
+  textContainer: {
+    flex: 1,
+  },
+  textContainerTablet: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   text: { textAlign: 'center' },
 });
 

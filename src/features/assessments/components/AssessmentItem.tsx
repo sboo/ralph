@@ -3,6 +3,7 @@ import { STORAGE_KEYS } from '@/core/store/storageKeys';
 import RatingButtons from '@/shared/components/RatingButtons';
 import RatingSlider from '@/shared/components/RatingSlider';
 import { assessmentDateToLocalDateString } from '@/shared/helpers/DateTimeHelpers';
+import { getDeviceInfo } from '@/shared/helpers/DeviceHelper';
 import { getImagePath } from '@/shared/helpers/ImageHelper';
 import { OptionText } from '@/shared/helpers/TooltipHelper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -45,6 +46,7 @@ const AssessmentItem: React.FC<Props> = ({
   scrollToNotes
 }) => {
   const { t } = useTranslation();
+  const { isTablet } = getDeviceInfo();
   const [loading, setLoading] = useState(true);
   const [useRatingButtons, setUseRatingButtons] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -169,7 +171,7 @@ const AssessmentItem: React.FC<Props> = ({
 
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
+      contentContainerStyle={[styles.container, { paddingHorizontal: isTablet ? 180 : 20}]}
       ref={scrollViewRef as RefObject<ScrollView> | null}>
       <Text variant={'titleSmall'} style={styles.date}>
         {t('date')}: {assessmentDateToLocalDateString(assessmentDate)}
