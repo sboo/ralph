@@ -23,7 +23,7 @@ export const withAllPets = (Component: ComponentType<any>) => {
 export const withActivePet = (Component: ComponentType<any>) => {
   return withObservables([], () => ({
     activePet: petCollection.query(Q.where('is_active', true))
-      .observe()
+      .observeWithColumns(['name', 'avatar', 'species', 'is_active', 'assessment_frequency', 'paused_at'])
       .pipe(map(pets => pets.length > 0 ? pets[0] : undefined)),
   }))(Component);
 };
@@ -38,7 +38,7 @@ export const withAllAndActivePet = (Component: ComponentType<any>) => {
     activePet: database
       .get<Pet>('pets')
       .query(Q.where('is_active', true))
-      .observeWithColumns(['name', 'avatar', 'species', 'is_active'])
+      .observeWithColumns(['name', 'avatar', 'species', 'is_active', 'assessment_frequency', 'paused_at'])
       .pipe(map(pets => pets.length > 0 ? pets[0] : undefined)),
   }))(Component);
 };
@@ -56,7 +56,7 @@ export const withActivePetAssessments = (options?: {
     const activePetObservable = database
       .get<Pet>('pets')
       .query(Q.where('is_active', true))
-      .observe()
+      .observeWithColumns(['assessment_frequency', 'paused_at'])
       .pipe(map(pets => pets.length > 0 ? pets[0] : undefined));
 
     // Set default options
