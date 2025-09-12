@@ -2,7 +2,7 @@
   "expo": {
     "name": "Ralph",
     "slug": "Ralph",
-    "version": "5.0.1",
+    "version": "5.1.1",
     "orientation": "portrait",
     "icon": "./src/core/assets/icons/icon.png",
     "userInterfaceStyle": "light",
@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "eu.sboo.ralph",
-      "versionCode": 130,
+      "versionCode": 133,
       "adaptiveIcon": {
         "foregroundImage": "./src/core/assets/icons/android/ic_launcher_foreground.png",
         "backgroundImage": "./src/core/assets/icons/android/ic_launcher_background.png",
