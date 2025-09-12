@@ -8,7 +8,6 @@ export type RootStackParamList = {
   Onboarding: undefined;
   Settings: undefined;
   Home: undefined;
-  Migration: undefined;
   AddPet: undefined;
   EditPet: undefined;
   AssessmentSettings: {assessmentFrequency: string; assessmentsPaused: boolean; isExistingPet: boolean, customTrackingSettings: CustomTrackingSettings};
