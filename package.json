@@ -12,11 +12,10 @@
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.6.0",
     "@notifee/react-native": "^9.1.8",
-    "@nozbe/watermelondb": "^0.28.0",
+    "@nozbe/watermelondb": "^0.28.1-0",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-navigation/native": "^7.1.11",
     "@react-navigation/native-stack": "^7.3.16",
-
     "babel-plugin-module-resolver": "^5.0.2",
     "eventemitter3": "^5.0.1",
     "expo": "~53.0.11",
@@ -50,7 +49,6 @@
     "react-native-screens": "~4.11.1",
     "react-native-svg": "^15.12.0",
     "react-native-swiper-flatlist": "^3.2.5"
-
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
