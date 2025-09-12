@@ -1,7 +1,6 @@
 module.exports = {
   presets: ['babel-preset-expo'],
   plugins: [
-    '@realm/babel-plugin',
     ['@babel/plugin-proposal-decorators', {legacy: true}],
     [
       'module-resolver',

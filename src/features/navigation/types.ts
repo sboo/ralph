@@ -63,8 +63,3 @@ export type AllAssessmentsScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'AllAssessments'
 >;
-
-export type MigrationScreenNavigationProps = NativeStackScreenProps<
-  RootStackParamList,
-  'Migration'
->;

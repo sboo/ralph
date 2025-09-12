@@ -54,7 +54,7 @@ export interface NavigationFeatureAPI {
  * Re-export screen prop types to make them available from the navigation feature
  */
 export type {
-    AddAssessmentScreenNavigationProps, AddPetScreenNavigationProps, AllAssessmentsScreenNavigationProps, AllNotesNavigationProps, AssessmentSettingsScreenNavigationProps, CustomTrackingSettingsScreenNavigationProps, EditAssessmentScreenNavigationProps, EditPetScreenNavigationProps, HomeScreenNavigationProps, MigrationScreenNavigationProps, NotificationSettingsScreenNavigationProps, OnboardingScreenNavigationProps,
+    AddAssessmentScreenNavigationProps, AddPetScreenNavigationProps, AllAssessmentsScreenNavigationProps, AllNotesNavigationProps, AssessmentSettingsScreenNavigationProps, CustomTrackingSettingsScreenNavigationProps, EditAssessmentScreenNavigationProps, EditPetScreenNavigationProps, HomeScreenNavigationProps, NotificationSettingsScreenNavigationProps, OnboardingScreenNavigationProps,
     SettingsScreenNavigationProps, WelcomeScreenNavigationProps
 } from './types';
 

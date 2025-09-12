@@ -27,10 +27,6 @@ import {
 } from '@/features/home';
 
 import {
-    MigrationScreen
-} from '@/features/app';
-
-import {
     OnboardingScreen,
     WelcomeScreen
 } from '@/features/onboarding';
@@ -68,11 +64,6 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({
     <Stack.Navigator
       initialRouteName="Home"
       screenOptions={createDefaultScreenOptions()}>
-      <Stack.Screen
-        name="Migration"
-        component={MigrationScreen}
-        options={createNoHeaderOptions()}
-      />
       <Stack.Screen
         name="Home"
         component={HomeScreen}
