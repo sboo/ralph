@@ -1840,8 +1840,6 @@ PODS:
     - React-logger (= 0.79.5)
     - React-perflogger (= 0.79.5)
     - React-utils (= 0.79.5)
-  - RealmJS (12.14.2):
-    - React
   - RNCAsyncStorage (2.2.0):
     - DoubleConversion
     - glog
@@ -2097,7 +2095,7 @@ PODS:
     - Yoga
   - simdjson (3.9.4)
   - SocketRocket (0.7.1)
-  - WatermelonDB (0.28.0):
+  - WatermelonDB (0.28.1-0):
     - React
     - simdjson
   - Yoga (0.0.0)
@@ -2195,7 +2193,6 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - RealmJS (from `../node_modules/realm`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -2391,8 +2388,6 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  RealmJS:
-    :path: "../node_modules/realm"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNNotifee:
@@ -2501,7 +2496,6 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: c42e7abdd2228ae583bdabc3dcd8e5cda6bef944
   ReactCodegen: 4d001cd4fa72b876bbff500bbb3811e458bb3c72
   ReactCommon: 41137f7e87cf7fd1c041a7124dfa3d0d48aa43f3
-  RealmJS: ab0e1afd06ef856f8ae396520da1690bcaa669f8
   RNCAsyncStorage: 2cf7d05f5b1bc38680b6c83971e535a6ae9c5bc7
   RNNotifee: 4a6ee5c7deaf00e005050052d73ee6315dff7ec9
   RNReanimated: 6a437c90e263e4a2202a282f9d6dea0ad28d018d
@@ -2509,7 +2503,7 @@ SPEC CHECKSUMS:
   RNSVG: 50819276c95d91ccd8fbe5cfea7e09a416c9beaa
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  WatermelonDB: 8dafe8b8a23dc6d8e033e1086449b8e2638d9453
+  WatermelonDB: b34772e634f59bb1170214901a5c8841e7334813
   Yoga: adb397651e1c00672c12e9495babca70777e411e
 
 PODFILE CHECKSUM: d7b8c36b4c876edb54399644e79e2f717585affb
