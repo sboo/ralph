@@ -12,6 +12,8 @@
     "thank_you_text": "Danke, dass du meine App unterstützen!",
     "support_me": "Unterstütze mich",
     "support_me_text": "Bitte unterstütze meine Bemühungen.\n\nDies wird keine zusätzlichen Funktionen freischalten, aber es hilft mir, die App aktuell zu halten und am Laufen zu halten.",
+    "support_request_title": "Findest du Ralph nützlich?",
+    "support_request_text": "Ralph wird immer kostenlos sein, aber die App am Laufen zu halten, zu verbessern und Haustierfamilien zu unterstützen, kostet Zeit und Ressourcen. Würdest du in Betracht ziehen, Ralphs Mission zu unterstützen?",
     "introduction_title": "Beurteilungen",
     "introduction_text": "Diese App hilft dir, das Wohlbefinden deines Haustieres zu überwachen, bietet tägliche oder wöchentliche Beurteilungen und verfolgt Trends über die Zeit.\n\nKlicke im Diagramm auf den <redDot />, um zu beginnen.",
     "add_pet": "Haustier hinzufügen",
@@ -19,4 +21,3 @@
     "delete_pet": "Haustier entfernen",
     "delete_pet_text": "Bist du sicher, dass du {{petName}} entfernen möchtest?"
     }
-  

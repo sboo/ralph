@@ -2,10 +2,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-    createDefaultScreenOptions,
-    createHeaderOptions,
-    createHomeHeaderOptions,
-    createNoHeaderOptions
+  createDefaultScreenOptions,
+  createHeaderOptions,
+  createHomeHeaderOptions,
+  createNoHeaderOptions
 } from './navigationOptions';
 import { RootStackParamList } from './routes';
 
@@ -14,31 +14,32 @@ import { Pet } from '@core/database/models/Pet';
 
 // Import screens from their respective feature modules
 import {
-    AddAssessment,
-    AllAssessmentsScreen,
-    AllNotesScreen,
-    EditAssessment
+  AddAssessment,
+  AllAssessmentsScreen,
+  AllNotesScreen,
+  EditAssessment
 } from '@/features/assessments';
 
 import { DebugScreen } from '@/features/debug';
 
 import {
-    HomeScreen,
+  HomeScreen,
 } from '@/features/home';
 
 import {
-    OnboardingScreen,
-    WelcomeScreen
+  OnboardingScreen,
+  WelcomeScreen
 } from '@/features/onboarding';
 
 import {
-    AddPet,
-    AssessmentSettings,
-    CustomTrackingSettingsScreen,
-    EditPet,
-    NotificationSettings
+  AddPet,
+  AssessmentSettings,
+  CustomTrackingSettingsScreen,
+  EditPet,
+  NotificationSettings
 } from '@/features/pets';
 
+import { useAppearance } from '@/core/themes/hooks/useAppearance';
 import { SettingsScreen } from '@/features/settings';
 
 // Initialize Stack Navigator
@@ -54,11 +55,13 @@ interface AppNavigatorProps {
  * Main application navigator component that defines all screens and their options
  */
 export const AppNavigator: React.FC<AppNavigatorProps> = ({ 
-  headerColor, 
   theme,
   activePet 
 }) => {
   const { t } = useTranslation();
+  const { effectiveAppearance } = useAppearance();
+
+  const headerColor = effectiveAppearance === 'dark' ? '#1a3d3d' : '#e8f9f8'
 
   return (
     <Stack.Navigator
@@ -82,39 +85,39 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
-        options={createHeaderOptions(t('settings'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('settings'), headerColor)}
       />
       <Stack.Screen
         name="EditPet"
         component={EditPet}
-        options={createHeaderOptions(t('edit_pet'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('edit_pet'), headerColor)}
       />
       <Stack.Screen
         name="AddPet"
         component={AddPet}
-        options={createHeaderOptions(t('add_pet'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('add_pet'), headerColor)}
       />
       <Stack.Screen
         name="AssessmentSettings"
         component={AssessmentSettings}
-        options={createHeaderOptions(t('settings:assessments'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('settings:assessments'), headerColor)}
       />
       <Stack.Screen
         name="NotificationSettings"
         component={NotificationSettings}
-        options={createHeaderOptions(t('settings:notifications'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('settings:notifications'), headerColor)}
       />
       <Stack.Screen
         name="CustomTrackingSettings"
         component={CustomTrackingSettingsScreen}
-        options={createHeaderOptions(t('settings:customTracking'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('settings:customTracking'), headerColor)}
       />
       <Stack.Screen
         name="AddAssessment"
         component={AddAssessment}
         options={createHeaderOptions(
           t('measurements:title', {petName: activePet?.name}),
-          theme.colors.primaryContainer
+          headerColor
         )}
       />
       <Stack.Screen
@@ -122,18 +125,18 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({
         component={EditAssessment}
         options={createHeaderOptions(
           t('measurements:title', {petName: activePet?.name}),
-          theme.colors.primaryContainer
+          headerColor
         )}
       />
       <Stack.Screen
         name="AllNotes"
         component={AllNotesScreen}
-        options={createHeaderOptions(t('measurements:notes'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('measurements:notes'), headerColor)}
       />
       <Stack.Screen
         name="AllAssessments"
         component={AllAssessmentsScreen}
-        options={createHeaderOptions(t('measurements:allAssessments'), theme.colors.primaryContainer)}
+        options={createHeaderOptions(t('measurements:allAssessments'), headerColor)}
       />
       <Stack.Screen 
         name="DebugScreen" 

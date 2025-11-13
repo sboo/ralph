@@ -1,9 +1,9 @@
 import { OnboardingScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { database, Pet } from '@core/database';
 import { AssessmentFrequency } from '@core/database/models/Pet';
-import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
@@ -46,23 +46,15 @@ const OnboardingScreenComponent: React.FC<OnboardingScreenNavigationProps> = ({
   };
 
   return (
+    <GradientBackground>
     <SafeAreaView
       style={{
-        backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
-        style={styles.gradient}>
        
         <PetItem onSubmit={onSubmit} navigation={navigation} isWelcomeScreen={true} buttonLabel={t('buttons:continue')} />
-      </LinearGradient>
     </SafeAreaView>
+    </GradientBackground>
   );
 };
 

@@ -1,9 +1,9 @@
 import { emptyCustomTrackingLabels } from '@/features/assessments/helpers/customTracking';
 import { event, EVENT_NAMES } from '@/features/events';
 import { CustomTrackingSettingsScreenNavigationProps } from '@/features/navigation/types';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { getValueColor } from '@/shared/helpers/ColorHelper';
 import { getEmoticon } from '@/shared/helpers/TooltipHelper';
-import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -88,19 +88,13 @@ const CustomTrackingSettingsScreen: React.FC<
   };
 
   return (
+    <GradientBackground>
     <SafeAreaView
       edges={['bottom', 'left', 'right']}
       style={{
-        backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
+      <View
         style={styles.gradient}>
         <ScrollView style={styles.scrollView}>
           <Card
@@ -250,8 +244,9 @@ const CustomTrackingSettingsScreen: React.FC<
             {t('buttons:done')}
           </Button>
         </View>
-      </LinearGradient>
+     </View>
     </SafeAreaView>
+     </GradientBackground>
   );
 };
 
@@ -267,6 +262,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   card: {
     marginBottom: 20,

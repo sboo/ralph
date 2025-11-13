@@ -1,3 +1,4 @@
+import { useAppearance } from '@/core/themes';
 import { getTipBackgroundColor } from '@/shared/helpers/ColorHelper';
 import { getDeviceInfo } from '@/shared/helpers/DeviceHelper';
 import { Assessment, Pet } from '@core/database';
@@ -21,6 +22,7 @@ const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
   const {getTipsForAssessment, getAllTips} = useTips();
   const {t} = useTranslation();
   const { isTablet } = getDeviceInfo();
+  const { effectiveAppearance } = useAppearance();
 
   useEffect(() => {
     if (assessment) {
@@ -99,7 +101,7 @@ const Tips: React.FC<TipsProps> = ({activePet, assessment, numberOfTips}) => {
     <Card
       mode={'contained'}
       style={{
-        backgroundColor: getTipBackgroundColor(currentTips[currentIndex]?.type),
+        backgroundColor: getTipBackgroundColor(currentTips[currentIndex]?.type, effectiveAppearance),
         ...styles.tip,
       }}>
       <SwiperFlatList

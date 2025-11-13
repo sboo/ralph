@@ -10,14 +10,17 @@ import { AllNotes, AssessmentsCalendar } from '@/features/assessments';
 import { AssessmentChart } from '@/features/charts';
 import { EVENT_NAMES, event } from '@/features/events';
 import HomeHeader from '@/features/home/components/HomeHeader';
-import { HomeScreenNavigationProps } from '@/features/navigation';
+import { useIAPService } from '@/features/iap/iapService';
+import SupportRequestDialog from '@/features/navigation/components/SupportRequestDialog';
+import { useSupportRequest } from '@/features/navigation/hooks/useSupportRequest';
+import { HomeScreenNavigationProps } from '@/features/navigation/types';
 import { useAssessmentExporter } from '@/features/pdfExport';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { getDeviceInfo, hasModernNavigation } from '@/shared/helpers/DeviceHelper';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 import React, { ComponentType, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +32,7 @@ import {
   View
 } from 'react-native';
 import { DateData } from 'react-native-calendars';
-import { FAB, useTheme } from 'react-native-paper';
+import { FAB, Portal, useTheme } from 'react-native-paper';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Observable } from 'rxjs';
 
@@ -53,6 +56,8 @@ const HomeScreenComponent = ({
   const { isTablet } = getDeviceInfo();
   const {effectiveAppearance} = useAppearance();
   const {generateAndSharePDF} = useAssessmentExporter();
+  const { handlePurchase, processingPurchase } = useIAPService();
+  const { shouldShowDialog, markDialogAsShown, recheckShouldShow } = useSupportRequest();
   const [viewMode, setViewMode] = useState<'chart' | 'calendar' | 'notes'>(
     'chart',
   );
@@ -62,6 +67,7 @@ const HomeScreenComponent = ({
   const [contentHeight, setContentHeight] = useState(0);
   const [scrollViewHeight, setScrollViewHeight] = useState(0);
   const [fadeAnim] = useState(new Animated.Value(0));
+  const [supportRequestVisible, setSupportRequestVisible] = useState(false);
 
   const debug = false;
 
@@ -90,6 +96,28 @@ const HomeScreenComponent = ({
       });
     }
   }, [allPets, navigation]);
+
+  // Show support request dialog after 1 week if applicable
+  useEffect(() => {
+    if (shouldShowDialog) {
+      // Wait a bit before showing the dialog to let the home screen load
+      const timer = setTimeout(() => {
+        setSupportRequestVisible(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [shouldShowDialog]);
+
+  // Listen to purchase events to recheck support dialog status
+  useEffect(() => {
+    const onCoffeePurchased = () => {
+      recheckShouldShow();
+    };
+    event.on(EVENT_NAMES.COFFEE_PURCHASED, onCoffeePurchased);
+    return () => {
+      event.off(EVENT_NAMES.COFFEE_PURCHASED, onCoffeePurchased);
+    };
+  }, [recheckShouldShow]);
 
   const handleContentSizeChange = (width: number, height: number) => {
     setContentHeight(height);
@@ -150,6 +178,21 @@ const HomeScreenComponent = ({
     await generateAndSharePDF();
     setGeneratingPDF(false);
   }, [generateAndSharePDF]);
+
+  const handleSupportPurchase = async (sku: string) => {
+    try {
+      await handlePurchase(sku);
+      setSupportRequestVisible(false);
+      await markDialogAsShown();
+    } catch (error) {
+      console.error('Purchase failed:', error);
+    }
+  };
+
+  const handleDismissSupportRequest = async () => {
+    setSupportRequestVisible(false);
+    await markDialogAsShown();
+  };
 
   const tipContents = () => {
     if (!activePet || !assessments || assessments.length <= 0) {
@@ -232,26 +275,10 @@ const HomeScreenComponent = ({
   };
 
   return (
-    <LinearGradient
-      colors={
-        viewMode == 'notes'
-          ? [
-              theme.colors.primaryContainer,
-              theme.colors.primaryContainer,
-              theme.colors.primaryContainer,
-            ]
-          : [
-              theme.colors.primaryContainer,
-              theme.colors.background,
-              theme.colors.primaryContainer,
-            ]
-      }
-      locations={[0, 0.35, 1]}
-      style={styles.gradient}>
+    <GradientBackground>
       <SafeAreaView
         edges={['bottom', 'left', 'right']}
         style={{
-          backgroundColor: theme.colors.primaryContainer,
           ...styles.container,
         }}>
         <HomeHeader />
@@ -319,8 +346,16 @@ const HomeScreenComponent = ({
             />
           )
         )}
+        <Portal>
+          <SupportRequestDialog
+            visible={supportRequestVisible}
+            onDismiss={handleDismissSupportRequest}
+            onSupport={handleSupportPurchase}
+            loading={processingPurchase}
+          />
+        </Portal>
       </SafeAreaView>
-    </LinearGradient>
+    </GradientBackground>
   );
 };
 

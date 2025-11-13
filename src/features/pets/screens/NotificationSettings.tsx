@@ -1,7 +1,7 @@
 import { event, EVENT_NAMES } from '@/features/events';
 import { NotificationSettingsScreenNavigationProps } from '@/features/navigation/types';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { timeToDateObject } from '@/shared/helpers/DateTimeHelpers';
-import { LinearGradient } from 'expo-linear-gradient';
 import { getCalendars } from 'expo-localization';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,8 +35,7 @@ const NotificationSettings: React.FC<
   useEffect(() => {
     const calendars = getCalendars();
     const uses24Hour = calendars[0]?.uses24hourClock ?? false;
-  setHour12(!uses24Hour);
-
+    setHour12(!uses24Hour);
   }, []);
 
   const handleRemindersToggled = (remindersEnabled: boolean) => {
@@ -50,87 +49,81 @@ const NotificationSettings: React.FC<
   };
 
   return (
-    <SafeAreaView
-      edges={['bottom', 'left', 'right']}
-      style={{
-        backgroundColor: theme.colors.primaryContainer,
-        ...styles.container,
-      }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
-        style={styles.gradient}>
-        <ScrollView style={styles.scrollView}>
-          <Card
-            mode="contained"
-            style={{backgroundColor: theme.colors.surface, ...styles.card}}>
-            <Card.Content style={styles.cardContent}>
-              <Avatar.Icon
-                icon="bell"
-                size={50}
-                style={{backgroundColor: theme.colors.tertiary}}
-              />
-              <Text style={styles.cardTitle} variant="headlineMedium">
-                {t('settings:notifications')}
-              </Text>
-              <Text style={styles.cardText}>
-                {t('settings:notificationsDescription')}
-              </Text>
-            </Card.Content>
-          </Card>
-
-          <List.Section>
-            <List.Item
-              title={t('settings:enableNotificationsLabel')}
-              right={() => (
-                <Switch
-                  value={remindersEnabled}
-                  onValueChange={handleRemindersToggled}
+    <GradientBackground>
+      <SafeAreaView
+        edges={['bottom', 'left', 'right']}
+        style={{
+          ...styles.container,
+        }}>
+        <View style={styles.gradient}>
+          <ScrollView style={styles.scrollView}>
+            <Card
+              mode="contained"
+              style={{backgroundColor: theme.colors.surface, ...styles.card}}>
+              <Card.Content style={styles.cardContent}>
+                <Avatar.Icon
+                  icon="bell"
+                  size={50}
+                  style={{backgroundColor: theme.colors.tertiary}}
                 />
-              )}
-            />
-            {remindersEnabled && (
+                <Text style={styles.cardTitle} variant="headlineMedium">
+                  {t('settings:notifications')}
+                </Text>
+                <Text style={styles.cardText}>
+                  {t('settings:notificationsDescription')}
+                </Text>
+              </Card.Content>
+            </Card>
+
+            <List.Section>
               <List.Item
-                title={t('settings:reminderTimeLabel')}
+                title={t('settings:enableNotificationsLabel')}
                 right={() => (
-                  <Button
-                    mode="outlined"
-                    onPress={() => setTimePickerOpen(true)}>
-                    {reminderTime.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: hour12,
-                    })}
-                  </Button>
+                  <Switch
+                    value={remindersEnabled}
+                    onValueChange={handleRemindersToggled}
+                  />
                 )}
               />
-            )}
-          </List.Section>
+              {remindersEnabled && (
+                <List.Item
+                  title={t('settings:reminderTimeLabel')}
+                  right={() => (
+                    <Button
+                      mode="outlined"
+                      onPress={() => setTimePickerOpen(true)}>
+                      {reminderTime.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: hour12,
+                      })}
+                    </Button>
+                  )}
+                />
+              )}
+            </List.Section>
 
-          <DatePicker
-            modal
-            mode="time"
-            minuteInterval={15}
-            open={timePickerOpen}
-            date={reminderTime}
-            onConfirm={date => {
-              setTimePickerOpen(false);
-              handleReminderTime(date);
-            }}
-            onCancel={() => setTimePickerOpen(false)}
-          />
-        </ScrollView>
-        <View style={styles.buttons}>
-          <Button mode={'contained'} onPress={() => navigation.goBack()}>
-            {t('buttons:done')}
-          </Button>
+            <DatePicker
+              modal
+              mode="time"
+              minuteInterval={15}
+              open={timePickerOpen}
+              date={reminderTime}
+              onConfirm={date => {
+                setTimePickerOpen(false);
+                handleReminderTime(date);
+              }}
+              onCancel={() => setTimePickerOpen(false)}
+            />
+          </ScrollView>
+          <View style={styles.buttons}>
+            <Button mode={'contained'} onPress={() => navigation.goBack()}>
+              {t('buttons:done')}
+            </Button>
+          </View>
         </View>
-      </LinearGradient>
-    </SafeAreaView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 };
 
@@ -146,6 +139,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   card: {
     marginBottom: 20,

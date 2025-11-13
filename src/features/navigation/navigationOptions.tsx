@@ -17,8 +17,10 @@ export const createHeaderOptions = (
   title: string, 
   backgroundColor: string
 ): NativeStackNavigationOptions => {
+  const isTransparent = backgroundColor === 'transparent';
   return {
     title,
+    headerTransparent: isTransparent,
     headerStyle: { backgroundColor },
   };
 };
@@ -27,8 +29,10 @@ export const createHeaderOptions = (
  * Create home screen header options with dynamic color based on active pet
  */
 export const createHomeHeaderOptions = (headerColor: string): NativeStackNavigationOptions => {
+  const isTransparent = headerColor === 'transparent';
   return {
     title: '',
+    headerTransparent: isTransparent,
     headerStyle: { backgroundColor: headerColor },
   };
 };

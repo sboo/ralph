@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { Card, Icon, Text } from 'react-native-paper';
+import { getDeviceInfo } from '../helpers/DeviceHelper';
 
 interface Props {
   color: string;
@@ -15,9 +16,12 @@ const RatingSliderToolTip: React.FC<Props> = ({
   description,
   icon,
 }) => {
+    const { isTablet } = getDeviceInfo();
+    const windowWidth = Dimensions.get('window').width;
+  
   return (
     <Card
-      style={{width: Dimensions.get('window').width - 80, ...styles.tooltip}}>
+      style={{width: windowWidth - (isTablet ? windowWidth/2 - 100 : 80), ...styles.tooltip}}>
       <Card.Title
         title={title}
         titleNumberOfLines={2}

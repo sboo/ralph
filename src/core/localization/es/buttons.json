@@ -19,5 +19,7 @@
     "add_pet": "Añadir mascota",
     "edit_pet": "Editar mascota",
     "delete_pet": "Eliminar mascota",
-    "stop_assessments": "Dejar de evaluar"
+    "stop_assessments": "Dejar de evaluar",
+    "support": "Apoyar",
+    "maybe_later": "Quizás más tarde"
 }

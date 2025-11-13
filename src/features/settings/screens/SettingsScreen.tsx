@@ -1,9 +1,9 @@
 import { SettingsScreenNavigationProps } from '@/features/navigation/types';
 import Settings from '@/features/settings/components/Settings';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import * as Application from 'expo-application';
-import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -14,26 +14,21 @@ const SettingsScreen: React.FC<SettingsScreenNavigationProps> = ({
   const insets = useSafeAreaInsets();
 
   return (
+    <GradientBackground>
     <SafeAreaView
       edges={['bottom', 'left', 'right']}
       style={{
-        backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
+      <View
         style={styles.gradient}>
         <Settings onSettingsSaved={() => navigation.goBack()} />
-      </LinearGradient>
+      </View>
       <Text style={{...styles.versionInfo, bottom: insets.bottom}} variant={'labelSmall'}>
         v{Application.nativeApplicationVersion} ({Application.nativeBuildVersion})
       </Text>
     </SafeAreaView>
+    </GradientBackground>
   );
 };
 

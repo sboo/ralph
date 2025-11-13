@@ -40,16 +40,13 @@ export const getValidReminderTimestamp = (
 };
 
 export const assessmentDateToLocalDate = (dateString: string) => {
-  // Convert the date string to a moment object and format it to local date string
-  const tempDate = moment(dateString);
-  const date = new Date();
-  date.setUTCFullYear(tempDate.year());
-  date.setUTCMonth(tempDate.month());
-  date.setUTCDate(tempDate.date());
-  return date;
+  // Parse the date string (YYYY-MM-DD) and create a local Date at midnight
+  const parts = dateString.split('-');
+  const year = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1; // JavaScript months are 0-indexed
+  const day = parseInt(parts[2], 10);
+  return new Date(year, month, day);
 }
-
-
 
 export const assessmentDateToLocalDateString = (dateString: string) => {
   const date = assessmentDateToLocalDate(dateString);
