@@ -2,7 +2,7 @@ import { AssessmentFrequency } from '@/core/database/models/Pet';
 import { CustomTrackingSettings } from '@/features/assessments/helpers/customTracking';
 import { event, EVENT_NAMES } from '@/features/events';
 import { AssessmentSettingsScreenNavigationProps } from '@/features/navigation/types';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -85,13 +85,7 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
+      <GradientBackground
         style={styles.gradient}>
         <ScrollView style={styles.scrollView}>
           <Card
@@ -183,7 +177,7 @@ const AssessmentSettings: React.FC<AssessmentSettingsScreenNavigationProps> = ({
             {t('buttons:done')}
           </Button>
         </View>
-      </LinearGradient>
+      </GradientBackground>
     </SafeAreaView>
   );
 };

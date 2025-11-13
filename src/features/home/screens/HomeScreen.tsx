@@ -13,11 +13,11 @@ import HomeHeader from '@/features/home/components/HomeHeader';
 import { HomeScreenNavigationProps } from '@/features/navigation';
 import { useAssessmentExporter } from '@/features/pdfExport';
 import { GetStartedTip, TalkToVetTip, Tips } from '@/features/tips';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { getDeviceInfo, hasModernNavigation } from '@/shared/helpers/DeviceHelper';
 import { Q } from '@nozbe/watermelondb';
 import { compose, withObservables } from '@nozbe/watermelondb/react';
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 import React, { ComponentType, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -232,26 +232,10 @@ const HomeScreenComponent = ({
   };
 
   return (
-    <LinearGradient
-      colors={
-        viewMode == 'notes'
-          ? [
-              theme.colors.primaryContainer,
-              theme.colors.primaryContainer,
-              theme.colors.primaryContainer,
-            ]
-          : [
-              theme.colors.primaryContainer,
-              theme.colors.background,
-              theme.colors.primaryContainer,
-            ]
-      }
-      locations={[0, 0.35, 1]}
-      style={styles.gradient}>
+    <GradientBackground>
       <SafeAreaView
         edges={['bottom', 'left', 'right']}
         style={{
-          backgroundColor: theme.colors.primaryContainer,
           ...styles.container,
         }}>
         <HomeHeader />
@@ -320,7 +304,7 @@ const HomeScreenComponent = ({
           )
         )}
       </SafeAreaView>
-    </LinearGradient>
+    </GradientBackground>
   );
 };
 

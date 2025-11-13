@@ -1,7 +1,7 @@
 import { event, EVENT_NAMES } from '@/features/events';
 import { NotificationSettingsScreenNavigationProps } from '@/features/navigation/types';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { timeToDateObject } from '@/shared/helpers/DateTimeHelpers';
-import { LinearGradient } from 'expo-linear-gradient';
 import { getCalendars } from 'expo-localization';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -56,13 +56,7 @@ const NotificationSettings: React.FC<
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
+      <GradientBackground
         style={styles.gradient}>
         <ScrollView style={styles.scrollView}>
           <Card
@@ -129,7 +123,7 @@ const NotificationSettings: React.FC<
             {t('buttons:done')}
           </Button>
         </View>
-      </LinearGradient>
+      </GradientBackground>
     </SafeAreaView>
   );
 };

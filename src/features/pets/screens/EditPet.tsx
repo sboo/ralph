@@ -4,10 +4,10 @@ import { Pet } from '@/core/database/models/Pet';
 import { EditPetScreenNavigationProps } from '@/features/navigation/types';
 import PetItem from '@/features/pets/components/PetItem';
 import { PetData } from '@/features/pets/helpers/helperFunctions';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { compose } from '@nozbe/watermelondb/react';
-import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -73,23 +73,19 @@ const EditPetComponent: React.FC<EditPetScreenNavigationProps & {
   };
 
   return (
+    <GradientBackground>
     <SafeAreaView
     edges={['bottom', 'left', 'right']}
       style={{
-        backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
+      <View
         style={styles.gradient}>
         <PetItem pet={activePet} onSubmit={onSubmit} navigation={navigation} />
-      </LinearGradient>
+      </View>
     </SafeAreaView>
+
+    </GradientBackground>
   );
 };
 

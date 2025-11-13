@@ -34,7 +34,7 @@ const CoffeeButton: React.FC<CoffeeButtonProps> = ({
     return (
       <Appbar.Action
         icon="heart"
-        color={theme.colors.onPrimary}
+        color={theme.colors.onPrimaryContainer}
         onPress={onPress}
       />
     );
@@ -43,7 +43,7 @@ const CoffeeButton: React.FC<CoffeeButtonProps> = ({
   return (
     <Appbar.Action
       icon="hand-heart"
-      color={theme.colors.onPrimary}
+      color={theme.colors.onPrimaryContainer}
       onPress={onPress}
     />
   );
@@ -116,14 +116,19 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
     }
   }
 
+  const isTransparent = options.headerTransparent;
+
   return (
-    <Appbar.Header style={options.headerStyle}>
+    <Appbar.Header 
+      style={options.headerStyle}
+      elevated={!isTransparent}
+    >
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title={title} />
       {!back ? (
         <Appbar.Action
           icon="information"
-          color={theme.colors.onPrimary}
+          color={theme.colors.onPrimaryContainer}
           onPress={() => Linking.openURL('https://ralph.pet')}
         />
       ) : null}
@@ -142,7 +147,7 @@ const CustomNavigationBar: React.FC<NativeStackHeaderProps> = ({
           anchor={
             <Appbar.Action
               icon="dots-vertical"
-              color={theme.colors.onPrimary}
+              color={theme.colors.onPrimaryContainer}
               onPress={openMenu}
             />
           }>

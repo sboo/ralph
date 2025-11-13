@@ -4,8 +4,8 @@ import { Pet } from '@/core/database/models/Pet';
 import AssessmentsCalendar from '@/features/assessments/components/AssessmentsCalendar';
 import { AllAssessmentsScreenNavigationProps } from '@/features/navigation/types';
 import ExportPdf from '@/features/pdfExport/components/ExportPdf';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { compose } from '@nozbe/watermelondb/react';
-import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { DateData } from 'react-native-calendars/src/types';
@@ -41,20 +41,14 @@ const AllAssessmentsScreenComponent: React.FC<
         backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <LinearGradient
-        colors={[
-          theme.colors.primaryContainer,
-          theme.colors.background,
-          theme.colors.primaryContainer,
-        ]}
-        locations={[0, 0.75, 1]}
+      <GradientBackground
         style={styles.gradient}>
         <ScrollView style={styles.scrollview}>
           <AssessmentsCalendar onCalendarDayPress={addOrEditAssessment} />
           <Divider style={styles.divider} bold={true} />
           <ExportPdf />
         </ScrollView>
-      </LinearGradient>
+      </GradientBackground>
     </SafeAreaView>
   );
 };

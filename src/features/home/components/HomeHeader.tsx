@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
+
 // The presentational component
 const HomeHeaderComponent = ({ activePet, allPets }: {
   activePet: Pet | undefined,
@@ -67,14 +68,14 @@ const HomeHeaderComponent = ({ activePet, allPets }: {
   return (
     <View
       style={{
-        backgroundColor: headerColor,
+        backgroundColor: 'transparent',
         ...styles.container,
       }}>
       <View style={styles.greetingsContainer}>
-        <Text style={{ color: theme.colors.onPrimary, ...styles.greeting }}>
+        <Text style={{ color: theme.colors.onPrimaryContainer, ...styles.greeting }}>
           {getGreeting()}
         </Text>
-        <Text style={{ color: theme.colors.onPrimary, ...styles.petName }}>
+        <Text style={{ color: theme.colors.onPrimaryContainer, ...styles.petName }}>
           {activePet?.name}
         </Text>
       </View>
@@ -105,8 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     height: 90,
     padding: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
+    marginTop: 10,
   },
   greetingsContainer: {
     flexDirection: 'column',

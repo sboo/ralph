@@ -124,7 +124,7 @@ const AssessmentChartComponent: React.FC<AssessmentChartProps & {
 
   return (
     <>
-    <View style={[styles.chartContainer, { backgroundColor: theme.colors.primaryContainer }]}>
+    <View style={[styles.chartContainer, { backgroundColor: 'transparent' }]}>
       <View style={styles.chartLabels}>
         {Object.values(EMOTIONS).map(({ icon, color }) => (
           <Icon key={icon} size={20} source={icon} color={color} />

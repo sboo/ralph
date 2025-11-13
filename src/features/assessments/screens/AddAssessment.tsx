@@ -8,8 +8,8 @@ import {
   storeImages,
 } from '@/features/assessments/helpers/helperFunctions';
 import { AddAssessmentScreenNavigationProps } from '@/features/navigation/types';
+import { GradientBackground } from '@/shared/components/gradient-background';
 import { compose } from '@nozbe/watermelondb/react';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -71,18 +71,11 @@ const AddAssessmentComponent: React.FC<
     activePet.customTrackingSettings ?? emptyCustomTrackingSettings;
 
   return (
-    <LinearGradient
-      colors={[
-        theme.colors.primaryContainer,
-        theme.colors.background,
-        theme.colors.primaryContainer,
-      ]}
-      locations={[0, 0.75, 1]}
+    <GradientBackground
       style={styles.gradient}>
       <SafeAreaView
         edges={['bottom', 'left', 'right']}
         style={{
-          backgroundColor: theme.colors.primaryContainer,
           ...styles.container,
         }}>
         <AssessmentItem
@@ -94,7 +87,7 @@ const AddAssessmentComponent: React.FC<
           onSubmit={handleSubmit}
         />
       </SafeAreaView>
-    </LinearGradient>
+    </GradientBackground>
   );
 };
 

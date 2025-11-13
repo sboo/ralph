@@ -21,7 +21,7 @@ import { getHeaderColor } from '@/features/pets/helpers/helperFunctions';
 import { withAllAndActivePet } from './database/hoc';
 
 // Initialize StatusBar
-StatusBar.setBarStyle('light-content');
+StatusBar.setBarStyle('dark-content');
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('rgba(0,0,0,0)');
   StatusBar.setTranslucent(true);
@@ -51,10 +51,7 @@ const App: React.FC<{
   const onNavigationStateChange = useCallback(
     (state: NavigationState | undefined) => {
       if (!state) return;
-
-      const activeRoute = state.routes[state.index];
-      const isHomeOrWelcome = ['Home', 'Welcome'].includes(activeRoute.name);
-      StatusBar.setBarStyle(isHomeOrWelcome ? 'light-content' : 'dark-content');
+      StatusBar.setBarStyle('dark-content');
     },
     [],
   );
@@ -75,7 +72,7 @@ const App: React.FC<{
       behavior={Platform.OS === 'android' ? behaviour : 'height'}>
       <NavigationContainer onStateChange={onNavigationStateChange}>
         <AppNavigator 
-          headerColor={headerColor}
+          headerColor={'#e8f9f8'}
           theme={theme}
           activePet={activePet}
         />

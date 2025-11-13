@@ -1,4 +1,5 @@
 import { TipType } from '@/features/tips/types';
+import { ColorSchemeName } from 'react-native';
 
 const getValueColor = (neutralColor: string, value: number | undefined) => {
   if (value === undefined) {
@@ -21,15 +22,17 @@ const getValueColor = (neutralColor: string, value: number | undefined) => {
   }
 };
 
-const getTipBackgroundColor = (tipType?: TipType) => {
+// Better tip card backgrounds with proper contrast
+const getTipBackgroundColor = (tipType?: TipType, effectiveAppearance?: ColorSchemeName) => {
+  const isDark = effectiveAppearance === 'dark';
+  
   switch (tipType) {
-
     case TipType.encouragement:
-      return '#74D40055';
+      return isDark ? 'rgba(150, 230, 223, 0.20)' : 'rgba(168, 237, 234, 0.35)'; // Teal - increased opacity
     case TipType.help:
-      return '#F0E10655';
+      return isDark ? 'rgba(249, 212, 86, 0.25)' : 'rgba(250, 217, 98, 0.40)'; // Yellow - increased opacity
     default:
-      return '#F0E10655';
+      return isDark ? 'rgba(253, 198, 217, 0.20)' : 'rgba(254, 214, 227, 0.35)'; // Pink - increased opacity
   }
 };
 
