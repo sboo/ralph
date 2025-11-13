@@ -88,13 +88,13 @@ const CustomTrackingSettingsScreen: React.FC<
   };
 
   return (
+    <GradientBackground>
     <SafeAreaView
       edges={['bottom', 'left', 'right']}
       style={{
-        backgroundColor: theme.colors.primaryContainer,
         ...styles.container,
       }}>
-      <GradientBackground
+      <View
         style={styles.gradient}>
         <ScrollView style={styles.scrollView}>
           <Card
@@ -244,8 +244,9 @@ const CustomTrackingSettingsScreen: React.FC<
             {t('buttons:done')}
           </Button>
         </View>
-      </GradientBackground>
+     </View>
     </SafeAreaView>
+     </GradientBackground>
   );
 };
 
@@ -261,6 +262,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   card: {
     marginBottom: 20,

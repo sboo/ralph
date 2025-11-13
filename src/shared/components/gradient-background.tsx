@@ -1,7 +1,7 @@
 import { useAppearance } from '@/core/themes';
 import { useResponsive } from '@/shared/hooks/useResponsive';
 import { LinearGradient } from 'expo-linear-gradient';
-import { View, ViewProps } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
 
 interface GradientBackgroundProps extends ViewProps {
   variant?: 'primary' | 'subtle' | 'vibrant';
@@ -22,7 +22,7 @@ interface GradientBackgroundProps extends ViewProps {
  */
 export function GradientBackground({ 
   variant = 'subtle', 
-  centered = true,
+  centered = false,
   colors,
   children, 
   style,
@@ -63,8 +63,8 @@ export function GradientBackground({
       {...props}
     >
       {isTablet && centered ? (
-        <View className="flex-1 items-center">
-          <View className="w-full max-w-2xl flex-1">{children}</View>
+        <View style={styles.tabletContainer}>
+          <View style={styles.tabletContent}>{children}</View>
         </View>
       ) : (
         children
@@ -72,3 +72,15 @@ export function GradientBackground({
     </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  tabletContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  tabletContent: {
+    width: '100%',
+    maxWidth: 672, // Tailwind's max-w-2xl is 42rem = 672px
+    flex: 1,
+  },
+});
