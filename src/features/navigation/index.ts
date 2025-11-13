@@ -19,4 +19,8 @@ export * from './routes';
 // Export components
 export { default as CustomNavigationBar } from './components/CustomNavigationBar';
 export { default as SupportDialog } from './components/SupportDialog';
+export { default as SupportRequestDialog } from './components/SupportRequestDialog';
+
+// Export hooks
+export { useSupportRequest } from './hooks/useSupportRequest';
 

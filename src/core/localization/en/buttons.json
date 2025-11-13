@@ -19,5 +19,7 @@
     "add_pet": "Add Pet",
     "edit_pet": "Edit Pet",
     "delete_pet": "Delete Pet",
-    "stop_assessments": "Stop Assessments"
+    "stop_assessments": "Stop Assessments",
+    "support": "Support",
+    "maybe_later": "Maybe Later"
 }

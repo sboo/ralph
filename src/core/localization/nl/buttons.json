@@ -19,5 +19,7 @@
     "add_pet": "Huisdier toevoegen",
     "edit_pet": "Bewerk huisdier",
     "delete_pet": "Verwijder huisdier",
-    "stop_assessments": "Stop beoordelingen"
+    "stop_assessments": "Stop beoordelingen",
+    "support": "Steun",
+    "maybe_later": "Misschien later"
 }
